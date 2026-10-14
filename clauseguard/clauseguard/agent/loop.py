@@ -470,6 +470,7 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         session.last_payable = None
         session.last_clarification_slot = None
         session.docs_present = []
+        session.docs_attached = []
         session.doc_uploads = []
     old_values = dict(session.facts.values)
     old_event_dates = dict(session.event_dates)
@@ -574,6 +575,7 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
                 "specific diagnosis description if this affects a critical-illness claim."
             )
         dtype = (res or {}).get("doc_type")
+        present_before = set(documents_present)
         if dtype in ("INVOICE", "RECEIPT"):
             documents_present += ["ITEMISED_BILL", "RECEIPT_DETAILS"]
         elif dtype == "DISCHARGE_SUMMARY":
@@ -590,6 +592,10 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
                 for code in doc_match.match(res or {}, req, p, use_llm=use_llm):
                     if code not in documents_present:
                         documents_present.append(code)
+        # only a file proves a requirement; what the customer merely says they have stays "declared"
+        for code in documents_present:
+            if code not in present_before and code not in session.docs_attached:
+                session.docs_attached.append(code)
         # the file itself travels with the claim: a typed DocRef handle (never a raw path in tool args) that
         # submit_claim resolves and files under the claim for the insurer's desk
         known = {str((tv.value or {}).get("path")) for tv in (session.registry.resolve(h) for h in session.doc_uploads) if tv is not None}
@@ -1750,7 +1756,10 @@ def _action_reply(session, router, call, finish, policies, relevant, facts_by_po
         if not session.facts.has(Slot.EVENT):
             c = ClarificationRequest(slot=Slot.EVENT, verdict_by_value={})
             return finish("Which claim? Tell me what happened (event, dates, hospital) and which policy, and I will prepare the draft first.", clarification=c)
-        focus = next((p for p in relevant if p.id == session.focus_policy_id), None) or next((p for p in relevant if not portfolio.is_statutory(p)), None)
+        offer_pid = (session.submit_offer or {}).get("policy_id") if _SUBMIT_ANYWAY.search(user_text) else None
+        focus = (next((p for p in policies if p.id == offer_pid), None)  # "submit anyway" answers the offer that was made, whatever is in focus now
+                 or next((p for p in relevant if p.id == session.focus_policy_id), None)
+                 or next((p for p in relevant if not portfolio.is_statutory(p)), None))
         if focus is None:
             return finish("I could not identify which policy to draft the claim on.")
         f = facts_by_policy[focus.id]

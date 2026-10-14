@@ -204,18 +204,35 @@ def attach(draft: dict[str, Any], *, policy: PolicyRecord, session: Any, meta: d
         insured = meta.get("persons", {}).get(person, insured)
     vals = values_from_draft(draft, policy=policy, insured_name=insured, claimant_name=meta.get("name"),
                              facility_name=getattr(session, "facility_name", None), documents_present=documents_present,
+                             documents_attached=list(getattr(session, "docs_attached", []) or []),
                              as_of=getattr(session, "as_of", ""), lang=lang)
+    # the form being prepared here is the insurer's claim form: that requirement is met by this draft itself
+    form_codes = [c for c in (draft.get("required_documents") or []) if str(c).startswith("CLAIM_FORM")]
+    if form_codes:
+        attached = list(getattr(session, "docs_attached", []) or [])
+        for c in form_codes:
+            if c not in attached:
+                attached.append(c)
+        session.docs_attached = attached
+        for c in form_codes:
+            if c not in documents_present:
+                documents_present.append(c)
+        vals["documents_checklist"] = [{**item, "attached": True, "state": "attached"} if item["code"] in form_codes else item for item in vals["documents_checklist"]]
     draft["form_title"] = layout["form_title"]
     draft["form_layout_source"] = layout.get("source", "standard")
     draft["form_sections"] = fill(layout, vals, lang=lang)
 
 
 def values_from_draft(draft: dict[str, Any], *, policy: PolicyRecord, insured_name: Optional[str], claimant_name: Optional[str],
-                      facility_name: Optional[str], documents_present: list[str], as_of: Any, lang: str = "en") -> dict[str, Any]:
+                      facility_name: Optional[str], documents_present: list[str], as_of: Any, lang: str = "en",
+                      documents_attached: Optional[list[str]] = None) -> dict[str, Any]:
     facts = (draft.get("facts") or {}).get("values") or {}
     required = list(draft.get("required_documents") or [])
     present = set(documents_present)
-    checklist = [{"code": c, "label": doc_label(c, lang), "attached": c in present} for c in required]
+    attached = set(documents_attached or [])
+    # attached: proven by an uploaded file; declared: the customer says they have it; missing: neither
+    checklist = [{"code": c, "label": doc_label(c, lang), "attached": c in attached,
+                  "state": "attached" if c in attached else ("declared" if c in present else "missing")} for c in required]
     amount = draft.get("claim_amount", draft.get("amount"))
     return {
         "policy_id": policy.id, "policy_name": policy.product_name, "insurer": policy.insurer,

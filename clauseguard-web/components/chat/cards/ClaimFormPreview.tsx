@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check, Download, FileText, Loader2, X } from "lucide-react";
+import { AlertTriangle, Check, Download, FileText, Loader2, X } from "lucide-react";
 import { exportPdf, getChatPending } from "@/lib/api";
 import type { PoliciesResponse } from "@/lib/types";
 import { policyName } from "@/lib/clauses";
@@ -12,6 +12,8 @@ interface ChecklistItem {
   code: string;
   label: string;
   attached: boolean;
+  // attached: an uploaded file proves it; declared: the customer says they have it; missing: neither
+  state?: "attached" | "declared" | "missing";
 }
 
 interface FormField {
@@ -108,7 +110,7 @@ export function ClaimFormPreview({ token, tool, policies }: { token: string; too
           heading: s.title.slice(0, 120),
           lines: s.fields.flatMap((f) =>
             f.source === "documents_checklist" && Array.isArray(f.value)
-              ? [`${f.label}:`, ...(f.value as ChecklistItem[]).map((c) => `  [${c.attached ? "x" : " "}] ${c.label}`)]
+              ? [`${f.label}:`, ...(f.value as ChecklistItem[]).map((c) => `  [${c.attached ? "x" : " "}] ${c.label}${c.state === "declared" ? " (declared by the customer, not attached)" : ""}`)]
               : [`${f.label}: ${fieldText(f, currency)}`]
           ),
         })),
@@ -148,8 +150,11 @@ export function ClaimFormPreview({ token, tool, policies }: { token: string; too
                     <dd className="mt-0.5 flex flex-col gap-0.5 text-xs">
                       {(f.value as ChecklistItem[]).map((c) => (
                         <span key={c.code} className="inline-flex items-center gap-1.5">
-                          {c.attached ? <Check className="h-3 w-3 text-success" /> : <X className="h-3 w-3 text-destructive" />}
-                          <span className={c.attached ? "" : "text-muted-foreground"}>{c.label}</span>
+                          {c.attached ? <Check className="h-3 w-3 text-success" /> : c.state === "declared" ? <AlertTriangle className="h-3 w-3 text-warning-foreground" /> : <X className="h-3 w-3 text-destructive" />}
+                          <span className={c.attached ? "" : "text-muted-foreground"}>
+                            {c.label}
+                            {c.state === "declared" && <span className="ml-1 text-[10px] text-warning-foreground">declared, not attached</span>}
+                          </span>
                         </span>
                       ))}
                     </dd>

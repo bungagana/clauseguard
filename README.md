@@ -24,7 +24,9 @@ Institut Teknologi Sepuluh Nopember (ITS), Surabaya, Indonesia.
 
 ## Architecture
 
-![ClauseGuard architecture](clauseguard/docs/diagrams/architecture.svg)
+![ClauseGuard architecture](clauseguard-web/public/screens/architecture.png)
+
+Live demo: **https://clauseguard-red.vercel.app** (web client on Vercel; the backend runs on the team's machine and is exposed through a tunnel during demonstrations, so it may be offline at other times — the site then replays recorded scenes).
 
 | Component | Kind | Responsibility |
 |---|---|---|

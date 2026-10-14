@@ -116,6 +116,7 @@ LOOP_DEFAULTS: dict[str, Any] = {
     "alerts_shown": False,
     "alerts_seen": set,
     "docs_present": list,
+    "docs_attached": list,  # requirement codes proven by an uploaded file (subset of docs_present); the rest are only declared
     "doc_uploads": list,  # [{"path", "type"}] of the customer's uploads this scenario; attached to the claim on submit
     "eff_dates": dict,
     "lang": "en",

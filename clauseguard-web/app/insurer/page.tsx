@@ -241,8 +241,10 @@ export default function InsurerPage() {
                                 <dt className="text-[11px] uppercase tracking-wide text-muted-foreground">{f.label}</dt>
                                 <dd className="break-words">
                                   {f.source === "documents_checklist" && Array.isArray(f.value)
-                                    ? (f.value as Array<{ code: string; label: string; attached: boolean }>).map((c) => (
-                                        <span key={c.code} className={cn("mr-2 inline-block", c.attached ? "" : "text-muted-foreground line-through")}>{c.label}</span>
+                                    ? (f.value as Array<{ code: string; label: string; attached: boolean; state?: string }>).map((c) => (
+                                        <span key={c.code} className={cn("mr-2 inline-block", c.attached ? "" : c.state === "declared" ? "text-warning-foreground" : "text-muted-foreground line-through")}>
+                                          {c.label}{c.state === "declared" ? " (declared, not attached)" : ""}
+                                        </span>
                                       ))
                                     : f.state === "to_complete"
                                       ? <span className="text-muted-foreground">(to be completed by the customer)</span>
