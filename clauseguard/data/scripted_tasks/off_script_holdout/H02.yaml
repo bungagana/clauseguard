@@ -1,0 +1,12 @@
+id: H02
+title: 'Wording question containing the word claim: annual limit'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- Is there any limit on how many times a year i can claim the hospital cash?
+expected:
+  intent: POLICY_QA
+  must_contain:
+  - maximum 2 \(two\) events
+  no_clarification: true
+kind: holdout

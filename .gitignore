@@ -1,0 +1,22 @@
+# Whitelist: only the three project folders and the root files below are tracked.
+# Everything else in this directory (research notes, manuscripts, registration forms) stays local.
+/*
+!/.gitignore
+!/.github/
+!/README.md
+!/clauseguard/
+!/clauseguard-web/
+!/SUBMISSION/
+
+# Defensive, in case a nested ignore file is ever removed
+.env
+.env.*
+!.env.example
+node_modules/
+.next/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.sqlite
+*.sqlite-*

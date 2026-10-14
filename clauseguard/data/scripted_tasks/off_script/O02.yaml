@@ -1,0 +1,14 @@
+id: O02
+title: 'Typos and slang: ICU cover on the hospital cash plan'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- does the hospitel cash thingy pay 4 ICU also??
+expected:
+  intent: POLICY_QA
+  must_contain:
+  - IDR 1,000,000/day
+  - max 20 days
+  - c_icu_daily
+  no_clarification: true
+kind: off_script

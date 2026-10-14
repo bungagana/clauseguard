@@ -1,0 +1,14 @@
+id: H01
+title: 'Indonesian: dengue payout for a 6-day stay'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- kalo aku kena demam berdarah dan opname 6 hari mulai 1 okt 2026, berapa yg dibayar asuransi?
+expected:
+  verdict:
+    policy_id: HCP-SOMPO-01
+    verdict: COVERED
+  payable:
+    policy_id: HCP-SOMPO-01
+    amount: 3000000
+kind: holdout

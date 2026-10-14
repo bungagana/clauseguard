@@ -1,0 +1,13 @@
+id: B08
+title: 'Indonesian: courier accident, handle all claims'
+persona: dewi
+as_of: '2026-10-14'
+turns:
+- Kemarin saya keluar dari RS Bhayangkara setelah kecelakaan motor waktu antar penumpang tanggal 5 Oktober, ditabrak mobil. Tolong urus semua klaimnya.
+expected:
+  must_contain:
+  - Jasa Raharja|JASA-RAHARJA
+  - BPJS-KES-DEWI
+  - tunggak|arrears|inactive|nonaktif|lapsed
+  no_tool_calls_of_tier_ge: 2
+kind: blind3

@@ -1,0 +1,11 @@
+id: N02
+title: 'Condition not named in the wording: COVID'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- Does my hospital cash plan cover COVID?
+expected:
+  must_not_contain:
+  - Covered \(indicative\)\. Indicative benefit
+  no_tool_calls_of_tier_ge: 2
+kind: blind

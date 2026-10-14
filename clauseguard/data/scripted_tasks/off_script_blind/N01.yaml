@@ -1,0 +1,14 @@
+id: N01
+title: 'Indonesian: dengue stay payout from 30 Sep'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- kalo aku opname 3 hari karena dbd mulai 30 sept 2026, hospital cash bayar berapa?
+expected:
+  verdict:
+    policy_id: HCP-SOMPO-01
+    verdict: COVERED
+  payable:
+    policy_id: HCP-SOMPO-01
+    amount: 1500000
+kind: blind

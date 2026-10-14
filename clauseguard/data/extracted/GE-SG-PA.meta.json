@@ -1,0 +1,72 @@
+{
+ "model": "gemini-3-flash-preview",
+ "models_used": [
+  "gemini-3-flash-preview"
+ ],
+ "calls": 2,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "IMPORTANT NOTICE",
+   "kind": "GENERAL",
+   "has_rules": false,
+   "page_start": 1,
+   "page_end": 1
+  },
+  {
+   "id": "S2",
+   "heading": "PROVISOS",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": 2,
+   "page_end": 2
+  },
+  {
+   "id": "S3",
+   "heading": "BENEFITS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 2,
+   "page_end": 3
+  },
+  {
+   "id": "S4",
+   "heading": "EXCEPTIONS",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": 3,
+   "page_end": 4
+  },
+  {
+   "id": "S5",
+   "heading": "CONDITIONS",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": 4,
+   "page_end": 6
+  }
+ ],
+ "glossary": [
+  {
+   "term": "DEATH",
+   "canonical_event": "DEATH",
+   "definition": "Death resulting solely and directly from accident caused by violent, accidental, external and visible means within twelve calendar months."
+  },
+  {
+   "term": "TEMPORARY TOTAL DISABLEMENT",
+   "canonical_event": "TEMPORARY_DISABILITY",
+   "definition": "Wholly and continuously disable and prevent the Insured from performing every duty pertaining to his profession or occupation."
+  },
+  {
+   "term": "TEMPORARY PARTIAL DISABLEMENT",
+   "canonical_event": "TEMPORARY_DISABILITY",
+   "definition": "Continuously disable and prevent the Insured from performing an important daily duty pertaining to his profession or occupation."
+  },
+  {
+   "term": "Terrorism",
+   "canonical_event": "OTHER",
+   "definition": "An act including the use of force or violence for political, religious, ideological or similar purposes including the intention to influence any government."
+  }
+ ]
+}

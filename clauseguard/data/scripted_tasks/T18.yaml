@@ -1,0 +1,23 @@
+id: T18
+title: 'Denial triage: survival period, redirect to life claim'
+persona: rizky
+as_of: '2026-09-25'
+turns:
+- My CI claim was rejected, the letter says 'survival period'. He was diagnosed on 1 September 2026 and died on 20 September 2026. What can I do?
+expected:
+  denial_code:
+    policy_id: CI-CHUBB-05
+    code: SURVIVAL_PERIOD
+  verdict:
+    policy_id: TL-ASTRA-07
+    verdict: COVERED
+  must_contain:
+  - survive for at least 30 days
+  - ci_survival
+  - death benefit under the life policies
+  - 'TL-ASTRA-07\): Covered'
+  - OJK
+  - LAPS SJK
+  must_not_contain:
+  - 'CI-CHUBB-05\): Covered'
+kind: functional

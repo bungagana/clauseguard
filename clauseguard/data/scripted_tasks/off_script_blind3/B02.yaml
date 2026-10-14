@@ -1,0 +1,16 @@
+id: B02
+title: 'Indonesian: claim to every insurer for Sari'
+persona: santoso
+as_of: '2026-10-14'
+turns:
+- Saya mau klaim ke semua asuransi. Sari dirawat di RS Mitra Keluarga tanggal 10 sampai 13 Oktober 2026 karena demam berdarah, tagihannya Rp 15.000.000. Tolong diurus.
+expected:
+  must_contain:
+  - BPJS-KES-SANTOSO
+  - HI-INDIV-S
+  - COB|surat|letter
+  in_order:
+  - BPJS-KES-SANTOSO
+  - HI-INDIV-S
+  no_tool_calls_of_tier_ge: 2
+kind: blind3

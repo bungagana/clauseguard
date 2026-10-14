@@ -1,0 +1,10 @@
+id: N12
+title: 'Planned operation at a private hospital: BPJS usability'
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Is Nadia covered by BPJS if she is admitted to Siloam for a planned tonsil operation?
+expected:
+  cob_status:
+    BPJS-KES-SANTOSO: NOT_CLAIMABLE
+kind: blind

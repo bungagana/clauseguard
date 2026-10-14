@@ -1,0 +1,201 @@
+{
+ "model": "gemini-3-flash-preview",
+ "dropped": [
+  {
+   "row": {
+    "head": "R2",
+    "relation": "COVERS",
+    "object": "ACCELERATED_DEATH_TERMINAL",
+    "section": "S7",
+    "evidence_text": "If diagnosed with a terminal illness: May access up to 95% of death benefit while living",
+    "confidence": 1.0,
+    "pct_of_sum_assured": 95.0,
+    "annual_cap": 500000.0,
+    "deductible_amount": 10000.0,
+    "applies_if": [],
+    "diseases": [],
+    "document_codes": []
+   },
+   "error": "object 'ACCELERATED_DEATH_TERMINAL' is not an EventCode"
+  },
+  {
+   "row": {
+    "head": "R3",
+    "relation": "COVERS",
+    "object": "ACCELERATED_DEATH_CHRONIC",
+    "section": "S8",
+    "evidence_text": "If you become chronically ill and cannot perform 2+ Activities of Daily Living... May access up to 2% of face amount per month",
+    "confidence": 1.0,
+    "pct_of_sum_assured": 2.0,
+    "lifetime_cap": 50.0,
+    "applies_if": [],
+    "diseases": [],
+    "document_codes": [],
+    "formula": "2% of face amount per month up to 50% total"
+   },
+   "error": "object 'ACCELERATED_DEATH_CHRONIC' is not an EventCode"
+  },
+  {
+   "row": {
+    "head": "R6",
+    "relation": "COVERS",
+    "object": "GUARANTEED_INSURABILITY",
+    "section": "S11",
+    "evidence_text": "Allows purchase of additional coverage without medical underwriting: May purchase up to $100,000 additional coverage per option date",
+    "confidence": 1.0,
+    "amount": 100000.0,
+    "applies_if": [],
+    "diseases": [],
+    "document_codes": []
+   },
+   "error": "object 'GUARANTEED_INSURABILITY' is not an EventCode"
+  }
+ ],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "INSURED INFORMATION",
+   "kind": "GENERAL",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S2",
+   "heading": "BASE POLICY",
+   "kind": "PERIOD",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S3",
+   "heading": "BENEFICIARIES",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S4",
+   "heading": "POLICY DEFINITIONS",
+   "kind": "DEFINITIONS",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S5",
+   "heading": "SECTION 1: BASE POLICY COVERAGE",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S6",
+   "heading": "RIDER 1: WAIVER OF PREMIUM DUE TO DISABILITY",
+   "kind": "RIDER",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S7",
+   "heading": "RIDER 2: ACCELERATED DEATH BENEFIT - TERMINAL ILLNESS",
+   "kind": "RIDER",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S8",
+   "heading": "RIDER 3: ACCELERATED DEATH BENEFIT - CHRONIC ILLNESS",
+   "kind": "RIDER",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S9",
+   "heading": "RIDER 4: CHILDREN'S TERM INSURANCE RIDER",
+   "kind": "RIDER",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S10",
+   "heading": "RIDER 5: ACCIDENTAL DEATH BENEFIT",
+   "kind": "RIDER",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S11",
+   "heading": "RIDER 6: GUARANTEED INSURABILITY OPTION",
+   "kind": "RIDER",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S12",
+   "heading": "SECTION 3: PREMIUM PAYMENT",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S13",
+   "heading": "SECTION 4: POLICY RENEWAL AND CONVERSION",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S14",
+   "heading": "SECTION 5: INCONTESTABILITY",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S15",
+   "heading": "SECTION 6: AVIATION EXCLUSION WAIVER",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S16",
+   "heading": "SECTION 7: POLICY MODIFICATION",
+   "kind": "ADMIN",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Disability",
+   "canonical_event": "TEMPORARY_DISABILITY",
+   "definition": "The complete inability to perform the material and substantial duties of your regular occupation due to sickness or injury."
+  },
+  {
+   "term": "Terminal Illness",
+   "canonical_event": "TERMINAL_ILLNESS",
+   "definition": "A condition expected to result in death within 24 months as certified by a physician."
+  },
+  {
+   "term": "Chronic Illness",
+   "canonical_event": "CHRONIC_ILLNESS",
+   "definition": "The inability to perform at least 2 of 6 Activities of Daily Living for at least 90 days."
+  }
+ ]
+}

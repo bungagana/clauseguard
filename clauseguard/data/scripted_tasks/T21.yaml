@@ -1,0 +1,27 @@
+id: T21
+title: 'Plan recommendation: single adult, lapsed life policy'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- What should I buy to close my gaps?
+expected:
+  intent: PLAN_RECOMMENDATION
+  recommends_plans:
+  - CAT-TERM-01
+  - CAT-PA-01
+  not_recommends_plans:
+  - CAT-HI-01
+  - CAT-GTOPUP-01
+  - CAT-HCASH-01
+  - CAT-CI-01
+  must_contain:
+  - licensed agent
+  - illustrative mock catalogue
+  - TL-ASTRA-07
+  - not in force
+  must_not_contain:
+  - (Prudential|Allianz|AIA|Manulife|Sinarmas|Great Eastern|Zurich|Generali|AXA|Cigna|Tokio Marine|BCA Life|Sun Life|Allstate) \w+ (plan|policy|product)
+  - "(Prudential|Allianz|AIA|Manulife|Sinarmas|Great Eastern|Zurich|Generali|AXA|Cigna|Tokio Marine|BCA Life|Sun Life|Allstate)\b"
+  no_tool_calls_of_tier_ge: 2
+  no_clarification: true
+kind: recommendation

@@ -1,0 +1,13 @@
+{
+ "refine_log": [
+  {
+   "id": "C1-t011",
+   "action": "repaired",
+   "why": "age_max=65 not in evidence: dropped"
+  }
+ ],
+ "verify_actions": 1,
+ "salvaged_rows": 0,
+ "recall_sentences": 0,
+ "added": 0
+}

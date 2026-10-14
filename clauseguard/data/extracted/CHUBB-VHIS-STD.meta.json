@@ -1,0 +1,421 @@
+{
+ "model": "gemini-3.7-flash",
+ "models_used": [
+  "gemini-3.7-flash"
+ ],
+ "calls": 3,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "Part 1 Insuring Clause and The Policy",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 2,
+   "page_end": 4
+  },
+  {
+   "id": "S2",
+   "heading": "Part 2 General Conditions",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": 5,
+   "page_end": 11
+  },
+  {
+   "id": "S3",
+   "heading": "Part 3 Premium Provisions",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": 12,
+   "page_end": 12
+  },
+  {
+   "id": "S4",
+   "heading": "Part 4 Renewal Provisions",
+   "kind": "PERIOD",
+   "has_rules": true,
+   "page_start": 13,
+   "page_end": 16
+  },
+  {
+   "id": "S5",
+   "heading": "Part 5 Claim Provisions",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": 17,
+   "page_end": 17
+  },
+  {
+   "id": "S6",
+   "heading": "Part 6 Benefit Provisions",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 18,
+   "page_end": 22
+  },
+  {
+   "id": "S7",
+   "heading": "Part 7 General Exclusions",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": 23,
+   "page_end": 24
+  },
+  {
+   "id": "S8",
+   "heading": "Part 8 Definitions",
+   "kind": "DEFINITIONS",
+   "has_rules": true,
+   "page_start": 25,
+   "page_end": 32
+  },
+  {
+   "id": "S9",
+   "heading": "STANDARD PLAN ENDORSEMENT",
+   "kind": "RIDER",
+   "has_rules": true,
+   "page_start": 33,
+   "page_end": 33
+  },
+  {
+   "id": "S10",
+   "heading": "SUPPLEMENT Inclusion of VAT and GST as Eligible Expenses",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": 34,
+   "page_end": 34
+  },
+  {
+   "id": "S11",
+   "heading": "SUPPLEMENT Inclusion of public hospitals and private hospitals in Hong Kong in the definition of Hospital",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": 35,
+   "page_end": 35
+  },
+  {
+   "id": "S12",
+   "heading": "Benefit Schedule",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 36,
+   "page_end": 37
+  },
+  {
+   "id": "S13",
+   "heading": "Schedule of Surgical Procedures",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 38,
+   "page_end": 53
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Accident",
+   "canonical_event": "ACCIDENT_MEDICAL",
+   "definition": "A sudden and unforeseen event occurring entirely beyond the control of the Insured Person and caused by violent, external and visible means."
+  },
+  {
+   "term": "Age",
+   "canonical_event": null,
+   "definition": "The attained age of the Insured Person."
+  },
+  {
+   "term": "Annual Benefit Limit",
+   "canonical_event": null,
+   "definition": "The maximum amount of benefits paid by the Company to the Policy Holder in a Policy Year irrespective of whether limits of any benefit items have been reached."
+  },
+  {
+   "term": "Application",
+   "canonical_event": null,
+   "definition": "The application submitted to the Company in respect of this Certified Plan, including the application form, questionnaires, evidence of insurability, and statements/declarations."
+  },
+  {
+   "term": "Benefit Schedule",
+   "canonical_event": null,
+   "definition": "A schedule of benefits attached to these Terms and Benefits setting out benefit items and maximum benefits covered."
+  },
+  {
+   "term": "Case-based Exclusion",
+   "canonical_event": null,
+   "definition": "The exclusion of a particular Sickness or Disease from coverage that may be applied based on a Pre-existing Condition or insurability factors."
+  },
+  {
+   "term": "Certified Plan",
+   "canonical_event": null,
+   "definition": "All the terms and benefits (including Supplement(s)) forming an insurance plan certified by the Government to be compliant with VHIS requirements."
+  },
+  {
+   "term": "Coinsurance",
+   "canonical_event": null,
+   "definition": "A percentage of Eligible Expenses the Policy Holder must contribute after paying the Deductible (if any) in a Policy Year."
+  },
+  {
+   "term": "Company",
+   "canonical_event": null,
+   "definition": "Chubb Life Insurance Hong Kong Limited."
+  },
+  {
+   "term": "Confinement",
+   "canonical_event": "HOSPITALIZATION",
+   "definition": "An admission of the Insured Person to a Hospital recommended by a Registered Medical Practitioner for Medical Service and as an Inpatient as a result of a Medically Necessary condition."
+  },
+  {
+   "term": "Confined",
+   "canonical_event": "HOSPITALIZATION",
+   "definition": "An admission of the Insured Person to a Hospital recommended by a Registered Medical Practitioner for Medical Service and as an Inpatient as a result of a Medically Necessary condition."
+  },
+  {
+   "term": "Congenital Condition(s)",
+   "canonical_event": "CONGENITAL",
+   "definition": "Any medical, physical or mental abnormalities existed at or before birth, or any neo-natal abnormalities developed within 6 months of birth."
+  },
+  {
+   "term": "Day Case Procedure",
+   "canonical_event": "SURGERY",
+   "definition": "A Medically Necessary surgical procedure for investigation or treatment performed in a medical clinic, day case procedure centre or Hospital as a Day Patient."
+  },
+  {
+   "term": "Day Patient",
+   "canonical_event": "OUTPATIENT",
+   "definition": "An Insured Person receiving Medical Services or treatments given in a medical clinic, day case procedure centre or Hospital where not in Confinement."
+  },
+  {
+   "term": "Deductible",
+   "canonical_event": null,
+   "definition": "A fixed amount of Eligible Expenses that, in a Policy Year, the Policy Holder must pay before the Company reimburses remaining Eligible Expenses."
+  },
+  {
+   "term": "Delivery",
+   "canonical_event": null,
+   "definition": "Delivery of Terms and Benefits and Policy Schedule or cooling-off notice to Policy Holder by hand, post, or electronic means."
+  },
+  {
+   "term": "Disability",
+   "canonical_event": null,
+   "definition": "A Sickness or Disease or Injury, including any and all complications arising therefrom."
+  },
+  {
+   "term": "Eligible Expenses",
+   "canonical_event": null,
+   "definition": "Expenses incurred for Medical Services rendered with respect to a Disability."
+  },
+  {
+   "term": "Emergency",
+   "canonical_event": null,
+   "definition": "An event or situation where Medical Service is needed immediately to prevent death, permanent impairment or serious consequences to health."
+  },
+  {
+   "term": "Emergency Treatment",
+   "canonical_event": null,
+   "definition": "Medical Service required in an Emergency, occurring without unreasonable separation of time from the Emergency event."
+  },
+  {
+   "term": "Government",
+   "canonical_event": null,
+   "definition": "The Hong Kong Special Administrative Region Government."
+  },
+  {
+   "term": "Guardian",
+   "canonical_event": null,
+   "definition": "Person(s) appointed as guardian(s) under or acting by virtue of the Guardianship of Minors Ordinance."
+  },
+  {
+   "term": "HKD",
+   "canonical_event": null,
+   "definition": "Hong Kong dollars."
+  },
+  {
+   "term": "Hong Kong",
+   "canonical_event": null,
+   "definition": "Hong Kong Special Administrative Region of the People's Republic of China."
+  },
+  {
+   "term": "Hospital",
+   "canonical_event": null,
+   "definition": "An establishment duly constituted and registered as a hospital under local laws providing Medical Service for Inpatients, having diagnostic/operating facilities and 24h nursing."
+  },
+  {
+   "term": "Injury",
+   "canonical_event": "ACCIDENT_MEDICAL",
+   "definition": "Any bodily damage (with or without a visible wound) solely caused by an Accident independent of any other causes."
+  },
+  {
+   "term": "Inpatient",
+   "canonical_event": "HOSPITALIZATION",
+   "definition": "An Insured Person who is Confined."
+  },
+  {
+   "term": "Insurance Authority",
+   "canonical_event": null,
+   "definition": "The Insurance Authority of Hong Kong established pursuant to section 4AAA of the Insurance Ordinance."
+  },
+  {
+   "term": "Insurance Ordinance",
+   "canonical_event": null,
+   "definition": "The Insurance Ordinance (Cap. 41 of the Laws of Hong Kong)."
+  },
+  {
+   "term": "Insured Person",
+   "canonical_event": null,
+   "definition": "Any person whose risks are covered by these Terms and Benefits, and named in the Policy Schedule."
+  },
+  {
+   "term": "Intensive Care Unit",
+   "canonical_event": "ICU",
+   "definition": "Part or unit of a Hospital established for and devoted to providing intensive medical and nursing care for Inpatients."
+  },
+  {
+   "term": "Lifetime Benefit Limit",
+   "canonical_event": null,
+   "definition": "The maximum amount of benefits paid by the Company cumulatively since inception of these Terms and Benefits."
+  },
+  {
+   "term": "Medical Services",
+   "canonical_event": null,
+   "definition": "Medically Necessary services including Confinement, treatments, procedures, tests, examinations or related services for investigating or treating a Disability."
+  },
+  {
+   "term": "Medically Necessary",
+   "canonical_event": null,
+   "definition": "The need to have medical service for investigating or treating the relevant Disability in accordance with generally accepted standards of medical practice."
+  },
+  {
+   "term": "Minor",
+   "canonical_event": null,
+   "definition": "A person below the Age of eighteen (18) years."
+  },
+  {
+   "term": "Place(s) of Residence",
+   "canonical_event": null,
+   "definition": "The jurisdiction(s) in which a person legally has the right of abode."
+  },
+  {
+   "term": "Policy",
+   "canonical_event": null,
+   "definition": "The policy underwritten and issued by the Company, being the contract between Policy Holder and Company."
+  },
+  {
+   "term": "Policy Effective Date",
+   "canonical_event": null,
+   "definition": "The commencement date of these Terms and Benefits specified in the Policy Schedule."
+  },
+  {
+   "term": "Policy Holder",
+   "canonical_event": null,
+   "definition": "The person who is a legal holder of this Policy and named in the Policy Schedule."
+  },
+  {
+   "term": "Policy Issuance Date",
+   "canonical_event": null,
+   "definition": "The date of first issuance of these Terms and Benefits."
+  },
+  {
+   "term": "Policy Schedule",
+   "canonical_event": null,
+   "definition": "A schedule attached setting out Policy Effective Date, Renewal Date, particulars of Policy Holder and Insured Person, benefits, and premium."
+  },
+  {
+   "term": "Policy Year",
+   "canonical_event": null,
+   "definition": "The period from Policy Effective Date to day preceding first Renewal Date, and each subsequent 1-year period from each Renewal Date."
+  },
+  {
+   "term": "Portfolio",
+   "canonical_event": null,
+   "definition": "All policies of the same terms and conditions and benefit schedule certified by the Government as a Certified Plan under VHIS."
+  },
+  {
+   "term": "Pre-existing Condition(s)",
+   "canonical_event": "PRE_EXISTING_CONDITION",
+   "definition": "Any Sickness, Disease, Injury, condition or physiological degradation existing prior to Policy Issuance Date or Policy Effective Date."
+  },
+  {
+   "term": "Premium Loading",
+   "canonical_event": null,
+   "definition": "The additional premium on top of Standard Premium charged according to additional risk assessed for the Insured Person."
+  },
+  {
+   "term": "Prescribed Diagnostic Imaging Tests",
+   "canonical_event": null,
+   "definition": "Computed tomography (CT scan), magnetic resonance imaging (MRI scan), positron emission tomography (PET scan), PET-CT combined and PET-MRI combined."
+  },
+  {
+   "term": "Prescribed Non-surgical Cancer Treatments",
+   "canonical_event": "CRITICAL_ILLNESS",
+   "definition": "Chemotherapy, radiotherapy, targeted therapy, immunotherapy and hormonal therapy for cancer treatment."
+  },
+  {
+   "term": "Reasonable and Customary",
+   "canonical_event": null,
+   "definition": "A charge not exceeding the general range charged by service providers in the locality for similar treatment, services or supplies to similar individuals."
+  },
+  {
+   "term": "Registered Medical Practitioner",
+   "canonical_event": null,
+   "definition": "A western medical practitioner duly qualified and registered with the Medical Council of Hong Kong or equivalent recognized body."
+  },
+  {
+   "term": "Renewal",
+   "canonical_event": null,
+   "definition": "Renewal of these Terms and Benefits in accordance with their terms without any discontinuance."
+  },
+  {
+   "term": "Renewal Date",
+   "canonical_event": null,
+   "definition": "The effective date of Renewal specified in the Policy Schedule and subsequent anniversaries."
+  },
+  {
+   "term": "Schedule of Surgical Procedures",
+   "canonical_event": null,
+   "definition": "The list of surgical procedures attached to the Benefit Schedule categorizing procedures according to complexity."
+  },
+  {
+   "term": "Sickness",
+   "canonical_event": null,
+   "definition": "A physical, mental or medical condition arising from a pathological deviation from the normal healthy state."
+  },
+  {
+   "term": "Disease",
+   "canonical_event": null,
+   "definition": "A physical, mental or medical condition arising from a pathological deviation from the normal healthy state."
+  },
+  {
+   "term": "Standard Plan",
+   "canonical_event": null,
+   "definition": "The insurance plan with terms and conditions and benefit schedule equivalent to minimum compliant product requirements of VHIS."
+  },
+  {
+   "term": "Standard Premium",
+   "canonical_event": null,
+   "definition": "The basic premium for coverage under this Certified Plan charged on an overall Portfolio basis."
+  },
+  {
+   "term": "Supplement(s)",
+   "canonical_event": null,
+   "definition": "Any document which may add, delete, amend or replace terms and benefits, including endorsements, riders, and annexes."
+  },
+  {
+   "term": "Terms and Benefits",
+   "canonical_event": null,
+   "definition": "The Terms and Conditions together with the Benefit Schedule and any related Supplement(s) certified under this Certified Plan."
+  },
+  {
+   "term": "Terms and Conditions",
+   "canonical_event": null,
+   "definition": "Part 1 to Part 8 of this Certified Plan."
+  },
+  {
+   "term": "Beneficiary",
+   "canonical_event": null,
+   "definition": "The person, if any, designated by Policy Holder and approved by the Company to receive death benefits payable under Terms and Conditions."
+  },
+  {
+   "term": "VAT and GST",
+   "canonical_event": null,
+   "definition": "Value added taxes, goods and services taxes or similar taxes/duties imposed on expenses incurred for Medical Services rendered for Disability."
+  }
+ ]
+}

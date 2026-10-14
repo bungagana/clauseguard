@@ -1,0 +1,16 @@
+id: T06
+title: 'Fallback: insufficient evidence (IVF)'
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Does my employer group plan cover IVF?
+expected:
+  must_contain:
+  - not determinable from your documents
+  - call-back|HR|insurer in writing
+  must_not_contain:
+  - IVF is (covered|excluded)
+  - fertility clause
+  actions_pending_tool: schedule_callback
+  no_tool_calls_of_tier_ge: 2
+kind: functional

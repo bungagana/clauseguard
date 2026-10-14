@@ -1,0 +1,99 @@
+{
+ "model": "gemini-3.8-flash",
+ "models_used": [
+  "gemini-3.8-flash"
+ ],
+ "calls": 2,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "SECTION 1 - ABOUT THIS CERTIFICATE",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S2",
+   "heading": "SECTION 2 - ELIGIBILITY AND EFFECTIVE DATE",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S3",
+   "heading": "SECTION 3 - BENEFIT AMOUNT CALCULATION",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S4",
+   "heading": "SECTION 4 - WHEN COVERAGE ENDS",
+   "kind": "PERIOD",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S5",
+   "heading": "SECTION 5 - CONVERSION PRIVILEGE",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S6",
+   "heading": "SECTION 6 - PORTABILITY",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S7",
+   "heading": "SECTION 7 - ACCELERATED DEATH BENEFIT",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S8",
+   "heading": "SECTION 8 - EXCLUSIONS AND LIMITATIONS",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S9",
+   "heading": "SECTION 9 - BENEFICIARY DESIGNATION",
+   "kind": "ADMIN",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S10",
+   "heading": "SECTION 10 - FILING A CLAIM",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S11",
+   "heading": "SECTION 11 - WAIVER OF PREMIUM",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  }
+ ],
+ "glossary": []
+}

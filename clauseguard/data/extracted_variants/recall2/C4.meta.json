@@ -1,0 +1,35 @@
+{
+ "refine_log": [
+  {
+   "id": "C4-t016",
+   "action": "repaired",
+   "why": "condition pilot_role: ['PILOT', 'CREW'] -> ['PRIVATE_PILOT', 'CREW']"
+  }
+ ],
+ "verify_actions": 1,
+ "salvaged_rows": 0,
+ "recall_sentences": 2,
+ "added": 0,
+ "dropped": [
+  {
+   "row": {
+    "head": "POLICY",
+    "relation": "HAS_PERIOD",
+    "object": "LAPSE_NOTICE_PERIOD",
+    "section": "SECTION 7: POLICY LAPSE AND REINSTATEMENT",
+    "evidence_text": "7.2 Lapse notice will be sent at least 30 days before lapse.",
+    "confidence": 1.0,
+    "period_kind": "NOTICE",
+    "applies_if": [
+     {
+      "slot": "notice_type",
+      "op": "EQUALS",
+      "value": "LAPSE"
+     }
+    ]
+   },
+   "error": "object 'LAPSE_NOTICE_PERIOD' is not a PeriodKind",
+   "pass": "recall"
+  }
+ ]
+}

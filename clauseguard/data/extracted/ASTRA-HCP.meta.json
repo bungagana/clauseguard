@@ -1,0 +1,131 @@
+{
+ "model": "gemini-3.7-flash",
+ "models_used": [
+  "gemini-3.7-flash"
+ ],
+ "calls": 3,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "Ringkasan Informasi Produk dan/atau Layanan (RIPLAY) Umum",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": 1,
+   "page_end": 1
+  },
+  {
+   "id": "S2",
+   "heading": "Fitur Utama",
+   "kind": "PERIOD",
+   "has_rules": true,
+   "page_start": 1,
+   "page_end": 1
+  },
+  {
+   "id": "S3",
+   "heading": "Manfaat Produk dan Risiko Produk",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 1,
+   "page_end": 1
+  },
+  {
+   "id": "S4",
+   "heading": "Daftar Manfaat Asuransi Tambahan Hospital Cash Plan",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 2,
+   "page_end": 2
+  },
+  {
+   "id": "S5",
+   "heading": "Pengecualian",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": 2,
+   "page_end": 3
+  },
+  {
+   "id": "S6",
+   "heading": "Biaya-biaya",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": 3,
+   "page_end": 3
+  },
+  {
+   "id": "S7",
+   "heading": "Persyaratan dan Tata Cara",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": 3,
+   "page_end": 3
+  },
+  {
+   "id": "S8",
+   "heading": "Ilustrasi Produk",
+   "kind": "GENERAL",
+   "has_rules": false,
+   "page_start": 3,
+   "page_end": 4
+  },
+  {
+   "id": "S9",
+   "heading": "Informasi Tambahan",
+   "kind": "DEFINITIONS",
+   "has_rules": true,
+   "page_start": 4,
+   "page_end": 4
+  },
+  {
+   "id": "S10",
+   "heading": "Aplikasi Layanan Nasabah Astra Life dalam Genggaman",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": 5,
+   "page_end": 5
+  },
+  {
+   "id": "S11",
+   "heading": "Layanan Pengaduan",
+   "kind": "ADMIN",
+   "has_rules": true,
+   "page_start": 5,
+   "page_end": 5
+  },
+  {
+   "id": "S12",
+   "heading": "Penyelesaian Perselisihan",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": 5,
+   "page_end": 5
+  },
+  {
+   "id": "S13",
+   "heading": "Pusat Informasi dan Layanan Pengaduan",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": 5,
+   "page_end": 5
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Santunan Tunai Harian",
+   "canonical_event": "HOSPITALIZATION",
+   "definition": "Santunan yang dibayarkan oleh Kami sesuai dengan plan yang dimiliki apabila Tertanggung menjalani Rawat Inap di Rumah Sakit akibat Penyakit atau Kecelakaan atas anjuran Dokter yang Diperlukan Secara Medis."
+  },
+  {
+   "term": "Masa Tunggu 30 hari",
+   "canonical_event": null,
+   "definition": "Masa dimana manfaat Asuransi Tambahan tidak berlaku selama 30 hari pertama sejak Tanggal Berlakunya Asuransi Tambahan atau Pemulihan Polis, kecuali Rawat Inap akibat Kecelakaan."
+  },
+  {
+   "term": "Masa Tunggu 12 bulan",
+   "canonical_event": "SPECIFIED_DISEASE",
+   "definition": "Masa dimana manfaat Asuransi Tambahan terhadap penyakit-penyakit khusus tidak dapat dibayarkan dalam 12 bulan pertama sejak Tanggal Berlakunya Asuransi Tambahan atau Pemulihan Polis."
+  }
+ ]
+}

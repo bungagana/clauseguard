@@ -1,0 +1,15 @@
+id: O03
+title: 'Discharge date only: how long to file'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- I was discharged 7 Oct 2026 after a typhoid stay. How long do I have to file with my hospital cash plan?
+expected:
+  intent: CLAIM_GUIDANCE
+  verdict:
+    policy_id: HCP-SOMPO-01
+    verdict: COVERED
+  deadline: '2026-12-06'
+  must_contain:
+  - '2026-12-06'
+kind: off_script

@@ -1,0 +1,12 @@
+id: M02
+title: Group life after leaving the employer
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- If my employer lets me go, would the company life cover still pay my family when
+  I pass away a month later?
+expected:
+  must_contain:
+  - GL-NUSA-GRP
+  - employ
+kind: blind2

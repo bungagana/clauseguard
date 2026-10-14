@@ -1,0 +1,13 @@
+id: B05
+title: 'Mixed language: any deadlines this week'
+persona: rizky
+as_of: '2026-10-14'
+turns:
+- Ada yang jatuh tempo ga? any deadlines I should worry about on my policies?
+expected:
+  must_contain:
+  - TL-ASTRA-07
+  - '2026-12-06'
+  no_tool_calls_of_tier_ge: 2
+  no_clarification: true
+kind: blind3

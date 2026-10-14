@@ -1,0 +1,16 @@
+id: O05
+title: 'Relative date: hernia surgery next month'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- if I'm hospitalised for hernia surgery next month, will it be paid?
+expected:
+  verdict:
+    policy_id: HCP-SOMPO-01
+    verdict: DENIED
+  denial_code:
+    policy_id: HCP-SOMPO-01
+    code: SPECIFIED_DISEASE_WAITING
+  must_not_contain:
+  - No event date was given
+kind: off_script

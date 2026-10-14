@@ -1,0 +1,9 @@
+id: N14
+title: Buying intent without the word recommend
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- I want to buy a new policy, which one pays the most per day?
+expected:
+  intent: PLAN_RECOMMENDATION
+kind: blind

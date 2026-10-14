@@ -1,0 +1,11 @@
+id: N11
+title: Age limit that no clause states
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- ada batas umur ga buat polis hospital cash saya?
+expected:
+  must_contain:
+  - Not determinable
+  actions_pending_tool: schedule_callback
+kind: blind

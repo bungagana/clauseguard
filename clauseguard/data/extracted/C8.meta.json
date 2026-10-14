@@ -1,0 +1,131 @@
+{
+ "model": "gemini-3.8-flash",
+ "models_used": [
+  "gemini-3.8-flash"
+ ],
+ "calls": 2,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "JOINT INSUREDS",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S2",
+   "heading": "POLICY OWNER",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S3",
+   "heading": "COVERAGE DETAILS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S4",
+   "heading": "BENEFICIARY",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S5",
+   "heading": "ARTICLE I - NATURE OF COVERAGE",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S6",
+   "heading": "ARTICLE II - DEATH BENEFIT PROVISIONS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S7",
+   "heading": "ARTICLE III - FIRST DEATH BENEFITS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S8",
+   "heading": "ARTICLE IV - PREMIUM STRUCTURE",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S9",
+   "heading": "ARTICLE V - CASH VALUE AND LOANS",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S10",
+   "heading": "ARTICLE VI - SPLIT OPTION",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S11",
+   "heading": "ARTICLE VII - EXCLUSIONS",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S12",
+   "heading": "ARTICLE VIII - ESTATE TAX PLANNING PROVISIONS",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S13",
+   "heading": "ARTICLE IX - SIMULTANEOUS DEATH",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S14",
+   "heading": "ARTICLE X - OWNERSHIP AND ASSIGNMENT",
+   "kind": "ADMIN",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S15",
+   "heading": "ARTICLE XI - FREE LOOK PERIOD",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  }
+ ],
+ "glossary": []
+}

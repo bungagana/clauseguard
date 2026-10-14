@@ -1,0 +1,3028 @@
+{
+ "rules": [
+  {
+   "id": "P01",
+   "persona": "rizky",
+   "desc": "dengue stay 5-8 Oct",
+   "expect": {
+    "HCP-SOMPO-01": [
+     "COVERED",
+     "2000000"
+    ]
+   },
+   "runs": [
+    {
+     "text": "I was hospitalised with dengue from 5 October 2026 to 8 October 2026. Am I entitled to a benefit under my hospital cash plan?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "2000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": "2026-12-07"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 2,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "kena dbd, opname 5-8 okt, bisa cair dari hospital cash ga?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "2000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": "2026-12-07"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 2,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "I was admitted with dengue 6 days ago and discharged 3 days ago. Will my hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "2000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": "2026-12-07"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 2,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    }
+   ]
+  },
+  {
+   "id": "P02",
+   "persona": "rizky",
+   "desc": "6-day typhoid stay from 1 Oct",
+   "expect": {
+    "HCP-SOMPO-01": [
+     "COVERED",
+     "3000000"
+    ]
+   },
+   "runs": [
+    {
+     "text": "I was admitted to hospital with typhoid on 1 October 2026 and stayed 6 days. What will the hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "3000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 6
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 3,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "opname tifus 6 hari mulai 1 okt 2026, berapa yg dibayar hospital cash?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "3000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 6
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 3,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "admitted with typhoid 10 days ago, 6 days in hospital. how much does my hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "3000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 6
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 3,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    }
+   ]
+  },
+  {
+   "id": "P03",
+   "persona": "rizky",
+   "desc": "future hernia surgery inside the 12-month specified-disease wait",
+   "expect": {
+    "HCP-SOMPO-01": [
+     "DENIED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "I am scheduled for hernia surgery on 20 November 2026. Will my hospital cash plan cover it?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "is_emergency": false
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the diagnosis is on the specified-disease list and falls inside its longer waiting peri"
+    },
+    {
+     "text": "mau operasi hernia tgl 20 nov 2026, hospital cash saya nanggung ga?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the diagnosis is on the specified-disease list and falls inside its longer waiting peri"
+    },
+    {
+     "text": "I'm having hernia surgery in 40 days. Is it covered by my hospital cash plan?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the diagnosis is on the specified-disease list and falls inside its longer waiting peri"
+    }
+   ]
+  },
+  {
+   "id": "P04",
+   "persona": "rizky",
+   "desc": "illness admission inside the 30-day waiting period",
+   "expect": {
+    "HCP-SOMPO-01": [
+     "DENIED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "I was hospitalised with typhoid on 25 August 2026 for 3 days. Does my hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 3
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAITING_PERIOD].\n- Clause [HCP-SOMPO-01 Term"
+    },
+    {
+     "text": "opname tifus 25 agu 2026 3 hari, hospital cash saya bisa cair ga?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 3
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAITING_PERIOD].\n- Clause [HCP-SOMPO-01 Term"
+    },
+    {
+     "text": "I got admitted with typhoid 47 days ago, stayed 3 days. Is my hospital cash plan going to pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 3
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAITING_PERIOD].\n- Clause [HCP-SOMPO-01 Term"
+    }
+   ]
+  },
+  {
+   "id": "P05",
+   "persona": "rizky",
+   "desc": "accident admission (waiting period exempt)",
+   "expect": null,
+   "runs": [
+    {
+     "text": "I fell from my motorbike and was hospitalised on 3 October 2026 for 2 days. Is that covered by my hospital cash plan?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "1000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "COVERED",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "vehicles_involved",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "BPJS-KES-RIZKY": [
+        "PAYER",
+        "9200000"
+       ],
+       "HCP-SOMPO-01": [
+        "PARALLEL",
+        "1000000"
+       ]
+      },
+      "deadline": "2026-12-06"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "days_hospitalized": 2,
+      "facility_bpjs_partner": true,
+      "billed_amount": 9200000
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 1,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "jatuh dari motor, dirawat 3 okt 2026 2 hari. hospital cash saya cover ga?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "1000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "COVERED",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "vehicles_involved",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "BPJS-KES-RIZKY": [
+        "PAYER",
+        "9200000"
+       ],
+       "HCP-SOMPO-01": [
+        "PARALLEL",
+        "1000000"
+       ]
+      },
+      "deadline": "2026-12-06"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "days_hospitalized": 2,
+      "facility_bpjs_partner": true,
+      "billed_amount": 9200000
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 1,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "I had an accident, fell off my bike, and was hospitalised 8 days ago for 2 days. Does my hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "1000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "COVERED",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "vehicles_involved",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "BPJS-KES-RIZKY": [
+        "PAYER",
+        "9200000"
+       ],
+       "HCP-SOMPO-01": [
+        "PARALLEL",
+        "1000000"
+       ]
+      },
+      "deadline": "2026-12-06"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "days_hospitalized": 2,
+      "facility_bpjs_partner": true,
+      "billed_amount": 9200000
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 1,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    }
+   ]
+  },
+  {
+   "id": "P06",
+   "persona": "rizky",
+   "desc": "death of illness, life policy in lapse",
+   "expect": null,
+   "runs": [
+    {
+     "text": "I passed away from illness on 9 October 2026. Would my life policy pay out?",
+     "sig": {
+      "verdicts": {
+       "TL-ASTRA-07": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Flexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): Not covered (indicative). Reason: the policy was not in force (premium unpaid beyond the grace period) [LAPSED].\n- Clause ["
+    },
+    {
+     "text": "kalo saya meninggal karena sakit tgl 9 okt 2026, polis jiwa saya cair ga?",
+     "sig": {
+      "verdicts": {
+       "TL-ASTRA-07": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Flexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): Not covered (indicative). Reason: the policy was not in force (premium unpaid beyond the grace period) [LAPSED].\n- Clause ["
+    },
+    {
+     "text": "If I die of illness, 2 days ago say, does my life policy still pay?",
+     "sig": {
+      "verdicts": {
+       "TL-ASTRA-07": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Flexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): Not covered (indicative). Reason: the policy was not in force (premium unpaid beyond the grace period) [LAPSED].\n- Clause ["
+    }
+   ]
+  },
+  {
+   "id": "P07",
+   "persona": "rizky",
+   "desc": "critical illness diagnosis",
+   "expect": null,
+   "runs": [
+    {
+     "text": "I was diagnosed with cancer on 1 August 2026. Does my critical illness policy pay?",
+     "sig": {
+      "verdicts": {
+       "CI-CHUBB-05": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "survival_days",
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "CRITICAL_ILLNESS",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Essential Critical Care (critical illness, modelled) (CI-CHUBB-05): depends on one fact - if survival days = 0-29: not covered; if survival days = 30-31: covered.\nOne question before I can answer: How"
+    },
+    {
+     "text": "didiagnosis kanker tgl 1 agu 2026, polis critical illness saya cair ga?",
+     "sig": {
+      "verdicts": {
+       "CI-CHUBB-05": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "survival_days",
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "CRITICAL_ILLNESS",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Essential Critical Care (critical illness, modelled) (CI-CHUBB-05): depends on one fact - if survival days = 0-29: not covered; if survival days = 30-31: covered.\nOne question before I can answer: How"
+    },
+    {
+     "text": "I was diagnosed with cancer 71 days ago. Will my critical illness cover pay?",
+     "sig": {
+      "verdicts": {
+       "CI-CHUBB-05": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "survival_days",
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "CRITICAL_ILLNESS",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Essential Critical Care (critical illness, modelled) (CI-CHUBB-05): depends on one fact - if survival days = 0-29: not covered; if survival days = 30-31: covered.\nOne question before I can answer: How"
+    }
+   ]
+  },
+  {
+   "id": "P08",
+   "persona": "santoso",
+   "desc": "Aditya asthma admission, non-partner hospital, bill 18M",
+   "expect": null,
+   "runs": [
+    {
+     "text": "Aditya was admitted for asthma on 6 October 2026 for 4 days at Siloam, a non-BPJS hospital. The bill is IDR 18,000,000. Who pays what?",
+     "sig": {
+      "verdicts": {
+       "GH-NUSA-GRP": [
+        "COVERED",
+        "6000000"
+       ],
+       "HCP-RIDER-B": [
+        "COVERED",
+        "1200000"
+       ],
+       "HI-INDIV-S": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-SANTOSO": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "is_emergency",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "BPJS-KES-SANTOSO": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "GH-NUSA-GRP": [
+        "PAYER",
+        "13700000"
+       ],
+       "HI-INDIV-S": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "HCP-RIDER-B": [
+        "PARALLEL",
+        "1200000"
+       ]
+      },
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "facility_bpjs_partner": false,
+      "days_hospitalized": 4,
+      "billed_amount": 18000000
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 6,000,000.\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room and bo"
+    },
+    {
+     "text": "aditya asma opname 4 hari 6 okt 2026 di siloam (non bpjs), tagihan 18 juta. siapa yg bayar?",
+     "sig": {
+      "verdicts": {
+       "GH-NUSA-GRP": [
+        "COVERED",
+        "6000000"
+       ],
+       "HCP-RIDER-B": [
+        "COVERED",
+        "1200000"
+       ],
+       "HI-INDIV-S": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-SANTOSO": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "is_emergency",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "BPJS-KES-SANTOSO": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "GH-NUSA-GRP": [
+        "PAYER",
+        "13700000"
+       ],
+       "HI-INDIV-S": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "HCP-RIDER-B": [
+        "PARALLEL",
+        "1200000"
+       ]
+      },
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "facility_bpjs_partner": false,
+      "days_hospitalized": 4,
+      "billed_amount": 18000000
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 6,000,000.\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room and bo"
+    },
+    {
+     "text": "My son Aditya was admitted for asthma 5 days ago, 4 days in a private non-BPJS hospital, bill IDR 18M. Which insurer pays first?",
+     "sig": {
+      "verdicts": {
+       "GH-NUSA-GRP": [
+        "COVERED",
+        "6000000"
+       ],
+       "HCP-RIDER-B": [
+        "COVERED",
+        "1200000"
+       ],
+       "HI-INDIV-S": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-SANTOSO": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "is_emergency",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "BPJS-KES-SANTOSO": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "GH-NUSA-GRP": [
+        "PAYER",
+        "13700000"
+       ],
+       "HI-INDIV-S": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "HCP-RIDER-B": [
+        "PARALLEL",
+        "1200000"
+       ]
+      },
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "facility_bpjs_partner": false,
+      "days_hospitalized": 4,
+      "billed_amount": 18000000
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 6,000,000.\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room and bo"
+    }
+   ]
+  },
+  {
+   "id": "P09",
+   "persona": "santoso",
+   "desc": "Sari hernia surgery after the 12-month wait",
+   "expect": {
+    "HI-INDIV-S": [
+     "COVERED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "Sari is scheduled for hernia surgery on 20 November 2026. Will her individual health policy pay?",
+     "sig": {
+      "verdicts": {
+       "HI-INDIV-S": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "is_emergency": false
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sehat Mandiri Individual Health (reimbursement) (HI-INDIV-S): Covered (indicative).\n- Clause [HI-INDIV-S Schedule of Benefits, 2, c_surgery]: \"Surgical charges: actual charges up to IDR 20,000,000 per"
+    },
+    {
+     "text": "sari mau operasi hernia tgl 20 nov 2026, asuransi individunya (HI-INDIV-S) nanggung ga?",
+     "sig": {
+      "verdicts": {
+       "HI-INDIV-S": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sehat Mandiri Individual Health (reimbursement) (HI-INDIV-S): Covered (indicative).\n- Clause [HI-INDIV-S Schedule of Benefits, 2, c_surgery]: \"Surgical charges: actual charges up to IDR 20,000,000 per"
+    },
+    {
+     "text": "Sari has hernia surgery in 40 days. Is her individual health plan going to pay?",
+     "sig": {
+      "verdicts": {
+       "HI-INDIV-S": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sehat Mandiri Individual Health (reimbursement) (HI-INDIV-S): Covered (indicative).\n- Clause [HI-INDIV-S Schedule of Benefits, 2, c_surgery]: \"Surgical charges: actual charges up to IDR 20,000,000 per"
+    }
+   ]
+  },
+  {
+   "id": "P10",
+   "persona": "santoso",
+   "desc": "Budi dies of illness: group life",
+   "expect": {
+    "GL-NUSA-GRP": [
+     "COVERED",
+     "288000000"
+    ]
+   },
+   "runs": [
+    {
+     "text": "Budi passed away from illness on 5 October 2026. Does the group life policy pay?",
+     "sig": {
+      "verdicts": {
+       "GL-NUSA-GRP": [
+        "COVERED",
+        "288000000"
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Nusantara Group Term Life (24 x salary) (GL-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 288,000,000.\n- Clause [GL-NUSA-GRP Schedule, 1, c_death]: \"Death benefit: 24 times the insured empl"
+    },
+    {
+     "text": "budi meninggal karena sakit tgl 5 okt 2026, asuransi jiwa grup dari kantor cair ga?",
+     "sig": {
+      "verdicts": {
+       "GL-NUSA-GRP": [
+        "COVERED",
+        "288000000"
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Nusantara Group Term Life (24 x salary) (GL-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 288,000,000.\n- Clause [GL-NUSA-GRP Schedule, 1, c_death]: \"Death benefit: 24 times the insured empl"
+    },
+    {
+     "text": "Budi died of illness 6 days ago. Will the group life through work pay out?",
+     "sig": {
+      "verdicts": {
+       "GL-NUSA-GRP": [
+        "COVERED",
+        "288000000"
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Nusantara Group Term Life (24 x salary) (GL-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 288,000,000.\n- Clause [GL-NUSA-GRP Schedule, 1, c_death]: \"Death benefit: 24 times the insured empl"
+    }
+   ]
+  },
+  {
+   "id": "P11",
+   "persona": "santoso",
+   "desc": "Nadia accident admission",
+   "expect": null,
+   "runs": [
+    {
+     "text": "Nadia fell and was hospitalised on 3 October 2026 for 2 days. Which policies cover this?",
+     "sig": {
+      "verdicts": {
+       "GH-NUSA-GRP": [
+        "COVERED",
+        "3000000"
+       ],
+       "HCP-RIDER-B": [
+        "COVERED",
+        "600000"
+       ],
+       "HI-INDIV-S": [
+        "COVERED",
+        "1600000"
+       ],
+       "BPJS-KES-SANTOSO": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "BPJS-KES-SANTOSO": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "GH-NUSA-GRP": [
+        "PAYER",
+        "None"
+       ],
+       "HI-INDIV-S": [
+        "PAYER",
+        "None"
+       ],
+       "HCP-RIDER-B": [
+        "PARALLEL",
+        "600000"
+       ]
+      },
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT",
+      "vehicles_involved": 0,
+      "days_hospitalized": 2
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 3,000,000.\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room and bo"
+    },
+    {
+     "text": "nadia jatuh, dirawat 3 okt 2026 2 hari. polis mana yg nanggung?",
+     "sig": {
+      "verdicts": {
+       "GH-NUSA-GRP": [
+        "COVERED",
+        "3000000"
+       ],
+       "HCP-RIDER-B": [
+        "COVERED",
+        "600000"
+       ],
+       "HI-INDIV-S": [
+        "COVERED",
+        "1600000"
+       ],
+       "BPJS-KES-SANTOSO": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "BPJS-KES-SANTOSO": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "GH-NUSA-GRP": [
+        "PAYER",
+        "None"
+       ],
+       "HI-INDIV-S": [
+        "PAYER",
+        "None"
+       ],
+       "HCP-RIDER-B": [
+        "PARALLEL",
+        "600000"
+       ]
+      },
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT",
+      "vehicles_involved": 0,
+      "days_hospitalized": 2
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 3,000,000.\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room and bo"
+    },
+    {
+     "text": "Nadia had an accident, a fall, and was in hospital 8 days ago for 2 days. What is covered?",
+     "sig": {
+      "verdicts": {
+       "GH-NUSA-GRP": [
+        "COVERED",
+        "3000000"
+       ],
+       "HCP-RIDER-B": [
+        "COVERED",
+        "600000"
+       ],
+       "HI-INDIV-S": [
+        "COVERED",
+        "1600000"
+       ],
+       "BPJS-KES-SANTOSO": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "BPJS-KES-SANTOSO": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "GH-NUSA-GRP": [
+        "PAYER",
+        "None"
+       ],
+       "HI-INDIV-S": [
+        "PAYER",
+        "None"
+       ],
+       "HCP-RIDER-B": [
+        "PARALLEL",
+        "600000"
+       ]
+      },
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT",
+      "vehicles_involved": 0,
+      "days_hospitalized": 2
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 3,000,000.\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room and bo"
+    }
+   ]
+  },
+  {
+   "id": "P12",
+   "persona": "santoso",
+   "desc": "elective dental implant",
+   "expect": {
+    "GH-NUSA-GRP": [
+     "DENIED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "Does my group health plan cover an elective dental implant?",
+     "sig": {
+      "verdicts": {
+       "GH-NUSA-GRP": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DENTAL",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "is_emergency": false
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "No event date was given, so I evaluated the policies as of 2026-10-11.\nNusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Not covered (indicative). Reason: exclusion dental [EX"
+    },
+    {
+     "text": "implan gigi (elective) ditanggung asuransi kantor ga?",
+     "sig": {
+      "verdicts": {
+       "GH-NUSA-GRP": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DENTAL",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "is_emergency": false
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "No event date was given, so I evaluated the policies as of 2026-10-11.\nNusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Not covered (indicative). Reason: exclusion dental [EX"
+    },
+    {
+     "text": "pls check, is a planned dental implant covered by my company health insurance?",
+     "sig": {
+      "verdicts": {
+       "GH-NUSA-GRP": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DENTAL",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "is_emergency": false
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "No event date was given, so I evaluated the policies as of 2026-10-11.\nNusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Not covered (indicative). Reason: exclusion dental [EX"
+    }
+   ]
+  },
+  {
+   "id": "P13",
+   "persona": "santoso",
+   "desc": "resign then die: group life",
+   "expect": {
+    "GL-NUSA-GRP": [
+     "DENIED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "If I resign on 11 November 2026 and die afterwards, will the group life policy still pay my family?",
+     "sig": {
+      "verdicts": {
+       "GL-NUSA-GRP": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "employment_active": false
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Nusantara Group Term Life (24 x salary) (GL-NUSA-GRP): Not covered (indicative). Reason: group terminated [GROUP_TERMINATED].\n- Clause [GL-NUSA-GRP General Conditions, 6, t_employment]: \"Cover termina"
+    },
+    {
+     "text": "kalo saya resign tgl 11 nov 2026 terus meninggal, asuransi jiwa grup masih bayar ga?",
+     "sig": {
+      "verdicts": {
+       "GL-NUSA-GRP": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "employment_active": false
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Nusantara Group Term Life (24 x salary) (GL-NUSA-GRP): Not covered (indicative). Reason: group terminated [GROUP_TERMINATED].\n- Clause [GL-NUSA-GRP General Conditions, 6, t_employment]: \"Cover termina"
+    },
+    {
+     "text": "If I quit my job in 31 days and then die, does the group life still pay?",
+     "sig": {
+      "verdicts": {
+       "GL-NUSA-GRP": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "employment_active": false
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Nusantara Group Term Life (24 x salary) (GL-NUSA-GRP): Not covered (indicative). Reason: group terminated [GROUP_TERMINATED].\n- Clause [GL-NUSA-GRP General Conditions, 6, t_employment]: \"Cover termina"
+    }
+   ]
+  },
+  {
+   "id": "P14",
+   "persona": "dewi",
+   "desc": "car collision on an order, licence expired",
+   "expect": {
+    "PA-CHUBB-03": [
+     "DENIED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "I collided with a car while on an active delivery order on 5 October 2026. My driving licence had expired. I was in hospital 6 days, the bill is IDR 22,000,000. Who pays?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "DENIED",
+        null
+       ],
+       "PLATFORM-ACC": [
+        "COVERED",
+        "5000000"
+       ],
+       "BPJS-KES-DEWI": [
+        "DENIED",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "COVERED",
+        "20000000"
+       ]
+      },
+      "clarify": null,
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "PAYER",
+        "20000000"
+       ],
+       "BPJS-KES-DEWI": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PA-CHUBB-03": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PLATFORM-ACC": [
+        "PAYER",
+        "2000000"
+       ]
+      },
+      "deadline": "2026-10-12"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 2,
+      "license_valid": false,
+      "work_related": true,
+      "days_hospitalized": 6,
+      "billed_amount": 22000000,
+      "facility_bpjs_partner": true
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Essential Plus Personal Accident (PA-CHUBB-03): Not covered (indicative). Reason: riding without a valid driving licence is excluded [NO_VALID_LICENSE].\n- Clause [PA-CHUBB-03 General Exclusions (d), k"
+    },
+    {
+     "text": "nabrak mobil pas lagi order 5 okt 2026, SIM saya mati. opname 6 hari, tagihan 22 juta. siapa yg bayar?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "DENIED",
+        null
+       ],
+       "PLATFORM-ACC": [
+        "COVERED",
+        "5000000"
+       ],
+       "BPJS-KES-DEWI": [
+        "DENIED",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "COVERED",
+        "20000000"
+       ]
+      },
+      "clarify": null,
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "PAYER",
+        "20000000"
+       ],
+       "BPJS-KES-DEWI": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PA-CHUBB-03": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PLATFORM-ACC": [
+        "PAYER",
+        "2000000"
+       ]
+      },
+      "deadline": "2026-10-12"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 2,
+      "license_valid": false,
+      "work_related": true,
+      "days_hospitalized": 6,
+      "billed_amount": 22000000,
+      "facility_bpjs_partner": true
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Essential Plus Personal Accident (PA-CHUBB-03): Not covered (indicative). Reason: riding without a valid driving licence is excluded [NO_VALID_LICENSE].\n- Clause [PA-CHUBB-03 General Exclusions (d), k"
+    },
+    {
+     "text": "6 days ago I crashed into a car during a delivery order, my licence was expired, 6 days in hospital, bill IDR 22M. Who pays first?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "DENIED",
+        null
+       ],
+       "PLATFORM-ACC": [
+        "COVERED",
+        "5000000"
+       ],
+       "BPJS-KES-DEWI": [
+        "DENIED",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "COVERED",
+        "20000000"
+       ]
+      },
+      "clarify": null,
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "PAYER",
+        "20000000"
+       ],
+       "BPJS-KES-DEWI": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PA-CHUBB-03": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PLATFORM-ACC": [
+        "PAYER",
+        "2000000"
+       ]
+      },
+      "deadline": "2026-10-12"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 2,
+      "license_valid": false,
+      "work_related": true,
+      "days_hospitalized": 6,
+      "billed_amount": 22000000,
+      "facility_bpjs_partner": true
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Essential Plus Personal Accident (PA-CHUBB-03): Not covered (indicative). Reason: riding without a valid driving licence is excluded [NO_VALID_LICENSE].\n- Clause [PA-CHUBB-03 General Exclusions (d), k"
+    }
+   ]
+  },
+  {
+   "id": "P15",
+   "persona": "dewi",
+   "desc": "single-vehicle slip, licence valid",
+   "expect": {
+    "JASA-RAHARJA": [
+     "DENIED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "I slipped on my motorbike alone on 9 October 2026, no other vehicle was involved, and my licence is valid. Does Jasa Raharja pay?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "CLARIFY",
+        null
+       ],
+       "PLATFORM-ACC": [
+        "CLARIFY",
+        null
+       ],
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": "occupation_class",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "BPJS-KES-DEWI": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PA-CHUBB-03": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "PLATFORM-ACC": [
+        "UNCERTAIN",
+        "None"
+       ]
+      },
+      "deadline": null
+     },
+     "facts": {
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 1,
+      "license_valid": true,
+      "event": "HOSPITALIZATION"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Road traffic accident compensation (UU 33/34 1964) (JASA-RAHARJA): Not covered (indicative). Reason: exclusion accident medical [EXCLUSION_ACCIDENT_MEDICAL].\n- Clause [JASA-RAHARJA Pengecualian (model"
+    },
+    {
+     "text": "jatuh sendiri naik motor 9 okt 2026, ga ada kendaraan lain, SIM saya masih berlaku. Jasa Raharja bayar ga?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "CLARIFY",
+        null
+       ],
+       "PLATFORM-ACC": [
+        "CLARIFY",
+        null
+       ],
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": "occupation_class",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "BPJS-KES-DEWI": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PA-CHUBB-03": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "PLATFORM-ACC": [
+        "UNCERTAIN",
+        "None"
+       ]
+      },
+      "deadline": null
+     },
+     "facts": {
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 1,
+      "license_valid": true,
+      "event": "HOSPITALIZATION"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Road traffic accident compensation (UU 33/34 1964) (JASA-RAHARJA): Not covered (indicative). Reason: exclusion accident medical [EXCLUSION_ACCIDENT_MEDICAL].\n- Clause [JASA-RAHARJA Pengecualian (model"
+    },
+    {
+     "text": "I skidded off my bike by myself 2 days ago, nobody else involved, valid licence. Is Jasa Raharja going to pay?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "CLARIFY",
+        null
+       ],
+       "PLATFORM-ACC": [
+        "CLARIFY",
+        null
+       ],
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": "occupation_class",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "BPJS-KES-DEWI": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PA-CHUBB-03": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "PLATFORM-ACC": [
+        "UNCERTAIN",
+        "None"
+       ]
+      },
+      "deadline": null
+     },
+     "facts": {
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 1,
+      "license_valid": true,
+      "event": "HOSPITALIZATION"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Road traffic accident compensation (UU 33/34 1964) (JASA-RAHARJA): Not covered (indicative). Reason: exclusion accident medical [EXCLUSION_ACCIDENT_MEDICAL].\n- Clause [JASA-RAHARJA Pengecualian (model"
+    }
+   ]
+  },
+  {
+   "id": "P16",
+   "persona": "dewi",
+   "desc": "crash with a car on an order, platform deadline",
+   "expect": {
+    "PLATFORM-ACC": [
+     "COVERED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "I crashed with a car during an order on 9 October 2026. What is the deadline for the platform claim?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "CLARIFY",
+        null
+       ],
+       "PLATFORM-ACC": [
+        "COVERED",
+        null
+       ],
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": "license_valid",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "PAYER",
+        "None"
+       ],
+       "BPJS-KES-DEWI": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PA-CHUBB-03": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "PLATFORM-ACC": [
+        "PAYER",
+        "None"
+       ]
+      },
+      "deadline": "2026-10-16"
+     },
+     "facts": {
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 2,
+      "work_related": true,
+      "event": "HOSPITALIZATION"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Driver-partner on-trip accident protection (PLATFORM-ACC): Covered (indicative).\n- Clause [PLATFORM-ACC Benefits, 2, c_medical_on_trip]: \"Medical expenses from an accident while on an active order: ac"
+    },
+    {
+     "text": "nabrak mobil pas lagi order tgl 9 okt 2026. batas waktu klaim platform kapan?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "CLARIFY",
+        null
+       ],
+       "PLATFORM-ACC": [
+        "COVERED",
+        null
+       ],
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": "license_valid",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "PAYER",
+        "None"
+       ],
+       "BPJS-KES-DEWI": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PA-CHUBB-03": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "PLATFORM-ACC": [
+        "PAYER",
+        "None"
+       ]
+      },
+      "deadline": "2026-10-16"
+     },
+     "facts": {
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 2,
+      "work_related": true,
+      "event": "HOSPITALIZATION"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Driver-partner on-trip accident protection (PLATFORM-ACC): Covered (indicative).\n- Clause [PLATFORM-ACC Benefits, 2, c_medical_on_trip]: \"Medical expenses from an accident while on an active order: ac"
+    },
+    {
+     "text": "I had a collision with a car while on an order 2 days ago. By when must I file the platform claim?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "CLARIFY",
+        null
+       ],
+       "PLATFORM-ACC": [
+        "COVERED",
+        null
+       ],
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": "license_valid",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "PAYER",
+        "None"
+       ],
+       "BPJS-KES-DEWI": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "PA-CHUBB-03": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "PLATFORM-ACC": [
+        "PAYER",
+        "None"
+       ]
+      },
+      "deadline": "2026-10-16"
+     },
+     "facts": {
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 2,
+      "work_related": true,
+      "event": "HOSPITALIZATION"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Driver-partner on-trip accident protection (PLATFORM-ACC): Covered (indicative).\n- Clause [PLATFORM-ACC Benefits, 2, c_medical_on_trip]: \"Medical expenses from an accident while on an active order: ac"
+    }
+   ]
+  },
+  {
+   "id": "P17",
+   "persona": "dewi",
+   "desc": "BPJS in arrears, ordinary admission",
+   "expect": null,
+   "runs": [
+    {
+     "text": "I was hospitalised with typhoid on 9 October 2026. Can I use BPJS Kesehatan for the hospital?",
+     "sig": {
+      "verdicts": {
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Jaminan Kesehatan Nasional (JKN) (BPJS-KES-DEWI): depends on one fact - if facility bpjs partner = yes: not covered.\nOne question before I can answer: Is the hospital a BPJS Kesehatan partner facility"
+    },
+    {
+     "text": "opname tifus 9 okt 2026, BPJS saya masih bisa dipake ga?",
+     "sig": {
+      "verdicts": {
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Jaminan Kesehatan Nasional (JKN) (BPJS-KES-DEWI): depends on one fact - if facility bpjs partner = yes: not covered.\nOne question before I can answer: Is the hospital a BPJS Kesehatan partner facility"
+    },
+    {
+     "text": "I was admitted with typhoid 2 days ago. Is my BPJS usable for the hospital?",
+     "sig": {
+      "verdicts": {
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Jaminan Kesehatan Nasional (JKN) (BPJS-KES-DEWI): depends on one fact - if facility bpjs partner = yes: not covered.\nOne question before I can answer: Is the hospital a BPJS Kesehatan partner facility"
+    }
+   ]
+  },
+  {
+   "id": "P18",
+   "persona": "dewi",
+   "desc": "off-duty crash with a car",
+   "expect": null,
+   "runs": [
+    {
+     "text": "I was hit by a car on 9 October 2026 while off duty, on a personal trip. Does the platform cover apply?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "CLARIFY",
+        null
+       ],
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": "license_valid",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": "2027-04-07"
+     },
+     "facts": {
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 2,
+      "work_related": false,
+      "event": "HOSPITALIZATION"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Road traffic accident compensation (UU 33/34 1964) (JASA-RAHARJA): Covered (indicative).\n- Clause [JASA-RAHARJA Santunan (modelled on PMK 15/16 2017), c_medical]: \"Victims of a traffic accident involv"
+    },
+    {
+     "text": "ditabrak mobil tgl 9 okt 2026 pas lagi nggak narik, perjalanan pribadi. asuransi platform berlaku ga?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "CLARIFY",
+        null
+       ],
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": "license_valid",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": "2027-04-07"
+     },
+     "facts": {
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 2,
+      "work_related": false,
+      "event": "HOSPITALIZATION"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Road traffic accident compensation (UU 33/34 1964) (JASA-RAHARJA): Covered (indicative).\n- Clause [JASA-RAHARJA Santunan (modelled on PMK 15/16 2017), c_medical]: \"Victims of a traffic accident involv"
+    },
+    {
+     "text": "2 days ago I was hit by a car on a personal trip, not working. Is the platform accident cover valid?",
+     "sig": {
+      "verdicts": {
+       "PA-CHUBB-03": [
+        "CLARIFY",
+        null
+       ],
+       "BPJS-KES-DEWI": [
+        "CLARIFY",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": "license_valid",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": "2027-04-07"
+     },
+     "facts": {
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "vehicles_involved": 2,
+      "work_related": false,
+      "event": "HOSPITALIZATION"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Road traffic accident compensation (UU 33/34 1964) (JASA-RAHARJA): Covered (indicative).\n- Clause [JASA-RAHARJA Santunan (modelled on PMK 15/16 2017), c_medical]: \"Victims of a traffic accident involv"
+    }
+   ]
+  },
+  {
+   "id": "P19",
+   "persona": "rizky",
+   "desc": "dengue admission 10 days after the policy start",
+   "expect": {
+    "HCP-SOMPO-01": [
+     "DENIED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "I was hospitalised with dengue on 30 August 2026 for 3 days. Will my hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 3
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAITING_PERIOD].\n- Clause [HCP-SOMPO-01 Term"
+    },
+    {
+     "text": "opname dbd 30 agu 2026 3 hari, hospital cash saya cair ga?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 3
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAITING_PERIOD].\n- Clause [HCP-SOMPO-01 Term"
+    },
+    {
+     "text": "I got admitted with dengue 42 days ago for 3 days. Does my hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 3
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAITING_PERIOD].\n- Clause [HCP-SOMPO-01 Term"
+    }
+   ]
+  },
+  {
+   "id": "P20",
+   "persona": "rizky",
+   "desc": "life policy status",
+   "expect": null,
+   "runs": [
+    {
+     "text": "Is my life insurance policy still in force? I may have missed a premium payment.",
+     "sig": {
+      "verdicts": {},
+      "clarify": null,
+      "intent": "GAP_ANALYSIS",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {},
+     "intent": "GAP_ANALYSIS",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): active, in force.\nFlexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): NOT in force (grace ended "
+    },
+    {
+     "text": "polis asuransi jiwa saya masih aktif ga? kayaknya saya nunggak premi.",
+     "sig": {
+      "verdicts": {},
+      "clarify": null,
+      "intent": "GAP_ANALYSIS",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {},
+     "intent": "GAP_ANALYSIS",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): active, in force.\nFlexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): NOT in force (grace ended "
+    },
+    {
+     "text": "my life policy - still active? think i skipped a payment a while back",
+     "sig": {
+      "verdicts": {},
+      "clarify": null,
+      "intent": "GAP_ANALYSIS",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {},
+     "intent": "GAP_ANALYSIS",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): active, in force.\nFlexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): NOT in force (grace ended "
+    }
+   ]
+  }
+ ],
+ "live": [
+  {
+   "id": "P01",
+   "persona": "rizky",
+   "desc": "dengue stay 5-8 Oct",
+   "expect": {
+    "HCP-SOMPO-01": [
+     "COVERED",
+     "2000000"
+    ]
+   },
+   "runs": [
+    {
+     "text": "I was hospitalised with dengue from 5 October 2026 to 8 October 2026. Am I entitled to a benefit under my hospital cash plan?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "2000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": "2026-12-07"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 2,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "kena dbd, opname 5-8 okt, bisa cair dari hospital cash ga?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "2000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": "2026-12-07"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 2,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "I was admitted with dengue 6 days ago and discharged 3 days ago. Will my hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "2000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": "2026-12-07"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 2,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    }
+   ],
+   "binder_calls": 3
+  },
+  {
+   "id": "P02",
+   "persona": "rizky",
+   "desc": "6-day typhoid stay from 1 Oct",
+   "expect": {
+    "HCP-SOMPO-01": [
+     "COVERED",
+     "3000000"
+    ]
+   },
+   "runs": [
+    {
+     "text": "I was admitted to hospital with typhoid on 1 October 2026 and stayed 6 days. What will the hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "3000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 6
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 3,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "opname tifus 6 hari mulai 1 okt 2026, berapa yg dibayar hospital cash?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "3000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 6
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 3,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "admitted with typhoid 10 days ago, 6 days in hospital. how much does my hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "3000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 6
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 3,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    }
+   ],
+   "binder_calls": 3
+  },
+  {
+   "id": "P03",
+   "persona": "rizky",
+   "desc": "future hernia surgery inside the 12-month specified-disease wait",
+   "expect": {
+    "HCP-SOMPO-01": [
+     "DENIED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "I am scheduled for hernia surgery on 20 November 2026. Will my hospital cash plan cover it?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "is_emergency": false
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the diagnosis is on the specified-disease list and falls inside its longer waiting peri"
+    },
+    {
+     "text": "mau operasi hernia tgl 20 nov 2026, hospital cash saya nanggung ga?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the diagnosis is on the specified-disease list and falls inside its longer waiting peri"
+    },
+    {
+     "text": "I'm having hernia surgery in 40 days. Is it covered by my hospital cash plan?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the diagnosis is on the specified-disease list and falls inside its longer waiting peri"
+    }
+   ],
+   "binder_calls": 1
+  },
+  {
+   "id": "P04",
+   "persona": "rizky",
+   "desc": "illness admission inside the 30-day waiting period",
+   "expect": {
+    "HCP-SOMPO-01": [
+     "DENIED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "I was hospitalised with typhoid on 25 August 2026 for 3 days. Does my hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 3
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAITING_PERIOD].\n- Clause [HCP-SOMPO-01 Term"
+    },
+    {
+     "text": "opname tifus 25 agu 2026 3 hari, hospital cash saya bisa cair ga?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 3
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAITING_PERIOD].\n- Clause [HCP-SOMPO-01 Term"
+    },
+    {
+     "text": "I got admitted with typhoid 47 days ago, stayed 3 days. Is my hospital cash plan going to pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "DENIED",
+        null
+       ],
+       "BPJS-KES-RIZKY": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "facility_bpjs_partner",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "days_hospitalized": 3
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAITING_PERIOD].\n- Clause [HCP-SOMPO-01 Term"
+    }
+   ],
+   "binder_calls": 3
+  },
+  {
+   "id": "P05",
+   "persona": "rizky",
+   "desc": "accident admission (waiting period exempt)",
+   "expect": null,
+   "runs": [
+    {
+     "text": "I fell from my motorbike and was hospitalised on 3 October 2026 for 2 days. Is that covered by my hospital cash plan?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "1000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "COVERED",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "NOT_CLAIMABLE",
+        "0"
+       ],
+       "BPJS-KES-RIZKY": [
+        "PAYER",
+        "9200000"
+       ],
+       "HCP-SOMPO-01": [
+        "PARALLEL",
+        "1000000"
+       ]
+      },
+      "deadline": "2026-12-06"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "days_hospitalized": 2,
+      "vehicles_involved": 1,
+      "facility_bpjs_partner": true,
+      "billed_amount": 9200000
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 1,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "jatuh dari motor, dirawat 3 okt 2026 2 hari. hospital cash saya cover ga?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "1000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "COVERED",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "vehicles_involved",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "BPJS-KES-RIZKY": [
+        "PAYER",
+        "9200000"
+       ],
+       "HCP-SOMPO-01": [
+        "PARALLEL",
+        "1000000"
+       ]
+      },
+      "deadline": "2026-12-06"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "days_hospitalized": 2,
+      "facility_bpjs_partner": true,
+      "billed_amount": 9200000
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 1,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    },
+    {
+     "text": "I had an accident, fell off my bike, and was hospitalised 8 days ago for 2 days. Does my hospital cash plan pay?",
+     "sig": {
+      "verdicts": {
+       "HCP-SOMPO-01": [
+        "COVERED",
+        "1000000"
+       ],
+       "BPJS-KES-RIZKY": [
+        "COVERED",
+        null
+       ],
+       "JASA-RAHARJA": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "vehicles_involved",
+      "intent": "CLAIM_GUIDANCE",
+      "refused": false,
+      "cob": {
+       "JASA-RAHARJA": [
+        "UNCERTAIN",
+        "None"
+       ],
+       "BPJS-KES-RIZKY": [
+        "PAYER",
+        "9200000"
+       ],
+       "HCP-SOMPO-01": [
+        "PARALLEL",
+        "1000000"
+       ]
+      },
+      "deadline": "2026-12-06"
+     },
+     "facts": {
+      "event": "HOSPITALIZATION",
+      "is_accident": true,
+      "cause": "ACCIDENT_TRAFFIC",
+      "days_hospitalized": 2,
+      "facility_bpjs_partner": true,
+      "billed_amount": 9200000
+     },
+     "intent": "CLAIM_GUIDANCE",
+     "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 1,000,000.\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"This Po"
+    }
+   ],
+   "binder_calls": 3
+  },
+  {
+   "id": "P06",
+   "persona": "rizky",
+   "desc": "death of illness, life policy in lapse",
+   "expect": null,
+   "runs": [
+    {
+     "text": "I passed away from illness on 9 October 2026. Would my life policy pay out?",
+     "sig": {
+      "verdicts": {
+       "TL-ASTRA-07": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Flexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): Not covered (indicative). Reason: the policy was not in force (premium unpaid beyond the grace period) [LAPSED].\n- Clause ["
+    },
+    {
+     "text": "kalo saya meninggal karena sakit tgl 9 okt 2026, polis jiwa saya cair ga?",
+     "sig": {
+      "verdicts": {
+       "TL-ASTRA-07": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Flexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): Not covered (indicative). Reason: the policy was not in force (premium unpaid beyond the grace period) [LAPSED].\n- Clause ["
+    },
+    {
+     "text": "If I die of illness, 2 days ago say, does my life policy still pay?",
+     "sig": {
+      "verdicts": {
+       "TL-ASTRA-07": [
+        "DENIED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "DEATH",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Flexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): Not covered (indicative). Reason: the policy was not in force (premium unpaid beyond the grace period) [LAPSED].\n- Clause ["
+    }
+   ],
+   "binder_calls": 1
+  },
+  {
+   "id": "P07",
+   "persona": "rizky",
+   "desc": "critical illness diagnosis",
+   "expect": null,
+   "runs": [
+    {
+     "text": "I was diagnosed with cancer on 1 August 2026. Does my critical illness policy pay?",
+     "sig": {
+      "verdicts": {
+       "CI-CHUBB-05": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "survival_days",
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "CRITICAL_ILLNESS",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Essential Critical Care (critical illness, modelled) (CI-CHUBB-05): depends on one fact - if survival days = 0-29: not covered; if survival days = 30-31: covered.\nOne question before I can answer: How"
+    },
+    {
+     "text": "didiagnosis kanker tgl 1 agu 2026, polis critical illness saya cair ga?",
+     "sig": {
+      "verdicts": {
+       "CI-CHUBB-05": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "survival_days",
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "CRITICAL_ILLNESS",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Essential Critical Care (critical illness, modelled) (CI-CHUBB-05): depends on one fact - if survival days = 0-29: not covered; if survival days = 30-31: covered.\nOne question before I can answer: How"
+    },
+    {
+     "text": "I was diagnosed with cancer 71 days ago. Will my critical illness cover pay?",
+     "sig": {
+      "verdicts": {
+       "CI-CHUBB-05": [
+        "CLARIFY",
+        null
+       ]
+      },
+      "clarify": "survival_days",
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "CRITICAL_ILLNESS",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Essential Critical Care (critical illness, modelled) (CI-CHUBB-05): depends on one fact - if survival days = 0-29: not covered; if survival days = 30-31: covered.\nOne question before I can answer: How"
+    }
+   ],
+   "binder_calls": 0
+  },
+  {
+   "id": "P09",
+   "persona": "santoso",
+   "desc": "Sari hernia surgery after the 12-month wait",
+   "expect": {
+    "HI-INDIV-S": [
+     "COVERED",
+     null
+    ]
+   },
+   "runs": [
+    {
+     "text": "Sari is scheduled for hernia surgery on 20 November 2026. Will her individual health policy pay?",
+     "sig": {
+      "verdicts": {
+       "HI-INDIV-S": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS",
+      "is_emergency": false
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sehat Mandiri Individual Health (reimbursement) (HI-INDIV-S): Covered (indicative).\n- Clause [HI-INDIV-S Schedule of Benefits, 2, c_surgery]: \"Surgical charges: actual charges up to IDR 20,000,000 per"
+    },
+    {
+     "text": "sari mau operasi hernia tgl 20 nov 2026, asuransi individunya (HI-INDIV-S) nanggung ga?",
+     "sig": {
+      "verdicts": {
+       "HI-INDIV-S": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sehat Mandiri Individual Health (reimbursement) (HI-INDIV-S): Covered (indicative).\n- Clause [HI-INDIV-S Schedule of Benefits, 2, c_surgery]: \"Surgical charges: actual charges up to IDR 20,000,000 per"
+    },
+    {
+     "text": "Sari has hernia surgery in 40 days. Is her individual health plan going to pay?",
+     "sig": {
+      "verdicts": {
+       "HI-INDIV-S": [
+        "COVERED",
+        null
+       ]
+      },
+      "clarify": null,
+      "intent": "POLICY_QA",
+      "refused": false,
+      "cob": {},
+      "deadline": null
+     },
+     "facts": {
+      "event": "SURGERY",
+      "is_accident": false,
+      "cause": "ILLNESS"
+     },
+     "intent": "POLICY_QA",
+     "reply_head": "Sehat Mandiri Individual Health (reimbursement) (HI-INDIV-S): Covered (indicative).\n- Clause [HI-INDIV-S Schedule of Benefits, 2, c_surgery]: \"Surgical charges: actual charges up to IDR 20,000,000 per"
+    }
+   ],
+   "binder_calls": 0
+  }
+ ],
+ "live_stats": {
+  "binder_calls_attempted": 17,
+  "binder_calls_failed": 3,
+  "blocked_non_binder_calls": 78,
+  "scenarios_incomplete": [
+   "P08"
+  ],
+  "scenarios_without_binder_call": [
+   "P07",
+   "P09"
+  ],
+  "failure_reasons": {
+   "LLM replay-only mode: cache miss": 3
+  },
+  "live_calls": 0,
+  "cache_hits": 14,
+  "quota_errors": 0
+ }
+}

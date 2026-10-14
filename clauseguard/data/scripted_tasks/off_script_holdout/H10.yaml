@@ -1,0 +1,11 @@
+id: H10
+title: Administrative question with no policy clause
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- Do I need to tell the insurer if I move to another city?
+expected:
+  must_contain:
+  - call-back|insurer
+  no_tool_calls_of_tier_ge: 2
+kind: holdout

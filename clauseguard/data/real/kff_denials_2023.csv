@@ -1,0 +1,239 @@
+level,state,issuer_id,issuer_name,exchange_type,claims_received_in_network,claims_denied_in_network,claims_received_out_of_network,claims_denied_out_of_network,internal_appeals_filed,internal_appeals_overturned,external_appeals_filed,external_appeals_overturned,in_network_denial_rate,out_of_network_denial_rate,internal_appeal_overturn_rate,source
+national,,,,,435990657,85894625,35058759,12665797,,,,,0.1970,0.3613,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,AK,,,,732654,186285,44793,23449,252,125,,,0.2543,0.5235,0.4960,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,AL,,,,14518755,4974643,779148,456709,2545,1053,,,0.3426,0.5862,0.4138,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,AR,,,,17033758,2407891,583921,83018,11023,3518,,,0.1414,0.1422,0.3192,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,AZ,,,,8966291,1853505,1100400,611242,8416,4044,,,0.2067,0.5555,0.4805,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,DE,,,,1127619,161989,41421,18923,,,,,0.1437,0.4568,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,FL,,,,107868132,23132241,6225802,1852671,234555,104206,,,0.2144,0.2976,0.4443,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,HI,,,,686814,163594,5911,1278,103,,,0,0.2382,0.2162,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,IA,,,,5154616,897182,246406,199204,2691,1170,,,0.1741,0.8084,0.4348,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,IL,,,,15026796,2948254,959443,332932,,,,,0.1962,0.3470,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,IN,,,,4079722,750897,573173,376876,980,406,,,0.1841,0.6575,0.4143,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,KS,,,,5394824,793742,440962,173102,2724,1259,,,0.1471,0.3926,0.4622,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,LA,,,,5397596,924091,710556,113884,2312,721,,,0.1712,0.1603,0.3119,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,MI,,,,10350870,1522737,790592,312447,1445,628,,,0.1471,0.3952,0.4346,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,MO,,,,10208984,1360265,747177,298066,,,,,0.1332,0.3989,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,MS,,,,9675642,1469992,599187,238944,1201,538,,0,0.1519,0.3988,0.4480,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,MT,,,,1096114,138359,85547,35925,2628,607,,,0.1262,0.4199,0.2310,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,NC,,,,33059878,6018813,2514731,980781,,2171,,,0.1821,0.3900,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,ND,,,,1081008,120224,24549,29465,305,148,,,0.1112,1.2003,0.4852,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,NE,,,,3480154,530331,175080,87065,3058,1330,,,0.1524,0.4973,0.4349,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,NH,,,,2734808,493299,87710,46362,711,416,,0,0.1804,0.5286,0.5851,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,OH,,,,12569921,2422669,1077499,593391,7379,3402,,,0.1927,0.5507,0.4610,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,OK,,,,10061447,2329975,954365,294667,4272,1431,,,0.2316,0.3088,0.3350,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,OR,,,,2318558,210722,117075,66782,,,,,0.0909,0.5704,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,SC,,,,16425948,3021187,896177,406917,,,,,0.1839,0.4541,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,SD,,,,1347819,82814,44911,20490,523,311,,,0.0614,0.4562,0.5946,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,TN,,,,15466781,2943128,2121924,922319,5900,2640,,,0.1903,0.4347,0.4475,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,TX,,,,99579382,20821199,12309764,3672638,53122,,,,0.2091,0.2984,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,UT,,,,8741470,1617466,303901,173660,,1698,,,0.1850,0.5714,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,WI,,,,9087387,1177398,354927,170010,1608,,,,0.1296,0.4790,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,WV,,,,1218171,189093,76923,48904,,19,,0,0.1552,0.6358,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+state,WY,,,,1498738,230640,64784,23676,1631,566,,0,0.1539,0.3655,0.3470,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AK,38344,Premera Blue Cross Blue Shield of Alaska,FFE,732654,186285,44793,23449,252,125,,,0.2543,0.5235,0.4960,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AK,73836,"Moda Health Plan, Inc.",FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AL,46944,Blue Cross and Blue Shield of Alabama,FFE,13033751,4533017,240263,216318,1730,806,80,0,0.3478,0.9003,0.4659,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AL,53932,Celtic Insurance Company,FFE,714117,121096,265380,52917,218,73,0,0,0.1696,0.1994,0.3349,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AL,69461,UnitedHealthcare Insurance Company,FFE,770887,320530,273505,187474,597,174,,,0.4158,0.6854,0.2915,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AR,13262,"HMO Partners, Inc.",SBE-FP,1360502,239109,27333,9200,1164,398,,,0.1758,0.3366,0.3419,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AR,37903,"QualChoice Life & Health Insurance Company, Inc.",SBE-FP,1893336,234093,105320,13001,392,105,0,0,0.1236,0.1234,0.2679,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AR,48772,"USAble HMO, Inc.",SBE-FP,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AR,62141,Celtic Insurance Company,SBE-FP,6001878,745529,310451,34395,1574,541,,,0.1242,0.1108,0.3437,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AR,70525,"QCA Health Plan, Inc.",SBE-FP,1871499,229346,101098,11600,413,133,0,0,0.1225,0.1147,0.3220,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AR,75293,USAble Mutual Insurance Company,SBE-FP,5906543,959814,39719,14822,7480,2341,23,12,0.1625,0.3732,0.3130,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AZ,13877,"Oscar Health Plan, Inc.",FFE,149097,25984,14391,10046,3100,1582,27,,0.1743,0.6981,0.5103,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AZ,23435,Banner Health and Aetna Health Plan Inc.,FFE,1912839,422220,462111,302572,278,128,,0,0.2207,0.6548,0.4604,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AZ,40702,"UnitedHealthcare of Arizona, Inc.",FFE,1711443,678094,162376,104289,2220,922,17,,0.3962,0.6423,0.4153,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AZ,53901,"Blue Cross and Blue Shield of Arizona, Inc.",FFE,1370518,222893,46614,42504,2209,1038,50,14,0.1626,0.9118,0.4699,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AZ,68445,"Antidote Health Plan of Arizona, Inc.",FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AZ,85533,"Imperial Insurance Companies, Inc.",FFE,145,0,138,0,0,0,0,0,0.0000,0.0000,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AZ,91450,"Health Net of Arizona, Inc.",FFE,3589419,468270,397207,135845,578,359,19,,0.1305,0.3420,0.6211,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,AZ,97667,"Cigna HealthCare of Arizona, Inc",FFE,232830,36044,17563,15986,31,15,,0,0.1548,0.9102,0.4839,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,DE,64004,Celtic Insurance Company,SPE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,DE,67190,Aetna Health Inc. (a PA corp.),SPE,60919,13615,11323,8975,,,0,0,0.2235,0.7926,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,DE,72760,"AmeriHealth Caritas VIP Next, Inc.",SPE,3427,1709,261,201,0,0,0,0,0.4987,0.7701,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,DE,76168,Highmark BCBSD Inc.,SPE,1063273,146665,29837,9747,196,58,,,0.1379,0.3267,0.2959,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,16842,Blue Cross and Blue Shield of Florida,FFE,21253164,3923703,806300,58649,2677,1183,97,33,0.1846,0.0727,0.4419,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,18628,Aetna Health Inc. (a FL corp.),FFE,11920740,2654415,497117,203060,988,381,21,,0.2227,0.4085,0.3856,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,19898,"AvMed, Inc.",FFE,473890,147403,61054,29055,27,19,,,0.3110,0.4759,0.7037,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,30252,"Health Options, Inc.",FFE,39268216,9940136,399597,26805,2937,1130,79,21,0.2531,0.0671,0.3847,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,36194,"Health First Commercial Plans, Inc.",FFE,1826300,352972,88711,52502,412,178,,,0.1933,0.5918,0.4320,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,40572,Oscar Insurance Company of Florida,FFE,16627306,2806266,1325715,591442,221043,99456,571,92,0.1688,0.4461,0.4499,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,44228,Simply Healthcare Plans Inc dba Wellpoint Florida Inc,FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,48121,Cigna Health and Life Insurance Company,FFE,4657948,948441,216738,183523,1144,309,14,,0.2036,0.8468,0.2701,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,49004,Centene Venture Company Florida,FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,54172,"Molina Healthcare of Florida, Inc",FFE,760653,244390,67089,34575,732,212,,0,0.3213,0.5154,0.2896,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,56503,"Florida Health Care Plan, Inc.",FFE,2900945,405810,90485,67416,667,157,24,13,0.1399,0.7451,0.2354,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,66966,Capital Health Plan,FFE,404627,31671,27882,16444,147,56,,,0.0783,0.5898,0.3810,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,67926,"AmeriHealth Caritas Florida, Inc.",FFE,25325,13650,11984,10137,0,0,0,0,0.5390,0.8459,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,68398,"UnitedHealthcare of Florida, Inc.",FFE,2285558,740703,495233,320593,2728,752,21,,0.3241,0.6474,0.2757,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,FL,86382,Sunshine State Health Plan,FFE,5463460,922681,2137897,258470,1053,373,,,0.1689,0.1209,0.3542,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,HI,18350,Hawaii Medical Service Association,SPE,673684,162934,4033,812,82,38,,0,0.2419,0.2013,0.4634,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,HI,60612,"Kaiser Foundation Health Plan, Inc.",SPE,13130,660,1878,466,21,,0,0,0.0503,0.2481,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IA,25896,"Wellmark Health Plan of Iowa, Inc.",SPE,4366324,753627,174461,140207,308,128,,,0.1726,0.8037,0.4156,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IA,45819,Oscar Insurance Company,SPE,181038,32239,26921,19446,2102,916,,,0.1781,0.7223,0.4358,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IA,48286,"Iowa Total Care, Inc.",SPE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IA,56610,"UnitedHealthcare Plan of the River Valley, Inc.",SPE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IA,93078,Medica Insurance Company,SPE,607254,111316,45024,39551,281,126,,,0.1833,0.8784,0.4484,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IL,11574,"Oscar Health Plan, Inc.",SBE-FP,49013,10211,10823,7445,722,238,11,0,0.2083,0.6879,0.3296,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IL,20129,"Health Alliance Medical Plans, Inc.",SBE-FP,1507897,187861,33400,1734,221,88,18,,0.1246,0.0519,0.3982,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IL,27833,Celtic Insurance Company,SBE-FP,1681947,230759,362141,68350,314,140,,,0.1372,0.1887,0.4459,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IL,32355,"Molina Healthcare of Illinois, Inc.",SBE-FP,91489,31949,10178,4677,34,13,,,0.3492,0.4595,0.3824,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IL,36096,Blue Cross Blue Shield of Illinois,SBE-FP,10556396,2169193,401870,145788,2232,694,84,41,0.2055,0.3628,0.3109,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IL,42529,"UnitedHealthcare of Illinois, Inc.",SBE-FP,486710,181665,93250,68012,691,271,,,0.3733,0.7294,0.3922,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IL,53882,"Cigna HealthCare of Illinois, Inc.",SBE-FP,347240,90407,25748,23722,53,24,,0,0.2604,0.9213,0.4528,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IL,54322,"MercyCare HMO, Inc.",SBE-FP,67263,7524,2660,1052,,,0,0,0.1119,0.3955,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IL,72547,Aetna Life Insurance Company,SBE-FP,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IL,85773,Quartz Health Benefit Plans Corporation,SBE-FP,71597,4921,1282,763,18,,0,0,0.0687,0.5952,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IL,99129,Aetna Health Inc. (a PA corp.),SBE-FP,167244,33764,18091,11389,53,26,,,0.2019,0.6295,0.4906,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IN,17575,Anthem Ins Companies Inc(Anthem BCBS),FFE,765012,77614,263765,134069,829,353,,,0.1015,0.5083,0.4258,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IN,35065,Coordinated Care Corporation Indiana,FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IN,54192,"CareSource Indiana, Inc.",FFE,2965521,576156,227135,173340,100,30,83,83,0.1943,0.7632,0.3000,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IN,72850,UnitedHealthcare Insurance Company,FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IN,94419,Cigna Health and Life Insurance Company,FFE,349189,97127,82273,69467,51,23,0,0,0.2782,0.8443,0.4510,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,IN,96992,Aetna Health Inc. (a PA corp.),FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,KS,18558,"Blue Cross and Blue Shield of Kansas, Inc.",SPE,1239867,145732,53941,34390,207,97,57,21,0.1175,0.6375,0.4686,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,KS,34368,Celtic Insurance Company,SPE,3613719,487012,284439,64522,1343,639,27,20,0.1348,0.2268,0.4758,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,KS,39520,Medica Insurance Company,SPE,70039,15020,4449,3688,53,20,0,0,0.2145,0.8290,0.3774,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,KS,43490,Oscar Insurance Company,SPE,37896,7449,3876,2065,403,220,,0,0.1966,0.5328,0.5459,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,KS,84600,Aetna Life Insurance Company,SPE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,KS,94248,Blue Cross and Blue Shield of Kansas City,SPE,111483,23072,2526,2105,27,12,,,0.2070,0.8333,0.4444,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,KS,94968,UnitedHealthcare Insurance Company,SPE,321820,115457,91731,66332,691,271,,,0.3588,0.7231,0.3922,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,LA,19636,"HMO Louisiana, Inc.",FFE,4538750,755465,517687,11182,1696,586,145,46,0.1664,0.0216,0.3455,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,LA,69842,UnitedHealthcare Insurance Company,FFE,182887,75075,103550,76869,143,33,,0,0.4105,0.7423,0.2308,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,LA,90787,"Ambetter Health of Louisiana, Inc.",FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,LA,97176,Louisiana Health Service & Indemnity Company,FFE,594185,79444,48828,4077,213,75,20,,0.1337,0.0835,0.3521,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,LA,98780,CHRISTUS Health Plan Louisiana,FFE,81774,14107,40491,21756,260,27,0,0,0.1725,0.5373,0.1038,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MI,15560,Blue Cross Blue Shield of Michigan Mutual Insurance Company,SPE,1423397,207020,265331,58308,175,69,289,53,0.1454,0.2198,0.3943,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MI,29698,Priority Health,SPE,3354862,225909,97330,39528,125,30,32,,0.0673,0.4061,0.2400,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MI,40047,"Molina Healthcare of Michigan, Inc.",SPE,516902,127780,32309,18054,116,52,,0,0.2472,0.5588,0.4483,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MI,40356,HAP CareSource,SPE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MI,58594,"Meridian Health Plan of Michigan, Inc.",SPE,1250223,231404,191490,45713,341,135,,,0.1851,0.2387,0.3959,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MI,60829,University of Michigan Health Plan,SPE,406649,74036,30464,23330,35,11,0,0,0.1821,0.7658,0.3143,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MI,71667,"UnitedHealthcare Community Plan, Inc.",SPE,197757,76422,60995,41314,198,47,0,0,0.3864,0.6773,0.2374,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MI,74917,McLaren Health Plan Community,SPE,142038,22744,8321,7867,27,20,0,0,0.1601,0.9454,0.7407,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MI,77739,Oscar Insurance Company,SPE,19725,3811,2750,1683,305,155,,,0.1932,0.6120,0.5082,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MI,98185,Blue Care Network of Michigan,SPE,3039317,553611,101602,76650,123,109,39,,0.1821,0.7544,0.8862,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MO,32753,Healthy Alliance Life Co(Anthem BCBS),FFE,2591355,184969,148594,74158,185,74,0,0,0.0714,0.4991,0.4000,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MO,34762,Blue Cross and Blue Shield of Kansas City,FFE,164345,33913,3609,2934,38,,,0,0.2064,0.8130,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MO,47840,Medica Central Insurance Company,FFE,164918,26150,13616,5198,39,15,0,0,0.1586,0.3818,0.3846,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MO,48161,Aetna Life Insurance Company,FFE,694487,132463,53222,27793,71,31,0,0,0.1907,0.5222,0.4366,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MO,53461,Medica Insurance Company,FFE,423618,88018,22519,18017,220,97,0,0,0.2078,0.8001,0.4409,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MO,69512,Oscar Insurance Company,FFE,88515,19243,13446,7979,974,479,13,0,0.2174,0.5934,0.4918,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MO,95426,UnitedHealthcare Insurance Company,FFE,468826,124591,107192,75538,589,176,,,0.2658,0.7047,0.2988,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MO,96384,Cox Health Systems Insurance Company,FFE,7205,1079,212,212,,0,,0,0.1498,1.0000,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MO,99723,Celtic Insurance Company,FFE,5605715,749839,384767,86237,0,0,0,0,0.1338,0.2241,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MS,14624,"Primewell Health Services of Mississippi, Inc.",FFE,105044,17122,4776,1380,61,42,0,0,0.1630,0.2889,0.6885,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MS,56766,Cigna Health and Life Insurance Company,FFE,783392,200728,49273,43656,95,38,0,0,0.2562,0.8860,0.4000,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MS,79975,"Molina Healthcare of Mississippi, Inc",FFE,254307,58905,12989,8221,28,12,0,0,0.2316,0.6329,0.4286,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MS,90714,Ambetter of Magnolia Inc.,FFE,8387542,1146839,508654,169379,953,425,0,0,0.1367,0.3330,0.4460,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MS,97560,"UnitedHealthcare of Mississippi, Inc.",FFE,145357,46398,23495,16308,64,21,,0,0.3192,0.6941,0.3281,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MT,23603,PacificSource Health Plans,SPE,164025,4831,6791,5257,977,226,0,0,0.0295,0.7741,0.2313,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MT,30751,Blue Cross and Blue Shield of Montana,SPE,237510,93689,16284,4549,232,61,,,0.3945,0.2794,0.2629,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,MT,32225,Montana Health Cooperative,SPE,694579,39839,62472,26119,1419,320,27,,0.0574,0.4181,0.2255,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NC,11512,Blue Cross and Blue Shield of NC,FFE,18257563,3451238,828734,280629,1861,665,77,41,0.1890,0.3386,0.3573,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NC,13591,CareSource North Carolina Co.,FFE,7190,2433,3515,2458,0,0,0,0,0.3384,0.6993,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NC,17414,"AmeriHealth Caritas North Carolina, Inc.",FFE,207490,81208,41250,25649,48,34,0,0,0.3914,0.6218,0.7083,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NC,44007,Celtic Insurance Company,FFE,3145,1140,5861,721,,0,0,0,0.3625,0.1230,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NC,54332,"UnitedHealthcare of North Carolina, Inc",FFE,1461941,436437,175986,133832,1513,625,,,0.2985,0.7605,0.4131,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NC,61671,Aetna Health Inc. (a PA corp.),FFE,8579391,1330377,657842,363435,658,295,,,0.1551,0.5525,0.4483,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NC,69803,"Oscar Health Plan of North Carolina, Inc",FFE,5363,1223,2178,1667,71,26,0,0,0.2280,0.7654,0.3662,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NC,73943,"Cigna HealthCare of North Carolina, Inc.",FFE,1043043,178998,69455,59680,140,33,,0,0.1716,0.8593,0.2357,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NC,77264,Ambetter of North Carolina Inc.,FFE,3494752,535759,729910,112710,1202,493,,,0.1533,0.1544,0.4101,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,ND,37160,Blue Cross Blue Shield of North Dakota,FFE,606207,89205,5146,18673,141,48,,,0.1472,3.6286,0.3404,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,ND,73751,Medica Health Plans,FFE,53942,10572,2440,2304,29,14,0,0,0.1960,0.9443,0.4828,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,ND,89364,Sanford Health Plan,FFE,420859,20447,16963,8488,135,86,,,0.0486,0.5004,0.6370,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NE,20305,Medica Insurance Company,SPE,1463354,258233,48870,38378,903,406,16,,0.1765,0.7853,0.4496,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NE,26289,"Nebraska Total Care, Inc.",SPE,1472850,180442,101892,24760,552,267,12,,0.1225,0.2430,0.4837,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NE,29678,Blue Cross and Blue Shield of Nebraska,SPE,520183,87307,23088,22918,802,193,13,,0.1678,0.9926,0.2406,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NE,57424,Oscar Insurance Company,SPE,23767,4349,1230,1009,801,464,,,0.1830,0.8203,0.5793,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NE,73102,UnitedHealthcare Insurance Company,SPE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NH,13219,"Boston Medical Center Health Plan, Inc.",SPE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NH,59025,Harvard Pilgrim Health Care of NE,SPE,110436,28102,309,255,43,23,,0,0.2545,0.8252,0.5349,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NH,75841,Celtic Insurance Company,SPE,724455,87720,30886,9542,424,304,0,0,0.1211,0.3089,0.7170,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,NH,96751,Matthew Thornton Hlth Plan(Anthem BCBS),SPE,1899917,377477,56515,36565,244,89,0,0,0.1987,0.6470,0.3648,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,28162,AultCare Insurance Company,SPE,263962,51849,17977,5550,74,32,,,0.1964,0.3087,0.4324,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,29276,Community Insurance Company(Anthem BCBS),SPE,3309316,731789,248466,164768,793,259,,,0.2211,0.6631,0.3266,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,29341,Oscar Buckeye State Insurance Corp.,SPE,130353,24643,19534,9503,1745,777,34,,0.1890,0.4865,0.4453,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,31981,Antidote Health Plan of Ohio,SPE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,33931,"UnitedHealthcare of Ohio, Inc.",SPE,345239,125776,103121,69116,342,161,,,0.3643,0.6702,0.4708,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,41047,Buckeye Community Health Plan,SPE,2964447,427746,283165,81292,604,391,,,0.1443,0.2871,0.6474,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,45845,Oscar Insurance Corporation of Ohio,SPE,152068,14491,6136,3808,1758,788,42,,0.0953,0.6206,0.4482,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,52664,"Summa Insurance Company, Inc.",SPE,231936,57441,16567,10856,244,168,,,0.2477,0.6553,0.6885,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,64353,"Molina Healthcare of Ohio, Inc.",SPE,1220402,294198,97895,41889,516,153,,,0.2411,0.4279,0.2965,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,74313,Paramount Insurance Company,SPE,143428,22062,7634,3611,29,21,0,0,0.1538,0.4730,0.7241,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,77552,"CareSource Ohio, Inc.",SPE,2082858,445243,194848,129875,257,111,59,23,0.2138,0.6665,0.4319,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,84867,Aetna Health Inc. (a PA corp.),SPE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OH,99969,Medical Health Insuring Corp. of Ohio,SPE,1725912,227431,82156,73123,1017,541,22,,0.1318,0.8901,0.5320,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OK,21333,Medica Insurance Company,FFE,359100,85961,45931,22780,130,66,,,0.2394,0.4960,0.5077,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OK,45480,"UnitedHealthcare of Oklahoma, Inc.",FFE,136956,44938,43352,27809,166,47,0,0,0.3281,0.6415,0.2831,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OK,58944,"Taro Health Plan of Oklahoma, Inc.",FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OK,62505,Celtic Insurance Company,FFE,803944,170942,245712,34432,279,97,,0,0.2126,0.1401,0.3477,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OK,87571,Blue Cross Blue Shield of Oklahoma,FFE,8359015,1960087,531826,184436,1581,376,59,22,0.2345,0.3468,0.2378,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OK,91908,Oscar Insurance Company,FFE,238001,51193,78489,22549,1974,776,11,,0.2151,0.2873,0.3931,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OK,98905,CommunityCare HMO Inc.,FFE,164431,16854,9055,2661,142,69,0,0,0.1025,0.2939,0.4859,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OR,10091,PacificSource Health Plans,SBE-FP,452760,9756,7239,2309,4055,946,,0,0.0215,0.3190,0.2333,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OR,39424,"Moda Health Plan, Inc.",SBE-FP,954353,143470,43464,22853,149,48,15,,0.1503,0.5258,0.3221,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OR,56707,Providence Health Plan,SBE-FP,502058,19130,42474,24351,513,391,,,0.0381,0.5733,0.7622,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OR,63474,BridgeSpan Health Company,SBE-FP,9708,866,244,199,,,0,0,0.0892,0.8156,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OR,71287,Kaiser Foundation Healthplan of the NW,SBE-FP,10670,779,2562,438,51,22,0,0,0.0730,0.1710,0.4314,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,OR,77969,Regence BlueCross BlueShield of Oregon,SBE-FP,389009,36721,21092,16632,616,88,47,,0.0944,0.7885,0.1429,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,SC,26065,Blue Cross and Blue Shield of South Carolina,FFE,11459827,2183048,282455,276191,3022,1231,302,107,0.1905,0.9778,0.4073,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,SC,33764,"UnitedHealthcare of South Carolina, Inc.",FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,SC,33863,InStil Health Insurance Company,FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,SC,42326,"MOLINA HEALTHCARE OF SOUTH CAROLINA, INC",FFE,869323,217809,61349,23078,331,151,,,0.2506,0.3762,0.4562,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,SC,73107,Select Health of South Carolina,FFE,61346,26256,14395,8199,,,0,0,0.4280,0.5696,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,SC,79222,"Absolute Total Care, Inc",FFE,4035452,594074,537978,99449,755,380,,,0.1472,0.1849,0.5033,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,SD,31195,Sanford Health Plan,SPE,621978,31344,29414,11168,258,169,,,0.0504,0.3797,0.6550,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,SD,50305,Wellmark of South Dakota,SPE,291888,45145,9603,5082,42,20,,0,0.1547,0.5292,0.4762,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,SD,60536,"Avera Health Plans, Inc.",SPE,433953,6325,5894,4240,223,122,,0,0.0146,0.7194,0.5471,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TN,14002,BlueCross BlueShield of Tennessee,FFE,4493833,939798,714910,465429,463,154,,0,0.2091,0.6510,0.3326,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TN,23552,Oscar Insurance Company,FFE,107782,23249,11033,8280,1776,911,12,,0.2157,0.7505,0.5130,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TN,29854,"Alliant Health Plans, Inc.",FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TN,69443,UnitedHealthcare Insurance Company,FFE,1096200,333027,150528,102716,1109,423,,0,0.3038,0.6824,0.3814,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TN,70111,Celtic Insurance Company,FFE,5341073,817958,1084829,210474,1746,810,,,0.1531,0.1940,0.4639,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TN,99248,Cigna Health and Life Insurance Company,FFE,4427893,829096,160624,135420,806,342,,,0.1872,0.8431,0.4243,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,11718,"Community Health Choice Texas, Inc.",FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,17933,"Moda Health Plan, Inc.",FFE,93409,23838,17699,8518,26,20,0,0,0.2552,0.4813,0.7692,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,20069,Oscar Insurance Company,FFE,1845992,337877,288306,141585,23598,12338,87,24,0.1830,0.4911,0.5228,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,27248,"Community Health Choice, Inc.",FFE,6915555,1238096,817983,310676,1223,291,21,14,0.1790,0.3798,0.2379,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,29418,Celtic Insurance Company,FFE,17855127,2094669,2050341,327537,3183,1861,109,65,0.1173,0.1597,0.5847,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,33602,Blue Cross Blue Shield of Texas,FFE,39937122,9593132,1431847,398979,10968,6208,134,35,0.2402,0.2786,0.5660,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,34826,"Imperial Insurance Companies, Inc.",FFE,38,0,15,0,0,0,0,0,0.0000,0.0000,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,40220,"UnitedHealthcare of Texas, Inc.",FFE,4410706,1371536,1340598,833698,4765,1651,26,,0.3110,0.6219,0.3465,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,40788,Scott and White Health Plan,FFE,5211245,993379,812527,154637,1095,710,29,20,0.1906,0.1903,0.6484,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,45786,"Molina Healthcare of Texas, Inc.",FFE,1357022,368184,94555,39660,3607,1314,39,14,0.2713,0.4194,0.3643,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,47501,Wellpoint Insurance Company,FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,58840,Aetna Health Inc.  (a TX corp.),FFE,8083776,2209984,1077549,472069,1811,386,71,14,0.2734,0.4381,0.2131,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,63251,Community First Insurance Plans,FFE,92909,23797,9466,6284,16,,1797,714,0.2561,0.6638,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,66252,CHRISTUS Health Plan,FFE,788742,115734,152736,50425,596,76,0,0,0.1467,0.3301,0.1275,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,71837,"Sendero Health Plans, Inc.",FFE,253415,71030,345,126,12,,,,0.2803,0.3652,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,76589,"Cigna HealthCare of Texas, Inc.",FFE,6310040,1396626,357905,325084,969,572,,,0.2213,0.9083,0.5903,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,TX,87226,Superior Health Plan,FFE,6424284,983317,3857892,603360,1253,721,23,11,0.1531,0.1564,0.5754,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,UT,18167,Molina Healthcare of Utah,SPE,55255,15592,3152,1993,37,27,0,0,0.2822,0.6323,0.7297,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,UT,22013,Regence BlueCross BlueShield of Utah,SPE,357406,49031,47325,35255,487,60,11,,0.1372,0.7450,0.1232,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,UT,34541,BridgeSpan Health Company,SPE,2237,618,110,94,,0,,,0.2763,0.8545,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,UT,38927,Aetna Health of Utah Inc.,SPE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,UT,42261,University of Utah Health Insurance Plans,SPE,569517,107936,6209,4955,448,183,,,0.1895,0.7980,0.4085,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,UT,68781,"SelectHealth, Inc.",SPE,7757055,1444289,247105,131363,4440,1428,44,23,0.1862,0.5316,0.3216,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,UT,98113,"Imperial Health Plan of the Southwest, Inc.",SPE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,14630,Chorus Community Health Plans,FFE,209169,18276,7922,3205,320,154,,,0.0874,0.4046,0.4813,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,20173,HealthPartners Insurance Company,FFE,363667,24127,7958,823,13,,,0,0.0663,0.1034,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,37833,Quartz Health Benefit Plans Corporation,FFE,603804,48608,7407,4174,160,25,,,0.0805,0.5635,0.1562,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,38166,"Security Health Plan of Wisconsin, Inc.",FFE,1021773,182583,46116,20354,140,92,,0,0.1787,0.4414,0.6571,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,38345,Dean Health Plan,FFE,1097330,113095,40351,14636,144,73,0,0,0.1031,0.3627,0.5069,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,52697,"Molina Healthcare of Wisconsin, Inc.",FFE,214084,49047,7204,4606,127,72,,0,0.2291,0.6394,0.5669,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,57845,Medica Community Health Plan,FFE,432320,60354,11615,7472,135,77,,0,0.1396,0.6433,0.5704,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,58326,"MercyCare HMO, Inc.",FFE,212377,18094,7290,2270,18,12,,,0.0852,0.3114,0.6667,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,79475,Compcare Health Serv Ins Co(Anthem BCBS),FFE,1063009,81887,101102,62444,158,66,0,0,0.0770,0.6176,0.4177,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,80180,"UnitedHealthcare of Wisconsin, Inc.",FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,81413,Network Health Plan,FFE,241528,36552,7454,4804,20,,0,0,0.1513,0.6445,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,86584,"Aspirus Health Plan, Inc.",FFE,430766,48665,13460,6569,36,11,,,0.1130,0.4880,0.3056,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,87416,Common Ground Healthcare Cooperative,FFE,2954348,475594,91286,37091,310,104,,,0.1610,0.4063,0.3355,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WI,94529,Group Health Cooperative of South Central Wisconsin,FFE,243212,20516,5762,1562,27,,0,0,0.0844,0.2711,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WV,31274,Highmark Blue Cross Blue Shield West Virginia,SPE,778251,83283,19096,3033,77,19,,0,0.1070,0.1588,0.2468,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WV,50328,CareSource West Virginia Co.,SPE,439920,105810,57827,45871,,0,0,0,0.2405,0.7932,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WY,11269,Blue Cross Blue Shield of Wyoming,FFE,976451,187139,14022,5257,536,307,,0,0.1917,0.3749,0.5728,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WY,38576,Montana Health Cooperative,FFE,522287,43501,50762,18419,1095,259,,0,0.0833,0.3629,0.2365,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx
+issuer,WY,49714,UnitedHealthcare Insurance Company,FFE,,,,,,,,,,,,https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx

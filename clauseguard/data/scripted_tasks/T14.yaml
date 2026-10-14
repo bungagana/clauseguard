@@ -1,0 +1,23 @@
+id: T14
+title: 'Readiness check: dengue HCP claim'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- I was hospitalised for dengue 3-7 Oct 2026, can I claim HCP?
+expected:
+  verdict:
+    policy_id: HCP-SOMPO-01
+    verdict: COVERED
+  payable:
+    policy_id: HCP-SOMPO-01
+    amount: 2500000
+  deadline: '2026-12-06'
+  must_contain:
+  - IDR 2,500,000
+  - '2026-12-06'
+  - claim form
+  - medical resume
+  - policy wording prevails
+  alerts_contain:
+  - TL-ASTRA-07[^\n]*lapsed
+kind: functional

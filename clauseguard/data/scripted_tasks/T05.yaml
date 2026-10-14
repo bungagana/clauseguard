@@ -1,0 +1,14 @@
+id: T05
+title: 'Negative: dental implant excluded'
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Does my company health plan cover my dental implant?
+expected:
+  must_contain:
+  - not covered
+  - natural teeth
+  - x_dental
+  must_not_contain:
+  - Covered \(indicative\)\. Indicative benefit
+kind: functional

@@ -1,0 +1,14 @@
+id: H04
+title: Expired licence, hypothetical crash
+persona: dewi
+as_of: '2026-10-11'
+turns:
+- my driving licence expired last month, am I still covered by my PA if I crash?
+expected:
+  verdict:
+    policy_id: PA-CHUBB-03
+    verdict: DENIED
+  denial_code:
+    policy_id: PA-CHUBB-03
+    code: NO_VALID_LICENSE
+kind: holdout

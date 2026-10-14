@@ -1,0 +1,13 @@
+id: T13
+title: Lapse risk with grace end date
+persona: rizky
+as_of: '2026-09-21'
+turns:
+- Is everything active?
+expected:
+  must_contain:
+  - 'TL-ASTRA-07\): premium 20 days overdue'
+  - until 2026-10-01
+  - 'HCP-SOMPO-01\): active'
+  - 'BPJS-KES-RIZKY\): active'
+kind: functional

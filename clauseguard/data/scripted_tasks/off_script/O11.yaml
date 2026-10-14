@@ -1,0 +1,15 @@
+id: O11
+title: Platform claim deadline with an 'during an order' crash
+persona: dewi
+as_of: '2026-10-11'
+turns:
+- platform insurance claim deadline? i crashed during an order on 9 Oct 2026
+expected:
+  intent: CLAIM_GUIDANCE
+  verdict:
+    policy_id: PLATFORM-ACC
+    verdict: COVERED
+  deadline: '2026-10-16'
+  must_contain:
+  - '2026-10-16'
+kind: off_script

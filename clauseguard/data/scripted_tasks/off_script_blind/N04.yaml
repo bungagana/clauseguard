@@ -1,0 +1,12 @@
+id: N04
+title: What happens to health cover on a layoff
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- What happens to my family's health cover if I get laid off?
+expected:
+  must_contain:
+  - GH-NUSA-GRP
+  - employ
+  no_tool_calls_of_tier_ge: 2
+kind: blind

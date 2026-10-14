@@ -1,0 +1,136 @@
+{
+ "model": "gemini-3.6-flash",
+ "models_used": [
+  "gemini-3.6-flash"
+ ],
+ "calls": 2,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "1. INSURED INFORMATION",
+   "kind": "GENERAL",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S2",
+   "heading": "2. COVERAGE SUMMARY",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S3",
+   "heading": "3. BENEFICIARIES",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S4",
+   "heading": "4. KEY DEFINITIONS",
+   "kind": "DEFINITIONS",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S5",
+   "heading": "5. CASH VALUE ACCUMULATION",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S6",
+   "heading": "6. POLICY DIVIDENDS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S7",
+   "heading": "7. POLICY LOANS",
+   "kind": "OTHER",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S8",
+   "heading": "8. DEATH BENEFIT PAYMENT",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S9",
+   "heading": "9. NON-FORFEITURE OPTIONS",
+   "kind": "OTHER",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S10",
+   "heading": "10. REINSTATEMENT",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S11",
+   "heading": "11. EXCLUSIONS AND LIMITATIONS",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S12",
+   "heading": "12. FREE LOOK PERIOD",
+   "kind": "PERIOD",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S13",
+   "heading": "13. CONTESTABILITY",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Cash Surrender Value",
+   "canonical_event": "SURRENDER",
+   "definition": "The amount available if the policy is surrendered, equal to the cash value minus any outstanding loans and surrender charges."
+  },
+  {
+   "term": "Dividend",
+   "canonical_event": null,
+   "definition": "A return of premium that may be declared annually by the Board of Directors based on company experience."
+  },
+  {
+   "term": "Paid-Up Insurance",
+   "canonical_event": null,
+   "definition": "A reduced death benefit with no further premiums required."
+  },
+  {
+   "term": "Policy Loan",
+   "canonical_event": "POLICY_LOAN",
+   "definition": "A loan made by us using the cash value as collateral."
+  }
+ ]
+}

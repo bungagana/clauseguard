@@ -1,0 +1,11 @@
+id: N07
+title: Grace period of the life policy
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- how many days of grace do I have on my life policy?
+expected:
+  must_contain:
+  - '30'
+  - '2026-10-01'
+kind: blind

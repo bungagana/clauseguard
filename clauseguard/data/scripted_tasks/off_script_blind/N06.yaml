@@ -1,0 +1,11 @@
+id: N06
+title: Total accidental-death benefit across policies
+persona: dewi
+as_of: '2026-10-11'
+turns:
+- kalau aku meninggal kecelakaan pas narik, keluarga dapet berapa total?
+expected:
+  must_contain:
+  - 100,000,000
+  - 50,000,000
+kind: blind

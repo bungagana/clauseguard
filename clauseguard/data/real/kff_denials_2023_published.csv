@@ -1,0 +1,20 @@
+category,item,value,note,source
+headline,in_network_denial_rate_all_healthcare_gov_insurers,20%,"share of in-network claims denied, 2023",https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+headline,out_of_network_denial_rate,36%,"share of out-of-network claims denied, 2023",https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+headline,in_network_denial_rate_range_across_insurers,1% to 54%,insurer-level range,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+headline,in_network_denials_count,86 million,approximate number of in-network denials,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+state,highest_state_average_in_network,34% (Alabama),state average,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+state,lowest_state_average_in_network,6% (South Dakota),state average,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+metal_level,bronze,20%,in-network denial rate,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+metal_level,silver,19%,in-network denial rate,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+metal_level,gold,18%,in-network denial rate,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+metal_level,platinum,19%,in-network denial rate,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+metal_level,catastrophic,26%,in-network denial rate,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+denial_reason,other,34%,"share of in-network denials, among insurers reporting reasons",https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+denial_reason,administrative,21%,share of in-network denials,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+denial_reason,excluded_service,14%,share of in-network denials,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+denial_reason,lack_of_prior_authorization_or_referral,9%,share of in-network denials,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+denial_reason,medical_necessity,6%,share of in-network denials,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+appeals,internal_appeals_filed,"376,508",less than 1% of in-network denials,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+appeals,internal_appeals_upheld_by_insurer,"211,383 (56%)",share of decided internal appeals,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/
+appeals,external_appeals_filed,"about 5,000",about 3% of upheld internal appeals,https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/

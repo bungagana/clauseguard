@@ -1,0 +1,22 @@
+id: T07
+title: Correction turn recomputes waiting period
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- user: My hospital cash policy started 1 March 2026. I was admitted for dengue on 25 September 2026 for 3 days. Am I covered?
+  expected:
+    verdict:
+      policy_id: HCP-SOMPO-01
+      verdict: COVERED
+- user: Sorry, I mean it started 1 September 2026.
+  expected:
+    verdict:
+      policy_id: HCP-SOMPO-01
+      verdict: DENIED
+    denial_code:
+      policy_id: HCP-SOMPO-01
+      code: WAITING_PERIOD
+    must_contain:
+    - You corrected
+    - waiting period
+kind: functional

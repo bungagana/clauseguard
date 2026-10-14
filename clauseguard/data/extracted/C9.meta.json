@@ -1,0 +1,115 @@
+{
+ "model": "gemini-3.8-flash",
+ "models_used": [
+  "gemini-3.8-flash"
+ ],
+ "calls": 2,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "INSURED",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S2",
+   "heading": "COVERAGE AND PREMIUMS",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S3",
+   "heading": "BENEFICIARY DESIGNATION",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S4",
+   "heading": "SECTION 1: POLICY FEATURES",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S5",
+   "heading": "SECTION 2: DEATH BENEFIT",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S6",
+   "heading": "SECTION 3: RETURN OF PREMIUM PROVISIONS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S7",
+   "heading": "SECTION 4: PREMIUM PAYMENT REQUIREMENTS",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S8",
+   "heading": "SECTION 5: CONVERSION PRIVILEGE",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S9",
+   "heading": "SECTION 6: POLICY LOANS AND WITHDRAWALS",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S10",
+   "heading": "SECTION 7: EXCLUSIONS",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S11",
+   "heading": "SECTION 8: REINSTATEMENT",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S12",
+   "heading": "SECTION 9: IMPORTANT POLICY NOTES",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S13",
+   "heading": "SECTION 10: OWNER RIGHTS",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  }
+ ],
+ "glossary": []
+}

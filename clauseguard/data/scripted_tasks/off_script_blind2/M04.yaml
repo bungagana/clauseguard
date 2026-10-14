@@ -1,0 +1,10 @@
+id: M04
+title: 'Indonesian: grace days of the life policy'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- Berapa hari masa tenggang pembayaran premi di polis asuransi jiwa saya?
+expected:
+  must_contain:
+  - '30'
+kind: blind2

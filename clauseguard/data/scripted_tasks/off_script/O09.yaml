@@ -1,0 +1,15 @@
+id: O09
+title: 'Full Indonesian: lapsed BPJS and inpatient care'
+persona: dewi
+as_of: '2026-10-11'
+turns:
+- BPJS ku mati sejak juli, masih bisa dipake buat rawat inap ga?
+expected:
+  intent: CLAIM_GUIDANCE
+  alerts_contain:
+  - 'BPJS-KES-DEWI[^
+
+    ]*inactive'
+  must_contain:
+  - BPJS-KES-DEWI
+kind: off_script

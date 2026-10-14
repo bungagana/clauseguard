@@ -1,0 +1,12 @@
+id: M03
+title: Platform cover while online without an order
+persona: dewi
+as_of: '2026-10-11'
+turns:
+- Does my ride-hailing accident insurance protect me while I am just online waiting
+  for a passenger?
+expected:
+  must_contain:
+  - PLATFORM-ACC
+  - order
+kind: blind2

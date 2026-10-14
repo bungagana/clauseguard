@@ -1,0 +1,21 @@
+id: T17
+title: 'COB order: family, non-partner hospital'
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Aditya was admitted for asthma for 4 days at Siloam, a non-BPJS hospital; the bill is IDR 18M. Who pays what?
+expected:
+  cob_status:
+    BPJS-KES-SANTOSO: NOT_CLAIMABLE
+    GH-NUSA-GRP: PAYER
+    HI-INDIV-S: NOT_CLAIMABLE
+    HCP-RIDER-B: PARALLEL
+  denial_code:
+    policy_id: HI-INDIV-S
+    code: PRE_EXISTING
+  must_contain:
+  - 'GH-NUSA-GRP\): pays IDR 13,700,000'
+  - 'HCP-RIDER-B\): fixed benefit IDR 1,200,000'
+  - legalised cop
+  - settlement letter
+kind: functional

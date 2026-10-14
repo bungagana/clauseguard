@@ -1,0 +1,24 @@
+id: T23
+title: 'Plan recommendation: never duplicate held indemnity cover'
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- which plan should we add for the family? we can afford 400k a month
+expected:
+  intent: PLAN_RECOMMENDATION
+  recommends_plans:
+  - CAT-TERM-01
+  - CAT-PA-01
+  not_recommends_plans:
+  - CAT-HI-01
+  - CAT-GTOPUP-01
+  - CAT-HCASH-01
+  recommendation_total_le: 400000
+  must_contain:
+  - licensed agent
+  - 312,000,000
+  - only duplicate|Indemnity cover does not stack|does not depend on employment
+  must_not_contain:
+  - "(Prudential|Allianz|AIA|Manulife|Sinarmas|Great Eastern|Zurich|Generali|AXA|Cigna|Tokio Marine|BCA Life|Sun Life|Allstate)\b"
+  no_tool_calls_of_tier_ge: 2
+kind: recommendation

@@ -1,0 +1,16 @@
+id: T15
+title: Document checklist after claim
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- I was hospitalised for dengue 3-7 Oct 2026, can I claim HCP?
+- What do I need to send?
+expected:
+  must_contain:
+  - original claim form
+  - receipt original or legalised
+  - medical resume
+  - prescription copy
+  - diagnostic results
+  - legalised cop(y|ies) of the itemised bill
+kind: functional

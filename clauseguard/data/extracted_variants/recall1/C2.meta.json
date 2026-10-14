@@ -1,0 +1,51 @@
+{
+ "refine_log": [
+  {
+   "id": "C2-t007",
+   "action": "repaired",
+   "why": "amount=250000 not in evidence: dropped"
+  }
+ ],
+ "verify_actions": 1,
+ "salvaged_rows": 0,
+ "recall_sentences": 6,
+ "added": 3,
+ "dropped": [
+  {
+   "row": {
+    "head": "POLICY",
+    "relation": "PERMITS",
+    "object": "PAID_UP_ADDITIONS_ELECTION",
+    "section": "6. POLICY DIVIDENDS",
+    "evidence_text": "\u25a1 Paid-Up Additions - Purchase additional insurance [Current selection: Paid-Up Additions]",
+    "confidence": 0.95
+   },
+   "error": "object 'PAID_UP_ADDITIONS_ELECTION' is not a permitted action",
+   "pass": "recall"
+  },
+  {
+   "row": {
+    "head": "POLICY",
+    "relation": "PERMITS",
+    "object": "REDUCED_PAID_UP_INSURANCE",
+    "section": "9. NON-FORFEITURE OPTIONS",
+    "evidence_text": "9.2 REDUCED PAID-UP INSURANCE: Continue coverage for a reduced death benefit with no further premiums required.",
+    "confidence": 0.95
+   },
+   "error": "object 'REDUCED_PAID_UP_INSURANCE' is not a permitted action",
+   "pass": "recall"
+  },
+  {
+   "row": {
+    "head": "POLICY",
+    "relation": "PERMITS",
+    "object": "EXTENDED_TERM_INSURANCE",
+    "section": "9. NON-FORFEITURE OPTIONS",
+    "evidence_text": "9.3 EXTENDED TERM INSURANCE: Continue the full face amount for a limited period based on cash value.",
+    "confidence": 0.95
+   },
+   "error": "object 'EXTENDED_TERM_INSURANCE' is not a permitted action",
+   "pass": "recall"
+  }
+ ]
+}

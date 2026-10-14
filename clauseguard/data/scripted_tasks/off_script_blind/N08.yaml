@@ -1,0 +1,10 @@
+id: N08
+title: Default beneficiary of the group life policy
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Who gets the money if Budi dies and we never named a beneficiary?
+expected:
+  must_contain:
+  - estate|legal heirs
+kind: blind

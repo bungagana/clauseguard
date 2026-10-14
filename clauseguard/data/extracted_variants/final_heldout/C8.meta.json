@@ -1,0 +1,23 @@
+{
+ "refine_log": [],
+ "verify_actions": 0,
+ "salvaged_rows": 0,
+ "recall_sentences": 10,
+ "added": 6,
+ "dropped": [
+  {
+   "row": {
+    "head": "POLICY",
+    "relation": "HAS_PERIOD",
+    "object": "CLAIM_SETTLEMENT_PERIOD",
+    "section": "ARTICLE II - DEATH BENEFIT PROVISIONS",
+    "evidence_text": "2.3 Payment will be made within 30 days of receiving complete documentation.",
+    "deadline_days": 30,
+    "period_kind": "CLAIM_PAYMENT",
+    "applies_if": []
+   },
+   "error": "object 'CLAIM_SETTLEMENT_PERIOD' is not a PeriodKind",
+   "pass": "recall"
+  }
+ ]
+}

@@ -1,0 +1,112 @@
+{
+ "model": "gemini-3.6-flash",
+ "models_used": [
+  "gemini-3.6-flash"
+ ],
+ "calls": 2,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "SECTION 1: POLICY OWNER AND INSURED",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S2",
+   "heading": "SECTION 2: COVERAGE DETAILS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S3",
+   "heading": "SECTION 3: BENEFICIARY DESIGNATION",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S4",
+   "heading": "SECTION 4: DEFINITIONS",
+   "kind": "DEFINITIONS",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S5",
+   "heading": "SECTION 5: DEATH BENEFIT",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S6",
+   "heading": "SECTION 6: PREMIUM PAYMENTS",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S7",
+   "heading": "SECTION 7: EXCLUSIONS",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S8",
+   "heading": "SECTION 8: CONVERSION PRIVILEGE",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S9",
+   "heading": "SECTION 9: CLAIMS PROCEDURE",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S10",
+   "heading": "SECTION 10: GENERAL PROVISIONS",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Death Benefit",
+   "canonical_event": "DEATH",
+   "definition": "The amount payable to the beneficiary upon the death of the insured during the policy term."
+  },
+  {
+   "term": "Premium Due Date",
+   "canonical_event": null,
+   "definition": "The 15th day of each month."
+  },
+  {
+   "term": "Grace Period",
+   "canonical_event": null,
+   "definition": "The 31-day period following the premium due date during which coverage continues without lapse."
+  },
+  {
+   "term": "Policy Anniversary",
+   "canonical_event": null,
+   "definition": "The same day and month as the issue date in each subsequent year."
+  }
+ ]
+}

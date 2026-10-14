@@ -1,0 +1,21 @@
+id: T04
+title: 'Cross-policy lookup: beneficiary and death of illness'
+persona: rizky
+as_of: '2026-09-21'
+turns:
+- Who is the beneficiary on my life policy and what happens if I die of illness?
+expected:
+  verdict:
+    policy_id: TL-ASTRA-07
+    verdict: COVERED
+  payable:
+    policy_id: TL-ASTRA-07
+    amount: 500000000
+  must_contain:
+  - Siti Rahayu \(mother\)
+  - IDR 500,000,000
+  - p_suicide_24m
+  - 90 hari sejak tanggal Tertanggung meninggal
+  - d_beneficiary
+  - p_filing_90d
+kind: functional

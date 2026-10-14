@@ -1,0 +1,24 @@
+{
+ "refine_log": [
+  {
+   "id": "C5-t004",
+   "action": "repaired",
+   "why": "amount=10000 not in evidence: dropped"
+  },
+  {
+   "id": "C5-t018",
+   "action": "removed",
+   "why": "evidence has no cue for PERMITS REINSTATEMENT"
+  },
+  {
+   "id": "C5-t023",
+   "action": "removed",
+   "why": "evidence has no cue for PERMITS REINSTATEMENT"
+  }
+ ],
+ "verify_actions": 2,
+ "salvaged_rows": 0,
+ "recall_sentences": 6,
+ "added": 2,
+ "dropped": []
+}

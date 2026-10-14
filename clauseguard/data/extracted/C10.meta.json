@@ -1,0 +1,162 @@
+{
+ "model": "gemini-3.7-flash",
+ "models_used": [
+  "gemini-3.7-flash"
+ ],
+ "calls": 3,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "POLICY OWNER AND INSURED",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S2",
+   "heading": "POLICY SPECIFICATIONS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S3",
+   "heading": "BENEFICIARY",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S4",
+   "heading": "ARTICLE 1 - KEY DEFINITIONS",
+   "kind": "DEFINITIONS",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S5",
+   "heading": "ARTICLE 2 - INDEXING OPTIONS AND ALLOCATION",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S6",
+   "heading": "ARTICLE 3 - HOW INDEX CREDITING WORKS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S7",
+   "heading": "ARTICLE 4 - PREMIUM FLEXIBILITY",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S8",
+   "heading": "ARTICLE 5 - MONTHLY POLICY CHARGES",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S9",
+   "heading": "ARTICLE 6 - DEATH BENEFIT OPTIONS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S10",
+   "heading": "ARTICLE 7 - LOANS AND WITHDRAWALS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S11",
+   "heading": "ARTICLE 8 - SURRENDER CHARGES",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S12",
+   "heading": "ARTICLE 9 - NO LAPSE GUARANTEE RIDER (OPTIONAL - NOT SELECTED)",
+   "kind": "RIDER",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S13",
+   "heading": "ARTICLE 10 - POLICY LAPSE AND GRACE PERIOD",
+   "kind": "PERIOD",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S14",
+   "heading": "ARTICLE 11 - EXCLUSIONS AND LIMITATIONS",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S15",
+   "heading": "ARTICLE 12 - IMPORTANT DISCLOSURES",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Index Account",
+   "canonical_event": null,
+   "definition": "An account where interest credits are based on the performance of a stock market index."
+  },
+  {
+   "term": "Fixed Account",
+   "canonical_event": null,
+   "definition": "An account earning a guaranteed fixed interest rate."
+  },
+  {
+   "term": "Cap Rate",
+   "canonical_event": null,
+   "definition": "The maximum interest rate that can be credited to an index account in any crediting period."
+  },
+  {
+   "term": "Floor Rate",
+   "canonical_event": null,
+   "definition": "The minimum interest rate (0%) that will be credited, protecting against market losses."
+  },
+  {
+   "term": "Participation Rate",
+   "canonical_event": null,
+   "definition": "The percentage of index gain that is credited to your account."
+  },
+  {
+   "term": "Point-to-Point Method",
+   "canonical_event": null,
+   "definition": "Interest crediting based on index change from beginning to end of crediting period (annual)."
+  }
+ ]
+}

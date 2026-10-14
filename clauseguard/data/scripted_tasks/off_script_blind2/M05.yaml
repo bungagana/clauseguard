@@ -1,0 +1,11 @@
+id: M05
+title: 'Indonesian: default beneficiary of the group life'
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Kalau tidak ada penerima manfaat yang ditunjuk, uang asuransi jiwa kantor Pak Budi
+  dibayarkan ke siapa?
+expected:
+  must_contain:
+  - legal heirs|estate|ahli waris
+kind: blind2

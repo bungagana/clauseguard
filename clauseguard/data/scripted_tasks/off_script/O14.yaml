@@ -1,0 +1,13 @@
+id: O14
+title: Future-dated surgery crosses a 12-month waiting period
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Sari is scheduled for hernia surgery on 20 November 2026. Will HI-INDIV-S pay?
+expected:
+  verdict:
+    policy_id: HI-INDIV-S
+    verdict: COVERED
+  must_contain:
+  - HI-INDIV-S
+kind: off_script

@@ -1,0 +1,89 @@
+{
+ "model": "gemini-3.7-flash",
+ "models_used": [
+  "gemini-3.7-flash"
+ ],
+ "calls": 2,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "INSURANCE KEY FEATURES",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 1,
+   "page_end": 1
+  },
+  {
+   "id": "S2",
+   "heading": "BENEFIT",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 1,
+   "page_end": 2
+  },
+  {
+   "id": "S3",
+   "heading": "RISK FEE",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": 3,
+   "page_end": 3
+  },
+  {
+   "id": "S4",
+   "heading": "EXCLUSIONS",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": 3,
+   "page_end": 4
+  },
+  {
+   "id": "S5",
+   "heading": "REQUIREMENTS & PROCEDURES",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": 5,
+   "page_end": 5
+  },
+  {
+   "id": "S6",
+   "heading": "Claim Document",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": 6,
+   "page_end": 6
+  },
+  {
+   "id": "S7",
+   "heading": "Claim Service and Complaint",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": 6,
+   "page_end": 6
+  },
+  {
+   "id": "S8",
+   "heading": "SIMULATION & ILLUSTRATION",
+   "kind": "GENERAL",
+   "has_rules": false,
+   "page_start": 6,
+   "page_end": 7
+  },
+  {
+   "id": "S9",
+   "heading": "DISCLAIMER (PLEASE READ):",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": 7,
+   "page_end": 7
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Deductible period",
+   "canonical_event": "OTHER",
+   "definition": "length of stay covered while at the hospital will be deducted of certain days depending on the choice of own risk on the policy"
+  }
+ ]
+}

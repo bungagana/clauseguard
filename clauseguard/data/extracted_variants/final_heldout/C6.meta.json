@@ -1,0 +1,33 @@
+{
+ "refine_log": [
+  {
+   "id": "C6-t014",
+   "action": "repaired",
+   "why": "age_max=59 not in evidence: dropped"
+  },
+  {
+   "id": "C6-t016",
+   "action": "repaired",
+   "why": "amount=250000 not in evidence: dropped"
+  }
+ ],
+ "verify_actions": 2,
+ "salvaged_rows": 0,
+ "recall_sentences": 8,
+ "added": 4,
+ "dropped": [
+  {
+   "row": {
+    "head": "POLICY",
+    "relation": "HAS_PERIOD",
+    "object": "CLAIM_PAYMENT_DEADLINE",
+    "section": "SECTION 10 - FILING A CLAIM",
+    "evidence_text": "10.4 Benefits will be paid within 10 business days of receipt of complete claim documentation.",
+    "deadline_days": 10,
+    "period_kind": "CLAIM_PAYMENT"
+   },
+   "error": "object 'CLAIM_PAYMENT_DEADLINE' is not a PeriodKind",
+   "pass": "recall"
+  }
+ ]
+}

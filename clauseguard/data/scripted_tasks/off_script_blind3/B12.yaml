@@ -1,0 +1,19 @@
+id: B12
+title: Dates corrected mid-flow on a fresh hospital-cash claim
+persona: rizky
+as_of: '2026-10-14'
+turns:
+- user: I was discharged today after dengue, I went in on 2026-10-11. Please handle my hospital cash claim.
+  expected:
+    must_contain:
+    - HCP-SOMPO-01
+- user: Wait, I got the date wrong, I was admitted on 2026-10-09.
+  expected:
+    must_contain:
+    - '2026-10-09'
+expected:
+  verdict:
+    policy_id: HCP-SOMPO-01
+    verdict: COVERED
+  no_tool_calls_of_tier_ge: 2
+kind: blind3

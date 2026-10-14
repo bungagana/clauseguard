@@ -1,0 +1,135 @@
+{
+ "model": "gemini-3.7-flash",
+ "models_used": [
+  "gemini-3.7-flash"
+ ],
+ "calls": 2,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "Fitur Utama",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": 1,
+   "page_end": 1
+  },
+  {
+   "id": "S2",
+   "heading": "Manfaat Produk, Risiko Produk dan Biaya-biaya",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 1,
+   "page_end": 1
+  },
+  {
+   "id": "S3",
+   "heading": "Pengecualian",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": 1,
+   "page_end": 1
+  },
+  {
+   "id": "S4",
+   "heading": "Persyaratan dan Tata Cara",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": 1,
+   "page_end": 1
+  },
+  {
+   "id": "S5",
+   "heading": "Dokumen Pengajuan Klaim Wajib",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": 2,
+   "page_end": 2
+  },
+  {
+   "id": "S6",
+   "heading": "Simulasi Produk",
+   "kind": "OTHER",
+   "has_rules": false,
+   "page_start": 2,
+   "page_end": 2
+  },
+  {
+   "id": "S7",
+   "heading": "Informasi Tambahan",
+   "kind": "DEFINITIONS",
+   "has_rules": true,
+   "page_start": 2,
+   "page_end": 3
+  },
+  {
+   "id": "S8",
+   "heading": "Aplikasi Layanan Nasabah Astra Life dalam Genggaman",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": 3,
+   "page_end": 3
+  },
+  {
+   "id": "S9",
+   "heading": "Layanan Pengaduan",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": 3,
+   "page_end": 3
+  },
+  {
+   "id": "S10",
+   "heading": "Penyelesaian Perselisihan",
+   "kind": "PROCEDURE",
+   "has_rules": true,
+   "page_start": 3,
+   "page_end": 3
+  },
+  {
+   "id": "S11",
+   "heading": "Pusat Informasi dan Layanan Pengaduan",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": 3,
+   "page_end": 3
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Anda",
+   "canonical_event": null,
+   "definition": "Individu yang mengadakan perjanjian asuransi sebagai Pemegang Polis dengan Kami."
+  },
+  {
+   "term": "Tertanggung",
+   "canonical_event": null,
+   "definition": "Individu yang namanya tercantum di dalam Polis sebagai pihak yang atas dirinya diadakan pertanggungan jiwa sesuai dengan perjanjian Polis. Tertanggung sekaligus menjadi Pemegang Polis."
+  },
+  {
+   "term": "Kami",
+   "canonical_event": null,
+   "definition": "PT ASURANSI JIWA ASTRA selaku Penanggung Manfaat Asuransi yang akan diterima sesuai dengan Polis."
+  },
+  {
+   "term": "Penerima Manfaat",
+   "canonical_event": null,
+   "definition": "Individu yang ditunjuk sebagai pihak yang berhak atas Manfaat Asuransi."
+  },
+  {
+   "term": "Polis",
+   "canonical_event": null,
+   "definition": "Perjanjian asuransi antara Anda dan Kami."
+  },
+  {
+   "term": "Uang Pertanggungan (UP)",
+   "canonical_event": null,
+   "definition": "Sejumlah nilai uang yang menjadi dasar perhitungan Manfaat Asuransi yang Kami bayarkan sesuai dengan syarat dan ketentuan Polis."
+  },
+  {
+   "term": "Premi",
+   "canonical_event": null,
+   "definition": "Sejumlah uang yang wajib dibayar oleh Anda kepada Kami yang merupakan syarat diadakannya perlindungan Asuransi atas diri Tertanggung."
+  }
+ ]
+}

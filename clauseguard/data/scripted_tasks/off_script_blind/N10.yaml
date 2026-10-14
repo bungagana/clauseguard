@@ -1,0 +1,13 @@
+id: N10
+title: Expired licence, renewal in process
+persona: dewi
+as_of: '2026-10-11'
+turns:
+- my SIM expired last week but renewal is in process, am I still covered by my PA if I crash?
+expected:
+  verdict:
+    policy_id: PA-CHUBB-03
+    verdict: DENIED
+  must_not_contain:
+  - 'PA-CHUBB-03\)?: Covered'
+kind: blind

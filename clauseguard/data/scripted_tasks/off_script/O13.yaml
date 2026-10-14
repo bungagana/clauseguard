@@ -1,0 +1,13 @@
+id: O13
+title: 'Plain Indonesian: daily hospital benefit'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- Berapa santunan harian rumah sakit saya?
+expected:
+  intent: POLICY_QA
+  must_contain:
+  - IDR 500,000/day
+  - c_hosp_daily
+  no_clarification: true
+kind: off_script

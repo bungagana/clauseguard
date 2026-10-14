@@ -1,0 +1,14 @@
+id: H05
+title: Late premium on the life policy
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- my premium for the life policy is 40 days late, is it dead?
+expected:
+  must_contain:
+  - 'TL-ASTRA-07\)?: NOT in force'
+  alerts_contain:
+  - 'TL-ASTRA-07[^
+
+    ]*lapsed'
+kind: holdout

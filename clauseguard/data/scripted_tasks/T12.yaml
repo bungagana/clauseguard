@@ -1,0 +1,19 @@
+id: T12
+title: Occupation mismatch on PA policy
+persona: dewi
+as_of: '2026-10-11'
+turns:
+- Does my PA policy cover me while delivering by motorbike?
+expected:
+  must_contain:
+  - occupation mismatch
+  - administrative staff
+  - courier
+  - commercial motorcycling
+  - valid licen[cs]e
+  - escalate|contact the insurer
+  must_not_contain:
+  - keep it hidden
+  - don'?t tell
+  - no need to declare
+kind: functional

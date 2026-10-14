@@ -1,0 +1,76 @@
+{"id": "icd-001", "text": "Demam Berdarah Dengue (DBD) derajat II", "gold": ["A91"], "lang": "id", "note": "demo PDF line"}
+{"id": "icd-002", "text": "Carcinoma mammae dextra (kanker payudara), stadium IIA", "gold": ["C50"], "lang": "mixed", "note": "demo PDF line; laterality + staging qualifiers"}
+{"id": "icd-003", "text": "Dengue hemorrhagic fever grade III with warning signs", "gold": ["A91"], "lang": "en"}
+{"id": "icd-004", "text": "Demam dengue tanpa tanda bahaya", "gold": ["A90"], "lang": "id", "note": "classical dengue, not DHF"}
+{"id": "icd-005", "text": "Infark miokard akut (STEMI) anterior", "gold": ["I21"], "lang": "id"}
+{"id": "icd-006", "text": "NSTEMI, Killip II", "gold": ["I21"], "lang": "abbr"}
+{"id": "icd-007", "text": "Acute myocardial infarction, inferior wall", "gold": ["I21"], "lang": "en"}
+{"id": "icd-008", "text": "Stroke iskemik, hemiparesis sinistra", "gold": ["I63"], "lang": "id"}
+{"id": "icd-009", "text": "Cerebral infarction due to thrombosis of right middle cerebral artery", "gold": ["I63"], "lang": "en"}
+{"id": "icd-010", "text": "Stroke hemoragik, perdarahan intraserebral lobus temporal kanan", "gold": ["I61"], "lang": "id"}
+{"id": "icd-011", "text": "Intracerebral haemorrhage, basal ganglia", "gold": ["I61"], "lang": "en"}
+{"id": "icd-012", "text": "Subarachnoid hemorrhage ec ruptured aneurysm", "gold": ["I60"], "lang": "en"}
+{"id": "icd-013", "text": "CKD stage V on hemodialisis rutin", "gold": ["N18"], "lang": "abbr"}
+{"id": "icd-014", "text": "Penyakit ginjal kronik stadium 5 (ESRD)", "gold": ["N18"], "lang": "id"}
+{"id": "icd-015", "text": "End stage renal disease", "gold": ["N18"], "lang": "en"}
+{"id": "icd-016", "text": "Gagal ginjal akut (AKI) prerenal", "gold": ["N17"], "lang": "id"}
+{"id": "icd-017", "text": "Demam tifoid", "gold": ["A01"], "lang": "id"}
+{"id": "icd-018", "text": "Typhoid fever, Widal positif", "gold": ["A01"], "lang": "mixed"}
+{"id": "icd-019", "text": "TB paru BTA positif, kasus baru", "gold": ["A15"], "lang": "id", "note": "ICD-10-CM has no A16; respiratory TB is A15"}
+{"id": "icd-020", "text": "Tuberkulosis paru dalam pengobatan OAT bulan ke-2", "gold": ["A15"], "lang": "id"}
+{"id": "icd-021", "text": "Apendisitis akut perforasi", "gold": ["K35"], "lang": "id"}
+{"id": "icd-022", "text": "Acute appendicitis with localized peritonitis", "gold": ["K35"], "lang": "en"}
+{"id": "icd-023", "text": "Diabetes mellitus tipe 2 dengan ulkus pedis dextra", "gold": ["E11"], "lang": "id"}
+{"id": "icd-024", "text": "DM tipe 2 tidak terkontrol", "gold": ["E11"], "lang": "abbr"}
+{"id": "icd-025", "text": "Type 1 diabetes mellitus with diabetic ketoacidosis", "gold": ["E10"], "lang": "en"}
+{"id": "icd-026", "text": "Hipertensi grade II", "gold": ["I10"], "lang": "id"}
+{"id": "icd-027", "text": "Essential hypertension", "gold": ["I10"], "lang": "en"}
+{"id": "icd-028", "text": "Pneumonia komunitas (CAP), PSI kelas III", "gold": ["J18"], "lang": "id"}
+{"id": "icd-029", "text": "Bronkopneumonia bilateral", "gold": ["J18"], "lang": "id"}
+{"id": "icd-030", "text": "COVID-19 terkonfirmasi, pneumonia berat", "gold": ["U07"], "lang": "mixed"}
+{"id": "icd-031", "text": "Karsinoma nasofaring (KNF) stadium III", "gold": ["C11"], "lang": "id"}
+{"id": "icd-032", "text": "Ca paru (adenokarsinoma) stadium IV dengan metastasis tulang", "gold": ["C34"], "lang": "mixed", "note": "primary site is the principal diagnosis; C79 (secondary) is the distractor"}
+{"id": "icd-033", "text": "Non-small cell lung cancer, right upper lobe", "gold": ["C34"], "lang": "en"}
+{"id": "icd-034", "text": "Kanker serviks stadium IIB", "gold": ["C53"], "lang": "id"}
+{"id": "icd-035", "text": "Adenokarsinoma kolon sigmoid", "gold": ["C18"], "lang": "id"}
+{"id": "icd-036", "text": "Hepatocellular carcinoma (HCC) dengan sirosis hati", "gold": ["C22"], "lang": "mixed", "note": "comorbid cirrhosis K74 is the distractor"}
+{"id": "icd-037", "text": "Acute lymphoblastic leukemia (ALL) L1", "gold": ["C91"], "lang": "en"}
+{"id": "icd-038", "text": "Limfoma non-Hodgkin difus sel B besar", "gold": ["C83"], "lang": "id"}
+{"id": "icd-039", "text": "Karsinoma tiroid papiler", "gold": ["C73"], "lang": "id"}
+{"id": "icd-040", "text": "Ca prostat, skor Gleason 7", "gold": ["C61"], "lang": "mixed"}
+{"id": "icd-041", "text": "Gagal jantung kongestif NYHA III", "gold": ["I50"], "lang": "id"}
+{"id": "icd-042", "text": "Congestive heart failure, EF 30%", "gold": ["I50"], "lang": "en"}
+{"id": "icd-043", "text": "Fibrilasi atrium dengan respon ventrikel cepat", "gold": ["I48"], "lang": "id"}
+{"id": "icd-044", "text": "Unstable angina pectoris", "gold": ["I20"], "lang": "en", "note": "not I21"}
+{"id": "icd-045", "text": "Coronary artery disease, three-vessel disease, post-CABG", "gold": ["I25"], "lang": "en"}
+{"id": "icd-046", "text": "Asma bronkial eksaserbasi akut", "gold": ["J45"], "lang": "id"}
+{"id": "icd-047", "text": "PPOK eksaserbasi akut", "gold": ["J44"], "lang": "abbr"}
+{"id": "icd-048", "text": "Batu empedu (kolelitiasis) dengan kolesistitis akut", "gold": ["K80"], "lang": "id"}
+{"id": "icd-049", "text": "Hepatitis B kronik aktif", "gold": ["B18"], "lang": "id"}
+{"id": "icd-050", "text": "Sirosis hepatis dekompensata dengan asites", "gold": ["K74"], "lang": "id"}
+{"id": "icd-051", "text": "Fraktur tertutup femur dextra 1/3 tengah", "gold": ["S72"], "lang": "id"}
+{"id": "icd-052", "text": "Benign prostatic hyperplasia dengan retensi urin", "gold": ["N40"], "lang": "mixed"}
+{"id": "icd-053", "text": "Sepsis ec pneumonia", "gold": ["A41", "J18"], "lang": "abbr", "note": "either the sepsis or its stated source is defensible"}
+{"id": "icd-054", "text": "Hipertiroid (penyakit Graves)", "gold": ["E05"], "lang": "id"}
+{"id": "icd-055", "text": "Malaria falciparum tanpa komplikasi", "gold": ["B50"], "lang": "id"}
+{"id": "icd-056", "text": "Thalassemia beta mayor, transfusi rutin", "gold": ["D56"], "lang": "mixed"}
+{"id": "icd-057", "text": "Peritonitis generalisata ec perforasi gaster", "gold": ["K25", "K65"], "lang": "id", "note": "perforated gastric ulcer or the resulting peritonitis"}
+{"id": "icd-058", "text": "Epilepsi umum tonik-klonik", "gold": ["G40"], "lang": "id"}
+{"id": "icd-059", "text": "Cedera kepala sedang (moderate head injury), GCS 11", "gold": ["S06"], "lang": "mixed"}
+{"id": "icd-060", "text": "Tumor otak (glioblastoma) lobus frontal", "gold": ["C71"], "lang": "id"}
+{"id": "icd-061", "text": "Ca ovarium stadium IIIC", "gold": ["C56"], "lang": "mixed"}
+{"id": "icd-062", "text": "Melanoma maligna kulit punggung", "gold": ["C43"], "lang": "id"}
+{"id": "icd-063", "text": "Carcinoma mammae sinistra post mastektomi, dalam kemoterapi", "gold": ["C50"], "lang": "mixed"}
+{"id": "icd-064", "text": "Acute kidney injury on chronic kidney disease", "gold": ["N17", "N18"], "lang": "en"}
+{"id": "icd-065", "text": "Demam", "gold": null, "lang": "id", "note": "bare symptom"}
+{"id": "icd-066", "text": "Infeksi", "gold": null, "lang": "id", "note": "vague"}
+{"id": "icd-067", "text": "Observasi febris hari ke-3", "gold": null, "lang": "id", "note": "symptom under observation"}
+{"id": "icd-068", "text": "Nyeri dada", "gold": null, "lang": "id", "note": "symptom"}
+{"id": "icd-069", "text": "Infeksi virus", "gold": null, "lang": "id", "note": "vague"}
+{"id": "icd-070", "text": "Penurunan kesadaran", "gold": null, "lang": "id", "note": "sign"}
+{"id": "icd-071", "text": "Dispepsia, hipertensi, vertigo", "gold": null, "lang": "id", "note": "three unrelated problems, no principal"}
+{"id": "icd-072", "text": "Demam tifoid dan tuberkulosis paru", "gold": null, "lang": "id", "note": "two unrelated diseases in one line"}
+{"id": "icd-073", "text": "Kontrol rutin pasca operasi", "gold": null, "lang": "id", "note": "no diagnosis"}
+{"id": "icd-074", "text": "Lemas dan mual", "gold": null, "lang": "id", "note": "symptoms"}
+{"id": "icd-075", "text": "Susp. keganasan, menunggu hasil PA", "gold": null, "lang": "id", "note": "suspicion pending histology"}
+{"id": "icd-076", "text": "Tumor abdomen, jenis belum diketahui", "gold": null, "lang": "id", "note": "unconfirmed"}

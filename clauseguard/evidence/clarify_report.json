@@ -1,0 +1,1035 @@
+{
+ "summary": {
+  "n_rows": 65,
+  "n_relevant": 30,
+  "n_irrelevant": 35,
+  "n_irrelevant_payable_only": 3,
+  "recall": 0.8666666666666667,
+  "silence": 1.0,
+  "ask_precision": 1.0,
+  "slot_accuracy": 1.0,
+  "n_asks": 26,
+  "n_rel_asks": 26,
+  "n_slot_ok": 26,
+  "missed_assumed_today": 3
+ },
+ "rows": [
+  {
+   "base": "B01",
+   "persona": "rizky",
+   "fragment": "dates",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"HCP-SOMPO-01\": \"COVERED\"}",
+    "{\"HCP-SOMPO-01\": \"DENIED\"}"
+   ],
+   "text": "I was admitted with typhoid to a private hospital that is not a BPJS partner. It was a planned admission. The bill was IDR 11,000,000. I was treated by Dr. Hadi. Can I claim?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": true,
+   "reply_head": "No event date was given, so I evaluated the policies as of 2026-10-11.\nSompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (i"
+  },
+  {
+   "base": "B01",
+   "persona": "rizky",
+   "fragment": "facility",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"DENIED\"}",
+    "{\"HCP-SOMPO-01\": \"DENIED\"}"
+   ],
+   "text": "I was admitted with typhoid from 25 to 28 August 2026 to . It was a planned admission. The bill was IDR 11,000,000. I was treated by Dr. Hadi. Can I claim?",
+   "asked_slot": "facility_bpjs_partner",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAIT"
+  },
+  {
+   "base": "B01",
+   "persona": "rizky",
+   "fragment": "emergency",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"COVERED\"}",
+    "{\"HCP-SOMPO-01\": \"DENIED\"}"
+   ],
+   "text": "I was admitted with typhoid from 25 to 28 August 2026 to a private hospital that is not a BPJS partner. The bill was IDR 11,000,000. I was treated by Dr. Hadi. Can I claim?",
+   "asked_slot": "is_emergency",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAIT"
+  },
+  {
+   "base": "B01",
+   "persona": "rizky",
+   "fragment": "bill",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"HCP-SOMPO-01\": \"DENIED\"}"
+   ],
+   "text": "I was admitted with typhoid from 25 to 28 August 2026 to a private hospital that is not a BPJS partner. It was a planned admission. I was treated by Dr. Hadi. Can I claim?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAIT"
+  },
+  {
+   "base": "B01",
+   "persona": "rizky",
+   "fragment": "doctor",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"HCP-SOMPO-01\": \"DENIED\"}"
+   ],
+   "text": "I was admitted with typhoid from 25 to 28 August 2026 to a private hospital that is not a BPJS partner. It was a planned admission. The bill was IDR 11,000,000. Can I claim?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the event falls inside the waiting period [WAIT"
+  },
+  {
+   "base": "B02",
+   "persona": "rizky",
+   "fragment": "dates",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "I fell off my motorbike and was hospitalised for 2 days at RSUD Soetomo, a BPJS partner hospital. No other vehicle was involved. My phone number is 0812-555-0101. Can I claim?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": true,
+   "reply_head": "No event date was given, so I evaluated the policies as of 2026-10-11.\nSompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (i"
+  },
+  {
+   "base": "B02",
+   "persona": "rizky",
+   "fragment": "days",
+   "relevant": false,
+   "payable_only": true,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "I fell off my motorbike and was hospitalised on 4 October 2026 for at RSUD Soetomo, a BPJS partner hospital. No other vehicle was involved. My phone number is 0812-555-0101. Can I claim?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative).\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"Th"
+  },
+  {
+   "base": "B02",
+   "persona": "rizky",
+   "fragment": "facility",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"CLARIFY\", \"HCP-SOMPO-01\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}",
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "I fell off my motorbike and was hospitalised on 4 October 2026 for 2 days at . No other vehicle was involved. My phone number is 0812-555-0101. Can I claim?",
+   "asked_slot": "facility_bpjs_partner",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 1,000,000.\n- Clause [HCP-SOMPO-01 B"
+  },
+  {
+   "base": "B02",
+   "persona": "rizky",
+   "fragment": "vehicles",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"COVERED\", \"JASA-RAHARJA\": \"COVERED\"}",
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "I fell off my motorbike and was hospitalised on 4 October 2026 for 2 days at RSUD Soetomo, a BPJS partner hospital. My phone number is 0812-555-0101. Can I claim?",
+   "asked_slot": "vehicles_involved",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 1,000,000.\n- Clause [HCP-SOMPO-01 B"
+  },
+  {
+   "base": "B02",
+   "persona": "rizky",
+   "fragment": "phone",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "I fell off my motorbike and was hospitalised on 4 October 2026 for 2 days at RSUD Soetomo, a BPJS partner hospital. No other vehicle was involved. Can I claim?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative). Indicative benefit: IDR 1,000,000.\n- Clause [HCP-SOMPO-01 B"
+  },
+  {
+   "base": "B03",
+   "persona": "rizky",
+   "fragment": "dates",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"CI-CHUBB-05\": \"COVERED\"}",
+    "{\"CI-CHUBB-05\": \"DENIED\"}"
+   ],
+   "text": "I was diagnosed with cancer and I am still alive today. My oncologist is Dr. Hadi. Does my critical illness policy pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Essential Critical Care (critical illness, modelled) (CI-CHUBB-05): Not covered (indicative). Reason: the survival period required after diagnosis was not met ["
+  },
+  {
+   "base": "B03",
+   "persona": "rizky",
+   "fragment": "alive",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"CI-CHUBB-05\": \"COVERED\"}",
+    "{\"CI-CHUBB-05\": \"DENIED\"}"
+   ],
+   "text": "I was diagnosed with cancer on 1 August 2026 and . My oncologist is Dr. Hadi. Does my critical illness policy pay?",
+   "asked_slot": "survival_days",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Essential Critical Care (critical illness, modelled) (CI-CHUBB-05): depends on one fact - if survival days = 0-29: not covered; if survival days = 30-31: covere"
+  },
+  {
+   "base": "B03",
+   "persona": "rizky",
+   "fragment": "doctor",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"CI-CHUBB-05\": \"COVERED\"}"
+   ],
+   "text": "I was diagnosed with cancer on 1 August 2026 and I am still alive today. Does my critical illness policy pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Essential Critical Care (critical illness, modelled) (CI-CHUBB-05): Covered (indicative). Indicative benefit: IDR 100,000,000.\n- Clause [CI-CHUBB-05 Benefits, c"
+  },
+  {
+   "base": "B04",
+   "persona": "rizky",
+   "fragment": "cause",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"TL-ASTRA-07\": \"COVERED\"}",
+    "{\"TL-ASTRA-07\": \"DENIED\"}"
+   ],
+   "text": "I died on 20 September 2026. My full name is Rizky Pratama. Will my life policy pay?",
+   "asked_slot": "cause",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Flexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): depends on one fact - if cause = illness: covered; if cause = accident: covered; if"
+  },
+  {
+   "base": "B04",
+   "persona": "rizky",
+   "fragment": "dates",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"TL-ASTRA-07\": \"COVERED\"}",
+    "{\"TL-ASTRA-07\": \"DENIED\"}"
+   ],
+   "text": "I died of illness . My full name is Rizky Pratama. Will my life policy pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": true,
+   "reply_head": "No event date was given, so I evaluated the policies as of 2026-10-11.\nFlexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): Not covered "
+  },
+  {
+   "base": "B04",
+   "persona": "rizky",
+   "fragment": "name",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"TL-ASTRA-07\": \"COVERED\"}"
+   ],
+   "text": "I died of illness on 20 September 2026. Will my life policy pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Flexi Life Protection (term life, yearly renewable to age 85) (TL-ASTRA-07): Covered (indicative). Indicative benefit: IDR 500,000,000.\n- Clause [TL-ASTRA-07 Ma"
+  },
+  {
+   "base": "B05",
+   "persona": "rizky",
+   "fragment": "dates",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"DENIED\"}"
+   ],
+   "text": "I was hospitalised for a hernia operation at RSUD Soetomo, a BPJS partner hospital. The bill was IDR 12,000,000. Can I claim?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": true,
+   "reply_head": "No event date was given, so I evaluated the policies as of 2026-10-11.\nSompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covere"
+  },
+  {
+   "base": "B05",
+   "persona": "rizky",
+   "fragment": "diagnosis",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"COVERED\"}",
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"DENIED\"}"
+   ],
+   "text": "I was hospitalised on 4 October 2026 for 4 days for at RSUD Soetomo, a BPJS partner hospital. The bill was IDR 12,000,000. Can I claim?",
+   "asked_slot": "cause",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Jaminan Kesehatan Nasional (JKN) (BPJS-KES-RIZKY): Covered (indicative).\n- Clause [BPJS-KES-RIZKY Manfaat 1 (modelled), c_inpatient_partner]: \"Inpatient care is"
+  },
+  {
+   "base": "B05",
+   "persona": "rizky",
+   "fragment": "facility",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"CLARIFY\", \"HCP-SOMPO-01\": \"DENIED\"}",
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"DENIED\"}"
+   ],
+   "text": "I was hospitalised on 4 October 2026 for 4 days for a hernia operation at . The bill was IDR 12,000,000. Can I claim?",
+   "asked_slot": "facility_bpjs_partner",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the diagnosis is on the specified-disease list "
+  },
+  {
+   "base": "B05",
+   "persona": "rizky",
+   "fragment": "bill",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"DENIED\"}"
+   ],
+   "text": "I was hospitalised on 4 October 2026 for 4 days for a hernia operation at RSUD Soetomo, a BPJS partner hospital. Can I claim?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Not covered (indicative). Reason: the diagnosis is on the specified-disease list "
+  },
+  {
+   "base": "B06",
+   "persona": "santoso",
+   "fragment": "facility",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}",
+    "{\"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}"
+   ],
+   "text": "Aditya was admitted for asthma on 6 October 2026 for 4 days at . It was a planned admission. The bill was IDR 18,000,000. Who pays?",
+   "asked_slot": "facility_bpjs_partner",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 6,000,000.\n- Clause [GH-NUSA-GRP Schedu"
+  },
+  {
+   "base": "B06",
+   "persona": "santoso",
+   "fragment": "emergency",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}",
+    "{\"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}"
+   ],
+   "text": "Aditya was admitted for asthma on 6 October 2026 for 4 days at Siloam, a private non-BPJS hospital. The bill was IDR 18,000,000. Who pays?",
+   "asked_slot": "is_emergency",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 6,000,000.\n- Clause [GH-NUSA-GRP Schedu"
+  },
+  {
+   "base": "B06",
+   "persona": "santoso",
+   "fragment": "bill",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}"
+   ],
+   "text": "Aditya was admitted for asthma on 6 October 2026 for 4 days at Siloam, a private non-BPJS hospital. It was a planned admission. Who pays?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 6,000,000.\n- Clause [GH-NUSA-GRP Schedu"
+  },
+  {
+   "base": "B07",
+   "persona": "santoso",
+   "fragment": "diagnosis",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"HI-INDIV-S\": \"COVERED\"}",
+    "{\"HI-INDIV-S\": \"DENIED\"}"
+   ],
+   "text": "Sari is scheduled for surgery on 20 November 2026. The hospital is Siloam Surabaya. Will her individual health policy HI-INDIV-S pay?",
+   "asked_slot": "cause",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Sehat Mandiri Individual Health (reimbursement) (HI-INDIV-S): depends on one fact - if cause = suicide: not covered; if cause = intoxication: not covered.\nOne q"
+  },
+  {
+   "base": "B07",
+   "persona": "santoso",
+   "fragment": "dates",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"HI-INDIV-S\": \"COVERED\"}",
+    "{\"HI-INDIV-S\": \"DENIED\"}"
+   ],
+   "text": "Sari is scheduled for hernia surgery . The hospital is Siloam Surabaya. Will her individual health policy HI-INDIV-S pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": true,
+   "reply_head": "No event date was given, so I evaluated the policies as of 2026-10-11.\nSehat Mandiri Individual Health (reimbursement) (HI-INDIV-S): Not covered (indicative). R"
+  },
+  {
+   "base": "B07",
+   "persona": "santoso",
+   "fragment": "hospital_name",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"HI-INDIV-S\": \"COVERED\"}"
+   ],
+   "text": "Sari is scheduled for hernia surgery on 20 November 2026. Will her individual health policy HI-INDIV-S pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Sehat Mandiri Individual Health (reimbursement) (HI-INDIV-S): Covered (indicative).\n- Clause [HI-INDIV-S Schedule of Benefits, 2, c_surgery]: \"Surgical charges:"
+  },
+  {
+   "base": "B08",
+   "persona": "santoso",
+   "fragment": "cause",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"GL-NUSA-GRP\": \"COVERED\"}",
+    "{\"GL-NUSA-GRP\": \"DENIED\"}"
+   ],
+   "text": "Budi died on 6 October 2026. His full name was Budi Santoso. Will the group life policy GL-NUSA-GRP pay?",
+   "asked_slot": "cause",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Term Life (24 x salary) (GL-NUSA-GRP): depends on one fact - if cause = illness: covered; if cause = accident: covered; if cause = suicide: not "
+  },
+  {
+   "base": "B08",
+   "persona": "santoso",
+   "fragment": "name",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"GL-NUSA-GRP\": \"COVERED\"}"
+   ],
+   "text": "Budi died of illness on 6 October 2026. Will the group life policy GL-NUSA-GRP pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Term Life (24 x salary) (GL-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 288,000,000.\n- Clause [GL-NUSA-GRP Schedule, 1, c_death]: \""
+  },
+  {
+   "base": "B09",
+   "persona": "santoso",
+   "fragment": "days",
+   "relevant": false,
+   "payable_only": true,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "Nadia fell and was hospitalised on 4 October 2026 for at RSUD Soetomo, a BPJS partner hospital. We call her Nad. Who pays?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative).\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room a"
+  },
+  {
+   "base": "B09",
+   "persona": "santoso",
+   "fragment": "facility",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"CLARIFY\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}",
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "Nadia fell and was hospitalised on 4 October 2026 for 2 days at . We call her Nad. Who pays?",
+   "asked_slot": "facility_bpjs_partner",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 3,000,000.\n- Clause [GH-NUSA-GRP Schedu"
+  },
+  {
+   "base": "B09",
+   "persona": "santoso",
+   "fragment": "nickname",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "Nadia fell and was hospitalised on 4 October 2026 for 2 days at RSUD Soetomo, a BPJS partner hospital. Who pays?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 3,000,000.\n- Clause [GH-NUSA-GRP Schedu"
+  },
+  {
+   "base": "B10",
+   "persona": "dewi",
+   "fragment": "vehicles",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-DEWI\": \"DENIED\", \"JASA-RAHARJA\": \"COVERED\", \"PA-CHUBB-03\": \"DENIED\", \"PLATFORM-ACC\": \"COVERED\"}",
+    "{\"BPJS-KES-DEWI\": \"DENIED\", \"JASA-RAHARJA\": \"DENIED\", \"PA-CHUBB-03\": \"DENIED\", \"PLATFORM-ACC\": \"COVERED\"}"
+   ],
+   "text": "I had an accident on 6 October 2026 I was on an active delivery order. My licence had expired. I was hospitalised for 6 days at RS Bhayangkara, a BPJS partner hospital. The bill was IDR 22,000,000. Who pays?",
+   "asked_slot": "vehicles_involved",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Essential Plus Personal Accident (PA-CHUBB-03): Not covered (indicative). Reason: riding without a valid driving licence is excluded [NO_VALID_LICENSE].\n- Claus"
+  },
+  {
+   "base": "B10",
+   "persona": "dewi",
+   "fragment": "work",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-DEWI\": \"DENIED\", \"JASA-RAHARJA\": \"COVERED\", \"PA-CHUBB-03\": \"DENIED\", \"PLATFORM-ACC\": \"COVERED\"}",
+    "{\"BPJS-KES-DEWI\": \"DENIED\", \"JASA-RAHARJA\": \"COVERED\", \"PA-CHUBB-03\": \"DENIED\"}"
+   ],
+   "text": "I had an accident on 6 October 2026 when another car hit me. My licence had expired. I was hospitalised for 6 days at RS Bhayangkara, a BPJS partner hospital. The bill was IDR 22,000,000. Who pays?",
+   "asked_slot": "work_related",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Essential Plus Personal Accident (PA-CHUBB-03): Not covered (indicative). Reason: riding without a valid driving licence is excluded [NO_VALID_LICENSE].\n- Claus"
+  },
+  {
+   "base": "B10",
+   "persona": "dewi",
+   "fragment": "licence",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-DEWI\": \"DENIED\", \"JASA-RAHARJA\": \"COVERED\", \"PA-CHUBB-03\": \"CLARIFY\", \"PLATFORM-ACC\": \"COVERED\"}",
+    "{\"BPJS-KES-DEWI\": \"DENIED\", \"JASA-RAHARJA\": \"COVERED\", \"PA-CHUBB-03\": \"DENIED\", \"PLATFORM-ACC\": \"COVERED\"}"
+   ],
+   "text": "I had an accident on 6 October 2026 when another car hit me. I was on an active delivery order. I was hospitalised for 6 days at RS Bhayangkara, a BPJS partner hospital. The bill was IDR 22,000,000. Who pays?",
+   "asked_slot": "license_valid",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Driver-partner on-trip accident protection (PLATFORM-ACC): Covered (indicative). Indicative benefit: IDR 5,000,000.\n- Clause [PLATFORM-ACC Benefits, 2, c_medica"
+  },
+  {
+   "base": "B10",
+   "persona": "dewi",
+   "fragment": "days",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-DEWI\": \"DENIED\", \"JASA-RAHARJA\": \"COVERED\", \"PA-CHUBB-03\": \"DENIED\", \"PLATFORM-ACC\": \"COVERED\"}"
+   ],
+   "text": "I had an accident on 6 October 2026 when another car hit me. I was on an active delivery order. My licence had expired. I was hospitalised for at RS Bhayangkara, a BPJS partner hospital. The bill was IDR 22,000,000. Who pays?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Essential Plus Personal Accident (PA-CHUBB-03): Not covered (indicative). Reason: riding without a valid driving licence is excluded [NO_VALID_LICENSE].\n- Claus"
+  },
+  {
+   "base": "B10",
+   "persona": "dewi",
+   "fragment": "bill",
+   "relevant": false,
+   "payable_only": true,
+   "oracle_vectors": [
+    "{\"BPJS-KES-DEWI\": \"DENIED\", \"JASA-RAHARJA\": \"COVERED\", \"PA-CHUBB-03\": \"DENIED\", \"PLATFORM-ACC\": \"COVERED\"}"
+   ],
+   "text": "I had an accident on 6 October 2026 when another car hit me. I was on an active delivery order. My licence had expired. I was hospitalised for 6 days at RS Bhayangkara, a BPJS partner hospital. Who pays?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Essential Plus Personal Accident (PA-CHUBB-03): Not covered (indicative). Reason: riding without a valid driving licence is excluded [NO_VALID_LICENSE].\n- Claus"
+  },
+  {
+   "base": "B11",
+   "persona": "dewi",
+   "fragment": "dates",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-DEWI\": \"DENIED\"}"
+   ],
+   "text": "I was admitted with typhoid to a BPJS partner hospital. My name is Dewi Lestari. Can I claim from BPJS?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": true,
+   "reply_head": "No event date was given, so I evaluated the policies as of 2026-10-11.\nJaminan Kesehatan Nasional (JKN) (BPJS-KES-DEWI): Not covered (indicative). Reason: the p"
+  },
+  {
+   "base": "B11",
+   "persona": "dewi",
+   "fragment": "facility",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-DEWI\": \"CLARIFY\"}",
+    "{\"BPJS-KES-DEWI\": \"DENIED\"}"
+   ],
+   "text": "I was admitted with typhoid on 9 October 2026 to . My name is Dewi Lestari. Can I claim from BPJS?",
+   "asked_slot": "facility_bpjs_partner",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Jaminan Kesehatan Nasional (JKN) (BPJS-KES-DEWI): depends on one fact - if facility bpjs partner = yes: not covered.\nOne question before I can answer: Is the ho"
+  },
+  {
+   "base": "B11",
+   "persona": "dewi",
+   "fragment": "name",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-DEWI\": \"DENIED\"}"
+   ],
+   "text": "I was admitted with typhoid on 9 October 2026 to a BPJS partner hospital. Can I claim from BPJS?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Jaminan Kesehatan Nasional (JKN) (BPJS-KES-DEWI): Not covered (indicative). Reason: the policy was not in force (premium unpaid beyond the grace period) [LAPSED"
+  },
+  {
+   "base": "B12",
+   "persona": "dewi",
+   "fragment": "work",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{}"
+   ],
+   "text": "I collided with a car on 6 October 2026 and my licence had expired. My phone number is 0812-555-0303. Will the platform cover PLATFORM-ACC pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Not determinable from your documents: no extracted clause addresses this. I can schedule a call-back with the insurer (this needs your confirmation).\nIndicative"
+  },
+  {
+   "base": "B12",
+   "persona": "dewi",
+   "fragment": "licence",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{}"
+   ],
+   "text": "I collided with a car while delivering an order on 6 October 2026 and My phone number is 0812-555-0303. Will the platform cover PLATFORM-ACC pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Driver-partner on-trip accident protection (PLATFORM-ACC) covers accidental death: IDR 50,000,000 [c_death_on_trip].\nDriver-partner on-trip accident protection "
+  },
+  {
+   "base": "B12",
+   "persona": "dewi",
+   "fragment": "phone",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{}"
+   ],
+   "text": "I collided with a car while delivering an order on 6 October 2026 and my licence had expired. Will the platform cover PLATFORM-ACC pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Driver-partner on-trip accident protection (PLATFORM-ACC) covers accidental death: IDR 50,000,000 [c_death_on_trip].\nDriver-partner on-trip accident protection "
+  },
+  {
+   "base": "B14",
+   "persona": "santoso",
+   "fragment": "dates",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "Aditya fell from his bike on . No other vehicle was involved. He was taken to RSUD Soetomo, a BPJS partner hospital. The bill was IDR 15,000,000. Who pays the hospital?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": true,
+   "reply_head": "No event date was given, so I evaluated the policies as of 2026-10-11.\nNusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indic"
+  },
+  {
+   "base": "B14",
+   "persona": "santoso",
+   "fragment": "vehicles",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"COVERED\", \"JASA-RAHARJA\": \"COVERED\"}",
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "Aditya fell from his bike on 6 October 2026 and was hospitalised for 3 days. He was taken to RSUD Soetomo, a BPJS partner hospital. The bill was IDR 15,000,000. Who pays the hospital?",
+   "asked_slot": "vehicles_involved",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 4,500,000.\n- Clause [GH-NUSA-GRP Schedu"
+  },
+  {
+   "base": "B14",
+   "persona": "santoso",
+   "fragment": "facility",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"CLARIFY\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}",
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "Aditya fell from his bike on 6 October 2026 and was hospitalised for 3 days. No other vehicle was involved. The bill was IDR 15,000,000. Who pays the hospital?",
+   "asked_slot": "facility_bpjs_partner",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 4,500,000.\n- Clause [GH-NUSA-GRP Schedu"
+  },
+  {
+   "base": "B14",
+   "persona": "santoso",
+   "fragment": "bill",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"COVERED\", \"JASA-RAHARJA\": \"DENIED\"}"
+   ],
+   "text": "Aditya fell from his bike on 6 October 2026 and was hospitalised for 3 days. No other vehicle was involved. He was taken to RSUD Soetomo, a BPJS partner hospital. Who pays the hospital?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 4,500,000.\n- Clause [GH-NUSA-GRP Schedu"
+  },
+  {
+   "base": "B16",
+   "persona": "rizky",
+   "fragment": "dates",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{}"
+   ],
+   "text": "I will be hospitalised for dengue at RSUD Soetomo, a BPJS partner hospital. My friends call me Riz. Will my policies pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "I can schedule a call-back (next business day). Please confirm in the interface; nothing is booked until then."
+  },
+  {
+   "base": "B16",
+   "persona": "rizky",
+   "fragment": "cause",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{}"
+   ],
+   "text": "I will be hospitalised tomorrow at RSUD Soetomo, a BPJS partner hospital. My friends call me Riz. Will my policies pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "I can schedule a call-back (tomorrow at RSUD Soetomo, a). Please confirm in the interface; nothing is booked until then."
+  },
+  {
+   "base": "B16",
+   "persona": "rizky",
+   "fragment": "facility",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{}"
+   ],
+   "text": "I will be hospitalised tomorrow for dengue at . My friends call me Riz. Will my policies pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "I can schedule a call-back (tomorrow for dengue at . My). Please confirm in the interface; nothing is booked until then."
+  },
+  {
+   "base": "B16",
+   "persona": "rizky",
+   "fragment": "nickname",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{}"
+   ],
+   "text": "I will be hospitalised tomorrow for dengue at RSUD Soetomo, a BPJS partner hospital. Will my policies pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative).\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"Th"
+  },
+  {
+   "base": "B17",
+   "persona": "santoso",
+   "fragment": "diagnosis",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"CLARIFY\", \"HCP-RIDER-B\": \"CLARIFY\", \"HI-INDIV-S\": \"CLARIFY\"}",
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}"
+   ],
+   "text": "Aditya was admitted for on 6 October 2026 for 4 days at Siloam, a private non-BPJS hospital, as an emergency. The pediatrician is Dr. Sari. The ward is Melati. Who pays?",
+   "asked_slot": "cause",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Jaminan Kesehatan Nasional (JKN) (BPJS-KES-SANTOSO): Covered (indicative).\n- Clause [BPJS-KES-SANTOSO Manfaat 1 (modelled), c_inpatient_emergency]: \"In an emerg"
+  },
+  {
+   "base": "B17",
+   "persona": "santoso",
+   "fragment": "doctor",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}"
+   ],
+   "text": "Aditya was admitted for asthma on 6 October 2026 for 4 days at Siloam, a private non-BPJS hospital, as an emergency. The ward is Melati. Who pays?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 6,000,000.\n- Clause [GH-NUSA-GRP Schedu"
+  },
+  {
+   "base": "B17",
+   "persona": "santoso",
+   "fragment": "hospital_name",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}"
+   ],
+   "text": "Aditya was admitted for asthma on 6 October 2026 for 4 days at Siloam, a private non-BPJS hospital, as an emergency. The pediatrician is Dr. Sari. Who pays?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative). Indicative benefit: IDR 6,000,000.\n- Clause [GH-NUSA-GRP Schedu"
+  },
+  {
+   "base": "B18",
+   "persona": "santoso",
+   "fragment": "diagnosis",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}",
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"DENIED\", \"HI-INDIV-S\": \"COVERED\"}"
+   ],
+   "text": "Sari was hospitalised on 20 February 2026 for at RSUD Soetomo, a BPJS partner hospital. She is 36 years old. Her doctor is Dr. Anton. Does her individual policy HI-INDIV-S pay?",
+   "asked_slot": "cause",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Jaminan Kesehatan Nasional (JKN) (BPJS-KES-SANTOSO): Covered (indicative).\n- Clause [BPJS-KES-SANTOSO Manfaat 1 (modelled), c_inpatient_partner]: \"Inpatient car"
+  },
+  {
+   "base": "B18",
+   "persona": "santoso",
+   "fragment": "facility",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"CLARIFY\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}",
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}"
+   ],
+   "text": "Sari was hospitalised on 20 February 2026 for a hernia operation at . She is 36 years old. Her doctor is Dr. Anton. Does her individual policy HI-INDIV-S pay?",
+   "asked_slot": "facility_bpjs_partner",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative).\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room a"
+  },
+  {
+   "base": "B18",
+   "persona": "santoso",
+   "fragment": "age",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}"
+   ],
+   "text": "Sari was hospitalised on 20 February 2026 for a hernia operation at RSUD Soetomo, a BPJS partner hospital. Her doctor is Dr. Anton. Does her individual policy HI-INDIV-S pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative).\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room a"
+  },
+  {
+   "base": "B18",
+   "persona": "santoso",
+   "fragment": "doctor",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\", \"HI-INDIV-S\": \"DENIED\"}"
+   ],
+   "text": "Sari was hospitalised on 20 February 2026 for a hernia operation at RSUD Soetomo, a BPJS partner hospital. She is 36 years old. Does her individual policy HI-INDIV-S pay?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative).\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room a"
+  },
+  {
+   "base": "B19",
+   "persona": "santoso",
+   "fragment": "diagnosis",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\"}",
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"DENIED\", \"HCP-RIDER-B\": \"DENIED\"}"
+   ],
+   "text": "Budi was hospitalised on 6 October 2026 for at RSUD Soetomo, a BPJS partner hospital. It was a planned admission. He is 38 years old. His doctor is Dr. Anton. Who pays?",
+   "asked_slot": "cause",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Jaminan Kesehatan Nasional (JKN) (BPJS-KES-SANTOSO): Covered (indicative).\n- Clause [BPJS-KES-SANTOSO Manfaat 1 (modelled), c_inpatient_partner]: \"Inpatient car"
+  },
+  {
+   "base": "B19",
+   "persona": "santoso",
+   "fragment": "facility",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\"}",
+    "{\"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\"}"
+   ],
+   "text": "Budi was hospitalised on 6 October 2026 for dengue at . It was a planned admission. He is 38 years old. His doctor is Dr. Anton. Who pays?",
+   "asked_slot": "facility_bpjs_partner",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative).\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room a"
+  },
+  {
+   "base": "B19",
+   "persona": "santoso",
+   "fragment": "emergency",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\"}"
+   ],
+   "text": "Budi was hospitalised on 6 October 2026 for dengue at RSUD Soetomo, a BPJS partner hospital. He is 38 years old. His doctor is Dr. Anton. Who pays?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative).\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room a"
+  },
+  {
+   "base": "B19",
+   "persona": "santoso",
+   "fragment": "age",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\"}"
+   ],
+   "text": "Budi was hospitalised on 6 October 2026 for dengue at RSUD Soetomo, a BPJS partner hospital. It was a planned admission. His doctor is Dr. Anton. Who pays?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative).\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room a"
+  },
+  {
+   "base": "B19",
+   "persona": "santoso",
+   "fragment": "doctor",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-SANTOSO\": \"COVERED\", \"GH-NUSA-GRP\": \"COVERED\", \"HCP-RIDER-B\": \"COVERED\"}"
+   ],
+   "text": "Budi was hospitalised on 6 October 2026 for dengue at RSUD Soetomo, a BPJS partner hospital. It was a planned admission. He is 38 years old. Who pays?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Nusantara Group Health (employer plan, cashless network N1) (GH-NUSA-GRP): Covered (indicative).\n- Clause [GH-NUSA-GRP Schedule of Benefits, 1, c_room]: \"Room a"
+  },
+  {
+   "base": "B20",
+   "persona": "rizky",
+   "fragment": "cause",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"COVERED\"}",
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"DENIED\"}"
+   ],
+   "text": "I was hospitalised in the ICU on 4 October 2026 at RSUD Soetomo, a BPJS partner hospital. The ward is Melati. Can I claim?",
+   "asked_slot": "cause",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Jaminan Kesehatan Nasional (JKN) (BPJS-KES-RIZKY): Covered (indicative).\n- Clause [BPJS-KES-RIZKY Manfaat 1 (modelled), c_inpatient_partner]: \"Inpatient care is"
+  },
+  {
+   "base": "B20",
+   "persona": "rizky",
+   "fragment": "facility",
+   "relevant": true,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"CLARIFY\", \"HCP-SOMPO-01\": \"COVERED\"}",
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"COVERED\"}"
+   ],
+   "text": "I was hospitalised in the ICU on 4 October 2026 with dengue at . The ward is Melati. Can I claim?",
+   "asked_slot": "facility_bpjs_partner",
+   "slot_ok": true,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative).\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"Th"
+  },
+  {
+   "base": "B20",
+   "persona": "rizky",
+   "fragment": "hospital_name",
+   "relevant": false,
+   "payable_only": false,
+   "oracle_vectors": [
+    "{\"BPJS-KES-RIZKY\": \"COVERED\", \"HCP-SOMPO-01\": \"COVERED\"}"
+   ],
+   "text": "I was hospitalised in the ICU on 4 October 2026 with dengue at RSUD Soetomo, a BPJS partner hospital. Can I claim?",
+   "asked_slot": null,
+   "slot_ok": null,
+   "assumed_today": false,
+   "reply_head": "Sompo Health Insurance Hospital Care Plan (Hospital Cash Plan) (HCP-SOMPO-01): Covered (indicative).\n- Clause [HCP-SOMPO-01 Benefits, Art. 1, c_hosp_daily]: \"Th"
+  }
+ ],
+ "invalid": [
+  {
+   "base": "B13",
+   "reason": "the complete message already triggers a question or an open verdict (occupation_class)",
+   "text": "I had an accident on 9 October 2026 when a car hit me and my licence is valid. I went to RS Bhayangkara. Will Jasa Raharja pay?"
+  },
+  {
+   "base": "B15",
+   "reason": "the complete message already triggers a question or an open verdict (occupation_class)",
+   "text": "I died in a road accident when a car hit my motorbike. I was on an active delivery order. My licence was valid. My family contact number is 0812-555-0505. Which of my policies pay my family?"
+  }
+ ]
+}

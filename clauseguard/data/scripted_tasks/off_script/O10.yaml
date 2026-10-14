@@ -1,0 +1,12 @@
+id: O10
+title: Single-vehicle fall, negated 'no other vehicle'
+persona: dewi
+as_of: '2026-10-11'
+turns:
+- I fell off my bike alone yesterday, no other vehicle, my licence is valid. is Jasa Raharja going to pay?
+expected:
+  intent: CLAIM_GUIDANCE
+  verdict:
+    policy_id: JASA-RAHARJA
+    verdict: DENIED
+kind: off_script

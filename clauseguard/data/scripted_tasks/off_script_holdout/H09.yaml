@@ -1,0 +1,13 @@
+id: H09
+title: Cosmetic surgery on the group plan
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- does my company plan pay for a nose job (cosmetic surgery)?
+expected:
+  verdict:
+    policy_id: GH-NUSA-GRP
+    verdict: DENIED
+  must_contain:
+  - x_cosmetic
+kind: holdout

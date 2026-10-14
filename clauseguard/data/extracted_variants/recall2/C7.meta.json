@@ -1,0 +1,91 @@
+{
+ "refine_log": [
+  {
+   "id": "C7-t001",
+   "action": "repaired",
+   "why": "amount=750000 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t013",
+   "action": "repaired",
+   "why": "age_max=25 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t015",
+   "action": "repaired",
+   "why": "window 90 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t024",
+   "action": "repaired",
+   "why": "age_max=70 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t028",
+   "action": "repaired",
+   "why": "amount=500000 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t029",
+   "action": "repaired",
+   "why": "amount=375000 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t030",
+   "action": "repaired",
+   "why": "amount=15000 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t031",
+   "action": "repaired",
+   "why": "amount=750000 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t032",
+   "action": "repaired",
+   "why": "amount=100000 not in evidence: dropped"
+  }
+ ],
+ "verify_actions": 9,
+ "salvaged_rows": 3,
+ "recall_sentences": 8,
+ "added": 6,
+ "dropped": [
+  {
+   "row": {
+    "head": "POLICY",
+    "relation": "HAS_PERIOD",
+    "object": "INCONTESTABILITY_PERIOD",
+    "section": "SECTION 5: INCONTESTABILITY",
+    "evidence_text": "2 years during the insured's lifetime, except for non-payment of premiums.",
+    "window_len": 2,
+    "window_unit": "YEARS",
+    "period_kind": "INCONTESTABILITY"
+   },
+   "error": "object 'INCONTESTABILITY_PERIOD' is not a PeriodKind",
+   "pass": "recall"
+  },
+  {
+   "row": {
+    "head": "POLICY",
+    "relation": "EXCEPTS",
+    "object": "NON_PAYMENT_OF_PREMIUM",
+    "section": "SECTION 5: INCONTESTABILITY",
+    "evidence_text": "2 years during the insured's lifetime, except for non-payment of premiums."
+   },
+   "error": "EXCEPTS object must be '#<row>' (got 'NON_PAYMENT_OF_PREMIUM')",
+   "pass": "recall"
+  },
+  {
+   "row": {
+    "head": "POLICY",
+    "relation": "EXCEPTS",
+    "object": "AVIATION",
+    "section": "SECTION 6: AVIATION EXCLUSION WAIVER",
+    "evidence_text": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 The standard aviation exclusion has been waived for this policy based on the insured's declared private pilot activities."
+   },
+   "error": "EXCEPTS object must be '#<row>' (got 'AVIATION')",
+   "pass": "recall"
+  }
+ ]
+}

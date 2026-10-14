@@ -1,0 +1,214 @@
+{
+ "_doc": "Per-scenario hand corrections. 'in_solver_scope': whether the question is a coverage/exclusion/period/rider/termination/permitted-action question the solver can answer (false -> B0CW fallback, flagged). 'slots': values that override the LLM FactSheet binding (tier USER). 'unbind': slots to drop. 'note': why.",
+ "SCEN-001": {
+  "in_solver_scope": true
+ },
+ "SCEN-002": {
+  "in_solver_scope": true
+ },
+ "SCEN-003": {
+  "in_solver_scope": true
+ },
+ "SCEN-004": {
+  "in_solver_scope": true
+ },
+ "SCEN-005": {
+  "in_solver_scope": true,
+  "slots": {
+   "event": "DEATH"
+  },
+  "note": "category GRADED_BENEFIT_ACCIDENTAL_DEATH_EXCEPTION: the question is the base death benefit (graded schedule) for an accidental cause; the model bound the ADB-rider event"
+ },
+ "SCEN-006": {
+  "in_solver_scope": true
+ },
+ "SCEN-007": {
+  "in_solver_scope": true
+ },
+ "SCEN-008": {
+  "in_solver_scope": true
+ },
+ "SCEN-009": {
+  "in_solver_scope": true
+ },
+ "SCEN-010": {
+  "in_solver_scope": true
+ },
+ "SCEN-011": {
+  "in_solver_scope": true
+ },
+ "SCEN-012": {
+  "in_solver_scope": true
+ },
+ "SCEN-013": {
+  "in_solver_scope": true
+ },
+ "SCEN-014": {
+  "in_solver_scope": false,
+  "note": "flexible-premium mechanics (skipping a premium while charges are covered); no event in the solver vocabulary"
+ },
+ "SCEN-015": {
+  "in_solver_scope": true
+ },
+ "SCEN-016": {
+  "in_solver_scope": true
+ },
+ "SCEN-017": {
+  "in_solver_scope": true
+ },
+ "SCEN-018": {
+  "in_solver_scope": true,
+  "slots": {
+   "cause": "AVIATION"
+  },
+  "note": "model bound pilot_role but left cause null; the text states death while operating an aircraft"
+ },
+ "SCEN-019": {
+  "in_solver_scope": true
+ },
+ "SCEN-020": {
+  "in_solver_scope": false,
+  "note": "misstatement-of-age adjustment is a provision/benefit-recalculation question, not coverage"
+ },
+ "SCEN-021": {
+  "in_solver_scope": true
+ },
+ "SCEN-022": {
+  "in_solver_scope": false,
+  "note": "death-benefit option selection (product mechanics)"
+ },
+ "SCEN-023": {
+  "in_solver_scope": false,
+  "note": "index crediting floor (product mechanics)"
+ },
+ "SCEN-024": {
+  "in_solver_scope": false,
+  "note": "underwriting at application (no policy event)"
+ },
+ "SCEN-025": {
+  "in_solver_scope": true
+ },
+ "SCEN-026": {
+  "in_solver_scope": true
+ },
+ "SCEN-027": {
+  "in_solver_scope": false,
+  "note": "dividend options"
+ },
+ "SCEN-028": {
+  "in_solver_scope": true
+ },
+ "SCEN-029": {
+  "in_solver_scope": true
+ },
+ "SCEN-030": {
+  "in_solver_scope": true
+ },
+ "SCEN-031": {
+  "in_solver_scope": false,
+  "note": "estate planning / ILIT ownership"
+ },
+ "SCEN-032": {
+  "in_solver_scope": false,
+  "note": "premium load (charges)"
+ },
+ "SCEN-033": {
+  "in_solver_scope": false,
+  "note": "guaranteed insurability option: no event in the solver vocabulary"
+ },
+ "SCEN-034": {
+  "in_solver_scope": false,
+  "note": "salary-based benefit recalculation (product mechanics)"
+ },
+ "SCEN-035": {
+  "in_solver_scope": true
+ },
+ "SCEN-036": {
+  "in_solver_scope": false,
+  "note": "cap rate crediting"
+ },
+ "SCEN-037": {
+  "in_solver_scope": true
+ },
+ "SCEN-038": {
+  "in_solver_scope": false,
+  "note": "collateral assignment: no event in the solver vocabulary"
+ },
+ "SCEN-039": {
+  "in_solver_scope": false,
+  "note": "split option (joint policy mechanics)"
+ },
+ "SCEN-040": {
+  "in_solver_scope": false,
+  "note": "claim payment speed"
+ },
+ "SCEN-041": {
+  "in_solver_scope": false,
+  "note": "account-value depletion lapse mechanics (UL)"
+ },
+ "SCEN-042": {
+  "in_solver_scope": false,
+  "note": "investment risk (VUL)"
+ },
+ "SCEN-043": {
+  "in_solver_scope": false,
+  "note": "no-lapse guarantee rider availability (not elected)"
+ },
+ "SCEN-044": {
+  "in_solver_scope": true
+ },
+ "SCEN-045": {
+  "in_solver_scope": false,
+  "note": "premium guarantee period"
+ },
+ "SCEN-046": {
+  "in_solver_scope": true
+ },
+ "SCEN-047": {
+  "in_solver_scope": false,
+  "note": "non-forfeiture default option (whole life mechanics)"
+ },
+ "SCEN-048": {
+  "in_solver_scope": false,
+  "note": "late-entrant enrollment / EOI (eligibility to enrol, not a policy event)"
+ },
+ "SCEN-049": {
+  "in_solver_scope": false,
+  "note": "settlement options"
+ },
+ "SCEN-050": {
+  "in_solver_scope": false,
+  "note": "reduced paid-up non-forfeiture election"
+ },
+ "SCEN-051": {
+  "in_solver_scope": true
+ },
+ "SCEN-052": {
+  "in_solver_scope": true
+ },
+ "SCEN-053": {
+  "in_solver_scope": false,
+  "note": "loan treatment during continuation (loan mechanics)"
+ },
+ "SCEN-054": {
+  "in_solver_scope": true,
+  "slots": {
+   "premium_status": "LAPSED",
+   "days_overdue": 62
+  },
+  "note": "text: death 31 days after the 31-day grace period expired = 62 days after the due date, policy lapsed; the model bound the accident day (20) instead"
+ },
+ "SCEN-055": {
+  "in_solver_scope": true
+ },
+ "SCEN-056": {
+  "in_solver_scope": true
+ },
+ "SCEN-057": {
+  "in_solver_scope": true
+ },
+ "SCEN-058": {
+  "in_solver_scope": false,
+  "note": "cash-value projection"
+ }
+}

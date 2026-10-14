@@ -1,0 +1,105 @@
+{
+ "model": "gemini-3.8-flash",
+ "models_used": [
+  "gemini-3.6-flash",
+  "gemini-3.8-flash"
+ ],
+ "calls": 2,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "SECTION 1: IMPORTANT DEFINITIONS",
+   "kind": "DEFINITIONS",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S2",
+   "heading": "SECTION 2: INVESTMENT ALLOCATION",
+   "kind": "ADMIN",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S3",
+   "heading": "SECTION 3: CHARGES AND FEES",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S4",
+   "heading": "SECTION 4: DEATH BENEFIT OPTIONS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S5",
+   "heading": "SECTION 5: INVESTMENT RISK DISCLOSURE",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S6",
+   "heading": "SECTION 6: LOANS AND WITHDRAWALS",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S7",
+   "heading": "SECTION 7: POLICY LAPSE AND REINSTATEMENT",
+   "kind": "PERIOD",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S8",
+   "heading": "SECTION 8: EXCLUSIONS",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S9",
+   "heading": "SECTION 9: REGULATORY INFORMATION",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Sub-Account",
+   "canonical_event": null,
+   "definition": "a segregated investment account that invests in shares of a designated mutual fund."
+  },
+  {
+   "term": "Unit Value",
+   "canonical_event": null,
+   "definition": "the value of one unit of a sub-account, calculated daily based on fund performance."
+  },
+  {
+   "term": "Accumulation Units",
+   "canonical_event": null,
+   "definition": "units held in sub-accounts before any distributions."
+  },
+  {
+   "term": "Mortality and Expense Risk Charge",
+   "canonical_event": null,
+   "definition": "a daily charge of 0.90% annually to cover insurance risks and administrative costs."
+  }
+ ]
+}

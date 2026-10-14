@@ -1,0 +1,15 @@
+id: O04
+title: 'Colloquial status question: is my life insurance still active'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- is my life insurance still active? i think i missed a payment
+expected:
+  must_contain:
+  - 'TL-ASTRA-07\)?: NOT in force'
+  - '2026-10-01'
+  alerts_contain:
+  - 'TL-ASTRA-07[^
+
+    ]*(lapsed|overdue)'
+kind: off_script

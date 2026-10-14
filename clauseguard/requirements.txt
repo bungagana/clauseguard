@@ -1,0 +1,21 @@
+google-genai>=1.70
+pydantic>=2.10
+python-dotenv>=1.0
+fastapi>=0.115
+uvicorn>=0.30
+httpx>=0.27
+pymupdf>=1.25
+pdfplumber>=0.11
+reportlab>=4.2
+networkx>=3.3
+python-dateutil>=2.9
+pyyaml>=6.0
+rdflib>=7.0
+streamlit>=1.40
+pytest>=8.3
+hypothesis>=6.100  # dev: property tests (tests/test_properties.py)
+sentence-transformers>=3.0
+numpy>=1.26
+scipy>=1.11  # optional: MILP plan selector (clauseguard/plans/selector.py); exact enumeration fallback without it
+# optional: local OCR for scanned PDFs/photos (clauseguard/privacy/ocr.py, lazy import)
+# rapidocr-onnxruntime>=1.3

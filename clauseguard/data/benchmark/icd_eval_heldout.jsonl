@@ -1,0 +1,75 @@
+{"id": "hld-001", "text": "Diabetes mellitus tipe 2 dengan ulkus kaki diabetik", "gold": ["E11"], "lang": "id"}
+{"id": "hld-002", "text": "Hipertensi esensial grade II", "gold": ["I10"], "lang": "id"}
+{"id": "hld-003", "text": "CKD stage 5 on HD rutin", "gold": ["N18"], "lang": "mixed"}
+{"id": "hld-004", "text": "Pneumonia komunitas (CAP) lobus kanan bawah", "gold": ["J18"], "lang": "id", "note": "organism not stated, so J18 (J13-J16 would need an organism)"}
+{"id": "hld-006", "text": "Cholelithiasis dengan kolesistitis akut", "gold": ["K80", "K81"], "lang": "mixed", "note": "K80.0 (calculus with acute cholecystitis) is the exact home; K81 accepted as defensible"}
+{"id": "hld-007", "text": "Struma nodosa non toksik", "gold": ["E04"], "lang": "id"}
+{"id": "hld-008", "text": "Hipertiroidisme e.c. Graves disease", "gold": ["E05"], "lang": "mixed"}
+{"id": "hld-010", "text": "Meningitis bakterialis", "gold": ["G00"], "lang": "id"}
+{"id": "hld-011", "text": "TB paru BTA positif kasus baru", "gold": ["A15"], "lang": "mixed", "note": "ICD-10-CM A15 covers respiratory TB (no A16 in CM)"}
+{"id": "hld-013", "text": "Hepatitis B kronik", "gold": ["B18"], "lang": "id"}
+{"id": "hld-014", "text": "Sirosis hepatis dekompensata", "gold": ["K74"], "lang": "id"}
+{"id": "hld-016", "text": "Fibrilasi atrial persisten", "gold": ["I48"], "lang": "id"}
+{"id": "hld-017", "text": "Penyakit jantung koroner, angina pektoris tidak stabil", "gold": ["I20"], "lang": "id", "note": "unstable angina is I20.0; PJK alone would be I25"}
+{"id": "hld-018", "text": "Stroke hemoragik, perdarahan intraserebral", "gold": ["I61"], "lang": "id"}
+{"id": "hld-019", "text": "Cedera kepala sedang dengan perdarahan epidural", "gold": ["S06"], "lang": "id"}
+{"id": "hld-020", "text": "Fraktur femur sinistra tertutup", "gold": ["S72"], "lang": "id"}
+{"id": "hld-021", "text": "Fraktur radius distal dextra", "gold": ["S52"], "lang": "id"}
+{"id": "hld-022", "text": "Leukemia limfoblastik akut", "gold": ["C91"], "lang": "id"}
+{"id": "hld-024", "text": "Karsinoma nasofaring WHO tipe III", "gold": ["C11"], "lang": "id"}
+{"id": "hld-025", "text": "Adenokarsinoma kolon sigmoid, T3N1M0", "gold": ["C18"], "lang": "id"}
+{"id": "hld-026", "text": "Ca cervix stadium IIB", "gold": ["C53"], "lang": "id"}
+{"id": "hld-027", "text": "Tumor ganas hepar primer (HCC)", "gold": ["C22"], "lang": "id"}
+{"id": "hld-028", "text": "Kanker paru sel kecil", "gold": ["C34"], "lang": "id"}
+{"id": "hld-029", "text": "Hematemesis melena e.c. ulkus peptikum", "gold": ["K27", "K25", "K26"], "lang": "id", "note": "site-specific ulcer (gastric/duodenal) not stated; K27 is the exact home, K25/K26 defensible"}
+{"id": "hld-030", "text": "Dispepsia fungsional", "gold": ["K30"], "lang": "id"}
+{"id": "hld-031", "text": "Gastroenteritis akut dengan dehidrasi sedang", "gold": ["A09", "K52"], "lang": "id", "note": "A09 vs K52 depends on presumed infectious origin"}
+{"id": "hld-032", "text": "Infeksi saluran kemih bagian bawah", "gold": ["N39"], "lang": "id", "note": "N30 (cystitis) is a defensible alternative when cystitis is implied; line says ISK"}
+{"id": "hld-033", "text": "Batu ginjal kanan (nefrolitiasis)", "gold": ["N20"], "lang": "id"}
+{"id": "hld-034", "text": "Pielonefritis akut", "gold": ["N10"], "lang": "id"}
+{"id": "hld-035", "text": "Preeklampsia berat", "gold": ["O14"], "lang": "id"}
+{"id": "hld-036", "text": "Abortus inkomplit", "gold": ["O03", "O06"], "lang": "id", "note": "complete/incomplete spontaneous abortion O03 vs unspecified O06"}
+{"id": "hld-037", "text": "Anemia defisiensi besi", "gold": ["D50"], "lang": "id"}
+{"id": "hld-038", "text": "Thalassemia beta mayor", "gold": ["D56"], "lang": "id"}
+{"id": "hld-039", "text": "Purpura trombositopenia idiopatik (ITP)", "gold": ["D69"], "lang": "id"}
+{"id": "hld-040", "text": "Asma bronkial persisten sedang", "gold": ["J45"], "lang": "id"}
+{"id": "hld-042", "text": "Katarak senilis OD", "gold": ["H25"], "lang": "id"}
+{"id": "hld-043", "text": "Glaukoma sudut tertutup akut", "gold": ["H40"], "lang": "id"}
+{"id": "hld-044", "text": "Otitis media supuratif kronis", "gold": ["H66"], "lang": "id"}
+{"id": "hld-045", "text": "Tonsilitis akut", "gold": ["J03"], "lang": "id"}
+{"id": "hld-046", "text": "Sepsis e.c. pneumonia", "gold": ["A41", "J18"], "lang": "id", "note": "principal diagnosis arguable (sepsis vs its source); both accepted"}
+{"id": "hld-047", "text": "Hernia inguinalis lateralis dextra reponibel", "gold": ["K40"], "lang": "id"}
+{"id": "hld-048", "text": "Hiperplasia prostat jinak (BPH)", "gold": ["N40"], "lang": "mixed"}
+{"id": "hld-049", "text": "Mioma uteri", "gold": ["D25"], "lang": "id"}
+{"id": "hld-050", "text": "Kista ovarium", "gold": ["N83", "D27"], "lang": "id", "note": "non-neoplastic cyst N83 vs benign neoplasm D27 undecidable from the line; both accepted"}
+{"id": "hld-051", "text": "Skizofrenia paranoid", "gold": ["F20"], "lang": "id"}
+{"id": "hld-052", "text": "Depresi berat tanpa gejala psikotik", "gold": ["F32"], "lang": "id"}
+{"id": "hld-053", "text": "COVID-19 with ARDS", "gold": ["U07", "J80"], "lang": "en", "note": "principal arguable; both accepted"}
+{"id": "hld-054", "text": "Dengue shock syndrome", "gold": ["A91"], "lang": "en", "note": "DSS is indexed to dengue hemorrhagic fever"}
+{"id": "hld-055", "text": "Typhoid fever with intestinal perforation", "gold": ["A01"], "lang": "en"}
+{"id": "hld-056", "text": "Artritis reumatoid seropositif", "gold": ["M05"], "lang": "id"}
+{"id": "hld-057", "text": "Lupus eritematosus sistemik dengan nefritis lupus", "gold": ["M32"], "lang": "id"}
+{"id": "hld-058", "text": "Diabetic ketoacidosis in type 1 DM", "gold": ["E10"], "lang": "en"}
+{"id": "hld-059", "text": "Infark serebri e.c. aterosklerosis arteri karotis", "gold": ["I63"], "lang": "id"}
+{"id": "hld-060", "text": "Acute coronary syndrome NSTEMI", "gold": ["I21"], "lang": "en"}
+{"id": "hld-061", "text": "HNP lumbal L4-L5", "gold": ["M51"], "lang": "mixed"}
+{"id": "hld-062", "text": "Osteoartritis genu bilateral", "gold": ["M17"], "lang": "id"}
+{"id": "hld-063", "text": "Dermatitis atopik", "gold": ["L20"], "lang": "id"}
+{"id": "hld-064", "text": "Selulitis regio cruris sinistra", "gold": ["L03"], "lang": "id"}
+{"id": "hld-065", "text": "Luka bakar derajat II regio dada dan perut", "gold": ["T21"], "lang": "id"}
+{"id": "hld-066", "text": "Keracunan organofosfat", "gold": ["T60"], "lang": "id"}
+{"id": "hld-067", "text": "Diagnosa utama: STEMI inferior. Penyerta: DM tipe 2, hipertensi", "gold": ["I21"], "lang": "id", "note": "comorbid line with principal stated"}
+{"id": "hld-068", "text": "CKD stage 5 e.c. nefropati diabetik, anemia, hipertensi", "gold": ["N18", "E11"], "lang": "id", "note": "comorbid; principal arguable (CKD vs underlying diabetic nephropathy)"}
+{"id": "hld-069", "text": "Ca mammae sinistra dengan metastasis tulang", "gold": ["C50", "C79"], "lang": "id", "note": "primary vs secondary site; both accepted"}
+{"id": "hld-072", "text": "Kontrol rutin", "gold": null, "lang": "id", "note": "non-diagnosis"}
+{"id": "hld-073", "text": "Observasi febris", "gold": null, "lang": "id", "note": "observation of a symptom"}
+{"id": "hld-074", "text": "Suspek TB paru, menunggu hasil GeneXpert", "gold": null, "lang": "id", "note": "suspicion pending work-up"}
+{"id": "hld-076", "text": "Lemas, mual, muntah", "gold": null, "lang": "id", "note": "symptoms only"}
+{"id": "hld-077", "text": "Post operasi hari ke-3", "gold": null, "lang": "id", "note": "non-diagnosis"}
+{"id": "hld-078", "text": "Diabetes mellitus, kanker paru, dan stroke lama", "gold": null, "lang": "id", "note": "several unrelated principal diseases, no principal named"}
+{"id": "hld-079", "text": "Medical check up", "gold": null, "lang": "id", "note": "non-diagnosis"}
+{"id": "hld-080", "text": "Sesak napas", "gold": null, "lang": "id", "note": "symptom only"}
+{"id": "hld-082", "text": "Rule out DHF vs malaria vs tifoid", "gold": null, "lang": "mixed", "note": "differential, not a diagnosis"}
+{"id": "hld-083", "text": "Kelainan jantung", "gold": null, "lang": "id", "note": "too vague"}
+{"id": "hld-084", "text": "Pro operasi elektif", "gold": null, "lang": "id", "note": "non-diagnosis"}
+{"id": "hld-085", "text": "Vaksinasi rutin", "gold": null, "lang": "id", "note": "non-diagnosis"}

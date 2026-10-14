@@ -1,0 +1,20 @@
+id: T08
+title: Portfolio summary (family)
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Summarise everything I'm covered for.
+expected:
+  intent: GAP_ANALYSIS
+  must_contain:
+  - Budi Santoso \| hospitalization \| GH-NUSA-GRP
+  - Aditya Santoso \| hospitalization \| HI-INDIV-S
+  - Budi Santoso \| death \| GL-NUSA-GRP \| fixed benefit \| IDR 288,000,000
+  - HCP-RIDER-B \| fixed benefit
+  - critical illness
+  - consult|licensed agent
+  must_not_contain:
+  - Sari Santoso \| death
+  - Nadia Santoso \| death
+  - (Prudential|Allianz|AIA|Manulife|Sinarmas|Great Eastern|Zurich) \w+ (plan|policy|product)
+kind: functional

@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  One hue family (indigo, ~245°) carries brand, links, focus and the user bubble.
+  Semantic colours (success / warning / destructive) are tuned to the same
+  lightness so a verdict card, a deadline chip and a refusal read as one system.
+*/
+@layer base {
+  :root {
+    --background: 220 40% 99%;
+    --foreground: 222 35% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 35% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 35% 12%;
+
+    --primary: 222 78% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 222 60% 95%;
+    --secondary-foreground: 222 55% 26%;
+
+    --muted: 222 22% 96%;
+    --muted-foreground: 222 12% 46%;
+
+    --accent: 222 60% 94%;
+    --accent-foreground: 222 55% 26%;
+
+    --destructive: 352 68% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 160 58% 34%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 34 90% 48%;
+    --warning-foreground: 28 70% 22%;
+
+    --navy: 222 55% 12%;
+    --navy-foreground: 220 30% 96%;
+
+    --border: 222 18% 90%;
+    --input: 222 18% 88%;
+    --ring: 222 78% 50%;
+
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 243 35% 8%;
+    --foreground: 240 25% 94%;
+
+    --card: 243 30% 12%;
+    --card-foreground: 240 25% 94%;
+
+    --popover: 243 30% 12%;
+    --popover-foreground: 240 25% 94%;
+
+    --primary: 218 90% 68%;
+    --primary-foreground: 222 40% 8%;
+
+    --secondary: 243 25% 17%;
+    --secondary-foreground: 240 25% 94%;
+
+    --muted: 243 22% 15%;
+    --muted-foreground: 240 14% 66%;
+
+    --accent: 243 28% 19%;
+    --accent-foreground: 218 90% 80%;
+
+    --destructive: 352 75% 62%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 160 55% 50%;
+    --success-foreground: 243 35% 8%;
+
+    --warning: 36 92% 58%;
+    --warning-foreground: 36 90% 90%;
+
+    --navy: 243 40% 5%;
+    --navy-foreground: 240 25% 94%;
+
+    --border: 243 20% 21%;
+    --input: 243 20% 23%;
+    --ring: 218 90% 68%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hero-glow {
+    background:
+      radial-gradient(55% 60% at 10% 0%, hsl(var(--primary) / 0.22) 0%, transparent 65%),
+      radial-gradient(40% 45% at 85% 5%, hsl(172 70% 45% / 0.18) 0%, transparent 65%),
+      radial-gradient(50% 40% at 60% 100%, hsl(262 70% 60% / 0.12) 0%, transparent 70%);
+  }
+
+  .text-gradient {
+    background: linear-gradient(92deg, hsl(var(--primary)) 0%, hsl(200 90% 48%) 55%, hsl(172 70% 42%) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .glow-primary {
+    box-shadow: 0 10px 30px -10px hsl(var(--primary) / 0.55);
+  }
+
+  .frame-glow {
+    box-shadow:
+      0 30px 60px -24px hsl(var(--primary) / 0.35),
+      0 8px 24px -10px hsl(222 40% 20% / 0.18);
+  }
+
+  .band-dark {
+    background:
+      radial-gradient(60% 70% at 15% 0%, hsl(var(--primary) / 0.35) 0%, transparent 60%),
+      radial-gradient(40% 50% at 90% 100%, hsl(172 70% 45% / 0.25) 0%, transparent 60%),
+      hsl(var(--navy));
+  }
+
+  .card-lift {
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -18px hsl(var(--primary) / 0.35);
+    border-color: hsl(var(--primary) / 0.4);
+  }
+
+  .grid-fade {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.7) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.7) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(70% 60% at 50% 0%, #000 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 0%, #000 30%, transparent 100%);
+  }
+}

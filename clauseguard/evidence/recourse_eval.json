@@ -1,0 +1,260 @@
+{
+  "tasks": {
+    "n_tasks": 33,
+    "n_turns": 90,
+    "n_denials": 6,
+    "n_with_recourse": 4,
+    "by_code": {
+      "EXCLUSION_DENTAL": 1,
+      "WAITING_PERIOD": 1,
+      "EXCLUSION_HOSPITALIZATION": 2,
+      "CONDITION_NOT_MET": 1,
+      "SURVIVAL_PERIOD": 1
+    },
+    "by_best_kind": {
+      "WAIT": 1,
+      "CLAIM_OTHER_POLICY": 3
+    },
+    "denials": [
+      {
+        "task": "T05",
+        "title": "Negative: dental implant excluded",
+        "turn": 1,
+        "persona": "santoso",
+        "policy_id": "GH-NUSA-GRP",
+        "agent_denial_code": "EXCLUSION_DENTAL",
+        "baseline": "DENIED",
+        "denial_code": "EXCLUSION_DENTAL",
+        "has_recourse": false,
+        "n_options": 0,
+        "searched": 9,
+        "best_kinds": [],
+        "all_options": [],
+        "best_cost": null,
+        "best": null,
+        "blocked_by_immutable": [
+          "event",
+          "is_accident"
+        ],
+        "notes": [
+          "the denial depends only on facts about what happened (event, is_accident); no legitimate change of circumstances flips it"
+        ]
+      },
+      {
+        "task": "T07",
+        "title": "Correction turn recomputes waiting period",
+        "turn": 2,
+        "persona": "rizky",
+        "policy_id": "HCP-SOMPO-01",
+        "agent_denial_code": "WAITING_PERIOD",
+        "baseline": "DENIED",
+        "denial_code": "WAITING_PERIOD",
+        "has_recourse": true,
+        "n_options": 1,
+        "searched": 4,
+        "best_kinds": [
+          "WAIT"
+        ],
+        "all_options": [
+          "WAIT"
+        ],
+        "best_cost": {
+          "days": 0,
+          "money": 0,
+          "effort": 0
+        },
+        "best": "The 30-day waiting period or window ended on 2026-09-19; a new admission or event on or after today (2026-10-11) is outside it. Result: COVERED, IDR 1,500,000 (clauses c_hosp_daily).",
+        "blocked_by_immutable": [],
+        "notes": []
+      },
+      {
+        "task": "T11",
+        "title": "Pre-existing exclusion three-way answer",
+        "turn": 1,
+        "persona": "santoso",
+        "policy_id": "HI-INDIV-S",
+        "agent_denial_code": "PRE_EXISTING",
+        "baseline": "DENIED",
+        "denial_code": "EXCLUSION_HOSPITALIZATION",
+        "has_recourse": true,
+        "n_options": 3,
+        "searched": 12,
+        "best_kinds": [
+          "CLAIM_OTHER_POLICY"
+        ],
+        "all_options": [
+          "WAIT",
+          "CLAIM_OTHER_POLICY(GH-NUSA-GRP)",
+          "CLAIM_OTHER_POLICY(HCP-RIDER-B)"
+        ],
+        "best_cost": {
+          "days": 0,
+          "money": 0,
+          "effort": 1
+        },
+        "best": "Claim the same event under GH-NUSA-GRP (Nusantara Group Health (employer plan, cashless network N1)), which covers it on the stated facts. Result: COVERED, amount per the benefit schedule (clauses c_room).",
+        "blocked_by_immutable": [
+          "diagnosis_before_effective",
+          "event"
+        ],
+        "notes": []
+      },
+      {
+        "task": "T16",
+        "title": "COB order: courier traffic accident",
+        "turn": 1,
+        "persona": "dewi",
+        "policy_id": "BPJS-KES-DEWI",
+        "agent_denial_code": "LAPSED",
+        "baseline": "DENIED",
+        "denial_code": "CONDITION_NOT_MET",
+        "has_recourse": true,
+        "n_options": 3,
+        "searched": 2,
+        "best_kinds": [
+          "CLAIM_OTHER_POLICY"
+        ],
+        "all_options": [
+          "SETTLE_ARREARS",
+          "CLAIM_OTHER_POLICY(PLATFORM-ACC)",
+          "CLAIM_OTHER_POLICY(JASA-RAHARJA)"
+        ],
+        "best_cost": {
+          "days": 0,
+          "money": 0,
+          "effort": 1
+        },
+        "best": "Claim the same event under PLATFORM-ACC (Driver-partner on-trip accident protection), which covers it on the stated facts. Result: COVERED, IDR 5,000,000 (clauses c_medical_on_trip).",
+        "blocked_by_immutable": [],
+        "notes": []
+      },
+      {
+        "task": "T17",
+        "title": "COB order: family, non-partner hospital",
+        "turn": 1,
+        "persona": "santoso",
+        "policy_id": "HI-INDIV-S",
+        "agent_denial_code": "PRE_EXISTING",
+        "baseline": "DENIED",
+        "denial_code": "EXCLUSION_HOSPITALIZATION",
+        "has_recourse": true,
+        "n_options": 3,
+        "searched": 12,
+        "best_kinds": [
+          "CLAIM_OTHER_POLICY"
+        ],
+        "all_options": [
+          "WAIT",
+          "CLAIM_OTHER_POLICY(GH-NUSA-GRP)",
+          "CLAIM_OTHER_POLICY(HCP-RIDER-B)"
+        ],
+        "best_cost": {
+          "days": 0,
+          "money": 0,
+          "effort": 1
+        },
+        "best": "Claim the same event under GH-NUSA-GRP (Nusantara Group Health (employer plan, cashless network N1)), which covers it on the stated facts. Result: COVERED, IDR 6,000,000 (clauses c_room).",
+        "blocked_by_immutable": [
+          "diagnosis_before_effective",
+          "event"
+        ],
+        "notes": []
+      },
+      {
+        "task": "T18",
+        "title": "Denial triage: survival period, redirect to life claim",
+        "turn": 1,
+        "persona": "rizky",
+        "policy_id": "CI-CHUBB-05",
+        "agent_denial_code": "SURVIVAL_PERIOD",
+        "baseline": "DENIED",
+        "denial_code": "SURVIVAL_PERIOD",
+        "has_recourse": false,
+        "n_options": 0,
+        "searched": 9,
+        "best_kinds": [],
+        "all_options": [],
+        "best_cost": null,
+        "best": null,
+        "blocked_by_immutable": [
+          "survival_days"
+        ],
+        "notes": [
+          "the denial depends only on facts about what happened (survival_days); no legitimate change of circumstances flips it"
+        ]
+      }
+    ]
+  },
+  "fos": {
+    "available": true,
+    "path": "C:\\PROJEK\\LOMBA-CHINA\\clauseguard\\data\\real\\fos_decisions.jsonl",
+    "n_decisions": 150,
+    "n_modelled": 150,
+    "by_clause_type": {
+      "waiting_period": 35,
+      "pre_existing": 100,
+      "exclusion": 81,
+      "late_notification": 3
+    },
+    "n_mapped": 3,
+    "matches": [
+      {
+        "decision_id": "DRN-1397742",
+        "clause_type": "pre_existing",
+        "expected": "PRE_EXISTING",
+        "twin_top": "PRE_EXISTING",
+        "twin_grounds": [
+          "PRE_EXISTING",
+          "INCOMPLETE_DOCS"
+        ],
+        "top_matches": true,
+        "any_matches": true,
+        "in_corpus_types": [
+          "pre_existing",
+          "exclusion"
+        ],
+        "readiness_score": 0.0,
+        "after_fix_score": 1.0,
+        "note": "The ombudsman's case turns on a pre-existing-condition exclusion with a clear-period requirement; HI-INDIV-S has a structurally equivalent 24-month pre-existing exclusion (x_preexisting_hospitalization). The decision's own 12/24-month figures are not reused."
+      },
+      {
+        "decision_id": "DRN-1154233",
+        "clause_type": "pre_existing",
+        "expected": "PRE_EXISTING",
+        "twin_top": "PRE_EXISTING",
+        "twin_grounds": [
+          "PRE_EXISTING",
+          "INCOMPLETE_DOCS"
+        ],
+        "top_matches": true,
+        "any_matches": true,
+        "in_corpus_types": [
+          "waiting_period",
+          "pre_existing"
+        ],
+        "readiness_score": 0.0,
+        "after_fix_score": 1.0,
+        "note": "This decision's clause is a 2-year pre-existing exclusion that only clears after a symptom-free period; we test it inside the 24-month window (month 6) to check whether the twin surfaces the exclusion-type match. The symptom-free clearance condition itself is not modelled."
+      },
+      {
+        "decision_id": "DRN-1661088",
+        "clause_type": "waiting_period",
+        "expected": "WAITING_PERIOD",
+        "twin_top": "PRE_EXISTING",
+        "twin_grounds": [
+          "WAITING_PERIOD",
+          "PRE_EXISTING",
+          "INCOMPLETE_DOCS"
+        ],
+        "top_matches": false,
+        "any_matches": true,
+        "in_corpus_types": [
+          "waiting_period"
+        ],
+        "readiness_score": 0.0,
+        "after_fix_score": 0.0,
+        "note": "This decision was classified under our 'waiting_period' regex because the underlying policy defines incapacity with a qualifying-period structure; the underlying dispute is actually about the definition of incapacity, not a waiting period. We keep the entry to show the twin's ground does NOT match in this case, which is an honest negative result of the automatic clause-type classifier, not a successful mapping."
+      }
+    ]
+  }
+}

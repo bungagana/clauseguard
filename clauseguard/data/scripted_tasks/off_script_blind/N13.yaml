@@ -1,0 +1,12 @@
+id: N13
+title: Dental after an accident (exception to the exclusion)
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Would the company plan pay for a dental implant if I fell and broke a tooth?
+expected:
+  must_contain:
+  - e_dental_accident|exception
+  must_not_contain:
+  - Covered \(indicative\)\. Indicative benefit
+kind: blind

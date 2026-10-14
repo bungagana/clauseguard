@@ -1,0 +1,7 @@
+BusinessYear,StateCode,IssuerId,PlanId,RatingAreaId,Tobacco,Age,IndividualRate
+2026,AZ,12345,12345AZ0010001,Rating Area 1,No Preference,30,310.50
+2026,AZ,12345,12345AZ0010001,Rating Area 2,No Preference,30,330.00
+2026,AZ,12345,12345AZ0010001,Rating Area 1,No Preference,40,380.00
+2026,AZ,12345,12345AZ0010002,Rating Area 1,Non-Tobacco User,30,520.25
+2026,AZ,12345,12345AZ0010002,Rating Area 1,Tobacco User,30,640.00
+2026,AZ,67890,67890AZ0020001,Rating Area 1,No Preference,30,410.00

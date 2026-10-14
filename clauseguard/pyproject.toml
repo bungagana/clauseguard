@@ -1,0 +1,23 @@
+[tool.ruff]
+target-version = "py310"
+line-length = 160
+extend-exclude = ["data", "evidence", "ui"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B"]
+ignore = [
+    "E501",  # long lines: prompts and clause text are kept on one line on purpose
+    "E731",  # lambda assignments in small adapters
+    "E741",  # single-letter names in short math/table code
+    "B008",  # FastAPI Depends() in defaults
+    "B904",  # raise ... from inside except: handled case by case
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E742", "B007"]
+"scripts/*" = ["B905"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]

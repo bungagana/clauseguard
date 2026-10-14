@@ -1,0 +1,11 @@
+id: N05
+title: Platform cover while waiting for an order
+persona: dewi
+as_of: '2026-10-11'
+turns:
+- Is my platform insurance valid when I'm waiting for an order in the app but haven't accepted one?
+expected:
+  must_contain:
+  - PLATFORM-ACC
+  - active order
+kind: blind

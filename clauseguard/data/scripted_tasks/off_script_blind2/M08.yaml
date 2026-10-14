@@ -1,0 +1,10 @@
+id: M08
+title: Planned operation at a non-partner hospital
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Nadia has a scheduled tonsillectomy at Siloam hospital. Will JKN pay for it?
+expected:
+  cob_status:
+    BPJS-KES-SANTOSO: NOT_CLAIMABLE
+kind: blind2

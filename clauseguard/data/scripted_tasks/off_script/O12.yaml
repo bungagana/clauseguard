@@ -1,0 +1,15 @@
+id: O12
+title: Generic glossary question, no policy data
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- what does co-payment mean?
+expected:
+  intent: GENERAL_EDUCATION
+  must_contain:
+  - share of each covered expense
+  must_not_contain:
+  - HCP-SOMPO-01
+  - TL-ASTRA-07
+  no_tool_calls_of_tier_ge: 1
+kind: off_script

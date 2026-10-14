@@ -1,0 +1,26 @@
+id: T16
+title: 'COB order: courier traffic accident'
+persona: dewi
+as_of: '2026-10-11'
+turns:
+- I crashed with a car while delivering an order on 5 October 2026; 6 days in hospital, bill IDR 22M. I have BPJS (in arrears 3 months), a PA policy and the platform's group accident cover. Who pays?
+expected:
+  cob_order:
+  - JASA-RAHARJA
+  - PA-CHUBB-03
+  - PLATFORM-ACC
+  cob_status:
+    BPJS-KES-DEWI: NOT_CLAIMABLE
+    JASA-RAHARJA: PAYER
+    PA-CHUBB-03: UNCERTAIN
+  expects_clarification_slot: license_valid
+  max_questions: 1
+  must_contain:
+  - 'JASA-RAHARJA\): pays IDR 20,000,000'
+  - arrears
+  - occupation mismatch
+  - licen[cs]e
+  - verify
+  must_not_contain:
+  - Jasa Raharja[^\n]*IDR (25|30|50),000,000
+kind: functional

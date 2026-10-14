@@ -1,0 +1,13 @@
+id: T09
+title: 'Overlap detection: indemnity vs fixed benefit'
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Am I paying for the same thing twice?
+expected:
+  must_contain:
+  - GH-NUSA-GRP \+ HI-INDIV-S are both indemnity
+  - 'HCP-RIDER-B on hospitalization: fixed benefit, stacks'
+  must_not_contain:
+  - HCP-RIDER-B[^\n]*both indemnity
+kind: functional

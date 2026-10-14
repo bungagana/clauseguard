@@ -1,0 +1,21 @@
+id: B01
+title: Discharged yesterday, handle my claim (facts given on request)
+persona: santoso
+as_of: '2026-10-14'
+turns:
+- user: I was discharged from hospital yesterday, please handle my claim.
+  expected:
+    no_tool_calls_of_tier_ge: 2
+- user: It was me, Budi. Admitted 2026-10-09 to RS Mitra Keluarga for typhoid, discharged 2026-10-13, the bill was IDR 12,000,000.
+  expected:
+    no_tool_calls_of_tier_ge: 2
+expected:
+  must_contain:
+  - BPJS-KES-SANTOSO
+  - GH-NUSA-GRP
+  - HCP-RIDER-B
+  in_order:
+  - BPJS-KES-SANTOSO
+  - GH-NUSA-GRP
+  actions_pending_tool: submit_claim
+kind: blind3

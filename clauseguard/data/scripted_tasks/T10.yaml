@@ -1,0 +1,17 @@
+id: T10
+title: Life gap quantified, no product recommendation
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Is my family protected if I die?
+expected:
+  must_contain:
+  - IDR 288,000,000
+  - ends with employment
+  - IDR 600,000,000
+  - IDR 312,000,000
+  - licensed agent
+  must_not_contain:
+  - (Prudential|Allianz|AIA|Manulife|Sinarmas|Great Eastern|Zurich) \w+ (plan|policy|product)
+  - I recommend (buying|the)
+kind: functional

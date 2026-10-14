@@ -1,0 +1,13 @@
+{
+ "refine_log": [
+  {
+   "id": "C4-t016",
+   "action": "repaired",
+   "why": "condition pilot_role: ['PILOT', 'CREW'] -> ['PRIVATE_PILOT', 'CREW']"
+  }
+ ],
+ "verify_actions": 1,
+ "salvaged_rows": 0,
+ "recall_sentences": 0,
+ "added": 0
+}

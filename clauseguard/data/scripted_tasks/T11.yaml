@@ -1,0 +1,17 @@
+id: T11
+title: Pre-existing exclusion three-way answer
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Is Aditya's asthma covered?
+expected:
+  verdict:
+    policy_id: GH-NUSA-GRP
+    verdict: COVERED
+  denial_code:
+    policy_id: HI-INDIV-S
+    code: PRE_EXISTING
+  must_contain:
+  - runs until 2027-11-01
+  - 'BPJS-KES-SANTOSO[^\n]*facility bpjs partner = yes: covered'
+kind: functional

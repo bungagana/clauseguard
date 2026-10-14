@@ -1,0 +1,19 @@
+{
+ "refine_log": [
+  {
+   "id": "C9-t003",
+   "action": "removed",
+   "why": "evidence has no cue for PERMITS RETURN_OF_PREMIUM"
+  },
+  {
+   "id": "C9-t014",
+   "action": "repaired",
+   "why": "age_max=65 not in evidence: dropped"
+  }
+ ],
+ "verify_actions": 2,
+ "salvaged_rows": 0,
+ "recall_sentences": 9,
+ "added": 6,
+ "dropped": []
+}

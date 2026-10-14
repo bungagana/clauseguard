@@ -1,0 +1,200 @@
+{"id": "iqa-00186", "question": "Who Underwrites Hsbc Life Insurance?", "topic_guess": "eligibility_underwriting", "dataset_domain": "life-insurance"}
+{"id": "iqa-00503", "question": "Will My Homeowners Insurance Increase After A Claim?", "topic_guess": "claims", "dataset_domain": "home-insurance"}
+{"id": "iqa-00674", "question": "What Is Social Security Disability Insurance Benefits?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-00713", "question": "How Does A Medigap Policy Differe From A Long Term Care Policy?", "topic_guess": "general", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-00716", "question": "When Are You Eligible For Medicare At What Age?", "topic_guess": "eligibility_underwriting", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-00783", "question": "What Is Covered Under Medicare Part F?", "topic_guess": "coverage_scope", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-00812", "question": "Can You Get Term Life Insurance If You Have Cancer?", "topic_guess": "critical_illness", "dataset_domain": "life-insurance"}
+{"id": "iqa-00985", "question": "How Do I Qualify For Long Term Care Insurance?", "topic_guess": "eligibility_underwriting", "dataset_domain": "long-term-care-insurance"}
+{"id": "iqa-01077", "question": "Does My Homeowners Insurance Cover Roof Leaks?", "topic_guess": "coverage_scope", "dataset_domain": "home-insurance"}
+{"id": "iqa-01093", "question": "Is A Roof Leak Covered By Homeowners Insurance?", "topic_guess": "coverage_scope", "dataset_domain": "home-insurance"}
+{"id": "iqa-01157", "question": "What Is A Secondary Beneficiary For Life Insurance?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-01334", "question": "Can You Claim Breast Implants On Medicare?", "topic_guess": "claims", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-01509", "question": "How To Contest A Life Insurance Beneficiary?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-01670", "question": "What Is A Deductible For Renters Insurance?", "topic_guess": "tax_regulation", "dataset_domain": "renters-insurance"}
+{"id": "iqa-01685", "question": "Does Medicare Cover Weight Loss?", "topic_guess": "coverage_scope", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-01779", "question": "Does Renters Insurance Cover Accidents?", "topic_guess": "accident_disability", "dataset_domain": "renters-insurance"}
+{"id": "iqa-01783", "question": "Is Life Insurance Taxed In Massachusetts?", "topic_guess": "tax_regulation", "dataset_domain": "life-insurance"}
+{"id": "iqa-01913", "question": "How do I know what conditions are covered on a critical illness plan?", "topic_guess": "critical_illness", "dataset_domain": "critical-illness-insurance"}
+{"id": "iqa-01984", "question": "What Is Long Term Care Insurance Elimination Period?", "topic_guess": "exclusions_waiting", "dataset_domain": "long-term-care-insurance"}
+{"id": "iqa-02081", "question": "When Does Life Insurance Payout?", "topic_guess": "claims", "dataset_domain": "life-insurance"}
+{"id": "iqa-02142", "question": "How Much Disability Insurance Should I Carry?", "topic_guess": "premiums_cost", "dataset_domain": "disability-insurance"}
+{"id": "iqa-02145", "question": "Who Pays First Medicare Or Medigap?", "topic_guess": "tax_regulation", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-02284", "question": "Can A Spouse Cancel Health Insurance Before A Divorce?", "topic_guess": "cancellation_lapse", "dataset_domain": "health-insurance"}
+{"id": "iqa-02430", "question": "How Can I Find An Old Life Insurance Policy?", "topic_guess": "general", "dataset_domain": "life-insurance"}
+{"id": "iqa-02457", "question": "Does Medicare Part A Cover Doctors In Hospital?", "topic_guess": "hospital_medical", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-02675", "question": "What To Do If Homeowners Insurance Denies A Claim?", "topic_guess": "claims", "dataset_domain": "home-insurance"}
+{"id": "iqa-02713", "question": "Does Homeowners Insurance Cover Dog Attacks?", "topic_guess": "coverage_scope", "dataset_domain": "home-insurance"}
+{"id": "iqa-02748", "question": "Can I Cancel My Current Auto Insurance?", "topic_guess": "cancellation_lapse", "dataset_domain": "auto-insurance"}
+{"id": "iqa-02791", "question": "How Much Does Life Insurance Cost A Year?", "topic_guess": "premiums_cost", "dataset_domain": "life-insurance"}
+{"id": "iqa-02896", "question": "Does Life Insurance Typically Cover Accidental Overdose?", "topic_guess": "hospital_medical", "dataset_domain": "life-insurance"}
+{"id": "iqa-02936", "question": "How Much Auto Insurance Is Enough?", "topic_guess": "premiums_cost", "dataset_domain": "auto-insurance"}
+{"id": "iqa-02982", "question": "How Long Should You Carry Disability Insurance?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-03147", "question": "Can I Be Denied Life Insurance For Smoking Marijuana?", "topic_guess": "claims", "dataset_domain": "life-insurance"}
+{"id": "iqa-03158", "question": "What Is Considered A Preexisting Condition For Health Insurance?", "topic_guess": "exclusions_waiting", "dataset_domain": "health-insurance"}
+{"id": "iqa-03296", "question": "How To Cancel HSBC Life Insurance?", "topic_guess": "cancellation_lapse", "dataset_domain": "life-insurance"}
+{"id": "iqa-03322", "question": "Is Critical Illness Insurance Worth Having?", "topic_guess": "critical_illness", "dataset_domain": "critical-illness-insurance"}
+{"id": "iqa-03404", "question": "Are Life Insurance Proceeds Taxable In Missouri?", "topic_guess": "tax_regulation", "dataset_domain": "life-insurance"}
+{"id": "iqa-03408", "question": "What Is Non Cancellable Disability Insurance?", "topic_guess": "cancellation_lapse", "dataset_domain": "disability-insurance"}
+{"id": "iqa-03500", "question": "Will My Homeowners Insurance Cover Asbestos Removal?", "topic_guess": "coverage_scope", "dataset_domain": "home-insurance"}
+{"id": "iqa-03595", "question": "How To File A Disability Insurance Claim?", "topic_guess": "claims", "dataset_domain": "disability-insurance"}
+{"id": "iqa-03701", "question": "Can You Contest The Beneficiary Of Life Insurance?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-03939", "question": "What Is An Elimination Period For Long Term Care Insurance?", "topic_guess": "exclusions_waiting", "dataset_domain": "long-term-care-insurance"}
+{"id": "iqa-04100", "question": "How Does An Annual Deductible Work For Health Insurance?", "topic_guess": "tax_regulation", "dataset_domain": "health-insurance"}
+{"id": "iqa-04121", "question": "How Does Work Disability Insurance Work?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-04129", "question": "Does Homeowners Insurance Cover Ceiling Leaks?", "topic_guess": "coverage_scope", "dataset_domain": "home-insurance"}
+{"id": "iqa-04150", "question": "What Is The Cash Value Of My Life Insurance?", "topic_guess": "general", "dataset_domain": "life-insurance"}
+{"id": "iqa-04188", "question": "Is Pregnancy A Pre-Existing Condition For Disability Insurance?", "topic_guess": "exclusions_waiting", "dataset_domain": "disability-insurance"}
+{"id": "iqa-04214", "question": "What Type Of Care Is Not Covered By Medicare?", "topic_guess": "coverage_scope", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-04230", "question": "Does Renters Insurance Cover The Building?", "topic_guess": "coverage_scope", "dataset_domain": "renters-insurance"}
+{"id": "iqa-04263", "question": "How Do You Get Health Insurance In Delaware With Pre-Existing Conditions?", "topic_guess": "exclusions_waiting", "dataset_domain": "health-insurance"}
+{"id": "iqa-04315", "question": "Will Medicare Pay For Hospice?", "topic_guess": "general", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-04376", "question": "Do I Need Legal Assistance On Home Insurance?", "topic_guess": "tax_regulation", "dataset_domain": "home-insurance"}
+{"id": "iqa-04482", "question": "Is A Life Insurance Policy Part Of An Estate?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-04699", "question": "What Illnesses Does Critical Illness Insurance Cover?", "topic_guess": "critical_illness", "dataset_domain": "critical-illness-insurance"}
+{"id": "iqa-04731", "question": "Can Health Insurance Companies See Your Medical Records?", "topic_guess": "hospital_medical", "dataset_domain": "health-insurance"}
+{"id": "iqa-04957", "question": "Can A Minor Be A Beneficiary On Life Insurance?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-04993", "question": "How To Cancel My Blue Shield Health Insurance?", "topic_guess": "cancellation_lapse", "dataset_domain": "health-insurance"}
+{"id": "iqa-05320", "question": "Is There Life Insurance That Does Not Require Medical Exam?", "topic_guess": "hospital_medical", "dataset_domain": "life-insurance"}
+{"id": "iqa-05341", "question": "Does Cobra Include Disability Insurance?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-05394", "question": "Is Bat Removal Covered Under Homeowners Insurance?", "topic_guess": "coverage_scope", "dataset_domain": "home-insurance"}
+{"id": "iqa-05397", "question": "Does Homeowners Insurance Cover Lost Jewelry?", "topic_guess": "coverage_scope", "dataset_domain": "home-insurance"}
+{"id": "iqa-05554", "question": "Does Everyone 65 And Older Qualify For Medicare?", "topic_guess": "eligibility_underwriting", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-05628", "question": "What Is The Waiting Period For Disability Insurance?", "topic_guess": "exclusions_waiting", "dataset_domain": "disability-insurance"}
+{"id": "iqa-05749", "question": "What Happens To Your Retirement Plan If You Quit Your Job?", "topic_guess": "general", "dataset_domain": "retirement-plans"}
+{"id": "iqa-05794", "question": "Where To Find Health Insurance For Preexisting Conditions?", "topic_guess": "exclusions_waiting", "dataset_domain": "health-insurance"}
+{"id": "iqa-05804", "question": "Does Medigap Cover Prescriptions?", "topic_guess": "hospital_medical", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-05854", "question": "When Was The First Life Insurance Policy Issued?", "topic_guess": "tax_regulation", "dataset_domain": "life-insurance"}
+{"id": "iqa-06229", "question": "Can Health Insurance Companies Exclude Pre Existing Conditions?", "topic_guess": "exclusions_waiting", "dataset_domain": "health-insurance"}
+{"id": "iqa-06299", "question": "What Does Life Insurance Cash Surrender Value Mean?", "topic_guess": "cancellation_lapse", "dataset_domain": "life-insurance"}
+{"id": "iqa-06310", "question": "Who Regulates Disability Insurance Companies?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-06328", "question": "Can Group Health Insurance Be Denied?", "topic_guess": "claims", "dataset_domain": "health-insurance"}
+{"id": "iqa-06348", "question": "What Health Insurance Can I Get With A Pre-Existing Condition?", "topic_guess": "exclusions_waiting", "dataset_domain": "health-insurance"}
+{"id": "iqa-06404", "question": "What Happens To Life Insurance If There Is No Beneficiary?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-06513", "question": "How Much To Spend On Life Insurance?", "topic_guess": "premiums_cost", "dataset_domain": "life-insurance"}
+{"id": "iqa-06623", "question": "Is Critical Illness Insurance Necessary?", "topic_guess": "critical_illness", "dataset_domain": "critical-illness-insurance"}
+{"id": "iqa-06631", "question": "What Is An Elimination Period In Short Term Disability Insurance?", "topic_guess": "exclusions_waiting", "dataset_domain": "disability-insurance"}
+{"id": "iqa-06642", "question": "How Do You Get Health Insurance In Ohio With Pre-Existing Conditions?", "topic_guess": "exclusions_waiting", "dataset_domain": "health-insurance"}
+{"id": "iqa-06746", "question": "What Is Medicare Exclusion?", "topic_guess": "exclusions_waiting", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-06882", "question": "How To Get Life Insurance With Cancer?", "topic_guess": "critical_illness", "dataset_domain": "life-insurance"}
+{"id": "iqa-06894", "question": "How Do You Get Health Insurance In Missouri With Pre-Existing Conditions?", "topic_guess": "exclusions_waiting", "dataset_domain": "health-insurance"}
+{"id": "iqa-06922", "question": "What Happens If A Life Insurance Beneficiary Is Dead?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-06927", "question": "Why Is Critical Illness Insurance Important?", "topic_guess": "critical_illness", "dataset_domain": "critical-illness-insurance"}
+{"id": "iqa-06989", "question": "What Does Estate Mean In Life Insurance?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-07074", "question": "Is Cancer Insurance Worth Having?", "topic_guess": "critical_illness", "dataset_domain": "critical-illness-insurance"}
+{"id": "iqa-07087", "question": "Who Is Eligible For Medicare Part B Reimbursement?", "topic_guess": "claims", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-07138", "question": "What Does EE Stand For In Health Insurance?", "topic_guess": "general", "dataset_domain": "health-insurance"}
+{"id": "iqa-07168", "question": "How To Become A Life Insurance Underwriter?", "topic_guess": "eligibility_underwriting", "dataset_domain": "life-insurance"}
+{"id": "iqa-07240", "question": "Does Health Insurance Cover Transgender Surgery?", "topic_guess": "hospital_medical", "dataset_domain": "health-insurance"}
+{"id": "iqa-07266", "question": "Does Short Term Disability Insurance Cover Maternity Leave?", "topic_guess": "hospital_medical", "dataset_domain": "disability-insurance"}
+{"id": "iqa-07434", "question": "Who Rates Annuities?", "topic_guess": "premiums_cost", "dataset_domain": "annuities"}
+{"id": "iqa-07446", "question": "Where To Invest If Not Eligible For Roth IRA?", "topic_guess": "eligibility_underwriting", "dataset_domain": "retirement-plans"}
+{"id": "iqa-07452", "question": "Does The Beneficiary Of A Life Insurance Policy Have To Pay Taxes?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-07842", "question": "Home Prices Are Down So Why Not Insurance?", "topic_guess": "premiums_cost", "dataset_domain": "home-insurance"}
+{"id": "iqa-08049", "question": "How Does High Deductible Health Insurance Work?", "topic_guess": "tax_regulation", "dataset_domain": "health-insurance"}
+{"id": "iqa-08095", "question": "Can A Beneficiary Of Life Insurance Be Contested?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-08194", "question": "Where To Send Claim For Disability Insurance Benefits?", "topic_guess": "claims", "dataset_domain": "disability-insurance"}
+{"id": "iqa-08198", "question": "How Are Variable Annuity Withdrawals Taxed?", "topic_guess": "tax_regulation", "dataset_domain": "annuities"}
+{"id": "iqa-08228", "question": "Can You Cancel Home Insurance?", "topic_guess": "cancellation_lapse", "dataset_domain": "home-insurance"}
+{"id": "iqa-08430", "question": "Can I Cancel My Health Insurance Anytime?", "topic_guess": "cancellation_lapse", "dataset_domain": "health-insurance"}
+{"id": "iqa-08458", "question": "Why Does Suze Orman Hate Annuities?", "topic_guess": "general", "dataset_domain": "annuities"}
+{"id": "iqa-08489", "question": "What Is The Typical Cost Of Long Term Care Insurance?", "topic_guess": "premiums_cost", "dataset_domain": "long-term-care-insurance"}
+{"id": "iqa-08523", "question": "Who Can Be Your Life Insurance Beneficiary?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-08560", "question": "Can You Cancel Car Insurance At Any Time?", "topic_guess": "cancellation_lapse", "dataset_domain": "auto-insurance"}
+{"id": "iqa-08722", "question": "What Happens If You Don't Have Car Insurance In Arizona?", "topic_guess": "general", "dataset_domain": "auto-insurance"}
+{"id": "iqa-08725", "question": "Is A Roth 401K A Tax Deferred Retirement Plan?", "topic_guess": "tax_regulation", "dataset_domain": "retirement-plans"}
+{"id": "iqa-08771", "question": "Can Creditors Claim Life Insurance Benefits?", "topic_guess": "claims", "dataset_domain": "life-insurance"}
+{"id": "iqa-08786", "question": "What Is Zero Deductible Health Insurance?", "topic_guess": "tax_regulation", "dataset_domain": "health-insurance"}
+{"id": "iqa-08806", "question": "Can A Minor Be A Beneficiary Of A Life Insurance Policy?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-08952", "question": "What Is Elimination Period In Long Term Care Insurance?", "topic_guess": "exclusions_waiting", "dataset_domain": "long-term-care-insurance"}
+{"id": "iqa-08985", "question": "How To Dispute A Health Insurance Claim?", "topic_guess": "claims", "dataset_domain": "health-insurance"}
+{"id": "iqa-09165", "question": "How To Figure Out How Much Life Insurance You Need?", "topic_guess": "premiums_cost", "dataset_domain": "life-insurance"}
+{"id": "iqa-09334", "question": "How Does A Child Qualify For Medicare?", "topic_guess": "eligibility_underwriting", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-09358", "question": "When Is A Person Eligible For Medicare Part D?", "topic_guess": "eligibility_underwriting", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-09390", "question": "When Is Life Insurance Included In Your Estate?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-09409", "question": "When Can I Get Life Insurance After Cancer?", "topic_guess": "critical_illness", "dataset_domain": "life-insurance"}
+{"id": "iqa-09435", "question": "What Is The Best Cancer Insurance Policy?", "topic_guess": "critical_illness", "dataset_domain": "critical-illness-insurance"}
+{"id": "iqa-09461", "question": "How Does One Get Medicare?", "topic_guess": "general", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-09492", "question": "Where Do I Find Affordable Health Insurance?", "topic_guess": "premiums_cost", "dataset_domain": "health-insurance"}
+{"id": "iqa-09646", "question": "What Is The Cheapest Car Insurance In Georgia?", "topic_guess": "premiums_cost", "dataset_domain": "auto-insurance"}
+{"id": "iqa-09819", "question": "How Much Critical Illness Insurance Should I Buy?", "topic_guess": "premiums_cost", "dataset_domain": "critical-illness-insurance"}
+{"id": "iqa-09971", "question": "What States Don't Permit Doctors To Overcharge What Medicare Pays?", "topic_guess": "hospital_medical", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-10010", "question": "Does A Life Insurance Policy Become Part Of An Estate?", "topic_guess": "beneficiary_payout", "dataset_domain": "life-insurance"}
+{"id": "iqa-10205", "question": "Does Medicare Plan F Cover Dental?", "topic_guess": "hospital_medical", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-10214", "question": "Approximately How Much Does Renters Insurance Cost?", "topic_guess": "premiums_cost", "dataset_domain": "renters-insurance"}
+{"id": "iqa-10243", "question": "What Is A Car Insurance Claim?", "topic_guess": "claims", "dataset_domain": "auto-insurance"}
+{"id": "iqa-10324", "question": "What To Look For With Disability Insurance?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-10361", "question": "Does Skin Cancer Affect Life Insurance?", "topic_guess": "critical_illness", "dataset_domain": "life-insurance"}
+{"id": "iqa-10447", "question": "Can A Pension Plan Be Invested In Real Estate?", "topic_guess": "beneficiary_payout", "dataset_domain": "retirement-plans"}
+{"id": "iqa-10598", "question": "How Is A Fixed Annuity Taxed?", "topic_guess": "tax_regulation", "dataset_domain": "annuities"}
+{"id": "iqa-10831", "question": "What Does No Claims Discount Mean On Car Insurance?", "topic_guess": "claims", "dataset_domain": "auto-insurance"}
+{"id": "iqa-10895", "question": "When Was Disability Insurance Added To Social Security?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-11044", "question": "What Is A Cash Surrender Value Of Life Insurance?", "topic_guess": "cancellation_lapse", "dataset_domain": "life-insurance"}
+{"id": "iqa-11265", "question": "What To Think About When Buying Life Insurance?", "topic_guess": "general", "dataset_domain": "life-insurance"}
+{"id": "iqa-11369", "question": "Can You Switch Health Insurance During Pregnancy?", "topic_guess": "hospital_medical", "dataset_domain": "health-insurance"}
+{"id": "iqa-11404", "question": "What Is Disability Life Insurance?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-11463", "question": "How To Get Quotes For Homeowners Insurance?", "topic_guess": "general", "dataset_domain": "home-insurance"}
+{"id": "iqa-11482", "question": "Who Is The Grantor Of An Irrevocable Life Insurance Trust?", "topic_guess": "general", "dataset_domain": "life-insurance"}
+{"id": "iqa-11666", "question": "Who Is Eligible For Medicare Levy Exemption?", "topic_guess": "eligibility_underwriting", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-11695", "question": "How Do Medicare Deductibles Work?", "topic_guess": "tax_regulation", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-11926", "question": "What Does Surrender Value Mean In Life Insurance?", "topic_guess": "cancellation_lapse", "dataset_domain": "life-insurance"}
+{"id": "iqa-11953", "question": "What Is A Tax-Qualified Long-Term Care Insurance Policy?", "topic_guess": "tax_regulation", "dataset_domain": "long-term-care-insurance"}
+{"id": "iqa-12113", "question": "Where To Find Disability Insurance?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-12148", "question": "Where To Find Life Insurance Policy For A Deceased?", "topic_guess": "general", "dataset_domain": "life-insurance"}
+{"id": "iqa-12429", "question": "Does My Renters Insurance Cover Water Damage?", "topic_guess": "coverage_scope", "dataset_domain": "renters-insurance"}
+{"id": "iqa-12464", "question": "Why Do You Need Critical Illness Insurance?", "topic_guess": "critical_illness", "dataset_domain": "critical-illness-insurance"}
+{"id": "iqa-12502", "question": "When Is A Roth IRA Tax Free?", "topic_guess": "tax_regulation", "dataset_domain": "retirement-plans"}
+{"id": "iqa-12530", "question": "What Does An Life Insurance Underwriter Do?", "topic_guess": "eligibility_underwriting", "dataset_domain": "life-insurance"}
+{"id": "iqa-12653", "question": "How To Get Disability Insurance For Pregnancy?", "topic_guess": "hospital_medical", "dataset_domain": "disability-insurance"}
+{"id": "iqa-12715", "question": "What Is The Elimination Period For Long Term Care Insurance?", "topic_guess": "exclusions_waiting", "dataset_domain": "long-term-care-insurance"}
+{"id": "iqa-12831", "question": "Does Medicare Part A Pay For Outpatient Surgery?", "topic_guess": "hospital_medical", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-12880", "question": "What Is An Elimination Period On A Disability Insurance?", "topic_guess": "exclusions_waiting", "dataset_domain": "disability-insurance"}
+{"id": "iqa-12945", "question": "What Does Group Life Insurance Cover?", "topic_guess": "coverage_scope", "dataset_domain": "life-insurance"}
+{"id": "iqa-12960", "question": "Is There An Age Limit For Annuities?", "topic_guess": "eligibility_underwriting", "dataset_domain": "annuities"}
+{"id": "iqa-13003", "question": "Is Variable Annuity Death Benefit Taxable?", "topic_guess": "beneficiary_payout", "dataset_domain": "annuities"}
+{"id": "iqa-13042", "question": "Is Mold Covered By Renters Insurance?", "topic_guess": "coverage_scope", "dataset_domain": "renters-insurance"}
+{"id": "iqa-13149", "question": "Can You Be Too Old For Medicare?", "topic_guess": "eligibility_underwriting", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-13308", "question": "Is It Worth Getting Critical Illness Insurance?", "topic_guess": "critical_illness", "dataset_domain": "critical-illness-insurance"}
+{"id": "iqa-13343", "question": "Can You Collect Disability Insurance And Social Security?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-13379", "question": "Is Bariatric Surgery Covered By Medicare?", "topic_guess": "hospital_medical", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-13521", "question": "How To Deal With Auto Insurance Claim Adjusters?", "topic_guess": "claims", "dataset_domain": "auto-insurance"}
+{"id": "iqa-13741", "question": "What Is A Conversion Credit On Life Insurance?", "topic_guess": "general", "dataset_domain": "life-insurance"}
+{"id": "iqa-13783", "question": "How To Cancel Life Insurance From Primerica?", "topic_guess": "cancellation_lapse", "dataset_domain": "life-insurance"}
+{"id": "iqa-14017", "question": "How Does Long Term Care Insurance Payout?", "topic_guess": "claims", "dataset_domain": "long-term-care-insurance"}
+{"id": "iqa-14021", "question": "Does Life Insurance Cover Cancer?", "topic_guess": "critical_illness", "dataset_domain": "life-insurance"}
+{"id": "iqa-14068", "question": "Is Aflac Cancer Insurance Worth It?", "topic_guess": "critical_illness", "dataset_domain": "critical-illness-insurance"}
+{"id": "iqa-14195", "question": "Can I Withdraw Money From My Term Life Insurance?", "topic_guess": "general", "dataset_domain": "life-insurance"}
+{"id": "iqa-14277", "question": "How Do I Cancel A Policy With American Income Life Insurance?", "topic_guess": "cancellation_lapse", "dataset_domain": "life-insurance"}
+{"id": "iqa-14451", "question": "What Kind Of Insurance Do I Need If I Rent Out My Home?", "topic_guess": "general", "dataset_domain": "home-insurance"}
+{"id": "iqa-14452", "question": "Does Private Health Insurance Cover Doctor Visits?", "topic_guess": "hospital_medical", "dataset_domain": "health-insurance"}
+{"id": "iqa-14458", "question": "Does Home Insurance Cover Garage Doors?", "topic_guess": "coverage_scope", "dataset_domain": "home-insurance"}
+{"id": "iqa-14530", "question": "I Have A Qualified Variable Annuity. What Is That Exactly?", "topic_guess": "general", "dataset_domain": "annuities"}
+{"id": "iqa-14707", "question": "Does Life Insurance Blood Test For Cancer?", "topic_guess": "critical_illness", "dataset_domain": "life-insurance"}
+{"id": "iqa-14772", "question": "Who Rates Life Insurance Companies?", "topic_guess": "premiums_cost", "dataset_domain": "life-insurance"}
+{"id": "iqa-14785", "question": "Does Term Life Insurance Cover Cancer?", "topic_guess": "critical_illness", "dataset_domain": "life-insurance"}
+{"id": "iqa-14823", "question": "Why Is My Homeowners Insurance So Expensive?", "topic_guess": "premiums_cost", "dataset_domain": "home-insurance"}
+{"id": "iqa-14871", "question": "Can You Get Disability Insurance After 65?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-15052", "question": "What Is The Cost Of Part B Medicare?", "topic_guess": "premiums_cost", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-15071", "question": "What Is Not Typically Covered By Homeowners Insurance?", "topic_guess": "coverage_scope", "dataset_domain": "home-insurance"}
+{"id": "iqa-15126", "question": "A Whole Life Policy Owner Passed Away With Cash Surrender Value Higher Than The Death Benefit. Which Amount Will The Beneficiary Get?", "topic_guess": "cancellation_lapse", "dataset_domain": "life-insurance"}
+{"id": "iqa-15144", "question": "Will Commercial General Liability Insurance Premium Go Up If We File One Claim?", "topic_guess": "claims", "dataset_domain": "other-insurance"}
+{"id": "iqa-15160", "question": "Can Auto Insurance Cancel Your Policy?", "topic_guess": "cancellation_lapse", "dataset_domain": "auto-insurance"}
+{"id": "iqa-15279", "question": "Does Owning A Trampoline Affect Homeowners Insurance?", "topic_guess": "general", "dataset_domain": "home-insurance"}
+{"id": "iqa-15391", "question": "Do You Need Long Term Disability Insurance?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-15392", "question": "Does Renters Insurance Cover Windows?", "topic_guess": "coverage_scope", "dataset_domain": "renters-insurance"}
+{"id": "iqa-15572", "question": "Does Homeowners Insurance Cover A Lost Wedding Ring?", "topic_guess": "coverage_scope", "dataset_domain": "home-insurance"}
+{"id": "iqa-15650", "question": "Who Sells Individual Short Term Disability Insurance?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-15723", "question": "Does Pregnancy Affect Life Insurance?", "topic_guess": "hospital_medical", "dataset_domain": "life-insurance"}
+{"id": "iqa-15803", "question": "Can I Have Multiple Disability Insurance Policies?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-15822", "question": "Does Health Insurance Pay For Hearing Aids?", "topic_guess": "general", "dataset_domain": "health-insurance"}
+{"id": "iqa-15930", "question": "Why Buy Short Term Disability Insurance?", "topic_guess": "accident_disability", "dataset_domain": "disability-insurance"}
+{"id": "iqa-16180", "question": "How Much Will Insurance Pay For My Totaled Car?", "topic_guess": "premiums_cost", "dataset_domain": "auto-insurance"}
+{"id": "iqa-16203", "question": "How To Qualify For Both Medicare And Medicaid?", "topic_guess": "eligibility_underwriting", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-16276", "question": "When To Surrender Life Insurance?", "topic_guess": "cancellation_lapse", "dataset_domain": "life-insurance"}
+{"id": "iqa-16406", "question": "Is Long Term Care Insurance A Medical Expense?", "topic_guess": "hospital_medical", "dataset_domain": "long-term-care-insurance"}
+{"id": "iqa-16489", "question": "Does Life Insurance Cover Accidental Death?", "topic_guess": "hospital_medical", "dataset_domain": "life-insurance"}
+{"id": "iqa-16512", "question": "When Do You Become Eligible For Medicare?", "topic_guess": "eligibility_underwriting", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-16660", "question": "How To Qualify For Preferred Plus Life Insurance?", "topic_guess": "eligibility_underwriting", "dataset_domain": "life-insurance"}
+{"id": "iqa-16702", "question": "Will Medicare Supplements Disappear Due To A Single Payer System?", "topic_guess": "general", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-16728", "question": "Who Is Eligible For Medicare Part B Coverage?", "topic_guess": "eligibility_underwriting", "dataset_domain": "medicare-insurance"}
+{"id": "iqa-16797", "question": "Is Annuity Inheritance Taxable?", "topic_guess": "tax_regulation", "dataset_domain": "annuities"}

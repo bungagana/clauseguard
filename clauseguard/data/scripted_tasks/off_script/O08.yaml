@@ -1,0 +1,15 @@
+id: O08
+title: 'Hypothetical resignation then death: group life'
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- If I resign next month and then die, does the group life still pay my family?
+expected:
+  verdict:
+    policy_id: GL-NUSA-GRP
+    verdict: DENIED
+  denial_code:
+    policy_id: GL-NUSA-GRP
+    code: GROUP_TERMINATED
+  no_clarification: true
+kind: off_script

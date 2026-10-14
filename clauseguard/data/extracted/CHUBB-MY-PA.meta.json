@@ -1,0 +1,295 @@
+{
+ "model": "gemini-3.7-flash",
+ "models_used": [
+  "gemini-3.7-flash"
+ ],
+ "calls": 2,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "Section 1 : General Definitions",
+   "kind": "DEFINITIONS",
+   "has_rules": false,
+   "page_start": 3,
+   "page_end": 6
+  },
+  {
+   "id": "S2",
+   "heading": "Section 2 : Eligibility",
+   "kind": "PERIOD",
+   "has_rules": true,
+   "page_start": 6,
+   "page_end": 6
+  },
+  {
+   "id": "S3",
+   "heading": "Section 3 : General Exclusions",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": 6,
+   "page_end": 7
+  },
+  {
+   "id": "S4",
+   "heading": "Section 4 : Benefits",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 7,
+   "page_end": 17
+  },
+  {
+   "id": "S5",
+   "heading": "Optional Benefit (1)",
+   "kind": "RIDER",
+   "has_rules": true,
+   "page_start": 17,
+   "page_end": 17
+  },
+  {
+   "id": "S6",
+   "heading": "Optional Benefit (2)",
+   "kind": "RIDER",
+   "has_rules": true,
+   "page_start": 17,
+   "page_end": 19
+  },
+  {
+   "id": "S7",
+   "heading": "Section 5 : General Conditions",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": 20,
+   "page_end": 22
+  },
+  {
+   "id": "S8",
+   "heading": "Section 6 : Extensions / Clauses / Endorsements / Warranties",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 23,
+   "page_end": 25
+  },
+  {
+   "id": "S9",
+   "heading": "Complaints",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": 25,
+   "page_end": 25
+  },
+  {
+   "id": "S10",
+   "heading": "Schedule of Benefits",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": 26,
+   "page_end": 27
+  },
+  {
+   "id": "S11",
+   "heading": "Privacy Notice",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": 28,
+   "page_end": 28
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Accident or Accidental",
+   "canonical_event": "OTHER",
+   "definition": "A sudden, external and identifiable event that happens by chance and could not have been expected from the perspective of the Insured Person."
+  },
+  {
+   "term": "Accidental Death",
+   "canonical_event": "ACCIDENTAL_DEATH",
+   "definition": "Death occurring as a result of a Bodily Injury."
+  },
+  {
+   "term": "Benefit(s)",
+   "canonical_event": null,
+   "definition": "The respective benefit(s), as stated in Your Policy Schedule, payable by Us under the terms and conditions of this Policy in respect of each event or loss covered by this Policy."
+  },
+  {
+   "term": "Bodily Injury",
+   "canonical_event": "OTHER",
+   "definition": "Accidental injury sustained by the Insured Person resulting solely, directly and independently of all other causes from an Accident and caused by external, violent and visible means."
+  },
+  {
+   "term": "Commencement Date",
+   "canonical_event": null,
+   "definition": "The time You pay the Premium to Us and is issued a Policy Schedule. For renewal, the date when the Policy is renewed as shown on the Policy Schedule."
+  },
+  {
+   "term": "Confined or Confinement",
+   "canonical_event": "HOSPITALIZATION",
+   "definition": "Confinement for a continuous uninterrupted period of at least twenty-four (24) hours in a Hospital as a resident bed patient upon the advice and regular care of a Physician."
+  },
+  {
+   "term": "Dependent Child",
+   "canonical_event": null,
+   "definition": "The Policyholder\u2019s unmarried lawful child or children (including step or legally adopted) eligible for cover under the Policy and named in the Policy Schedule."
+  },
+  {
+   "term": "Endorsement",
+   "canonical_event": null,
+   "definition": "A written alteration to the terms of the Policy."
+  },
+  {
+   "term": "Fingers, Thumbs Or Toes",
+   "canonical_event": null,
+   "definition": "The digits of a Hand or Foot."
+  },
+  {
+   "term": "Foot",
+   "canonical_event": null,
+   "definition": "The entire foot below the ankle."
+  },
+  {
+   "term": "Hand",
+   "canonical_event": null,
+   "definition": "The entire hand below the wrist."
+  },
+  {
+   "term": "Hospital",
+   "canonical_event": null,
+   "definition": "A legally constituted establishment meeting requirements for inpatient care, physician supervision, diagnosis/treatment, surgery facilities, and registered nursing staff."
+  },
+  {
+   "term": "Insured Person",
+   "canonical_event": null,
+   "definition": "The person named or described as the Insured Person in the Policy Schedule and with respect to whom Premium has been paid and covered under the Policy."
+  },
+  {
+   "term": "Limb",
+   "canonical_event": null,
+   "definition": "The entire limb between the shoulder and the wrist or between the hip and the ankle."
+  },
+  {
+   "term": "Loss",
+   "canonical_event": null,
+   "definition": "Permanent physical severance or permanent total loss of use of a limb, sight, hearing, speech, hand, foot, fingers, thumbs or toes caused by Bodily Injury."
+  },
+  {
+   "term": "Loss Of Use",
+   "canonical_event": "TPD",
+   "definition": "Permanent and total loss of the use of the Limb in terms of physical incapacity or disability in all aspects of daily living."
+  },
+  {
+   "term": "Loss Of Sight",
+   "canonical_event": "TPD",
+   "definition": "Total and irrecoverable loss of all sight in any eye rendering the Insured Person absolutely blind in that eye and beyond remedy by surgical or other treatment."
+  },
+  {
+   "term": "Malaysian Resident",
+   "canonical_event": null,
+   "definition": "Malaysia citizen or Malaysia permanent resident."
+  },
+  {
+   "term": "Medical Expenses",
+   "canonical_event": "ACCIDENT_MEDICAL",
+   "definition": "Usual, Reasonable and Customary Medical Expenses incurred for treatment resulting from a Bodily Injury, including prescribed medical treatment and dental charges for natural teeth."
+  },
+  {
+   "term": "Period Of Insurance",
+   "canonical_event": null,
+   "definition": "The period shown on the current Policy Schedule or any subsequent Endorsement(s), if any, for which cover applies under this Policy."
+  },
+  {
+   "term": "Permanent",
+   "canonical_event": null,
+   "definition": "Having lasted for a continuous and uninterrupted period of twelve (12) consecutive months and at the expiry of that period, being beyond hope of improvement."
+  },
+  {
+   "term": "Permanent Disablement",
+   "canonical_event": "TPD",
+   "definition": "Disablement resulting solely, directly and independently from Bodily Injury within 365 days of the Accident, listed under Table of Benefits or lasting 365 days beyond hope of improvement."
+  },
+  {
+   "term": "Permanent Total Disablement",
+   "canonical_event": "TPD",
+   "definition": "Where the Insured Person is entirely and continuously unable to engage in or attend to any gainful employment or business of any kind for life, and such disability is Permanent."
+  },
+  {
+   "term": "Physician",
+   "canonical_event": null,
+   "definition": "A legally registered practitioner licensed to practice western medicine, practicing within scope of training, not being the Insured Person or a relative."
+  },
+  {
+   "term": "Policy",
+   "canonical_event": null,
+   "definition": "This wording, the current Policy Schedule and any other documents issued to the Policyholder forming part of the Policy (e.g. Endorsements)."
+  },
+  {
+   "term": "Policyholder",
+   "canonical_event": null,
+   "definition": "The person or entity to whom this Policy is issued in respect of cover for Insured Person(s) and who pays Premium."
+  },
+  {
+   "term": "Policy Schedule",
+   "canonical_event": null,
+   "definition": "The relevant Policy Schedule issued by Us to You."
+  },
+  {
+   "term": "Pre-Existing Medical Condition",
+   "canonical_event": "PRE_EXISTING_CONDITION",
+   "definition": "Any condition the Insured Person has reasonable knowledge of prior to or at Commencement Date due to treatment, advice, evident symptoms, or apparent existence."
+  },
+  {
+   "term": "Premium",
+   "canonical_event": null,
+   "definition": "The premium shown in the Policy Schedule and/or any other premiums charged during the Period of Insurance."
+  },
+  {
+   "term": "Renewal Date",
+   "canonical_event": null,
+   "definition": "The Commencement Date and subsequently, the same day of each successive year on the expiry of the Period of Insurance."
+  },
+  {
+   "term": "Schedule of Benefits",
+   "canonical_event": null,
+   "definition": "The document incorporated in and forming part of this Policy which outlines the Benefits and its respective limit."
+  },
+  {
+   "term": "Sickness, Disease Or Illness",
+   "canonical_event": null,
+   "definition": "A physical condition marked by a pathological deviation from the normal healthy state."
+  },
+  {
+   "term": "Spouse",
+   "canonical_event": null,
+   "definition": "The Policyholder\u2019s legal husband or wife under Malaysia laws, eligible for cover and named in the Policy Schedule."
+  },
+  {
+   "term": "Sum Insured",
+   "canonical_event": null,
+   "definition": "The Benefit amount payable by Us as stated in the Schedule of Benefits."
+  },
+  {
+   "term": "Temporary Partial Disablement",
+   "canonical_event": "TEMPORARY_DISABILITY",
+   "definition": "Certified by Physician that Insured Person is temporarily unable to engage in/attend to a substantial part of usual business duties or gainful employment."
+  },
+  {
+   "term": "Temporary Total Disablement",
+   "canonical_event": "TEMPORARY_DISABILITY",
+   "definition": "Certified by Physician that Insured Person is temporarily unable to engage in/attend to usual business duties or gainful employment."
+  },
+  {
+   "term": "Usual, Reasonable and Customary Medical Expenses",
+   "canonical_event": "ACCIDENT_MEDICAL",
+   "definition": "Charges for medically necessary treatment resulting from Bodily Injury not exceeding the usual level of charges for similar treatment in the locality, excluding charges absent insurance."
+  },
+  {
+   "term": "We/Our/Us",
+   "canonical_event": null,
+   "definition": "Chubb Insurance Malaysia Berhad."
+  },
+  {
+   "term": "You/Your",
+   "canonical_event": null,
+   "definition": "The Policyholder and/or the Insured Person, as the context may require."
+  }
+ ]
+}

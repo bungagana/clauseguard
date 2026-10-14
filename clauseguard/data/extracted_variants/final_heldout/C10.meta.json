@@ -1,0 +1,14 @@
+{
+ "refine_log": [
+  {
+   "id": "C10-t010",
+   "action": "removed",
+   "why": "evidence has no cue for PERMITS CONVERSION"
+  }
+ ],
+ "verify_actions": 1,
+ "salvaged_rows": 0,
+ "recall_sentences": 6,
+ "added": 4,
+ "dropped": []
+}

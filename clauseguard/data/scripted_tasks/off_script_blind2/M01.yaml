@@ -1,0 +1,12 @@
+id: M01
+title: Filing window after a critical-illness diagnosis
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- How long do I have to send in a critical illness claim after the doctor gives me
+  the diagnosis?
+expected:
+  must_contain:
+  - CI-CHUBB-05
+  - '90'
+kind: blind2

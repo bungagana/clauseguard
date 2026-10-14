@@ -1,0 +1,40 @@
+{
+ "refine_log": [
+  {
+   "id": "C1-t011",
+   "action": "repaired",
+   "why": "age_max=65 not in evidence: dropped"
+  }
+ ],
+ "verify_actions": 1,
+ "salvaged_rows": 0,
+ "recall_sentences": 5,
+ "added": 2,
+ "dropped": [
+  {
+   "row": {
+    "head": "POLICY",
+    "relation": "HAS_PERIOD",
+    "object": "CLAIM_PAYMENT_DEADLINE",
+    "section": "SECTION 9: CLAIMS PROCEDURE",
+    "evidence_text": "9.3 We will pay valid claims within 30 days of receiving all required documentation.",
+    "deadline_days": 30,
+    "period_kind": "CLAIM_PAYMENT",
+    "applies_if": [
+     {
+      "slot": "claim_validity",
+      "op": "EQ",
+      "value": "valid"
+     },
+     {
+      "slot": "documentation",
+      "op": "EQ",
+      "value": "all_required_received"
+     }
+    ]
+   },
+   "error": "object 'CLAIM_PAYMENT_DEADLINE' is not a PeriodKind",
+   "pass": "recall"
+  }
+ ]
+}

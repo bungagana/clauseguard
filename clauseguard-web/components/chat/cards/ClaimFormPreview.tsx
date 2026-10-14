@@ -1,0 +1,191 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Check, Download, FileText, Loader2, X } from "lucide-react";
+import { exportPdf, getChatPending } from "@/lib/api";
+import type { PoliciesResponse } from "@/lib/types";
+import { policyName } from "@/lib/clauses";
+import { formatDate, formatMoney, humanize } from "@/lib/format";
+import { downloadBlob } from "@/lib/exportPdf";
+
+interface ChecklistItem {
+  code: string;
+  label: string;
+  attached: boolean;
+}
+
+interface FormField {
+  label: string;
+  source: string;
+  value: unknown;
+  state: "filled" | "not_provided" | "to_complete";
+}
+
+interface FormSection {
+  title: string;
+  fields: FormField[];
+}
+
+interface Draft {
+  policy_id?: string;
+  event?: string;
+  amount?: string | number | null;
+  claim_amount?: string | number | null;
+  currency?: string | null;
+  admission?: string | null;
+  discharge?: string | null;
+  diagnosis?: string | null;
+  required_documents?: string[];
+  document_handles?: string[];
+  missing_documents?: string[];
+  facts?: { values?: Record<string, unknown> };
+  form_title?: string;
+  form_layout_source?: "policy_clauses" | "standard";
+  form_sections?: FormSection[];
+}
+
+const DATE_SOURCES = new Set(["admission_date", "discharge_date", "filing_deadline", "date_prepared"]);
+const MONEY_SOURCES = new Set(["billed_amount", "claimed_amount"]);
+
+function fieldText(f: FormField, currency: string): string {
+  if (f.state === "to_complete") return "(to be completed by hand)";
+  if (f.state === "not_provided") return "—";
+  const v = f.value;
+  if (typeof v === "boolean") return v ? "Yes" : "No";
+  if (DATE_SOURCES.has(f.source) && typeof v === "string") return formatDate(v);
+  if (MONEY_SOURCES.has(f.source)) return formatMoney(String(v), currency);
+  if (Array.isArray(v)) return v.map((x) => humanize(String(x))).join(", ");
+  if (f.source === "event" || f.source === "cause") return humanize(String(v));
+  return String(v);
+}
+
+function Row({ k, v }: { k: string; v: React.ReactNode }) {
+  if (v === null || v === undefined || v === "") return null;
+  return (
+    <div className="grid grid-cols-[9.5rem_1fr] gap-2 border-b border-border/60 py-1 last:border-b-0">
+      <dt className="text-[11px] uppercase tracking-wide text-muted-foreground">{k}</dt>
+      <dd className="text-xs text-foreground">{v}</dd>
+    </div>
+  );
+}
+
+/**
+ * The claim form exactly as it will be sent to the insurer, field by field, so what the customer
+ * confirms is what leaves. Read from the server's pending-action record (the draft the engine
+ * prepared), never rebuilt in the browser. When the draft carries the insurer's own form layout
+ * (derived from that policy's clauses), the form follows it; otherwise the standard rows show.
+ */
+export function ClaimFormPreview({ token, tool, policies }: { token: string; tool: string; policies: PoliciesResponse | null }) {
+  const [draft, setDraft] = useState<Draft | null | undefined>(undefined);
+  const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    getChatPending(token)
+      .then((res) => {
+        const p = res.pending.find((x) => x.tool === tool) as { args?: Record<string, { value?: unknown }> } | undefined;
+        const d = p?.args?.draft_handle?.value as Draft | undefined;
+        if (!cancelled) setDraft(d ?? null);
+      })
+      .catch(() => !cancelled && setDraft(null));
+    return () => {
+      cancelled = true;
+    };
+  }, [token, tool]);
+
+  if (draft === undefined) return <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Loader2 className="h-3 w-3 animate-spin" /> Loading the form…</p>;
+  if (draft === null) return null;
+  const currency = draft.currency ?? "IDR";
+  const sections = draft.form_sections ?? [];
+
+  async function download() {
+    if (!draft || busy) return;
+    setBusy(true);
+    try {
+      const body = {
+        title: (draft.form_title ?? "Claim form").slice(0, 120),
+        subtitle: `${policyName(policies, draft.policy_id ?? "")} (${draft.policy_id}) · prepared by the assistant from your answers and the policy wording`,
+        sections: sections.map((s) => ({
+          heading: s.title.slice(0, 120),
+          lines: s.fields.flatMap((f) =>
+            f.source === "documents_checklist" && Array.isArray(f.value)
+              ? [`${f.label}:`, ...(f.value as ChecklistItem[]).map((c) => `  [${c.attached ? "x" : " "}] ${c.label}`)]
+              : [`${f.label}: ${fieldText(f, currency)}`]
+          ),
+        })),
+        footer: "This form was prepared by the assistant and sent only after the customer's confirmation. The insurer decides the claim.",
+      };
+      const blob = await exportPdf(token, body);
+      downloadBlob(blob, `${(draft.form_title ?? "claim-form").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}.pdf`);
+    } catch {
+      /* the button simply stays available */
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (sections.length > 0) {
+    return (
+      <div className="mt-2.5 rounded-lg border border-border bg-card p-3">
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <p className="inline-flex items-center gap-1.5 text-xs font-semibold"><FileText className="h-3.5 w-3.5 text-primary" /> {draft.form_title ?? "Claim form that will be sent"}</p>
+            <p className="mt-0.5 text-[11px] text-muted-foreground">
+              {draft.form_layout_source === "policy_clauses" ? "Laid out from this insurer's own policy wording; values from your answers only." : "Standard form; values from your answers only."}
+            </p>
+          </div>
+          <button type="button" onClick={download} disabled={busy} className="inline-flex shrink-0 items-center gap-1 rounded-full border border-border px-2.5 py-1 text-[11px] font-medium hover:bg-muted disabled:opacity-60">
+            {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Download className="h-3 w-3" />} PDF
+          </button>
+        </div>
+        {sections.map((s) => (
+          <div key={s.title} className="mt-2.5">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-primary/80">{s.title}</p>
+            <dl className="mt-1">
+              {s.fields.map((f) =>
+                f.source === "documents_checklist" && Array.isArray(f.value) ? (
+                  <div key={f.label} className="border-b border-border/60 py-1 last:border-b-0">
+                    <dt className="text-[11px] uppercase tracking-wide text-muted-foreground">{f.label}</dt>
+                    <dd className="mt-0.5 flex flex-col gap-0.5 text-xs">
+                      {(f.value as ChecklistItem[]).map((c) => (
+                        <span key={c.code} className="inline-flex items-center gap-1.5">
+                          {c.attached ? <Check className="h-3 w-3 text-success" /> : <X className="h-3 w-3 text-destructive" />}
+                          <span className={c.attached ? "" : "text-muted-foreground"}>{c.label}</span>
+                        </span>
+                      ))}
+                    </dd>
+                  </div>
+                ) : (
+                  <Row key={f.label} k={f.label} v={<span className={f.state === "filled" ? "" : "text-muted-foreground"}>{fieldText(f, currency)}</span>} />
+                )
+              )}
+            </dl>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  const facts = draft.facts?.values ?? {};
+  const amount = draft.claim_amount ?? draft.amount;
+  const attached = draft.document_handles?.length ?? 0;
+  const required = draft.required_documents ?? [];
+  const acknowledged = draft.missing_documents ?? [];
+  return (
+    <div className="mt-2.5 rounded-lg border border-border bg-card p-3">
+      <p className="inline-flex items-center gap-1.5 text-xs font-semibold"><FileText className="h-3.5 w-3.5 text-primary" /> Claim form that will be sent</p>
+      <dl className="mt-1.5">
+        <Row k="Policy" v={`${policyName(policies, draft.policy_id ?? "")} (${draft.policy_id})`} />
+        <Row k="Event" v={draft.event ? humanize(draft.event) : null} />
+        <Row k="Admitted" v={draft.admission ? formatDate(draft.admission) : null} />
+        <Row k="Discharged" v={draft.discharge ? formatDate(draft.discharge) : null} />
+        <Row k="Days in hospital" v={facts.days_hospitalized != null ? String(facts.days_hospitalized) : null} />
+        <Row k="Cause" v={facts.cause ? humanize(String(facts.cause)) : null} />
+        <Row k="Diagnosis" v={draft.diagnosis ? humanize(draft.diagnosis) : null} />
+        <Row k="Hospital bill" v={facts.billed_amount != null ? formatMoney(String(facts.billed_amount), currency) : null} />
+        <Row k="Amount claimed" v={amount != null ? formatMoney(String(amount), currency) : null} />
+        <Row k="Documents" v={`${attached} attached of ${required.length} required${acknowledged.length ? ` · ${acknowledged.length} missing, acknowledged` : ""}`} />
+        <Row k="Declaration" v="Prepared by the assistant from your answers and the policy wording; sent only after your confirmation; the insurer decides." />
+      </dl>
+    </div>
+  );
+}

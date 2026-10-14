@@ -1,0 +1,10 @@
+id: M09
+title: Shopping intent without the word recommend
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- I want to shop for another policy; which product gives the best daily hospital cash
+  value for the money?
+expected:
+  intent: PLAN_RECOMMENDATION
+kind: blind2

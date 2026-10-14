@@ -1,0 +1,13 @@
+{
+ "refine_log": [
+  {
+   "id": "C2-t007",
+   "action": "repaired",
+   "why": "amount=250000 not in evidence: dropped"
+  }
+ ],
+ "verify_actions": 1,
+ "salvaged_rows": 0,
+ "recall_sentences": 0,
+ "added": 0
+}

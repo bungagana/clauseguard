@@ -1,0 +1,136 @@
+{
+ "model": "gemini-3.6-flash",
+ "models_used": [
+  "gemini-3.6-flash"
+ ],
+ "calls": 2,
+ "dropped": [],
+ "sections": [
+  {
+   "id": "S1",
+   "heading": "POLICY OWNER & INSURED",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S2",
+   "heading": "COVERAGE SPECIFICATIONS",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S3",
+   "heading": "BENEFICIARY INFORMATION",
+   "kind": "ADMIN",
+   "has_rules": false,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S4",
+   "heading": "ARTICLE 1 - DEFINITIONS",
+   "kind": "DEFINITIONS",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S5",
+   "heading": "ARTICLE 2 - FLEXIBLE PREMIUM PAYMENTS",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S6",
+   "heading": "ARTICLE 3 - MONTHLY DEDUCTIONS",
+   "kind": "PREMIUM",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S7",
+   "heading": "ARTICLE 4 - INTEREST CREDITING",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S8",
+   "heading": "ARTICLE 5 - DEATH BENEFIT",
+   "kind": "COVERAGE",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S9",
+   "heading": "ARTICLE 6 - PARTIAL WITHDRAWALS",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S10",
+   "heading": "ARTICLE 7 - POLICY LOANS",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S11",
+   "heading": "ARTICLE 8 - SURRENDER",
+   "kind": "GENERAL",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S12",
+   "heading": "ARTICLE 9 - LIMITATIONS",
+   "kind": "EXCLUSION",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  },
+  {
+   "id": "S13",
+   "heading": "ARTICLE 10 - GRACE PERIOD AND LAPSE",
+   "kind": "PERIOD",
+   "has_rules": true,
+   "page_start": null,
+   "page_end": null
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Account Value",
+   "canonical_event": null,
+   "definition": "The accumulation of premiums paid, less deductions for monthly charges and expenses, plus interest credited."
+  },
+  {
+   "term": "Cost of Insurance",
+   "canonical_event": null,
+   "definition": "The monthly charge for the death benefit based on the insured's age, sex, and risk class."
+  },
+  {
+   "term": "Monthly Deduction Date",
+   "canonical_event": null,
+   "definition": "The 10th day of each month."
+  },
+  {
+   "term": "Surrender Charge",
+   "canonical_event": "SURRENDER",
+   "definition": "A percentage-based charge applied if the policy is surrendered in the first 15 years."
+  }
+ ]
+}

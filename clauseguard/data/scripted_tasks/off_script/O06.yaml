@@ -1,0 +1,17 @@
+id: O06
+title: 'Dependant by relation word: son''s asthma, no stale claim data'
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- my son's asthma, is it covered by the company insurance? admitted 28 Sep 2026
+expected:
+  verdict:
+    policy_id: GH-NUSA-GRP
+    verdict: COVERED
+  denial_code:
+    policy_id: HI-INDIV-S
+    code: PRE_EXISTING
+  must_not_contain:
+  - 3,900,000
+  - 19,500,000
+kind: off_script

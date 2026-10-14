@@ -1,0 +1,34 @@
+{
+ "refine_log": [
+  {
+   "id": "C2-t007",
+   "action": "repaired",
+   "why": "amount=250000 not in evidence: dropped"
+  }
+ ],
+ "verify_actions": 1,
+ "salvaged_rows": 0,
+ "recall_sentences": 6,
+ "added": 3,
+ "dropped": [
+  {
+   "row": {
+    "head": "POLICY",
+    "relation": "HAS_PERIOD",
+    "object": "CLAIM_PAYMENT_DEADLINE",
+    "section": "8. DEATH BENEFIT PAYMENT",
+    "evidence_text": "8.2 Payment will be made within 7 days of receiving complete claim documentation.",
+    "period_kind": "DEADLINE",
+    "applies_if": [
+     {
+      "slot": "documentation",
+      "op": "EQUALS",
+      "value": "complete claim documentation"
+     }
+    ]
+   },
+   "error": "object 'CLAIM_PAYMENT_DEADLINE' is not a PeriodKind",
+   "pass": "recall"
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+id: T01
+title: 'Simple lookup: daily hospital cash benefit'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- What is my daily hospital cash benefit?
+expected:
+  intent: POLICY_QA
+  must_contain:
+  - IDR 500,000/day
+  - max 90 days
+  - c_hosp_daily
+  - policy wording prevails
+  must_not_contain:
+  - IDR 2,500,000
+  - 300,000
+  no_clarification: true
+kind: functional

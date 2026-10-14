@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClauseGuard</title>
+  <meta name="description" content="ClauseGuard: the insurance agent that never guesses. Demo UI over the sandbox insurer API." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Cpath d='M16 6l8 3v7c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V9z' fill='white'/%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-view="chat">
+<div id="app">
+  <header class="top">
+    <div class="brand">
+      <b>ClauseGuard</b>
+      <span class="tagline">The insurance agent that never guesses.</span>
+    </div>
+    <div class="spacer"></div>
+    <span class="pill" id="pill-persona" title="Signed-in persona">not signed in</span>
+    <span class="pill" id="pill-kill" title="Operator kill switch"><i class="dot"></i><span>agent live</span></span>
+    <button class="ghost" id="btn-switch" title="Sign in as another persona">Switch persona</button>
+    <button class="primary" id="btn-demo">Demo script</button>
+  </header>
+
+  <main class="grid">
+    <!-- LEFT: policies -->
+    <aside class="policies" id="policies">
+      <div class="side-head">Signed in as</div>
+      <div class="persona-card" id="persona-card"><b>-</b><span>-</span></div>
+      <div class="side-head">Policies on this account</div>
+      <div id="policy-list"></div>
+      <div class="side-head">Actions</div>
+      <div class="side-actions">
+        <button id="btn-upload-side">Upload a document (invoice PDF)</button>
+        <button id="btn-account">Request account change (tier 3)</button>
+        <button id="btn-refresh">Refresh policies and audit</button>
+      </div>
+    </aside>
+
+    <!-- CENTRE: chat -->
+    <section class="chat">
+      <div class="messages" id="messages"></div>
+      <div class="composer">
+        <div class="attach" id="attach"></div>
+        <div class="row">
+          <input type="file" id="file" accept="application/pdf,.pdf,.txt" class="hidden" />
+          <button class="icon" id="btn-upload" title="Upload an invoice or report (PDF)">&#128206;</button>
+          <textarea id="input" rows="1" placeholder="Ask about your cover, gaps, or how to claim... (Enter to send, Shift+Enter for a new line)"></textarea>
+          <button class="btn" id="btn-send">Send</button>
+        </div>
+        <div class="hint">Answers are indicative and computed by the constraint solver from your policy clauses; the policy wording prevails. Nothing is submitted without your confirmation click.</div>
+      </div>
+    </section>
+
+    <!-- RIGHT: insights -->
+    <aside class="insights">
+      <div class="tabs" id="tabs">
+        <button data-tab="portfolio" class="active">Portfolio</button>
+        <button data-tab="plan">Claim plan</button>
+        <button data-tab="readiness">Readiness</button>
+        <button data-tab="entitlement">Entitlement</button>
+        <button data-tab="security">Security &amp; Audit</button>
+        <button data-tab="alerts">Alerts <span class="count hidden" id="alert-count">0</span></button>
+      </div>
+      <div class="tabpanes">
+        <div class="pane active" id="pane-portfolio">
+          <h3>Portfolio heatmap</h3>
+          <div class="sub">Person x peril x policy, with the limit from the typed clause. Amber = indemnity overlap (does not pay twice), green = fixed benefit (stacks), red = no cover.</div>
+          <div class="legend">
+            <span><i style="background:#dbeafe"></i>indemnity</span>
+            <span><i style="background:#dcfce7"></i>fixed benefit (stacks)</span>
+            <span><i style="background:#fef3c7;outline:2px solid #f59e0b"></i>overlap</span>
+            <span><i style="background:#fee2e2"></i>gap</span>
+          </div>
+          <div id="heatmap"><div class="empty">Sign in to load the portfolio.</div></div>
+        </div>
+        <div class="pane" id="pane-plan">
+          <h3>Claim plan</h3>
+          <div class="sub">Who pays first (coordination of benefits), expected amounts, the documents each payer needs, and the filing deadline.</div>
+          <div id="plan"><div class="empty">Ask "who pays first?" about an event to build the plan.</div></div>
+        </div>
+        <div class="pane" id="pane-readiness">
+          <h3>Claim readiness</h3>
+          <div class="sub">Deadline, days left, missing documents and readiness flags for the policy in focus.</div>
+          <div id="readiness"><div class="empty">Ask whether an event is covered or how to claim.</div></div>
+        </div>
+        <div class="pane" id="pane-entitlement">
+          <h3>Entitlement</h3>
+          <div class="sub">What you are entitled to across every payer, computed by the solver from the typed clauses: optimal allocation, the insurer's own pre-check, upcoming deadlines and plan options.</div>
+          <div class="ent-bar">
+            <select id="ent-claim" title="Claim to evaluate"><option value="draft">Current conversation (draft)</option></select>
+            <button class="btn secondary" id="ent-refresh">Recompute</button>
+          </div>
+          <div class="ent-cards">
+            <div class="ent-card" id="ent-allocation"><h4>Claim allocation</h4><div class="empty">Sign in to compute the allocation.</div></div>
+            <div class="ent-card" id="ent-twin"><h4>Pre-check (insurer twin)</h4><div class="empty">Sign in to run the pre-check.</div></div>
+            <div class="ent-card" id="ent-timeline"><h4>Timeline</h4><div class="empty">Sign in to load upcoming events.</div></div>
+            <div class="ent-card" id="ent-plans"><h4>Plan options</h4>
+              <div class="ent-plans-bar"><label>Budget / month <input id="ent-budget" type="number" min="0" step="50000" placeholder="IDR" /></label><label>Jurisdiction <select id="ent-jur"><option value="ID">ID</option><option value="US">US</option></select></label></div>
+              <div id="ent-plans-body"><div class="empty">Sign in to see plan options.</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pane" id="pane-security">
+          <h3>Security &amp; audit</h3>
+          <div class="sub">Enforced in code by the policy enforcement point, not by prompt text. The agent reaches data only through tiered tools.</div>
+          <div id="security"></div>
+        </div>
+        <div class="pane" id="pane-alerts">
+          <h3>Alerts</h3>
+          <div class="sub">Unprompted warnings the agent raised while answering: overdue premiums, grace-period ends, filing deadlines, inactive statutory cover.</div>
+          <div id="alerts"><div class="empty">No alerts yet.</div></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <nav class="mobile">
+    <button data-view="policies">Policies</button>
+    <button data-view="chat" class="active">Chat</button>
+    <button data-view="insights">Insights</button>
+  </nav>
+</div>
+
+<!-- login -->
+<div class="overlay" id="login">
+  <div class="login">
+    <h1>ClauseGuard</h1>
+    <div class="tag">The insurance agent that never guesses. Choose a persona to open the sandbox insurer.</div>
+    <div class="cards" id="persona-cards"></div>
+    <div class="foot">Sandbox data only. The language model never produces a verdict, an amount, or a tool argument for privileged actions; a deterministic solver does, and every step is written to a hash-chained audit log.</div>
+  </div>
+</div>
+
+<!-- confirmation modal (tier 2) -->
+<div class="overlay hidden" id="confirm">
+  <div class="modal">
+    <div class="mh"><span class="badge t2">Tier 2</span><h3 id="confirm-title">Confirm action</h3><button class="x" data-close="confirm">&times;</button></div>
+    <div class="mb" id="confirm-body"></div>
+    <div class="mf">
+      <button class="btn secondary" data-close="confirm">Cancel</button>
+      <button class="btn" id="confirm-go">Confirm and execute</button>
+    </div>
+  </div>
+</div>
+
+<!-- account change (tier 3) -->
+<div class="overlay hidden" id="account">
+  <div class="modal">
+    <div class="mh"><span class="badge t3">Tier 3</span><h3>Request a payout-account change</h3><button class="x" data-close="account">&times;</button></div>
+    <div class="mb">
+      <div class="notice bad">The assistant cannot execute this. Payout account, beneficiary and premium debit changes are tier 3: the only tool that exists opens a ticket, which the insurer verifies out-of-band (verified call-back, OTP page or branch visit) before a human applies it. The value you type is hashed; it is never stored raw and never reaches the model.</div>
+      <label>Bank</label>
+      <input id="acc-bank" value="BCA" />
+      <label>New account number</label>
+      <input id="acc-number" value="0123456789" />
+      <div id="account-result"></div>
+    </div>
+    <div class="mf">
+      <button class="btn secondary" data-close="account">Close</button>
+      <button class="btn danger" id="account-go">Open out-of-band ticket</button>
+    </div>
+  </div>
+</div>
+
+<!-- demo drawer -->
+<div class="drawer" id="drawer">
+  <div class="dh"><h3>Demo script</h3><button class="x" id="drawer-close">&times;</button></div>
+  <div class="db" id="drawer-body"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

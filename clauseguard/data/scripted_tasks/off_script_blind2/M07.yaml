@@ -1,0 +1,13 @@
+id: M07
+title: Dental after an accident
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- My daughter chipped a front tooth when she fell off her bicycle. Is the dental bill
+  covered by the individual plan?
+expected:
+  must_contain:
+  - e_dental_accident|exception|accident
+  must_not_contain:
+  - Not determinable
+kind: blind2

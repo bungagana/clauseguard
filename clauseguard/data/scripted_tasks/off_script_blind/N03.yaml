@@ -1,0 +1,11 @@
+id: N03
+title: 'Indonesian: planned surgery next month on the group plan'
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- Budi mau operasi usus buntu bulan depan, ditanggung asuransi kantor ga?
+expected:
+  verdict:
+    policy_id: GH-NUSA-GRP
+    verdict: COVERED
+kind: blind

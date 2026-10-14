@@ -1,0 +1,13 @@
+id: H06
+title: Named critical illness without an admission
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- Which of my policies pay out if I get cancer?
+expected:
+  must_contain:
+  - CI-CHUBB-05
+  - 30 days
+  must_not_contain:
+  - 'HCP-SOMPO-01\)?: Covered'
+kind: holdout

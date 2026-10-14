@@ -1,0 +1,53 @@
+{
+ "refine_log": [
+  {
+   "id": "C7-t001",
+   "action": "repaired",
+   "why": "amount=750000 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t013",
+   "action": "repaired",
+   "why": "age_max=25 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t015",
+   "action": "repaired",
+   "why": "window 90 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t024",
+   "action": "repaired",
+   "why": "age_max=70 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t028",
+   "action": "repaired",
+   "why": "amount=500000 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t029",
+   "action": "repaired",
+   "why": "amount=375000 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t030",
+   "action": "repaired",
+   "why": "amount=15000 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t031",
+   "action": "repaired",
+   "why": "amount=750000 not in evidence: dropped"
+  },
+  {
+   "id": "C7-t032",
+   "action": "repaired",
+   "why": "amount=100000 not in evidence: dropped"
+  }
+ ],
+ "verify_actions": 9,
+ "salvaged_rows": 3,
+ "recall_sentences": 0,
+ "added": 0
+}

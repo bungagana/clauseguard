@@ -1,0 +1,13 @@
+id: H03
+title: Who is insured under the group plan
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- can my wife and kids use the company health insurance too?
+expected:
+  must_contain:
+  - GH-NUSA-GRP\)? insures
+  - Sari Santoso
+  - Aditya Santoso
+  - Nadia Santoso
+kind: holdout

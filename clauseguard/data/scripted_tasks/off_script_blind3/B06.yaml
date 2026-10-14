@@ -1,0 +1,21 @@
+id: B06
+title: Hospital corrected mid-flow (non-partner to BPJS partner)
+persona: santoso
+as_of: '2026-10-14'
+turns:
+- user: Aditya was hospitalised at Siloam from 2026-10-08 to 2026-10-11 for asthma, the bill was IDR 9,000,000. Please handle the claim.
+  expected:
+    cob_status:
+      BPJS-KES-SANTOSO: NOT_CLAIMABLE
+- user: Sorry, correction - it was RS Mitra Keluarga, not Siloam.
+  expected:
+    must_contain:
+    - Mitra
+    cob_status:
+      BPJS-KES-SANTOSO: PAYER
+expected:
+  in_order:
+  - BPJS-KES-SANTOSO
+  - GH-NUSA-GRP
+  no_tool_calls_of_tier_ge: 2
+kind: blind3

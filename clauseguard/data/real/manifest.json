@@ -1,0 +1,191 @@
+{
+  "generated_by": "scripts/fetch_real_data.py",
+  "sources": {
+    "cms_transparency_in_coverage_py2025": {
+      "url": "https://data.healthcare.gov/datafile/py2025/transparency_in_coverage_PUF.xlsx",
+      "path": "data/real/raw/kff/transparency_in_coverage_PUF_py2025.xlsx",
+      "downloaded_on": "2026-10-11",
+      "bytes": 1158985,
+      "sha256": "7999ad7f063a747f7d159ea044e98074c4d7ba9c2b6475fd94d4cd6f1314b20f",
+      "license": "US public domain"
+    },
+    "kff_denials_2023_csv": {
+      "url": "derived",
+      "path": "data/real/kff_denials_2023.csv",
+      "downloaded_on": "2026-10-11",
+      "bytes": 42606,
+      "sha256": "58d7022f8600cc3026f3a1fb17920815f2473ae3acffbdb66b819a55ed3b6b73",
+      "rows": 238,
+      "issuers": 206,
+      "states": 31
+    },
+    "kff_denials_2023_published_csv": {
+      "url": "https://www.kff.org/private-insurance/issue-brief/claims-denials-and-appeals-in-aca-marketplace-plans-in-2023/",
+      "path": "data/real/kff_denials_2023_published.csv",
+      "downloaded_on": "2026-10-11",
+      "bytes": 3506,
+      "sha256": "c69c6b24fa5f8e4d3ee9f6b5d27aedf662b3c9e61686c416751234a5b64d6b27",
+      "rows": 19
+    },
+    "cms_plan_attributes_py2026": {
+      "url": "https://download.cms.gov/marketplace-puf/2026/plan-attributes-puf.zip",
+      "path": "data/real/raw/cms/plan-attributes-puf.zip",
+      "downloaded_on": "2026-10-11",
+      "bytes": 1001032,
+      "sha256": "954e697885efcb709aed0be1de14075afe11704bf3447372960d08c879950af2",
+      "license": "US public domain"
+    },
+    "cms_benefits_cost_sharing_py2026": {
+      "url": "https://download.cms.gov/marketplace-puf/2026/benefits-and-cost-sharing-puf.zip",
+      "path": "data/real/raw/cms/benefits-and-cost-sharing-puf.zip",
+      "downloaded_on": "2026-10-11",
+      "bytes": 12450787,
+      "sha256": "aa2d6874704bc951ed28792af3e65a4bd5b48eb3dbc086325f5ce053f08d8682",
+      "license": "US public domain"
+    },
+    "cms_plans_py2026_csv": {
+      "url": "derived",
+      "path": "data/real/cms_plans_py2026.csv",
+      "downloaded_on": "2026-10-11",
+      "bytes": 2541503,
+      "sha256": "77d5844846e017091e15425f8468d56700feffea02efe62255419aae29b1357e",
+      "state": "TX",
+      "rows": 4183
+    },
+    "insuranceqa_vocabulary": {
+      "url": "https://raw.githubusercontent.com/shuzi/insuranceQA/master/V2/vocabulary",
+      "path": "data/real/raw/insuranceqa/vocabulary",
+      "downloaded_on": "2026-10-11",
+      "bytes": 1303358,
+      "sha256": "087ad8bd0254b57711082856b24d3526178b407d6f849798af1e34f599b2557d",
+      "license": "research use only; cite Feng et al., ASRU 2015"
+    },
+    "insuranceqa_questions_raw": {
+      "url": "https://raw.githubusercontent.com/shuzi/insuranceQA/master/V2/InsuranceQA.question.anslabel.raw.encoded.gz",
+      "path": "data/real/raw/insuranceqa/InsuranceQA.question.anslabel.raw.encoded.gz",
+      "downloaded_on": "2026-10-11",
+      "bytes": 306685,
+      "sha256": "4d10bf9758f841a77b04558faec470846d450f2583c8a4657c3eacf63ee448b5",
+      "license": "research use only; cite Feng et al., ASRU 2015"
+    },
+    "insuranceqa_questions_jsonl": {
+      "url": "derived",
+      "path": "data/real/insuranceqa_questions.jsonl",
+      "downloaded_on": "2026-10-11",
+      "bytes": 2476428,
+      "sha256": "efbf30f222c1f903784b765aeeeed09dedaf8ea01bbf5b6e2736385c91ea8985",
+      "rows": 16860
+    },
+    "insuranceqa_sample200_jsonl": {
+      "url": "derived",
+      "path": "data/real/insuranceqa_sample200.jsonl",
+      "downloaded_on": "2026-10-11",
+      "bytes": 31261,
+      "sha256": "74e7b268488aa3f75f172a4254bb1709bf9b05b81ecc24d22de9f75889a47573",
+      "rows": 200,
+      "seed": 20260101
+    },
+    "riplay_manifest": {
+      "path": "data/real/riplay/manifest.json",
+      "documents_ok": 30,
+      "documents_failed": 0,
+      "by_product_type": {
+        "hospital_cash": 5,
+        "hospitalisation": 5,
+        "personal_accident": 5,
+        "term_life": 7,
+        "critical_illness": 7,
+        "whole_life": 1
+      },
+      "license": "publicly distributed product summaries; copyright remains with each insurer"
+    },
+    "fos_decisions_jsonl": {
+      "url": "https://www.financial-ombudsman.org.uk/businesses/resolving-complaint/ombudsman-decisions/search",
+      "path": "data/real/fos_decisions.jsonl",
+      "downloaded_on": "2026-10-11",
+      "bytes": 1556381,
+      "sha256": "acd3ed177eb2998dddd230325d117ffc910e475affa0f9caa33fe99f13679583",
+      "rows": 150,
+      "products": {
+        "health_medical": 64,
+        "life": 10,
+        "income_protection": 27,
+        "travel": 31,
+        "personal_accident": 18
+      },
+      "outcomes": {
+        "upheld": 40,
+        "not upheld": 110
+      },
+      "license": "Crown copyright; Open Government Licence v3.0 (financial-ombudsman.org.uk)"
+    },
+    "cms_rate_py2026": {
+      "url": "https://download.cms.gov/marketplace-puf/2026/rate-puf.zip",
+      "path": "data/real/raw/cms/rate-puf.zip",
+      "downloaded_on": "2026-10-11",
+      "bytes": 16240924,
+      "sha256": "a05423ee91d137420510ca0d325fb8538861ace21d07ea062e8c3f6410732edf",
+      "license": "US public domain"
+    },
+    "cms_rates_py2026_csv": {
+      "url": "derived",
+      "path": "data/real/cms_rates_py2026.csv",
+      "downloaded_on": "2026-10-11",
+      "bytes": 819962,
+      "sha256": "a76b904e4ecf4ce4ba1da45637a37b194742f21fdb015b594c299712485cda7f",
+      "state": "TX",
+      "rows": 9052,
+      "ages": [
+        "21",
+        "30",
+        "40",
+        "50"
+      ]
+    },
+    "icd10cm_code_descriptions_fy2027": {
+      "url": "https://www.cms.gov/files/zip/2027-code-descriptions-tabular-order.zip",
+      "path": "data/real/raw/icd10cm/2027-code-descriptions-tabular-order.zip",
+      "downloaded_on": "2026-10-14",
+      "bytes": 2208022,
+      "sha256": "91c6c9d1117764ce72375a0f3a5493b1725dafbc1ab283b55799076c9e194965",
+      "license": "US public domain (CMS/CDC-NCHS)"
+    },
+    "icd10cm_codes_txt": {
+      "url": "derived",
+      "path": "data/real/icd10cm_codes.txt",
+      "downloaded_on": "2026-10-14",
+      "bytes": 6383291,
+      "sha256": "91b657a02fa2c35ded3f7676ba9030043d0121d885fb99ac705e2620de4f8bd0",
+      "rows": 74879,
+      "source_member": "Code Descriptions/icd10cm_codes_2027.txt",
+      "fiscal_year": 2027
+    },
+    "e5_small_onnx_model_int8.onnx": {
+      "url": "https://huggingface.co/Xenova/multilingual-e5-small/resolve/main/onnx/model_int8.onnx",
+      "path": "data/cache/models/multilingual-e5-small/model_int8.onnx",
+      "downloaded_on": "2026-10-14",
+      "bytes": 118054593,
+      "sha256": "4d24e2bc01a447951524466ef533e52944bf48509e6552810bcee1a2711cb02c",
+      "license": "MIT (intfloat/multilingual-e5-small); ONNX export by Xenova"
+    },
+    "e5_small_onnx_tokenizer.json": {
+      "url": "https://huggingface.co/Xenova/multilingual-e5-small/resolve/main/tokenizer.json",
+      "path": "data/cache/models/multilingual-e5-small/tokenizer.json",
+      "downloaded_on": "2026-10-14",
+      "bytes": 17082730,
+      "sha256": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+      "license": "MIT (intfloat/multilingual-e5-small); ONNX export by Xenova"
+    },
+    "icd10_category_embeddings_e5onnx": {
+      "url": "derived",
+      "path": "data/cache/icd_emb_e5onnx_multilingual-e5-small-int8_7208e21526a3f4aa.npz",
+      "downloaded_on": "2026-10-14",
+      "bytes": 2714362,
+      "sha256": "79ae514ef2914524011e880ae4c7aba34a3d03d55a2295537542975eb286e758",
+      "model": "multilingual-e5-small-int8",
+      "categories": 1921,
+      "dim": 384
+    }
+  },
+  "updated_at": "2026-10-13T23:32:38+00:00"
+}

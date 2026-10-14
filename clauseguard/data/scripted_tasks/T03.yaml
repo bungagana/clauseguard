@@ -1,0 +1,15 @@
+id: T03
+title: 'Clarification: missing cause'
+persona: rizky
+as_of: '2026-10-11'
+turns:
+- Am I covered if I get hospitalised next week?
+expected:
+  expects_clarification_slot: cause
+  max_questions: 1
+  must_not_contain:
+  - Covered \(indicative\)\. Indicative benefit
+  - \byes, you are covered\b
+  must_contain:
+  - (cause of the hospitalisation|illness.{0,40}accident|accident.{0,40}illness)
+kind: functional

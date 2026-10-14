@@ -1,0 +1,13 @@
+id: B04
+title: What is due soon on my policies
+persona: santoso
+as_of: '2026-10-14'
+turns:
+- What's due soon on my policies?
+expected:
+  must_contain:
+  - HI-INDIV-S
+  - '2026-10-31'
+  no_tool_calls_of_tier_ge: 2
+  no_clarification: true
+kind: blind3

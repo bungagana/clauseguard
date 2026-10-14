@@ -1,0 +1,11 @@
+id: H07
+title: 'Typo-free but unusual phrasing: max room rate'
+persona: santoso
+as_of: '2026-10-11'
+turns:
+- whats the max my group plan pays per day for a hospital room
+expected:
+  intent: POLICY_QA
+  must_contain:
+  - IDR 1,500,000/day
+kind: holdout
