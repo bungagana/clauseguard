@@ -23,9 +23,10 @@ Status date: 2026-10-11. All files are in `evidence/` unless noted. Every number
 | `bench_b4oracle.jsonl`, `bench_b4oracle_v2.jsonl` | Raw records, gold-annotation tuples + solver (the report reads the first; v2 is a rerun kept for reference) | `python -m bench.abox_to_tuples` then `python -m bench.run_bench --system b4oracle` | Present |
 | `extraction_quality.md` | Precision and recall of extracted values against the benchmark gold annotations | `python scripts/extraction_quality.py` | Present |
 | `audit_log.jsonl` | Hash-chained audit log written by the running system | The running system | Contains development sessions; generate a clean one for the demo (section 3) |
-| `archive/` | Rotated development log | Manual copy | Exclude from the public repository |
+| `claims_desk_run.md` | One complete sandbox operation: four claim documents uploaded, the insurer's form prepared, the claim submitted after confirmation, approved at the desk with a note, and the decision returned to the customer, with the audit sequence numbers | `python scripts/claims_desk_evidence.py` against a running backend | Present: generated 2026-10-15 |
+| Supabase RLS check (console output) | Every Postgres table denies the database REST API to the publishable key | `python scripts/check_supabase_rls.py` | Run 2026-10-15: six tables, all DENIED |
 
-Test suite: `python -m pytest -q` gave 307 passed on 2026-10-11.
+Test suite: `python -m pytest -q`; the current count is in `README.md`.
 
 ## 2. Reproduction order
 

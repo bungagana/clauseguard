@@ -26,12 +26,12 @@ Notes: Insurance consumers in the United States, the United Kingdom, Singapore, 
 Notes: Each policy is compiled once by a quarantined extractor into typed clause tuples. The relation is one of twelve values. The qualifiers are numbers with units, time windows, deadlines and conditions over a closed slot vocabulary. The verbatim clause travels with the tuple for citation only. Trust is a qualifier too, so the same filter that rejects an expired exclusion rejects an instruction smuggled through an upload. The user's situation is a set of typed facts. Four deterministic solvers read these objects. The model extracts, binds facts and phrases text. It never decides.
 
 ## Slide 4: Architecture
-- Policy PDF or CMS row, quarantined extractor, typed clause store, four solvers, cited reply
-- Planner proposes intent and tool names; a code-only enforcement point decides what runs
-- Uploaded documents pass a hidden-text scan and a quarantined extractor; typed fields only
-- Hash-chained audit log, output guard, kill switch
+- Agents that read: Document Reader (policy PDF to typed rules), Conversation Agent (new situation, follow-up, correction, what-if), Fact Agent, Explainer, Watchdog
+- Code that decides: four solvers, the permission enforcer (T0 to T3), the hash-chained audit log
+- Claims: the insurer's own form laid out from its clauses, filled from typed facts, shown before Confirm; uploads matched to the policy's document list
+- Insurer side: a claims desk receives form and attachments, decides with a note, can halt the agent; the decision returns to the customer
 - Rule packs as data: Indonesia (statutory first, group before individual) and a generic pack
-Notes: This is the system on one slide. Documents enter through a quarantined extractor and land in the typed clause store. The solvers, written in plain Python, read the store. The planner sees the user's text and tool names only, never document text, and proposes tool calls that an enforcement point in ordinary code accepts or denies. Coordination rules are a data file per jurisdiction: an Indonesian pack with statutory schemes first, and a generic pack for a US or UK household. Every decision is written to a hash-chained audit log.
+Notes: One slide, two halves. The agents read: a Document Reader turns a policy into typed rules, a Conversation Agent reads each message in context, a Fact Agent binds the facts, an Explainer words the answer in the customer's language, a Watchdog watches deadlines. Code decides: the solvers, the permission enforcer and the audit log. For a claim, the agent lays out the insurer's own form from that insurer's wording, fills it from typed facts, shows it before the Confirm tap and files the uploaded documents with it. On the other side a claims desk, behind its own token, reviews, decides with a note and can halt the agent; the decision flows back to the customer's chat.
 
 ## Slide 5: Solver 1, verdict, with one example
 - Order: candidates, closed world, exclusions unless excepted, periods and conditions, termination, else covered with payable
@@ -65,17 +65,18 @@ Notes: Security is enforced in code, not in the prompt. Reading and computing ar
 - Recourse: 4 of 6 denied verdicts have a legitimate path to cover. Plan selection: optimiser beats the cheapest plan in 73 of 100 households on the mixed catalogue; identical pick on the single-peril CMS catalogue
 Notes: Our numbers, with their limits. Scripted tasks pass thirty-three of thirty-three. Two off-script batches pass fully but are development sets; the blind batch, written and run once, passes three of fourteen, the honest generalisation figure for the rule layer. Clarification asks when it should in eighty-seven percent of cases and never asks when it should not. On the public benchmark, the old 82.9-vs-87.5 "parity" claim compared different item counts and has been corrected; held-out accuracy is 84.1% both before and after the extraction fixes, and the baseline comparison on clean held-out data could not be completed this cycle. The CMS plan experiment is honest too: every marketplace plan covers the same perils, so the optimiser and the baselines pick the same plan.
 
-## Slide 9: Demo, the Entitlement tab
-- Scene 1, Rizky: dengue stay, COVERED with the clause, deadline 2026-12-06, unprompted premium alert; Timeline and Recourse cards
-- Scene 2, Dewi: motorbike crash, payer order, one question; Claim allocation and Pre-check cards with denial grounds and fixable badges
-- Scene 3, Santoso family: invoice with hidden white text blocked; Allocation splits the bill; Plan options close the family's gaps under a budget
-- Attack buttons: payout-account change refused with a ticket; cross-tenant request denied; audit chain verified, tamper detected
-Notes: Three scenes. A student asks about a dengue stay and gets the covered amount, the clause, the filing deadline and an unprompted warning about an unpaid premium; the Timeline card lists every date with money at risk. A delivery rider crashed: the Claim allocation card shows who pays what, and the Pre-check card lists the grounds an insurer would raise and which are fixable. A family uploads an invoice with hidden white text; it is blocked, the bill is split across the group plan and the stacking rider, and Plan options closes the remaining gaps within a budget.
+## Slide 9: Demo, from question to decision
+- Rizky, dengue, three days: covered Rp 1.5 million, filing deadline, the clause; one question (partner hospital?) and the BPJS answer follows
+- Four hospital documents uploaded at once: read, matched to Sompo's list, bill Rp 2.6 million taken from the invoice; the Sompo claim form appears, downloadable as PDF
+- Confirm: the claim and its attachments reach the insurer's desk; approved there with a note; the customer's digest shows the decision
+- Dewi, motorbike crash with four policies: who pays first, the expired licence, what-if with a valid one
+- Attack: payout-account change goes to a ticket, nothing changes; the audit chain verifies and a tampered copy breaks
+Notes: One story end to end. A student with dengue asks what he gets; the answer is the amount, the deadline and the sentence of the policy that decides it, with one question about the hospital. He attaches four hospital documents in one go; the assistant reads them, ticks the insurer's own document list, takes the bill from the invoice and shows Sompo's claim form, which he can download. He taps Confirm, the claim lands on the insurer's desk with the attachments, a person approves it with a note, and the decision appears in his chat. Then a delivery rider with four policies, the what-if panel, and an attack that ends in a ticket.
 
 ## Slide 10: What is real and what is next
 - Real inputs today: six public insurer wordings, CMS PUF plan year 2026 (834 Texas plans), InsuranceQA questions, UK ombudsman decisions, RIPLAY summaries
 - Synthetic, stated as such: benchmark contracts (expert-reviewed), personas, mock group plans, statutory amounts
 - Next: ombudsman replay for the twin, premiums in the CMS experiment, on-premise extraction, external red team, Indonesian labelled set
-- Not built: anchoring the audit chain outside the host; insurer API integration
-- Code, tests, evidence and limitations are in the repository
+- Not built: anchoring the audit chain outside the host; integration with a real insurer's API (the desk is a sandbox)
+- Running: web client on Vercel, Postgres audit chain on Supabase, backend as a Docker image; code, tests, evidence and limitations in the repository
 Notes: What is real: the six insurer wordings, the CMS marketplace plans, the consumer questions, the ombudsman decisions and the Indonesian product summaries are public data downloaded with a reproducible script and a manifest of hashes. What is synthetic is stated as synthetic: the benchmark contracts, the personas and the statutory amounts. Next steps are the ombudsman replay for the adjudication twin, premiums in the plan experiment, an on-premise extraction model, an external red team and a labelled Indonesian set. Everything, including the limitations, is in the repository. Thank you.

@@ -191,7 +191,8 @@ export async function sendChat(
     "/chat",
     { method: "POST", body: JSON.stringify({ text, uploads }) },
     token,
-    45000,
+    // reading several uploaded documents can take over a minute; the typing indicator stays until the reply
+    uploads.length ? 240000 : 90000,
     signal
   );
   return normalizeChatReply(raw);

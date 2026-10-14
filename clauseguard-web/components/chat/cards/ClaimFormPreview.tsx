@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertTriangle, Check, Download, FileText, Loader2, X } from "lucide-react";
+import { AlertTriangle, Check, Download, Eye, FileText, Loader2, X } from "lucide-react";
 import { exportPdf, getChatPending } from "@/lib/api";
 import type { PoliciesResponse } from "@/lib/types";
 import { policyName } from "@/lib/clauses";
@@ -80,6 +80,8 @@ function Row({ k, v }: { k: string; v: React.ReactNode }) {
 export function ClaimFormPreview({ token, tool, policies }: { token: string; tool: string; policies: PoliciesResponse | null }) {
   const [draft, setDraft] = useState<Draft | null | undefined>(undefined);
   const [busy, setBusy] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
   useEffect(() => {
     let cancelled = false;
     getChatPending(token)
@@ -99,11 +101,9 @@ export function ClaimFormPreview({ token, tool, policies }: { token: string; too
   const currency = draft.currency ?? "IDR";
   const sections = draft.form_sections ?? [];
 
-  async function download() {
-    if (!draft || busy) return;
-    setBusy(true);
-    try {
-      const body = {
+  function exportBody() {
+    if (!draft) return null;
+    return {
         title: (draft.form_title ?? "Claim form").slice(0, 120),
         subtitle: `${policyName(policies, draft.policy_id ?? "")} (${draft.policy_id}) · prepared by the assistant from your answers and the policy wording`,
         sections: sections.map((s) => ({
@@ -115,9 +115,34 @@ export function ClaimFormPreview({ token, tool, policies }: { token: string; too
           ),
         })),
         footer: "This form was prepared by the assistant and sent only after the customer's confirmation. The insurer decides the claim.",
-      };
+    };
+  }
+
+  async function preview() {
+    const body = exportBody();
+    if (!body || busy) return;
+    if (previewUrl) {
+      setPreviewUrl(null);
+      return;
+    }
+    setBusy(true);
+    try {
       const blob = await exportPdf(token, body);
-      downloadBlob(blob, `${(draft.form_title ?? "claim-form").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}.pdf`);
+      setPreviewUrl(URL.createObjectURL(blob));
+    } catch {
+      /* the button simply stays available */
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function download() {
+    const body = exportBody();
+    if (!body || busy) return;
+    setBusy(true);
+    try {
+      const blob = await exportPdf(token, body);
+      downloadBlob(blob, `${body.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}.pdf`);
     } catch {
       /* the button simply stays available */
     } finally {
@@ -135,10 +160,16 @@ export function ClaimFormPreview({ token, tool, policies }: { token: string; too
               {draft.form_layout_source === "policy_clauses" ? "Laid out from this insurer's own policy wording; values from your answers only." : "Standard form; values from your answers only."}
             </p>
           </div>
-          <button type="button" onClick={download} disabled={busy} className="inline-flex shrink-0 items-center gap-1 rounded-full border border-border px-2.5 py-1 text-[11px] font-medium hover:bg-muted disabled:opacity-60">
-            {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Download className="h-3 w-3" />} PDF
-          </button>
+          <div className="flex shrink-0 gap-1.5">
+            <button type="button" onClick={preview} disabled={busy} className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 text-[11px] font-medium hover:bg-muted disabled:opacity-60">
+              {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Eye className="h-3 w-3" />} {previewUrl ? "Hide preview" : "Preview"}
+            </button>
+            <button type="button" onClick={download} disabled={busy} className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 text-[11px] font-medium hover:bg-muted disabled:opacity-60">
+              <Download className="h-3 w-3" /> PDF
+            </button>
+          </div>
         </div>
+        {previewUrl && <iframe title="Claim form preview" src={previewUrl} className="mt-2.5 h-[28rem] w-full rounded-lg border border-border bg-white" />}
         {sections.map((s) => (
           <div key={s.title} className="mt-2.5">
             <p className="text-[11px] font-semibold uppercase tracking-wide text-primary/80">{s.title}</p>

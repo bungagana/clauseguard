@@ -1,6 +1,6 @@
 "use client";
 
-import { ShieldCheck, Sparkles, FolderClosed, PanelLeft, History, MessageSquarePlus, CalendarClock, OctagonX, SlidersHorizontal, PanelRight } from "lucide-react";
+import { Sparkles, FolderClosed, PanelLeft, History, MessageSquarePlus, CalendarClock, OctagonX, SlidersHorizontal, PanelRight } from "lucide-react";
 import type { SessionState } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -64,9 +64,8 @@ export function TopBar({
         >
           <History className="h-4 w-4" />
         </Button>
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-navy text-navy-foreground">
-          <ShieldCheck className="h-4 w-4" />
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/brand/mark.png" alt="" className="h-8 w-8 shrink-0 rounded-xl object-contain" />
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span className="truncate text-sm font-semibold leading-none">ClauseGuard</span>
