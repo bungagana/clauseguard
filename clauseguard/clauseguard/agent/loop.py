@@ -637,6 +637,12 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         if old_facility and old_facility != facility[0]:
             change_parts.append(f"hospital {old_facility} {ARROW} {facility[0]}")
             changed.append("hospital")
+    elif getattr(session, "facility_name", None) is None:
+        # a hospital outside the sandbox directory: keep the name for the claim form only (no partner status is assumed)
+        m = re.search(r"\b(?:at|di|in)\s+((?:RS(?:UD|IA)?|Rumah Sakit|Klinik|Hospital|Clinic)\b[^,.;\n]{2,60}|[A-Z][\w'-]+(?:\s+[A-Z][\w'-]+){0,3}\s+(?:Hospital|Clinic))",
+                      user_text)
+        if m:
+            session.facility_name = m.group(1).strip()
     if ("CLAIM_PLAN" in pl.topics or getattr(session, "plan_requested", False)) and not session.facts.has(Slot.EVENT) and re.search(
             r"\b(discharged|hospital\w*|admitted|inpatient|dirawat|opname|rawat inap|keluar dari (rs|rumah sakit)|pulang dari (rs|rumah sakit))\b", user_text, flags=re.I):
         session.facts = session.facts.bind(Slot.EVENT, "HOSPITALIZATION")
