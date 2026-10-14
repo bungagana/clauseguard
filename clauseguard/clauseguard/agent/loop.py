@@ -1776,13 +1776,15 @@ def _action_reply(session, router, call, finish, policies, relevant, facts_by_po
             if lang == "id":
                 when = f" Batas pengajuan klaim {due} ({readiness.days_left} hari lagi)." if due and (readiness.days_left or 0) >= 0 else (f" Batas pengajuan klaim {due} sudah lewat." if due else "")
                 n = len(missing)
-                txt = (f"Belum saya ajukan: {n} dokumen wajib masih kurang ({labels}), dan klaim dengan dokumen kurang kemungkinan besar ditolak atau tertunda.{when} "
+                benefit = f" Perkiraan manfaat {money} (indikatif)." if readiness.verdict.payable is not None else ""
+                txt = (f"Klaim belum saya ajukan: {n} dokumen wajib masih kurang ({labels}), dan klaim dengan dokumen kurang kemungkinan besar ditolak atau tertunda.{benefit}{when} "
                        "Lampirkan dokumennya, atau ketik 'ajukan saja' (submit anyway) dan saya siapkan kartu konfirmasi yang mencantumkan kekurangannya. Belum ada yang terkirim.")
             else:
                 when = f" The filing deadline is {due} ({readiness.days_left} days left)." if due and (readiness.days_left or 0) >= 0 else (f" The filing deadline {due} has already passed." if due else "")
                 n = len(missing)
-                txt = (f"Not submitted yet: {n} required document{'s are' if n != 1 else ' is'} still missing ({labels}), and a claim sent with missing documents will likely be rejected or delayed.{when} "
-                       "Attach them, or say 'submit anyway' and I will prepare a confirmation card that lists what is missing. Nothing has been submitted.")
+                benefit = f" Expected benefit {money} (indicative)." if readiness.verdict.payable is not None else ""
+                txt = (f"Not submitted yet: {n} required document{'s are' if n != 1 else ' is'} still missing ({labels}), and a claim sent with missing documents will likely be rejected or delayed.{benefit}{when} "
+                       "Attach the documents, or say 'submit anyway' and I will prepare a confirmation card that lists what is missing. Nothing has been submitted.")
             return finish(txt, readiness=readiness, verdicts=[readiness.verdict], deadline=readiness.deadline, payable=readiness.verdict.payable, submit_offer=True)
         dd, draft = call("draft_claim", {"policy_id": focus.id, "claim_facts": _jsonable(f), "document_handles": list(session.doc_uploads)}, facts=f, readiness=readiness, policy=focus)
         if not dd.allow:
