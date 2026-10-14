@@ -83,7 +83,9 @@ export function useChatEngine(mode: AppMode) {
   const [devPanelOpen, setDevPanelOpen] = useState(false);
   const [securityPanelOpen, setSecurityPanelOpen] = useState(false);
   const [demoSheetOpen, setDemoSheetOpen] = useState(false);
-  const [uploadedDoc, setUploadedDoc] = useState<{ doc_id: string; filename: string } | null>(null);
+  // several files can be attached before one message; they travel together as `uploads`
+  const [uploadedDocs, setUploadedDocs] = useState<Array<{ doc_id: string; filename: string }>>([]);
+  const uploadedDoc = uploadedDocs.length === 0 ? null : { doc_id: uploadedDocs[uploadedDocs.length - 1].doc_id, filename: uploadedDocs.length === 1 ? uploadedDocs[0].filename : `${uploadedDocs.length} files attached` };
   const [digest, setDigest] = useState<DigestResponse | null>(null);
   const [digestDismissed, setDigestDismissed] = useState(false);
   const [uploadBusy, setUploadBusy] = useState(false);
@@ -119,7 +121,7 @@ export function useChatEngine(mode: AppMode) {
     setFromHistory(false);
     setMessages(initial);
     setFollowUps([]);
-    setUploadedDoc(null);
+    setUploadedDocs([]);
     activeSceneRef.current = null;
     return id;
   }, []);
@@ -307,7 +309,7 @@ export function useChatEngine(mode: AppMode) {
         setFromHistory(false);
         setMessages(reviveFromStorage(resume.messages));
         setFollowUps([]);
-        setUploadedDoc(null);
+        setUploadedDocs([]);
         activeSceneRef.current = null;
       } else {
         beginConversation(key, [{ id: nextId(), role: "assistant", text: greetingFor(key, mode) }]);
@@ -342,7 +344,7 @@ export function useChatEngine(mode: AppMode) {
       setFromHistory(true);
       setIsDemo(false);
       setFollowUps([]);
-      setUploadedDoc(null);
+      setUploadedDocs([]);
       activeSceneRef.current = null;
       setMessages(reviveFromStorage(target.messages));
       if (key !== personaKey) setPersonaKey(key);
@@ -477,13 +479,13 @@ export function useChatEngine(mode: AppMode) {
 
       if (online) {
         const typingId = pushMessage({ role: "assistant", typing: true });
-        const uploads = uploadsOverride ?? (uploadedDoc ? [uploadedDoc.doc_id] : []);
+        const uploads = uploadsOverride ?? uploadedDocs.map((d) => d.doc_id);
         const controller = new AbortController();
         abortRef.current = controller;
         try {
           const result = await sendChatWithRetry(personaKey, trimmed, uploads, controller.signal);
           if (result.ok) {
-            setUploadedDoc(null);
+            setUploadedDocs([]);
             const fresh = firstTier2Pending(result.reply)?.tool;
             if (fresh) {
               // the backend keeps one pending action per tool: an older unresolved card for the same tool is now stale
@@ -542,7 +544,7 @@ export function useChatEngine(mode: AppMode) {
       }
       setSending(false);
     },
-    [online, personaKey, sending, uploadedDoc, pushMessage, patchMessage, enrichReply, sendChatWithRetry, mode]
+    [online, personaKey, sending, uploadedDocs, pushMessage, patchMessage, enrichReply, sendChatWithRetry, mode]
   );
 
   // ------------------------------------------------------------ confirm / cancel
@@ -661,7 +663,7 @@ export function useChatEngine(mode: AppMode) {
       try {
         const token = tokenRef.current[personaKey];
         const res = await api.uploadDocument(token, file);
-        setUploadedDoc({ doc_id: res.doc_id, filename: file.name });
+        setUploadedDocs((prev) => [...prev, { doc_id: res.doc_id, filename: file.name }]);
         pushMessage({ role: "user", doc: { filename: file.name } });
       } catch {
         pushMessage({ role: "assistant", text: "That upload didn't go through. Please try again." });
@@ -813,7 +815,7 @@ export function useChatEngine(mode: AppMode) {
             const docId = res.doc_id ?? doc?.doc_id ?? "";
             const filename = res.filename ?? doc?.filename ?? "document.pdf";
             pendingUploadId = docId || null;
-            setUploadedDoc(docId ? { doc_id: docId, filename } : null);
+            setUploadedDocs(docId ? [{ doc_id: docId, filename }] : []);
             pushMessage({ role: "user", doc: { filename } });
             // the hidden-text scan runs server-side inside the *next* /chat
             // call (extract_document only runs once the doc is referenced in
@@ -822,14 +824,14 @@ export function useChatEngine(mode: AppMode) {
           } catch {
             if (doc) {
               pendingUploadId = doc.doc_id;
-              setUploadedDoc({ doc_id: doc.doc_id, filename: doc.filename });
+              setUploadedDocs([{ doc_id: doc.doc_id, filename: doc.filename }]);
               pushMessage({ role: "user", doc: { filename: doc.filename } });
             }
           }
         } else if (doc) {
           await new Promise((r) => setTimeout(r, 300));
           pendingUploadId = doc.doc_id;
-          setUploadedDoc({ doc_id: doc.doc_id, filename: doc.filename });
+          setUploadedDocs([{ doc_id: doc.doc_id, filename: doc.filename }]);
           pushMessage({ role: "user", doc: { filename: doc.filename, suspicious: doc.suspicious, findings: doc.findings } });
           if (doc.suspicious) {
             pushMessage({
@@ -851,7 +853,7 @@ export function useChatEngine(mode: AppMode) {
           const uploads = pendingUploadId ? [pendingUploadId] : [];
           const result = await sendChatWithRetry(scene.personaKey, first.userText, uploads);
           if (result.ok) {
-            setUploadedDoc(null);
+            setUploadedDocs([]);
             patchMessage(typingId, { typing: false, reply: result.reply });
             void enrichReply(typingId, result.reply, result.token);
             if (uploads.length) {
@@ -960,7 +962,7 @@ export function useChatEngine(mode: AppMode) {
     dismissDigest,
     askAboutDigestItem,
     startScene,
-    clearUpload: () => setUploadedDoc(null),
+    clearUpload: () => setUploadedDocs([]),
     sessionToken: () => tokenRef.current[personaKey],
     sessionState,
     setAutonomy,

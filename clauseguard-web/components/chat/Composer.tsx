@@ -80,10 +80,10 @@ export function Composer({
           ref={fileInputRef}
           type="file"
           accept="application/pdf,image/*"
+          multiple
           className="hidden"
           onChange={(e) => {
-            const f = e.target.files?.[0];
-            if (f) onAttach(f);
+            for (const f of Array.from(e.target.files ?? [])) onAttach(f);
             e.target.value = "";
           }}
         />

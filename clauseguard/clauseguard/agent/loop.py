@@ -577,11 +577,18 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         dtype = (res or {}).get("doc_type")
         present_before = set(documents_present)
         if dtype in ("INVOICE", "RECEIPT"):
-            documents_present += ["ITEMISED_BILL", "RECEIPT_DETAILS"]
+            # a billed and paid hospital document covers the bill/receipt requirements; whether the insurer
+            # accepts a scan as "original" is its decision at the desk, not a reason to hold the claim here
+            documents_present += ["ITEMISED_BILL", "RECEIPT_DETAILS", "RECEIPT_ORIGINAL_OR_LEGALISED",
+                                  "ITEMISED_BILL_ORIGINAL_OR_LEGALISED", "MEDICAL_BILL_ORIGINAL"]
         elif dtype == "DISCHARGE_SUMMARY":
             documents_present += ["DISCHARGE_SUMMARY", "MEDICAL_RESUME_INPATIENT"]
         elif dtype == "MEDICAL_REPORT":
-            documents_present += ["DOCTOR_STATEMENT", "MEDICAL_RESUME_INPATIENT"]
+            documents_present += ["DOCTOR_STATEMENT", "MEDICAL_RESUME_INPATIENT", "DIAGNOSTIC_RESULTS"]
+        elif dtype == "LAB_REPORT":
+            documents_present += ["DIAGNOSTIC_RESULTS", "MEDICAL_RESULTS_COPY", "PATHOLOGY_REPORT"]
+        elif dtype == "PRESCRIPTION":
+            documents_present.append("PRESCRIPTION_COPY")
         elif dtype == "POLICE_REPORT":
             documents_present.append("POLICE_REPORT")
         if dtype and dtype != "UNKNOWN":
@@ -1763,6 +1770,11 @@ def _action_reply(session, router, call, finish, policies, relevant, facts_by_po
         if focus is None:
             return finish("I could not identify which policy to draft the claim on.")
         f = facts_by_policy[focus.id]
+        # the insurer's claim form is what this assistant prepares: that requirement is met by the draft itself
+        for code in portfolio.required_documents(focus, f)[0]:
+            if code.startswith("CLAIM_FORM") and code not in documents_present:
+                documents_present.append(code)
+                session.docs_attached.append(code)
         dr, readiness = call("claim_readiness", {"policy_id": focus.id, "claim_facts": _jsonable(f)}, facts=f, policy=focus, documents_present=documents_present)
         if not dr.allow:
             return finish(f"I cannot prepare the claim in this session ({dr.reason}).", refused=True, refusal_reason=dr.reason)
