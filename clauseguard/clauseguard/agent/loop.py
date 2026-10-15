@@ -559,7 +559,8 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         dd, res = call("extract_document", {"doc_handle": dh}, policyholder_name=meta.get("name", ""))
         if res and res.get("suspicious"):
             audit_ids.append(audit(session, "DOC_SUSPICIOUS", doc_id=args_hash({"p": str(path)}), findings=[str(x)[:200] for x in (res.get("hidden_text_findings") or [])]))
-        if res and res.get("total_amount") and not session.facts.has(Slot.BILLED_AMOUNT):
+        # only a billing document sets the bill; a prescription or lab report with a zero total must not
+        if res and res.get("total_amount") and res.get("doc_type") in ("INVOICE", "RECEIPT") and not session.facts.has(Slot.BILLED_AMOUNT):
             session.facts = session.facts.bind(Slot.BILLED_AMOUNT, int(Decimal(str(res["total_amount"]))))
             doc_sourced = True
         # document-only: resolved from a printed ICD-10 code or a curated diagnosis-name lookup
@@ -1889,6 +1890,12 @@ def confirm_pending(session, index: int = 0, *, router: Optional[ToolRouter] = N
         return Reply(text="Nothing to confirm.", intent=Intent.ACTION)
     pa = session.pending_actions[index]
     issue_confirmation(session, pa["tool"], pa["args"])
+    # the click is the customer's confirmation of exactly these arguments: values that came from an uploaded
+    # document (label USER_UPLOAD) are upgraded for this one call only, never in general (rule R2)
+    call_key = f"{session.session_id}:{pa['tool']}:{args_hash(pa['args'])}"
+    for val in pa["args"].values():
+        if isinstance(val, str) and session.registry.resolve(val) is not None:
+            session.registry.confirm(val, call_key)
     audit(session, "CONFIRM_ISSUED", tool=pa["tool"], args_hash=args_hash(pa["args"]))
     phrase = {"submit_claim": "submit the claim", "schedule_callback": "schedule the call", "attach_document": "attach the document", "file_appeal": "file the appeal"}[pa["tool"]]
     return handle_turn(session, f"__confirm__ {phrase}", router=router, use_llm=use_llm)

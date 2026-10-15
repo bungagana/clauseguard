@@ -109,6 +109,25 @@ A same-API long-context baseline (whole contract in the prompt, same model, same
 
 What is not claimed: superiority over frontier LLMs on verdicts (the API-matched comparison shows no significant difference); that no data leaves the system (redacted text, never whole PDFs, is sent to a hosted model); that the allocation gain is money saved in real life (it is a simulation over real plan terms).
 
+## How it compares
+
+Existing help for a policyholder falls into four kinds. ClauseGuard is built to do what none of them does: decide from the customer's own clauses, across all their policies, and carry the claim through to the insurer under enforced limits.
+
+| | Insurer's own app (one company) | Marketplace / aggregator app | General AI chat | **ClauseGuard** |
+|---|---|---|---|---|
+| Reads *your* policy wording | partly (its own products) | no | only if you paste it; no verification | yes: any PDF, every rule linked to its sentence |
+| Works across several insurers and public schemes | no | no | no data | yes: payer order and total across the portfolio |
+| Answers "am I covered, for how much, by when" with the clause | FAQ-level | no | plausible text, may invent a denial | yes: deterministic verdict, cited clause, deadline |
+| Asks only the one fact that changes the outcome | no | no | no | yes (verdict-sensitivity clarification) |
+| Reads claim documents and checks them against the policy's list | upload only | no | no | yes: typed extraction, matched to the insurer's requirements |
+| Prepares the claim form | the insurer's static form | no | no | yes: laid out from that insurer's wording, filled from typed facts, PDF |
+| Submits, then reports the decision back | yes, for that insurer | sometimes, by hand-off | no | yes, to the (sandbox) insurer, with status and notes returned |
+| Proactive deadlines and lapse warnings | some | no | no | yes |
+| Limits on what the AI may do, enforced in code and auditable | n/a (no AI agent) | n/a | none | permission tiers, confirmation nonce, halt switch, hash-chained log |
+| Fabricated denials on the public benchmark | — | — | 2.4 % to 26.6 % | 1.4 % |
+
+What it is not: an insurer. The desk it submits to is a sandbox; integration with a real insurer's API is the next step.
+
 ## Security model
 
 | Tier | Examples | Gate |

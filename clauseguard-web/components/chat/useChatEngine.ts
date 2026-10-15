@@ -474,6 +474,7 @@ export function useChatEngine(mode: AppMode) {
       // only drop the chip that was just used (if any) — a scene can queue
       // several follow-ups, and using one shouldn't discard the rest
       setFollowUps((prev) => prev.filter((f) => f !== trimmed));
+      if (!uploadsOverride) for (const d of uploadedDocs) pushMessage({ role: "user", doc: { filename: d.filename } });
       pushMessage({ role: "user", text: trimmed });
       setSending(true);
 
@@ -663,8 +664,8 @@ export function useChatEngine(mode: AppMode) {
       try {
         const token = tokenRef.current[personaKey];
         const res = await api.uploadDocument(token, file);
+        // the file waits in the composer; it enters the conversation only when the customer sends a message
         setUploadedDocs((prev) => [...prev, { doc_id: res.doc_id, filename: file.name }]);
-        pushMessage({ role: "user", doc: { filename: file.name } });
       } catch {
         pushMessage({ role: "assistant", text: "That upload didn't go through. Please try again." });
       } finally {

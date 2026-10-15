@@ -169,8 +169,9 @@ def test_submit_with_missing_documents_offers_no_confirm_card():
     s = _scene_with_missing_documents()
     r = turn(s, "Submit the HCP claim for me.")
     assert r.actions_pending == [] and not s.pending_actions
-    assert "still missing" in r.text and "original claim form" in r.text and "rejected or delayed" in r.text
-    assert "attach the documents" in r.text and "submit anyway" in r.text and "Nothing has been submitted" in r.text
+    assert "still missing" in r.text and "receipt original or legalised" in r.text and "rejected or delayed" in r.text
+    assert "original claim form" not in r.text  # the assistant prepares the insurer's form itself
+    assert "attach the documents" in r.text.lower() and "submit anyway" in r.text and "Nothing has been submitted" in r.text
     assert "IDR 1,500,000" in r.text and "1500000" not in r.text and "2026-11-26" in r.text and "None" not in r.text
     assert not any(c["tier"] >= 2 and c["allowed"] for c in r.tool_calls) and not s.open_claims
 
@@ -181,7 +182,9 @@ def test_submit_anyway_prepares_a_card_that_lists_the_missing_items():
     r = turn(s, "submit anyway")
     card = r.actions_pending[0]
     assert card["tool"] == "submit_claim" and card["incomplete"] and card["requires_acknowledgement"]
-    assert "original claim form" in card["missing_documents"] and "WITH MISSING DOCUMENTS" in card["summary"] and "IDR 1,500,000" in card["summary"]
+    # the assistant prepares the insurer's claim form itself, so that item is never "missing"; the hospital documents are
+    assert "original claim form" not in card["missing_documents"] and "receipt original or legalised" in card["missing_documents"]
+    assert "WITH MISSING DOCUMENTS" in card["summary"] and "IDR 1,500,000" in card["summary"]
     assert "2026-11-26" in card["summary"] and "None" not in card["summary"] and card["acknowledgement_text"]
     assert not s.open_claims
 
