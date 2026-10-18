@@ -39,7 +39,10 @@ export function DemoSceneSheet({
                 <div className="min-w-0">
                   <p className="text-sm font-semibold">{scene.title}</p>
                   <p className="mt-0.5 text-xs text-muted-foreground">{scene.summary}</p>
-                  <p className="mt-1 text-[11px] font-medium text-primary">as {meta.name}</p>
+                  <p className="mt-1 text-[11px] font-medium text-primary">
+                    as {meta.name}
+                    {scene.recorded && <span className="ml-2 rounded-full bg-warning/15 px-2 py-0.5 text-[10px] font-semibold text-warning-foreground">Recorded real run</span>}
+                  </p>
                 </div>
               </button>
             );

@@ -13,6 +13,8 @@ import { HistorySidebar } from "./HistorySidebar";
 import { DigestCard } from "./DigestCard";
 import { InsurerPanel } from "./InsurerPanel";
 import { SessionControls } from "./SessionControls";
+import { ClaimStageStrip } from "./ClaimStageStrip";
+import { ReplayStrip } from "./ReplayStrip";
 import { ProcessPanel } from "./ProcessPanel";
 import { SecurityInfoDialog } from "./SecurityInfoDialog";
 import { ApiKeyDialog } from "./ApiKeyDialog";
@@ -62,6 +64,7 @@ export function ChatApp({ initialModeOverride }: { initialModeOverride?: AppMode
         onNewConversation={engine.newConversation}
         backendOnline={engine.online === true}
         sessionState={engine.sessionState}
+        onAutonomyChange={(m) => void engine.setAutonomy(m)}
       />
 
       <div className="flex min-h-0 flex-1">
@@ -80,9 +83,13 @@ export function ChatApp({ initialModeOverride }: { initialModeOverride?: AppMode
         />
 
         <div className="flex min-w-0 flex-1 flex-col">
-          {engine.online === false && <OfflineBanner />}
+          {engine.online === false && !engine.replay && <OfflineBanner />}
 
-          {!engine.digestDismissed && engine.digest?.items.length ? (
+          {engine.replay && <ReplayStrip meta={engine.replay} />}
+
+          <ClaimStageStrip messages={engine.messages} digest={engine.replay ? null : engine.digest} />
+
+          {!engine.replay && !engine.digestDismissed && engine.digest?.items.length ? (
             <DigestCard items={engine.digest.items} onAsk={engine.askAboutDigestItem} onDismiss={engine.dismissDigest} />
           ) : null}
 
@@ -156,8 +163,6 @@ export function ChatApp({ initialModeOverride }: { initialModeOverride?: AppMode
         open={engine.controlsOpen}
         onOpenChange={engine.setControlsOpen}
         sessionState={engine.sessionState}
-        online={engine.online === true}
-        onAutonomyChange={(m) => void engine.setAutonomy(m)}
       >
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <SecurityInfoDialog /> How ClauseGuard keeps you in control

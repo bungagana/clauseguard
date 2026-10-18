@@ -126,6 +126,9 @@ export interface ChatReply {
   language?: "en" | "id";
   // the submission was held back for missing documents; the customer chooses to attach them or submit anyway
   submit_offer?: boolean;
+  // short replies the agent offers as chips (each is a complete message), e.g. after a document disagrees with what was said
+  suggestions?: string[];
+  conflicts?: Array<{ field: string; stated: string; document: string; doc: string }>;
   paused?: boolean;
   stub?: boolean;
 }

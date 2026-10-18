@@ -8,43 +8,7 @@ import { policyName } from "@/lib/clauses";
 import { formatDate, formatMoney, humanize } from "@/lib/format";
 import { downloadBlob } from "@/lib/exportPdf";
 
-interface ChecklistItem {
-  code: string;
-  label: string;
-  attached: boolean;
-  // attached: an uploaded file proves it; declared: the customer says they have it; missing: neither
-  state?: "attached" | "declared" | "missing";
-}
-
-interface FormField {
-  label: string;
-  source: string;
-  value: unknown;
-  state: "filled" | "not_provided" | "to_complete";
-}
-
-interface FormSection {
-  title: string;
-  fields: FormField[];
-}
-
-interface Draft {
-  policy_id?: string;
-  event?: string;
-  amount?: string | number | null;
-  claim_amount?: string | number | null;
-  currency?: string | null;
-  admission?: string | null;
-  discharge?: string | null;
-  diagnosis?: string | null;
-  required_documents?: string[];
-  document_handles?: string[];
-  missing_documents?: string[];
-  facts?: { values?: Record<string, unknown> };
-  form_title?: string;
-  form_layout_source?: "policy_clauses" | "standard";
-  form_sections?: FormSection[];
-}
+import type { ChecklistItem, ClaimDraft as Draft, FormField } from "@/lib/replayTypes";
 
 const DATE_SOURCES = new Set(["admission_date", "discharge_date", "filing_deadline", "date_prepared"]);
 const MONEY_SOURCES = new Set(["billed_amount", "claimed_amount"]);
@@ -77,13 +41,15 @@ function Row({ k, v }: { k: string; v: React.ReactNode }) {
  * prepared), never rebuilt in the browser. When the draft carries the insurer's own form layout
  * (derived from that policy's clauses), the form follows it; otherwise the standard rows show.
  */
-export function ClaimFormPreview({ token, tool, policies }: { token: string; tool: string; policies: PoliciesResponse | null }) {
-  const [draft, setDraft] = useState<Draft | null | undefined>(undefined);
+export function ClaimFormPreview({ token, tool, policies, recordedDraft }: { token?: string; tool: string; policies: PoliciesResponse | null; recordedDraft?: Draft }) {
+  const replay = Boolean(recordedDraft); // a recorded scene carries its own draft: nothing is fetched, nothing is exported
+  const [draft, setDraft] = useState<Draft | null | undefined>(recordedDraft ?? undefined);
   const [busy, setBusy] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
   useEffect(() => {
     let cancelled = false;
+    if (replay || !token) return;
     getChatPending(token)
       .then((res) => {
         const p = res.pending.find((x) => x.tool === tool) as { args?: Record<string, { value?: unknown }> } | undefined;
@@ -94,7 +60,7 @@ export function ClaimFormPreview({ token, tool, policies }: { token: string; too
     return () => {
       cancelled = true;
     };
-  }, [token, tool]);
+  }, [token, tool, replay]);
 
   if (draft === undefined) return <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Loader2 className="h-3 w-3 animate-spin" /> Loading the form…</p>;
   if (draft === null) return null;
@@ -120,14 +86,14 @@ export function ClaimFormPreview({ token, tool, policies }: { token: string; too
 
   async function preview() {
     const body = exportBody();
-    if (!body || busy) return;
+    if (!body || busy || !token) return;
     if (previewUrl) {
       setPreviewUrl(null);
       return;
     }
     setBusy(true);
     try {
-      const blob = await exportPdf(token, body);
+      const blob = await exportPdf(token as string, body);
       setPreviewUrl(URL.createObjectURL(blob));
     } catch {
       /* the button simply stays available */
@@ -138,10 +104,10 @@ export function ClaimFormPreview({ token, tool, policies }: { token: string; too
 
   async function download() {
     const body = exportBody();
-    if (!body || busy) return;
+    if (!body || busy || !token) return;
     setBusy(true);
     try {
-      const blob = await exportPdf(token, body);
+      const blob = await exportPdf(token as string, body);
       downloadBlob(blob, `${body.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}.pdf`);
     } catch {
       /* the button simply stays available */
@@ -160,7 +126,7 @@ export function ClaimFormPreview({ token, tool, policies }: { token: string; too
               {draft.form_layout_source === "policy_clauses" ? "Laid out from this insurer's own policy wording; values from your answers only." : "Standard form; values from your answers only."}
             </p>
           </div>
-          <div className="flex shrink-0 gap-1.5">
+          <div className={replay ? "hidden" : "flex shrink-0 gap-1.5"}>
             <button type="button" onClick={preview} disabled={busy} className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 text-[11px] font-medium hover:bg-muted disabled:opacity-60">
               {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Eye className="h-3 w-3" />} {previewUrl ? "Hide preview" : "Preview"}
             </button>

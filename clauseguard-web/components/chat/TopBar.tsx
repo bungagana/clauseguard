@@ -7,8 +7,15 @@ import { Badge } from "@/components/ui/badge";
 import { PersonaSwitcher } from "./PersonaSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
 import { LlmStatusBadge } from "./LlmStatusBadge";
-import type { Persona } from "@/lib/types";
+import type { AutonomyMode, Persona } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import type { AppMode } from "@/lib/appMode";
+
+const AUTONOMY: { key: AutonomyMode; label: string }[] = [
+  { key: "observe", label: "Observe" },
+  { key: "draft", label: "Draft" },
+  { key: "act", label: "Act" },
+];
 
 export function TopBar({
   mode,
@@ -25,6 +32,7 @@ export function TopBar({
   sessionState,
   onToggleProcess,
   processOpen,
+  onAutonomyChange,
 }: {
   mode: AppMode;
   personas: Persona[];
@@ -40,7 +48,9 @@ export function TopBar({
   sessionState?: SessionState | null;
   onToggleProcess?: () => void;
   processOpen?: boolean;
+  onAutonomyChange?: (m: AutonomyMode) => void;
 }) {
+  const autonomy = sessionState?.autonomy ?? "act";
   return (
     <header className="flex items-center justify-between gap-2 border-b border-border bg-background/95 px-3 py-2.5 backdrop-blur sm:gap-3 sm:px-6">
       <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-2.5">
@@ -112,16 +122,32 @@ export function TopBar({
         <Button variant="ghost" size="icon" onClick={onOpenPolicies} aria-label="My policies" title="My policies" className="h-8 w-8 sm:h-9 sm:w-9">
           <FolderClosed className="h-4 w-4" />
         </Button>
-        <Button
-          variant={sessionState && sessionState.autonomy !== "act" ? "secondary" : "ghost"}
-          size="sm"
-          onClick={onOpenControls}
-          aria-label="Session controls"
-          title="Session controls"
-          className="h-8 gap-1.5 px-2.5 sm:h-9"
-        >
+        {onAutonomyChange && sessionState && (
+          <div
+            role="radiogroup"
+            aria-label="How far the assistant may go"
+            title="Observe: answers only · Draft: prepares, never sends · Act: sends after you confirm"
+            className="hidden items-center rounded-full border border-border bg-muted/60 p-0.5 md:flex"
+          >
+            {AUTONOMY.map((m) => (
+              <button
+                key={m.key}
+                type="button"
+                role="radio"
+                aria-checked={autonomy === m.key}
+                onClick={() => onAutonomyChange(m.key)}
+                className={cn(
+                  "rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors",
+                  autonomy === m.key ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {m.label}
+              </button>
+            ))}
+          </div>
+        )}
+        <Button variant="ghost" size="icon" onClick={onOpenControls} aria-label="Session controls" title="Session controls" className="h-8 w-8 sm:h-9 sm:w-9">
           <SlidersHorizontal className="h-4 w-4" />
-          <span className="hidden text-xs md:inline">{sessionState && sessionState.autonomy !== "act" ? (sessionState.autonomy === "observe" ? "Observe" : "Draft") : "Controls"}</span>
         </Button>
         {onToggleProcess && (
           <Button

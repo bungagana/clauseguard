@@ -38,6 +38,8 @@ export function normalizeChatReply(raw: Partial<ChatReply>): ChatReply {
     hypothetical: raw.hypothetical ?? false,
     language: raw.language === "id" ? "id" : "en",
     submit_offer: raw.submit_offer ?? false,
+    suggestions: Array.isArray(raw.suggestions) ? raw.suggestions : [],
+    conflicts: Array.isArray(raw.conflicts) ? raw.conflicts : [],
     template_text: raw.template_text || raw.text || "",
     paused: raw.paused,
     stub: raw.stub,

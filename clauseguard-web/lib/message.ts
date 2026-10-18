@@ -1,3 +1,4 @@
+import type { ClaimDraft } from "./replayTypes";
 import type { AllocationResponse, ChatReply, PendingAction, PolicyUploadResult, TimelineResponse, TwinResponse } from "./types";
 
 export interface MessageDoc {
@@ -18,6 +19,8 @@ export interface ChatMessage {
   role: "user" | "assistant" | "system";
   text?: string;
   doc?: MessageDoc;
+  replayed?: boolean; // part of a recorded scene: actions that need a server (PDF export) are not offered
+  claimDraft?: ClaimDraft; // set only on a recorded scene's reply: the form is shown from the recording, not fetched
   policyUpload?: PolicyUploadCard;
   reply?: ChatReply;
   typing?: boolean;

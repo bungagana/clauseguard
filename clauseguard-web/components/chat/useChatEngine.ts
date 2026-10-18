@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as api from "@/lib/api";
 import { FALLBACK_PERSONAS } from "@/lib/personas";
+import type { RecordedMeta } from "@/lib/replayTypes";
 import { FIXTURE_POLICIES, SCENES, type Scene, type SceneStep } from "@/lib/fixtures";
 import { firstTier2Pending, nextId, type ChatMessage } from "@/lib/message";
 import {
@@ -61,7 +62,7 @@ function greetingFor(personaKey: string, mode: AppMode): string {
 
 function findOfflineStep(personaKey: string, text: string): SceneStep | undefined {
   for (const scene of SCENES) {
-    if (scene.personaKey !== personaKey) continue;
+    if (scene.personaKey !== personaKey || scene.recorded) continue;
     for (const step of scene.steps) {
       if (step.kind === "chat" && step.userText === text) return step;
     }
@@ -100,6 +101,9 @@ export function useChatEngine(mode: AppMode) {
 
   const tokenRef = useRef<Record<string, string>>({});
   const activeSceneRef = useRef<Scene | null>(null);
+  // set while a recorded scene is on screen: the label is shown, live digest and polling stay out of the picture
+  const [replay, setReplay] = useState<RecordedMeta | null>(null);
+  const replayRef = useRef(false);
   const loadingPersonaRef = useRef<string | null>(null);
   const historyRef = useRef<ConversationSummary[]>([]);
   const historyModeRef = useRef<HistoryMode>("local");
@@ -123,6 +127,8 @@ export function useChatEngine(mode: AppMode) {
     setFollowUps([]);
     setUploadedDocs([]);
     activeSceneRef.current = null;
+    replayRef.current = false;
+    setReplay(null);
     return id;
   }, []);
 
@@ -535,7 +541,7 @@ export function useChatEngine(mode: AppMode) {
           text:
             "The demo backend is offline right now, so I can only replay a few recorded examples here. Try one of the demo scenes below, or run the backend locally to chat freely.",
         });
-        setFollowUps(SCENES.filter((s) => s.personaKey === personaKey).map((s) => s.steps.find((st) => st.kind === "chat")?.userText ?? "").filter(Boolean));
+        setFollowUps(SCENES.filter((s) => s.personaKey === personaKey && !s.recorded).map((s) => s.steps.find((st) => st.kind === "chat")?.userText ?? "").filter(Boolean));
       } else {
         pushMessage({
           role: "assistant",
@@ -553,12 +559,16 @@ export function useChatEngine(mode: AppMode) {
     async (messageId: string, reply: ChatReply) => {
       patchMessage(messageId, { confirmBusy: true });
       const scene = activeSceneRef.current;
-      if (!online && scene) {
+      if ((!online || scene?.recorded) && scene) {
         const step = scene.steps.find((s) => s.reply === reply);
         if (step?.confirmReply) {
           await new Promise((r) => setTimeout(r, 400));
-          pushMessage({ role: "assistant", reply: step.confirmReply });
+          pushMessage({ role: "assistant", reply: step.confirmReply, replayed: Boolean(scene.recorded) });
           patchMessage(messageId, { pendingResolved: "confirmed", confirmBusy: false });
+          if (step.followUpText) {
+            await new Promise((r) => setTimeout(r, 1200));
+            pushMessage({ role: "assistant", text: `News from the insurer: ${step.followUpText}` });
+          }
           return;
         }
       }
@@ -733,16 +743,39 @@ export function useChatEngine(mode: AppMode) {
     []
   );
 
-  const refreshDigest = useCallback(async () => {
+  // claim-status lines already shown, so a change at the insurer's desk becomes one proactive message, not a repeat
+  const claimStatusSeen = useRef<Map<string, string> | null>(null);
+
+  const refreshDigest = useCallback(async (quiet = false) => {
     const token = tokenRef.current[personaKey];
-    if (!token) return;
+    if (!token || replayRef.current) return;
     try {
       const d = await api.getDigest(token);
+      const statuses = new Map((d.items ?? []).filter((i) => i.kind === "CLAIM_STATUS" && i.claim_id).map((i) => [i.claim_id as string, i.message_en]));
+      if (claimStatusSeen.current) {
+        statuses.forEach((text, claimId) => {
+          if (claimStatusSeen.current?.get(claimId) !== text) {
+            pushMessage({ role: "assistant", text: `News from the insurer: ${text}` });
+          }
+        });
+      }
+      claimStatusSeen.current = statuses;
       setDigest(d.available && d.items.length ? d : null);
-      setDigestDismissed(false);
+      if (!quiet) setDigestDismissed(false);
     } catch {
       /* digest is best effort */
     }
+  }, [personaKey, pushMessage]);
+
+  // while the chat is open the desk may decide: poll quietly so the decision reaches the customer without a reload
+  useEffect(() => {
+    if (online !== true) return;
+    const id = setInterval(() => void refreshDigest(true), 30000);
+    return () => clearInterval(id);
+  }, [online, refreshDigest]);
+
+  useEffect(() => {
+    claimStatusSeen.current = null; // a new persona or session starts the comparison afresh
   }, [personaKey]);
 
   const setAutonomy = useCallback(
@@ -800,6 +833,10 @@ export function useChatEngine(mode: AppMode) {
       beginConversation(scene.personaKey, []);
       titleOverrideRef.current = scene.title;
       activeSceneRef.current = scene;
+      if (scene.recorded) {
+        replayRef.current = true;
+        setReplay(scene.recorded);
+      }
       setIsDemo(true);
       setSending(true);
 
@@ -848,7 +885,7 @@ export function useChatEngine(mode: AppMode) {
 
       const first = scene.steps[stepIndex];
       if (first?.kind === "chat" && first.userText) {
-        if (online && token) {
+        if (online && token && !scene.recorded) {
           pushMessage({ role: "user", text: first.userText });
           const typingId = pushMessage({ role: "assistant", typing: true });
           const uploads = pendingUploadId ? [pendingUploadId] : [];
@@ -884,9 +921,10 @@ export function useChatEngine(mode: AppMode) {
             patchMessage(typingId, { typing: false, text: "I couldn't reach the backend just now." });
           }
         } else {
+          for (const d of first.docs ?? []) pushMessage({ role: "user", doc: { filename: d.filename } });
           pushMessage({ role: "user", text: first.userText });
-          await new Promise((r) => setTimeout(r, THINKING_DELAY_MS));
-          pushMessage({ role: "assistant", reply: first.reply, entitlement: first.entitlement, offlineNotice: !online });
+          await new Promise((r) => setTimeout(r, scene.recorded ? THINKING_DELAY_MS * 2 : THINKING_DELAY_MS));
+          pushMessage({ role: "assistant", reply: first.reply, entitlement: first.entitlement, offlineNotice: !online && !scene.recorded, claimDraft: first.claimDraft, replayed: Boolean(scene.recorded) });
         }
         stepIndex += 1;
       }
@@ -936,6 +974,7 @@ export function useChatEngine(mode: AppMode) {
     followUps,
     sending,
     isDemo,
+    replay,
     scenes: SCENES,
     policiesPanelOpen,
     setPoliciesPanelOpen,

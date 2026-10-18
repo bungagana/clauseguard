@@ -113,7 +113,8 @@ export function ReplyContent({
     Boolean(timeline) ||
     reply.recommendations.length > 0 ||
     Boolean(pendingTier2) ||
-    Boolean(reply.clarification);
+    Boolean(reply.clarification) ||
+    Boolean(reply.suggestions?.length);
 
   if (!hasCards) {
     return (
@@ -160,10 +161,27 @@ export function ReplyContent({
               busy={message.confirmBusy}
               onConfirm={onConfirm}
               onCancel={onCancel}
-              lockedBy={autonomy && autonomy !== "act" ? autonomy : undefined}
-              token={sessionToken?.()}
+              lockedBy={!message.claimDraft && autonomy && autonomy !== "act" ? autonomy : undefined}
+              token={message.claimDraft ? undefined : sessionToken?.()}
               policies={policies}
+              recordedDraft={message.claimDraft}
             />
+          )}
+
+          {Boolean(reply.suggestions?.length) && isLatest && onQuickReply && (
+            <div className="flex flex-wrap items-center gap-1.5">
+              {reply.suggestions!.map((text) => (
+                <button
+                  key={text}
+                  type="button"
+                  onClick={() => onQuickReply(text)}
+                  className="rounded-full border border-primary/40 bg-card px-3.5 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                >
+                  {text}
+                </button>
+              ))}
+              <span className="self-center text-[11px] text-muted-foreground">{reply.language === "id" ? "atau ketik saja" : "or just type it"}</span>
+            </div>
           )}
 
           {reply.submit_offer && isLatest && onQuickReply && (

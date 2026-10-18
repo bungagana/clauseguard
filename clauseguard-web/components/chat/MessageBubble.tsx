@@ -212,7 +212,7 @@ export function MessageBubble({
             </div>
             <div className="mt-1 flex items-center gap-2.5 px-1">
               <CopyButton getText={() => replyCopyText(message.reply!, policies)} label="Copy reply" />
-              {!message.typing && <DownloadPdfButton message={message} policies={policies} token={sessionToken} />}
+              {!message.typing && !message.replayed && <DownloadPdfButton message={message} policies={policies} token={sessionToken} />}
               {showRegenerate && (
                 <button
                   type="button"

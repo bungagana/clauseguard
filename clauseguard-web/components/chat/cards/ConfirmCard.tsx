@@ -4,6 +4,7 @@ import { CheckCircle2, Clock, ShieldCheck, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { ChatMessage } from "@/lib/message";
 import type { PendingAction, PoliciesResponse } from "@/lib/types";
+import type { ClaimDraft } from "@/lib/replayTypes";
 import { ClaimFormPreview } from "./ClaimFormPreview";
 
 export function ConfirmCard({
@@ -15,6 +16,7 @@ export function ConfirmCard({
   lockedBy,
   token,
   policies,
+  recordedDraft,
 }: {
   action: PendingAction;
   resolved?: ChatMessage["pendingResolved"];
@@ -24,6 +26,7 @@ export function ConfirmCard({
   lockedBy?: "observe" | "draft";
   token?: string;
   policies?: PoliciesResponse | null;
+  recordedDraft?: ClaimDraft;
 }) {
   if (resolved === "confirmed") {
     return (
@@ -70,7 +73,7 @@ export function ConfirmCard({
         <div className="min-w-0">
           <p className="text-sm font-semibold">Confirm submission?</p>
           {action.summary && <p className="mt-1 text-sm text-muted-foreground">{action.summary}</p>}
-          {token && action.tool === "submit_claim" && <ClaimFormPreview token={token} tool={action.tool} policies={policies ?? null} />}
+          {(token || recordedDraft) && action.tool === "submit_claim" && <ClaimFormPreview token={token} tool={action.tool} policies={policies ?? null} recordedDraft={recordedDraft} />}
           <p className="mt-1 text-xs text-muted-foreground">
             {lockedBy ? `Nothing can be sent in ${lockedBy === "observe" ? "Observe" : "Draft"} mode. Switch the agent to Act to submit.` : "Nothing is sent until you confirm."}
           </p>

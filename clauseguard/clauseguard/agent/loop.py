@@ -129,6 +129,8 @@ class Reply(Strict):
     context_relation: Optional[str] = None  # how this turn related to the situation on the table (agent/context.py)
     hypothetical: bool = False  # the turn asked about a what-if, not a reported event
     language: str = "en"  # language the reply was written in ("en" | "id"); the UI matches its quick replies to it
+    suggestions: list[str] = Field(default_factory=list)  # short replies the UI offers as chips (each is a full message)
+    conflicts: list[dict] = Field(default_factory=list)  # document vs statement disagreements the customer must settle
     submit_offer: bool = False  # a submission was held back for missing documents; "submit anyway" or attaching them continues
 
 
@@ -142,6 +144,38 @@ def _money(v: Optional[Decimal], cur: str = "IDR") -> str:
 
 def _doc(code: str, lang: str = "en") -> str:
     return doc_label(code, lang)
+
+
+_DOC_NAMES = {"INVOICE": ("invoice", "Faktur"), "RECEIPT": ("receipt", "Kuitansi"), "DISCHARGE_SUMMARY": ("discharge summary", "Ringkasan pulang"),
+              "MEDICAL_REPORT": ("medical report", "Laporan medis"), "LAB_REPORT": ("lab report", "Hasil lab"), "POLICE_REPORT": ("police report", "Laporan polisi")}
+
+
+def _document_conflicts(session, extract: dict, dtype: str) -> list[dict]:
+    """Dates and stay length a document states that disagree with what the customer said. Only typed values the
+    extractor returned are compared; a document that stays silent on a field raises nothing."""
+    out: list[dict] = []
+    doc_en, doc_id = _DOC_NAMES.get(dtype, (dtype.replace("_", " ").lower(), dtype.replace("_", " ").lower()))
+
+    def _d(v):
+        try:
+            return date.fromisoformat(str(v)[:10]) if v else None
+        except ValueError:
+            return None
+
+    def _fmt(d):
+        return d.strftime("%d %B %Y").lstrip("0")
+
+    for key, field_en, field_id, doc_key in (("admission", "admission date", "tanggal masuk", "service_start"), ("discharge", "discharge date", "tanggal keluar", "service_end")):
+        stated, docd = session.event_dates.get(key), _d(extract.get(doc_key))
+        if stated and docd and stated != docd and dtype not in ("INVOICE", "RECEIPT", "LAB_REPORT"):
+            out.append({"field": field_en, "field_id": field_id, "stated": _fmt(stated), "document": _fmt(docd), "doc": doc_en, "doc_id": doc_id, "doc_type": dtype})
+    days_doc = extract.get("days_hospitalized")
+    if days_doc and session.facts.has(Slot.DAYS_HOSPITALIZED) and dtype in ("DISCHARGE_SUMMARY", "MEDICAL_REPORT"):
+        stated_days = int(session.facts.get(Slot.DAYS_HOSPITALIZED) or 0)
+        if stated_days and stated_days != int(days_doc) and not any(o["field"] == "admission date" for o in out):
+            out.append({"field": "number of days in hospital", "field_id": "lama rawat inap", "stated": f"{stated_days} days", "document": f"{int(days_doc)} days",
+                        "doc": doc_en, "doc_id": doc_id, "doc_type": dtype})
+    return out
 
 
 def _focus_types(text: str) -> set[str]:
@@ -554,6 +588,7 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
     documents_present = list(dict.fromkeys(list(session.docs_present) + ex.documents_present))
     doc_sourced = False
     doc_notes: list[str] = []
+    doc_conflicts: list[dict] = []
     for path in uploads:
         dh = register_value(session, {"path": str(path)}, "DocRef", SourceTier.USER_UPLOAD, "upload")
         dd, res = call("extract_document", {"doc_handle": dh}, policyholder_name=meta.get("name", ""))
@@ -594,6 +629,7 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
             documents_present.append("POLICE_REPORT")
         if dtype and dtype != "UNKNOWN":
             doc_notes.append(f"I looked at the document you attached: extracted as {dtype.replace('_', ' ').lower()}.")
+            doc_conflicts += _document_conflicts(session, res or {}, dtype)
             # beyond the fixed table: the model checks this file against each policy's own document requirements
             for p in policies:
                 req = portfolio.required_documents(p, session.facts)[0]
@@ -609,6 +645,22 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         known = {str((tv.value or {}).get("path")) for tv in (session.registry.resolve(h) for h in session.doc_uploads) if tv is not None}
         if str(path) not in known:
             session.doc_uploads.append(register_value(session, {"path": str(path), "type": (dtype or "UNKNOWN").lower()}, "DocRef", SourceTier.USER_UPLOAD, "upload"))
+
+    if doc_conflicts:
+        # a document says one thing and the customer another: the agent asks which is right instead of picking
+        session.docs_present = list(dict.fromkeys(documents_present))
+        lang = getattr(session, "lang", "en")
+        lines, chips = [], []
+        for c in doc_conflicts[:3]:
+            lines.append(_L(lang, f"Your {c['doc']} gives the {c['field']} as {c['document']}, but you said {c['stated']}.",
+                            f"{c['doc_id']} Anda menyebut {c['field_id']} {c['document']}, tetapi Anda mengatakan {c['stated']}."))
+        c = doc_conflicts[0]
+        chips.append(_L(lang, f"The {c['doc']} is right: the {c['field']} is {c['document']}.", f"{c['doc_id']} yang benar: {c['field_id']} {c['document']}."))
+        chips.append(_L(lang, f"What I said is right: the {c['field']} is {c['stated']}.", f"Yang saya katakan benar: {c['field_id']} {c['stated']}."))
+        txt = " ".join(lines) + " " + _L(lang, "Which is correct? I will not guess; the claim is prepared from the answer you confirm.",
+                                           "Mana yang benar? Saya tidak akan menebak; klaim disiapkan dari jawaban yang Anda konfirmasi.")
+        audit_ids.append(audit(session, "ESCALATE", kind="DOCUMENT_CONFLICT", fields=[c["field"] for c in doc_conflicts]))
+        return finish(txt, conflicts=doc_conflicts, suggestions=chips, alerts=doc_notes, _no_compose=True)
 
     # open-claim record on file (sandbox) completes typed facts when it matches what the user describes
     claim = None if turn_ctx.hypothetical else _match_claim(meta, session, by_diagnosis=(pl.intent == Intent.CLAIM_GUIDANCE))
