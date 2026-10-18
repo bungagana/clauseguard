@@ -3,6 +3,7 @@ import type { AllocationResponse, ChatReply, PendingAction, PolicyUploadResult, 
 
 export interface MessageDoc {
   filename: string;
+  doc_id?: string; // the customer's own upload, when it can be reopened from the server
   suspicious?: boolean;
   findings?: string[];
 }

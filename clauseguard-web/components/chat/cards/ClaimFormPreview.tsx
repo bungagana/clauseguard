@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AlertTriangle, Check, Download, Eye, FileText, Loader2, X } from "lucide-react";
-import { exportPdf, getChatPending } from "@/lib/api";
+import { exportPdf, getChatPending, getMyClaim } from "@/lib/api";
 import type { PoliciesResponse } from "@/lib/types";
 import { policyName } from "@/lib/clauses";
 import { formatDate, formatMoney, humanize } from "@/lib/format";
@@ -41,7 +41,14 @@ function Row({ k, v }: { k: string; v: React.ReactNode }) {
  * prepared), never rebuilt in the browser. When the draft carries the insurer's own form layout
  * (derived from that policy's clauses), the form follows it; otherwise the standard rows show.
  */
-export function ClaimFormPreview({ token, tool, policies, recordedDraft }: { token?: string; tool: string; policies: PoliciesResponse | null; recordedDraft?: Draft }) {
+export function ClaimFormPreview({ token, tool, policies, recordedDraft, claimId, sent }: {
+  token?: string;
+  tool: string;
+  policies: PoliciesResponse | null;
+  recordedDraft?: Draft;
+  claimId?: string; // a claim already filed: the form is read from the customer's own claim record
+  sent?: boolean; // heading for a form that has already been sent
+}) {
   const replay = Boolean(recordedDraft); // a recorded scene carries its own draft: nothing is fetched, nothing is exported
   const [draft, setDraft] = useState<Draft | null | undefined>(recordedDraft ?? undefined);
   const [busy, setBusy] = useState(false);
@@ -50,6 +57,24 @@ export function ClaimFormPreview({ token, tool, policies, recordedDraft }: { tok
   useEffect(() => {
     let cancelled = false;
     if (replay || !token) return;
+    if (claimId) {
+      getMyClaim(token, claimId)
+        .then((c) => {
+          const f = (c.form ?? {}) as Record<string, unknown>;
+          const d: Draft = {
+            policy_id: c.policy_id,
+            currency: (f.currency as string) ?? "IDR",
+            form_title: f.form_title as string | undefined,
+            form_layout_source: f.form_layout_source as Draft["form_layout_source"],
+            form_sections: (f.sections as Draft["form_sections"]) ?? [],
+          };
+          if (!cancelled) setDraft(d.form_sections?.length ? d : null);
+        })
+        .catch(() => !cancelled && setDraft(null));
+      return () => {
+        cancelled = true;
+      };
+    }
     getChatPending(token)
       .then((res) => {
         const p = res.pending.find((x) => x.tool === tool) as { args?: Record<string, { value?: unknown }> } | undefined;
@@ -60,7 +85,7 @@ export function ClaimFormPreview({ token, tool, policies, recordedDraft }: { tok
     return () => {
       cancelled = true;
     };
-  }, [token, tool, replay]);
+  }, [token, tool, replay, claimId]);
 
   if (draft === undefined) return <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Loader2 className="h-3 w-3 animate-spin" /> Loading the form…</p>;
   if (draft === null) return null;
@@ -121,8 +146,9 @@ export function ClaimFormPreview({ token, tool, policies, recordedDraft }: { tok
       <div className="mt-2.5 rounded-lg border border-border bg-card p-3">
         <div className="flex items-start justify-between gap-2">
           <div>
-            <p className="inline-flex items-center gap-1.5 text-xs font-semibold"><FileText className="h-3.5 w-3.5 text-primary" /> {draft.form_title ?? "Claim form that will be sent"}</p>
+            <p className="inline-flex items-center gap-1.5 text-xs font-semibold"><FileText className="h-3.5 w-3.5 text-primary" /> {draft.form_title ?? (sent ? "Claim form that was sent" : "Claim form that will be sent")}</p>
             <p className="mt-0.5 text-[11px] text-muted-foreground">
+              {sent ? "This is the form the insurer received. " : ""}
               {draft.form_layout_source === "policy_clauses" ? "Laid out from this insurer's own policy wording; values from your answers only." : "Standard form; values from your answers only."}
             </p>
           </div>

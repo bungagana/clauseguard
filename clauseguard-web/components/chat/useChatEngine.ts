@@ -482,7 +482,7 @@ export function useChatEngine(mode: AppMode) {
       // only drop the chip that was just used (if any) — a scene can queue
       // several follow-ups, and using one shouldn't discard the rest
       setFollowUps((prev) => prev.filter((f) => f !== trimmed));
-      if (!uploadsOverride) for (const d of uploadedDocs) pushMessage({ role: "user", doc: { filename: d.filename } });
+      if (!uploadsOverride) for (const d of uploadedDocs) pushMessage({ role: "user", doc: { filename: d.filename, doc_id: d.doc_id } });
       pushMessage({ role: "user", text: trimmed });
       setSending(true);
 
@@ -565,7 +565,7 @@ export function useChatEngine(mode: AppMode) {
         const step = scene.steps.find((s) => s.reply === reply);
         if (step?.confirmReply) {
           await new Promise((r) => setTimeout(r, 400));
-          pushMessage({ role: "assistant", reply: step.confirmReply, replayed: Boolean(scene.recorded) });
+          pushMessage({ role: "assistant", reply: step.confirmReply, replayed: Boolean(scene.recorded), claimDraft: step.claimDraft });
           patchMessage(messageId, { pendingResolved: "confirmed", confirmBusy: false });
           if (step.followUpText) {
             await new Promise((r) => setTimeout(r, 1200));

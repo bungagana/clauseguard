@@ -219,6 +219,33 @@ export async function sendChat(
   return normalizeChatReply(raw);
 }
 
+export interface MyClaim {
+  id: string;
+  policy_id: string;
+  status: string;
+  claim_amount?: number | null;
+  filed_date?: string | null;
+  deadline_date?: string | null;
+  decided_at?: string | null;
+  decision_note?: string | null;
+  form: Record<string, unknown> | null;
+  documents: Array<{ id: string; type: string; uploaded_at?: string }>;
+}
+
+/** One of the customer's own claims, with the form the assistant submitted. */
+export function getMyClaim(token: string, claimId: string): Promise<MyClaim> {
+  return request<MyClaim>(`/claims/${encodeURIComponent(claimId)}`, {}, token);
+}
+
+/** Open one of the customer's own uploads in a new tab (the file is fetched with the session token, then shown). */
+export async function openUpload(token: string, docId: string): Promise<void> {
+  const res = await fetch(`${BASE}/uploads/${encodeURIComponent(docId)}`, { headers: { "X-Session-Token": token } });
+  if (!res.ok) throw new ApiError(`upload fetch failed (${res.status})`, res.status);
+  const url = URL.createObjectURL(await res.blob());
+  window.open(url, "_blank", "noopener");
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
 export function getChatPending(token: string): Promise<{ pending: Array<Record<string, unknown>> }> {
   return request("/chat/pending", {}, token);
 }

@@ -233,6 +233,22 @@ async def upload(file: UploadFile = File(...), s: PepSession = Depends(_session)
     return {"handle": handle, "label": "USER_UPLOAD", "doc_id": safe}
 
 
+@app.get("/uploads/{doc_id}")
+def my_upload(doc_id: str, s: PepSession = Depends(_session)):
+    """The customer's own uploaded file, for viewing in the browser. The id carries the uploader's
+    user id, so another session cannot fetch it; the path never leaves this function."""
+    from fastapi.responses import FileResponse
+
+    name = Path(doc_id).name
+    if name != doc_id or not name.startswith(f"{s.user_id}-"):
+        raise HTTPException(403, "that upload is not on your account")
+    path = UPLOAD_DIR / name
+    if not path.exists():
+        raise HTTPException(404, "upload not found")
+    media = "application/pdf" if name.lower().endswith(".pdf") else "application/octet-stream"
+    return FileResponse(str(path), media_type=media, filename=name[len(s.user_id) + 1:].split("-", 1)[-1], content_disposition_type="inline")
+
+
 @app.get("/audit")
 def audit_view(s: PepSession = Depends(_session)) -> dict[str, Any]:
     ok, bad = audit.verify(config.AUDIT_PATH)
@@ -290,6 +306,29 @@ def backoffice_claims(_: None = Depends(_admin)) -> list[dict[str, Any]]:
     """The insurer's inbox: every claim record in the sandbox, newest first, as a human adjuster would see it."""
     rows = _tools._rows("SELECT * FROM claims ORDER BY filed_date DESC, rowid DESC LIMIT 100")
     return [{k: r.get(k) for k in _CLAIM_KEEP if k in r} for r in rows]
+
+
+@app.get("/claims/{claim_id}")
+def my_claim(claim_id: str, s: PepSession = Depends(_session)) -> dict[str, Any]:
+    """One of the customer's own claims: status, the form the assistant submitted, the attached documents.
+    Lets the customer reopen and download what was sent. Other customers' claims are refused and logged."""
+    rows = _tools._rows("SELECT * FROM claims WHERE id=?", claim_id)
+    if not rows:
+        raise HTTPException(404, "claim not found")
+    r = rows[0]
+    household = set(_tools.household_ids(s.user_id))
+    if r.get("customer_id") not in household and claim_id not in (getattr(s, "owned_claim_ids", set()) or set()):
+        audit.append({"event_type": "ESCALATE", "session_id": s.session_id, "user_id": s.user_id, "decision": "DENY", "reason": "IDOR_ATTEMPT:claim"})
+        raise HTTPException(403, "that claim is not on your account")
+    form = None
+    if r.get("form_json"):
+        try:
+            form = json.loads(r["form_json"])
+        except ValueError:
+            form = None
+    docs = _tools._rows("SELECT id, type, uploaded_at FROM documents WHERE claim_id=? ORDER BY uploaded_at", claim_id)
+    keep = ("id", "policy_id", "status", "claim_amount", "filed_date", "deadline_date", "decided_at", "decision_note")
+    return {**{k: r.get(k) for k in keep if k in r}, "form": form, "documents": docs}
 
 
 @app.get("/backoffice/claims/{claim_id}")

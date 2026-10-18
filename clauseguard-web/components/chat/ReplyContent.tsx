@@ -17,6 +17,7 @@ import { TimelineCard } from "./cards/TimelineCard";
 import { ReadinessCard } from "./cards/ReadinessCard";
 import { PlanCards } from "./cards/PlanCards";
 import { ConfirmCard } from "./cards/ConfirmCard";
+import { ClaimFormPreview } from "./cards/ClaimFormPreview";
 import { RefusalCard } from "./cards/RefusalCard";
 import { AlertBanner } from "./cards/AlertBanner";
 import { WhatIfPanel } from "./cards/WhatIfPanel";
@@ -90,6 +91,8 @@ export function ReplyContent({
   const timeline = message.entitlement?.timeline;
   const intent = (reply.intent ?? "").toUpperCase();
   const claimIntent = /CLAIM|SUBMIT|ACTION|READINESS|DEADLINE|DOCUMENT/.test(intent) || Boolean(pendingTier2);
+  // the reply that reports a filed claim: the customer can reopen and download what was sent
+  const filedClaimId = pendingTier2 ? undefined : /filed in the sandbox insurer system as (CL-[A-Z0-9]{8})/.exec(reply.text ?? "")?.[1];
 
   // Answer first: verdicts, then at most one secondary card chosen by what the user asked.
   // Everything else is one tap away under "More".
@@ -114,7 +117,8 @@ export function ReplyContent({
     reply.recommendations.length > 0 ||
     Boolean(pendingTier2) ||
     Boolean(reply.clarification) ||
-    Boolean(reply.suggestions?.length);
+    Boolean(reply.suggestions?.length) ||
+    Boolean(filedClaimId);
 
   if (!hasCards) {
     return (
@@ -182,6 +186,13 @@ export function ReplyContent({
               ))}
               <span className="self-center text-[11px] text-muted-foreground">{reply.language === "id" ? "atau ketik saja" : "or just type it"}</span>
             </div>
+          )}
+
+          {filedClaimId && (sessionToken?.() || message.claimDraft) && (
+            <details className="rounded-lg border border-border bg-card px-3 py-2 text-xs">
+              <summary className="cursor-pointer font-medium">View the form sent for claim {filedClaimId}</summary>
+              <ClaimFormPreview token={message.claimDraft ? undefined : sessionToken?.()} tool="submit_claim" policies={policies} recordedDraft={message.claimDraft} claimId={filedClaimId} sent />
+            </details>
           )}
 
           {reply.submit_offer && isLatest && onQuickReply && (

@@ -13,6 +13,7 @@ import { ReplyContent } from "./ReplyContent";
 import { CopyButton } from "./CopyButton";
 import { replyCopyText } from "@/lib/copyText";
 import { buildExport, downloadBlob } from "@/lib/exportPdf";
+import { openUpload } from "@/lib/api";
 import { exportPdf } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -149,10 +150,25 @@ export function MessageBubble({
           {message.policyUpload ? (
             <PolicyUploadCard upload={message.policyUpload} onView={onViewPolicy} />
           ) : message.doc ? (
-            <div className="flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm text-primary-foreground">
-              <Paperclip className="h-3.5 w-3.5" />
-              {message.doc.filename}
-            </div>
+            message.doc.doc_id && sessionToken?.() ? (
+              <button
+                type="button"
+                onClick={() => {
+                  const t = sessionToken();
+                  if (t && message.doc?.doc_id) void openUpload(t, message.doc.doc_id).catch(() => undefined);
+                }}
+                title="Open this file"
+                className="flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm text-primary-foreground underline-offset-2 hover:underline"
+              >
+                <Paperclip className="h-3.5 w-3.5" />
+                {message.doc.filename}
+              </button>
+            ) : (
+              <div className="flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-sm text-primary-foreground">
+                <Paperclip className="h-3.5 w-3.5" />
+                {message.doc.filename}
+              </div>
+            )
           ) : (
             <div className="rounded-2xl bg-primary px-4 py-2.5 text-sm text-primary-foreground">{message.text}</div>
           )}
