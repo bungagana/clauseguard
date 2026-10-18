@@ -68,6 +68,8 @@ class Strict(BaseModel):
 
 class LoginIn(Strict):
     persona: str
+    # production mode: the browser remembers its guest account id so a reload keeps the same policies and history
+    account_id: Optional[str] = Field(default=None, pattern=r"^C-GUEST-[0-9A-F]{16}$")
 
 
 class ChatIn(Strict):
@@ -131,10 +133,15 @@ def _admin(x_admin_token: Optional[str] = Header(default=None)) -> None:
 
 @app.post("/login")
 def login(body: LoginIn) -> dict[str, Any]:
-    try:
-        p = _seed.persona_user(body.persona)
-    except KeyError as e:
-        raise HTTPException(404, str(e))
+    if body.persona == "guest":
+        # production mode: an account with no seeded policies; whatever the customer uploads belongs to it alone.
+        # A remembered id reopens the same account (its uploads and history); otherwise a new one is created.
+        p = {"user_id": body.account_id or f"C-GUEST-{uuid.uuid4().hex[:16].upper()}", "label": "Your account"}
+    else:
+        try:
+            p = _seed.persona_user(body.persona)
+        except KeyError as e:
+            raise HTTPException(404, str(e))
     token = secrets.token_urlsafe(18)
     s = PepSession(session_id=f"S-{uuid.uuid4().hex[:10]}", user_id=p["user_id"], persona=body.persona)
     s.owned_policy_ids = _tools.owned_policy_ids(s.user_id) | _tools.owned_record_ids(s.user_id)

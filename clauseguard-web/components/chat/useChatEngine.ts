@@ -28,6 +28,7 @@ import { digestItemQuestion } from "@/lib/digestQuestion";
 import type { AppMode } from "@/lib/appMode";
 
 const DEFAULT_PERSONA = "rizky";
+const PRODUCTION_PERSONA = "guest"; // a blank account on the backend: no seeded policies
 const THINKING_DELAY_MS = 550;
 const SAVE_DEBOUNCE_MS = 600;
 
@@ -48,7 +49,7 @@ function summarize(c: StoredConversation): ConversationSummary {
 
 function greetingFor(personaKey: string, mode: AppMode): string {
   if (mode === "production") {
-    return "Upload your policy to get started — I'll read it live and tell you exactly what it covers, with the clause to prove it.";
+    return "Welcome. Upload your policy (PDF) and I will read it live and tell you what it covers, with the clause that decides. You can also ask a general insurance question first.";
   }
   switch (personaKey) {
     case "dewi":
@@ -73,7 +74,7 @@ function findOfflineStep(personaKey: string, text: string): SceneStep | undefine
 export function useChatEngine(mode: AppMode) {
   const [online, setOnline] = useState<boolean | null>(null);
   const [personas, setPersonas] = useState<Persona[]>(FALLBACK_PERSONAS);
-  const [personaKey, setPersonaKey] = useState(DEFAULT_PERSONA);
+  const [personaKey, setPersonaKey] = useState(mode === "production" ? PRODUCTION_PERSONA : DEFAULT_PERSONA);
   const [policies, setPolicies] = useState<PoliciesResponse | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [followUps, setFollowUps] = useState<string[]>([]);
@@ -276,8 +277,9 @@ export function useChatEngine(mode: AppMode) {
   // load the default persona once we know whether the backend is reachable
   useEffect(() => {
     if (online === null) return;
-    loadPersona(DEFAULT_PERSONA, online);
-    beginConversation(DEFAULT_PERSONA, [{ id: nextId(), role: "assistant", text: greetingFor(DEFAULT_PERSONA, mode) }]);
+    const first = mode === "production" ? PRODUCTION_PERSONA : DEFAULT_PERSONA;
+    loadPersona(first, online);
+    beginConversation(first, [{ id: nextId(), role: "assistant", text: greetingFor(first, mode) }]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [online]);
 

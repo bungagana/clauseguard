@@ -1,82 +1,63 @@
-# ClauseGuard: Presentation Deck (10 slides, 10 minutes)
+# ClauseGuard — presentation deck
 
-Format: 16:9, one accent colour. `docs/deck/build_deck.py` reads this file and builds `docs/deck/ClauseGuard_deck.pptx`. Keep the structure: `## Slide N: title`, bullet lines starting with `- `, then `Notes:` and the speaker text. Speaker notes are at most 100 words each. Every number is copied from a file in `evidence/`.
+Eight slides, under ten minutes. One idea per slide, one sentence of text, one picture. The numbers
+come from `evidence/`; the pictures come from the running product. `docs/deck/build_deck.py` reads
+this file and writes `docs/deck/ClauseGuard_deck.pptx`.
+
+Format: `## Slide N: title`, then `Line:` (one sentence shown large), optional `Image:` / `Image2:`
+(paths relative to the repository root), optional `Chart: benchmark`, up to three `- ` bullets, and
+`Notes:` (spoken, at most 60 words).
 
 ## Slide 1: ClauseGuard
-- A Multi-Policy Entitlement Engine for Insurance Consumers
-- Compiles real policies into a constraint program; computes what you are owed, how to get it, and what to buy
-- Proves every answer with clauses; acts only within safe permission tiers
-- FinTechathon 2026 | International Track | Topic D | Team ClauseGuard
-Notes: Good day. ClauseGuard is an entitlement engine for people who hold several insurance policies. It compiles each policy into typed clauses and runs four deterministic solvers over them: what you are owed, how the bill is split between your policies, what you can still do after a denial, and what to buy to close your gaps. Every answer cites the clause it used. The language model never decides; it only extracts, binds facts and words the reply. Over ten minutes we show the problem, the method, the security boundary and the results, including the ones that are not flattering.
+Line: Clarity in every clause, confidence in every claim.
+Image: clauseguard-web/public/brand/logo-wordmark.png
+- Bunga Laelatul Muna · Izra · Wan Sabrina — Institut Teknologi Sepuluh Nopember, Indonesia
+- FinTechathon 2026 · International Track · Topic D
+Notes: ClauseGuard is an insurance assistant that reads your own policies, prepares your claim from your documents, sends it only after you confirm, and brings the insurer's decision back to you. Every answer points to the sentence of the policy that decides it.
 
-## Slide 2: Coverage is fragmented everywhere
-- US: 19% of in-network marketplace claims denied in 2023; under 1% appealed (KFF, 2025)
-- Indonesia: more than half of insurance complaints concern claim difficulty (OJK, 2023); 53% of consumer claims rejected (YLKI, 2025)
-- Hong Kong: about 30% of settled complaints are non-disclosure; China: payout-rate lawsuits over strict definitions
-- A household holds a statutory scheme, a group plan, an individual plan, a rider: who pays first, and how much?
-- Five rule failures: late filing, waiting period, wrong payer order, double cover, lapse
-Notes: Insurance consumers in the United States, the United Kingdom, Singapore, China and Indonesia share one condition: coverage is split across several policies whose rules nobody reads. In the US, one in five in-network claims was denied in 2023 and under one percent appealed. In Indonesia, the regulator reports that more than half of complaints concern claim difficulty. The failures are arithmetic on the user's own documents: a deadline, a waiting period, the order of payers, cover paid twice. A chat model answers from memory. We want the answer computed from the policy and proved.
+## Slide 2: The problem
+Line: Claims fail on paperwork and deadlines, not on coverage.
+- A household holds three to five policies, each a 40-page wording with its own document list and filing clock
+- People do not know which policy pays first, how much, or what to send by when
+- Chatbots answer fluently — and invent denials that are not in the policy
+Notes: Most people never read their policies. When something happens they face several wordings, several document checklists and a filing deadline. Generic chat assistants answer confidently but make up exclusions. The problem is not understanding insurance in general; it is acting correctly on your own policies.
 
-## Slide 3: Insurance as a constraint program
-- Quarantined extractor compiles each policy into typed clause tuples: relation, qualifiers, verbatim evidence, trust tier
-- Qualifiers are data, not prose: limits, deductibles, windows, deadlines, applies-if conditions, basis
-- A situation is a closed set of fact slots; an unbound slot is absent, never false
-- Four solvers read the store; no model runs inside any of them
-- Real inputs: six insurer wordings, 834 CMS marketplace plans, RIPLAY summaries
-Notes: Each policy is compiled once by a quarantined extractor into typed clause tuples. The relation is one of twelve values. The qualifiers are numbers with units, time windows, deadlines and conditions over a closed slot vocabulary. The verbatim clause travels with the tuple for citation only. Trust is a qualifier too, so the same filter that rejects an expired exclusion rejects an instruction smuggled through an upload. The user's situation is a set of typed facts. Four deterministic solvers read these objects. The model extracts, binds facts and phrases text. It never decides.
+## Slide 3: Four documents, one sentence, claim ready
+Line: Drop your hospital documents in the chat; the insurer's own claim form comes back, filled.
+Image: clauseguard/docs/deck/img/form_crop.png
+Notes: Rizky attaches four hospital documents and one sentence. The agent reads them, matches them to Sompo's document list, takes the bill from the invoice, and lays out Sompo's own claim form from Sompo's wording. Every field is filled from typed facts; the customer sees the form before anything leaves.
 
-## Slide 4: Architecture
-- Agents that read: Document Reader (policy PDF to typed rules), Conversation Agent (new situation, follow-up, correction, what-if), Fact Agent, Explainer, Watchdog
-- Code that decides: four solvers, the permission enforcer (T0 to T3), the hash-chained audit log
-- Claims: the insurer's own form laid out from its clauses, filled from typed facts, shown before Confirm; uploads matched to the policy's document list
-- Insurer side: a claims desk receives form and attachments, decides with a note, can halt the agent; the decision returns to the customer
-- Rule packs as data: Indonesia (statutory first, group before individual) and a generic pack
-Notes: One slide, two halves. The agents read: a Document Reader turns a policy into typed rules, a Conversation Agent reads each message in context, a Fact Agent binds the facts, an Explainer words the answer in the customer's language, a Watchdog watches deadlines. Code decides: the solvers, the permission enforcer and the audit log. For a claim, the agent lays out the insurer's own form from that insurer's wording, fills it from typed facts, shows it before the Confirm tap and files the uploaded documents with it. On the other side a claims desk, behind its own token, reviews, decides with a note and can halt the agent; the decision flows back to the customer's chat.
+## Slide 4: Every answer cites the clause
+Line: Covered, for how much, by when — and the exact sentence that decides it.
+Image: clauseguard-web/public/screens/focus-verdict.png
+- A rules engine decides; the model only reads, binds facts and words the reply
+- One question is asked only when one missing fact would change the outcome
+Notes: The decision is not generated text. Policies are compiled into typed rules, and a deterministic engine applies them. The reply shows the amount, the filing deadline and the quoted clause. If a single missing fact would flip the result, the agent asks for that fact and nothing else.
 
-## Slide 5: Solver 1, verdict, with one example
-- Order: candidates, closed world, exclusions unless excepted, periods and conditions, termination, else covered with payable
-- Tuple: HAS_PERIOD WAITING, 30 days, exempt if accident or emergency
-- Facts: hospitalised for illness, 20 days after the effective date: DENIED, code WAITING_PERIOD, clause quoted
-- Day 44 and 5 hospital days at IDR 500,000: COVERED, IDR 2,500,000
-- Clarify by verdict sensitivity: try every value of a missing fact; ask only if the verdict changes
-Notes: The verdict solver runs a fixed order: find the covering clauses, apply the closed world so that no clause means not applicable rather than denied, then exclusions unless an exception holds, then waiting, grace, survival and contestability periods, then termination, otherwise covered with the payable. Here a thirty-day waiting period denies an admission on day twenty and the reply quotes the clause; on day forty-four the same policy pays two and a half million rupiah. When a fact is missing, the solver tries every value; it asks only if the verdict changes.
+## Slide 5: It acts, and the decision comes back
+Line: After one tap, the claim reaches the insurer's desk; the adjuster's decision returns to the chat.
+Image: clauseguard-web/public/screens/focus-insurer.png
+Image2: clauseguard/docs/deck/img/decision_crop.png
+Notes: Submission needs a Confirm tap bound to a one-time server token. The claim, the form and the attachments land on the insurer's desk, a sandbox in this entry. A person reviews, decides with a note, and the decision appears in the customer's chat. The agent prepares and reports; it never decides a claim.
 
-## Slide 6: Solvers 2 to 4, entitlement beyond the verdict
-- Claim allocation: sequential payers, p_i = min(A_i, s_i minus cost sharing); exact order search within a layer; greedy and single-policy baselines
-- Recourse: smallest legitimate fact changes that flip DENIED to COVERED, Pareto-minimal in (days, money, effort); the event itself never changes
-- Adjudication twin: every denial ground isolated one clause at a time; readiness score 1 minus the ground weights
-- Plan selection: weighted set cover under budget as one mixed-integer programme; indemnity plans never overlap
-- Timeline: every dated event with the money that turns on it
-Notes: Three more solvers turn a verdict into an entitlement. The allocation optimizer splits one bill across the eligible policies under the jurisdiction's rule pack, presenting each payer what is still unpaid, and searches the claiming order exactly where deductibles or caps make order matter. Recourse searches for the smallest legitimate actions that turn a denial into cover: wait, provide a document, settle arrears, claim elsewhere. Facts about the event itself are immutable. The twin lists every denial ground a claims desk would raise. Plan selection is weighted set cover under a budget, solved as one mixed-integer programme.
+## Slide 6: It cannot touch your money
+Line: Permission is enforced in code: read, compute, send after Confirm — money and identity, never.
+Image: clauseguard-web/public/screens/focus-refusal.png
+- Observe / Draft / Act switch, insurer-side halt switch, hash-chained audit log
+- Uploaded documents are data: hidden instructions are detected and ignored
+Notes: Four permission tiers live in code, not in a prompt. Changing a payout account has no tool at all; the agent opens a ticket for a person. The insurer can halt the agent for every customer. Every step is written to a tamper-evident log. In our attack suite, none of 27 attacks had an effect.
 
-## Slide 7: Security by construction
-- T0 read own data | T1 compute and draft | T2 submit after a UI click and a server nonce | T3 money and identity: no tool exists, ticket only
-- Enforced in code: clauseguard/security/pep.py, rules R1 to R9; untrusted text never becomes a T2 or T3 argument
-- Chat attack suite: 0 of 27 attacks had a forbidden effect; 0 of 15 benign requests blocked
-- Enforcement patched to allow-all: 1 of 27 succeeds; direct probes 0 of 10 with the guard on
-- Hidden text: white text, tiny font, off-page, annotation 20/20; metadata and image alt 12/20; rendered image 0/20
-Notes: Security is enforced in code, not in the prompt. Reading and computing are free. Submitting needs a click in the interface and a one-time server nonce the model cannot produce. For money and identity the tool does not exist; the agent can only open a ticket for out-of-band verification. In our chat attack suite no attack had a forbidden effect and no benign request was blocked. With the enforcement function patched to allow everything, the kill-switch attack succeeds, which is why it is there. Hidden-text detection is heuristic and misses text rendered as an image.
+## Slide 7: Measured, with limits
+Line: Fewer invented denials than general chat models, measured on a public benchmark.
+Chart: benchmark
+- 84.6 % accuracy on 390 benchmark labels; 1.4 % fabricated denials (general models: 2.4 % to 26.6 %)
+- 33 of 33 scripted claims, 0 of 27 attacks succeeded, 0 of 15 benign requests blocked
+Notes: On a public insurance-contract benchmark, ClauseGuard reaches 84.6 percent accuracy and invents a denial in 1.4 percent of cases. We do not claim to beat frontier models on accuracy; the difference is that answers are traced to clauses and denials are not fabricated. Scripted claims and the attack suite pass fully.
 
-## Slide 8: Results, with their limits
-- Scripted tasks 33 of 33; off-script 15 of 15 and 10 of 10 (development sets); blind batch 3 of 14 (out of sample)
-- Paraphrase consistency 20 of 20 with the rule binder, 7 of 8 with the model binder
-- Clarification: asks when it should 87% (26/30), silent when it should 100% (35/35), slot correct 100%
-- Public benchmark: previous in-scope comparison (82.9 vs 87.5) used mismatched item counts and is corrected; held-out accuracy after the extraction fixes is 84.1%, unchanged from before the fixes; baseline comparison on held-out data not completed (API quota)
-- Recourse: 4 of 6 denied verdicts have a legitimate path to cover. Plan selection: optimiser beats the cheapest plan in 73 of 100 households on the mixed catalogue; identical pick on the single-peril CMS catalogue
-Notes: Our numbers, with their limits. Scripted tasks pass thirty-three of thirty-three. Two off-script batches pass fully but are development sets; the blind batch, written and run once, passes three of fourteen, the honest generalisation figure for the rule layer. Clarification asks when it should in eighty-seven percent of cases and never asks when it should not. On the public benchmark, the old 82.9-vs-87.5 "parity" claim compared different item counts and has been corrected; held-out accuracy is 84.1% both before and after the extraction fixes, and the baseline comparison on clean held-out data could not be completed this cycle. The CMS plan experiment is honest too: every marketplace plan covers the same perils, so the optimiser and the baselines pick the same plan.
-
-## Slide 9: Demo, from question to decision
-- Rizky, dengue, three days: covered Rp 1.5 million, filing deadline, the clause; one question (partner hospital?) and the BPJS answer follows
-- Four hospital documents uploaded at once: read, matched to Sompo's list, bill Rp 2.6 million taken from the invoice; the Sompo claim form appears, downloadable as PDF
-- Confirm: the claim and its attachments reach the insurer's desk; approved there with a note; the customer's digest shows the decision
-- Dewi, motorbike crash with four policies: who pays first, the expired licence, what-if with a valid one
-- Attack: payout-account change goes to a ticket, nothing changes; the audit chain verifies and a tampered copy breaks
-Notes: One story end to end. A student with dengue asks what he gets; the answer is the amount, the deadline and the sentence of the policy that decides it, with one question about the hospital. He attaches four hospital documents in one go; the assistant reads them, ticks the insurer's own document list, takes the bill from the invoice and shows Sompo's claim form, which he can download. He taps Confirm, the claim lands on the insurer's desk with the attachments, a person approves it with a note, and the decision appears in his chat. Then a delivery rider with four policies, the what-if panel, and an attack that ends in a ticket.
-
-## Slide 10: What is real and what is next
-- Real inputs today: six public insurer wordings, CMS PUF plan year 2026 (834 Texas plans), InsuranceQA questions, UK ombudsman decisions, RIPLAY summaries
-- Synthetic, stated as such: benchmark contracts (expert-reviewed), personas, mock group plans, statutory amounts
-- Next: ombudsman replay for the twin, premiums in the CMS experiment, on-premise extraction, external red team, Indonesian labelled set
-- Not built: anchoring the audit chain outside the host; integration with a real insurer's API (the desk is a sandbox)
-- Running: web client on Vercel, Postgres audit chain on Supabase, backend as a Docker image; code, tests, evidence and limitations in the repository
-Notes: What is real: the six insurer wordings, the CMS marketplace plans, the consumer questions, the ombudsman decisions and the Indonesian product summaries are public data downloaded with a reproducible script and a manifest of hashes. What is synthetic is stated as synthetic: the benchmark contracts, the personas and the statutory amounts. Next steps are the ombudsman replay for the adjudication twin, premiums in the plan experiment, an on-premise extraction model, an external red team and a labelled Indonesian set. Everything, including the limitations, is in the repository. Thank you.
+## Slide 8: What is real, what is next
+Line: Live web app, sandbox insurer, public data — and an honest list of what is not built yet.
+- Real: six insurer wordings, 30 Indonesian product summaries, 834 CMS plans, consumer questions, ombudsman decisions
+- Sandbox: the insurer's desk and the three personas; no real insurer receives a claim
+- Next: a real insurer API, session state that survives restarts, an external red team
+- github.com/bungagana/clauseguard · clauseguard-red.vercel.app
+Notes: What is real is public data and a working product. What is simulated is the insurer: our desk is a sandbox, so no real claim is filed. The next steps are an insurer API, persistent sessions and an external red team. The code, tests, evidence and limitations are all in the repository. Thank you.

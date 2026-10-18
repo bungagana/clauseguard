@@ -13,6 +13,7 @@ import { HistorySidebar } from "./HistorySidebar";
 import { DigestCard } from "./DigestCard";
 import { InsurerPanel } from "./InsurerPanel";
 import { SessionControls } from "./SessionControls";
+import { personaMeta } from "@/lib/personas";
 import { ClaimStageStrip } from "./ClaimStageStrip";
 import { ReplayStrip } from "./ReplayStrip";
 import { ProcessPanel } from "./ProcessPanel";
@@ -80,6 +81,10 @@ export function ChatApp({ initialModeOverride }: { initialModeOverride?: AppMode
           onRename={engine.renameConversation}
           onDelete={engine.deleteConversation}
           onClearAll={engine.clearHistory}
+          profile={(() => {
+            const m = personaMeta(engine.personaKey);
+            return { name: m.name, subtitle: m.tagline, initials: m.initials, accent: m.accent, demo: mode === "demo" };
+          })()}
         />
 
         <div className="flex min-w-0 flex-1 flex-col">

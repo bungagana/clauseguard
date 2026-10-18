@@ -35,9 +35,11 @@ export function LlmStatusBadge({ backendOnline }: { backendOnline: boolean }) {
     };
   }, [backendOnline]);
 
-  if (!backendOnline || !status || !status.configured) return null;
+  if (!backendOnline || !status) return null;
 
-  const live = status.available;
+  // not configured: the backend has no model key at all (a deployment mistake, not a quota pause); say so plainly
+  const live = status.configured && status.available;
+  const noKey = !status.configured;
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -46,13 +48,15 @@ export function LlmStatusBadge({ backendOnline }: { backendOnline: boolean }) {
           className="hidden items-center gap-1 whitespace-nowrap sm:flex"
         >
           {live ? <Sparkles className="h-3 w-3" /> : <Wrench className="h-3 w-3" />}
-          {live ? "Live AI" : "Rule-based mode"}
+          {live ? "Live AI" : noKey ? "No model key" : "Rule-based mode"}
         </Badge>
       </TooltipTrigger>
       <TooltipContent className="max-w-[260px] text-xs">
         {live
           ? "The language model is reachable, so free-text questions and explanations are being phrased live. Coverage decisions are always rule-based, with or without it."
-          : "The language model's free quota is exhausted right now, so this turn's chat understanding uses deterministic templates instead. Coverage decisions are unaffected — they are always rule-based."}
+          : noKey
+            ? "This backend has no model key configured (GEMINI_API_KEYS), so understanding and wording fall back to deterministic templates. Set the key on the server to enable the live agents. Coverage decisions are unaffected — they are always rule-based."
+            : "The language model's free quota is exhausted right now, so this turn's chat understanding uses deterministic templates instead. Coverage decisions are unaffected — they are always rule-based."}
       </TooltipContent>
     </Tooltip>
   );

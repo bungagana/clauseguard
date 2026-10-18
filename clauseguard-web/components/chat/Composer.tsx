@@ -99,19 +99,21 @@ export function Composer({
           }}
         />
 
-        {awaitingUpload ? (
+        {awaitingUpload && (
           <button
             type="button"
             onClick={() => policyFileInputRef.current?.click()}
             disabled={uploadBusy}
-            className="flex w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-primary/40 bg-card px-4 py-6 text-center shadow-soft transition-colors hover:border-primary/70 hover:bg-primary/5 disabled:opacity-60"
+            className="mb-2.5 flex w-full items-center gap-3 rounded-2xl border border-dashed border-primary/40 bg-primary/5 px-4 py-3 text-left transition-colors hover:border-primary/70 hover:bg-primary/10 disabled:opacity-60"
           >
-            {uploadBusy ? <Loader2 className="h-5 w-5 animate-spin text-primary" /> : <FileUp className="h-5 w-5 text-primary" />}
-            <span className="text-sm font-medium text-foreground">{uploadBusy ? "Uploading…" : "Upload your policy (PDF) to get started"}</span>
-            <span className="text-xs text-muted-foreground">We&apos;ll extract the clauses live and show exactly what it covers.</span>
+            {uploadBusy ? <Loader2 className="h-5 w-5 shrink-0 animate-spin text-primary" /> : <FileUp className="h-5 w-5 shrink-0 text-primary" />}
+            <span className="min-w-0">
+              <span className="block text-sm font-medium text-foreground">{uploadBusy ? "Reading your policy…" : "Upload your policy (PDF) to get answers about your own cover"}</span>
+              <span className="block text-xs text-muted-foreground">The clauses are extracted live. You can also type a general question below.</span>
+            </span>
           </button>
-        ) : (
-          <div className="flex items-end gap-2 rounded-2xl border border-input bg-card p-2 shadow-soft">
+        )}
+        <div className="flex items-end gap-2 rounded-2xl border border-input bg-card p-2 shadow-soft">
             <Button
               type="button"
               variant="ghost"
@@ -173,7 +175,6 @@ export function Composer({
               {sending ? <Square className="h-3.5 w-3.5" /> : <Send className="h-4 w-4" />}
             </Button>
           </div>
-        )}
       </div>
     </div>
   );

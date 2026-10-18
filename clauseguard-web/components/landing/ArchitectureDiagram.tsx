@@ -84,8 +84,8 @@ export function ArchitectureDiagram() {
       {/* guardian */}
       <Arrow d="M365 448 V472" />
       <rect x={225} y={474} width={280} height={56} rx={12} fill={C} stroke="currentColor" strokeWidth={1.6} />
-      <text x={365} y={497} textAnchor="middle" fontSize={13} fontWeight={700} fill="currentColor">Guardian (code, not AI)</text>
-      <text x={365} y={514} textAnchor="middle" fontSize={10} fill={M}>decides what may happen automatically and what may not</text>
+      <text x={365} y={497} textAnchor="middle" fontSize={13} fontWeight={700} fill="currentColor">Guardian (code)</text>
+      <text x={365} y={514} textAnchor="middle" fontSize={10} fill={M}>decides what runs by itself and what needs you</text>
 
       <Arrow d="M225 502 H178" color={S} />
       <rect x={40} y={480} width={136} height={44} rx={10} fill={C} stroke={S} strokeWidth={1.4} />
@@ -99,7 +99,7 @@ export function ArchitectureDiagram() {
 
       <Arrow d="M505 502 H552" color={D} />
       <rect x={554} y={480} width={150} height={44} rx={10} fill={C} stroke={D} strokeWidth={1.4} />
-      <text x={629} y={498} textAnchor="middle" fontSize={11} fontWeight={700} fill={D}>Never by the AI</text>
+      <text x={629} y={498} textAnchor="middle" fontSize={11} fontWeight={700} fill={D}>A person handles it</text>
       <text x={629} y={512} textAnchor="middle" fontSize={9.5} fill={M}>money, bank account, beneficiary</text>
 
       {/* explainer + watchdog */}

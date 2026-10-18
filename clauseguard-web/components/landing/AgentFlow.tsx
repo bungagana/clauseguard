@@ -67,7 +67,7 @@ const SCENARIOS: Scenario[] = [
     facts: ["No facts needed: the request itself decides the route"],
     rules: ["Payout account, beneficiary and premium account changes have no tool the AI can call"],
     gate: "never",
-    gateNote: "Never done by the AI. A human at the insurer verifies you out-of-band.",
+    gateNote: "Handled by a person at the insurer, who verifies you through a separate channel.",
     outcome: {
       kind: "refusal",
       title: "Handed to a human",
@@ -206,7 +206,7 @@ function FlowSvg({ stage, gate, gateColor }: { stage: Stage; gate: Gate; gateCol
   const outs = [
     { id: "auto", x: 300, y: 240, label: "Automatic", color: "hsl(var(--success))", key: "auto" as Gate },
     { id: "tap", x: 300, y: 276, label: "Only after your tap", color: "hsl(var(--warning))", key: "tap" as Gate },
-    { id: "never", x: 300, y: 312, label: "Never by the AI", color: "hsl(var(--destructive))", key: "never" as Gate },
+    { id: "never", x: 300, y: 312, label: "A person handles it", color: "hsl(var(--destructive))", key: "never" as Gate },
   ];
   const edge = (d: string, on: boolean, color = P) => (
     <motion.path d={d} fill="none" stroke={on ? color : "hsl(var(--border))"} strokeWidth={on ? 2 : 1.4} initial={false} animate={{ pathLength: 1, opacity: on ? 1 : 0.7 }} />

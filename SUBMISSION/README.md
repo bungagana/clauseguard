@@ -1,42 +1,55 @@
 # ClauseGuard — submission package
 
-FinTechathon 2026 Shenzhen, International Track, Topic D (AI Insurance Assistant).
-Entry: **ClauseGuard: A Multi-Policy Entitlement Engine for Insurance Consumers** — Institut Teknologi Sepuluh Nopember, Indonesia.
+*Clarity in every clause, confidence in every claim.*
 
-## Checklist items
+FinTechathon 2026 Shenzhen · International Track · Topic D (AI Insurance Assistant)
 
-| # | Item | File(s) |
-|---|---|---|
-| 1 | Technical documentation (architecture, core algorithm, security design) | `1_Technical_Documentation.docx` — source: `../clauseguard/docs/TECHNICAL_DOCUMENTATION.md`, `../clauseguard/ARCHITECTURE.md` |
-| 2 | Presentation deck (≤ 10 minutes) | `2_Presentation_Deck.pptx` — source: `../clauseguard/docs/DECK.md`, built by `../clauseguard/docs/deck/build_deck.py` |
-| 3 | Demo video (≤ 5 minutes) | script: `3_Video_Script.md` (backend UI) and `../clauseguard-web/DEMO_SCRIPT.md` (web client) |
-| 4 | Source code with README, repository link, deployment instructions, test cases | the repository root; archive: `python ../clauseguard/scripts/make_submission_zip.py` writes `4_Source_Code_ClauseGuard.zip` here |
-| 5 | Security self-assessment (permission tiers, known risks) | `5_Security_Self_Assessment.docx` — source: `../clauseguard/docs/SECURITY_SELF_ASSESSMENT.md`, `../clauseguard/SECURITY.md` |
-| 6 | Execution evidence (sandbox operation logs, demo video) | `6_Execution_Evidence_Index.docx`, `evidence/` (reports and raw runs), `../clauseguard/docs/EXECUTION_EVIDENCE.md` |
+**Team:** Bunga Laelatul Muna, Izra, Wan Sabrina — Institut Teknologi Sepuluh Nopember, Indonesia
 
-## Evidence set
+| | |
+|---|---|
+| Live web app | https://clauseguard-red.vercel.app (the backend runs on the team's machine; when it is off, the site replays recorded runs and says so) |
+| Source code | https://github.com/bungagana/clauseguard |
+| Demo video | link in the submission email |
 
-| File | Shows | Reproduce |
-|---|---|---|
-| `evidence/task_report.md`, `task_runs.jsonl` | 33 scripted tasks in the sandbox insurer, transcripts and pass criteria | `python scripts/run_tasks.py --no-llm` |
-| `evidence/offscript_report.md`, `offscript_blind_report.md`, `offscript_runs.jsonl` | off-script questions, development and blind batches | `python scripts/run_tasks.py --no-llm --suite off_script` / `--suite blind` |
-| `evidence/adversarial_report.md` | chat attack suite with enforcement on and off, hidden-text detection | `python scripts/run_adversarial.py --no-guard` |
-| `evidence/bench_report.md` | public benchmark: accuracy, confidence intervals, fabricated-denial rate, paired comparison | `python -m bench.run_bench`, `python -m bench.report` |
-| `evidence/paraphrase_report.md`, `clarify_report.md` | decision consistency across wordings; clarification recall and precision | `python bench/paraphrase.py`, `python bench/clarify_eval.py` |
-| `evidence/allocation_report.md`, `plan_selection_report.md`, `recourse_report.md` | claim allocation vs greedy, plan selection vs baselines, recourse on denials | `python -m bench.allocation_eval`, `python -m bench.plan_selection_eval`, `python -m bench.recourse_eval` |
-| `evidence/extraction_quality.md`, `riplay_provenance.md` | extraction precision/recall against gold annotations; provenance of every sandbox policy wording | `python scripts/extraction_quality.py` |
-| `evidence/audit_log_scripted_tasks_clean.jsonl` | hash-chained audit log of a clean scripted run | `python scripts/verify_audit.py <file>` |
+## What ClauseGuard does
 
-All commands run from `../clauseguard/` and need no API key (deterministic mode); live-model runs are marked as such inside each report.
+An insurance assistant that reads the customer's own policies, answers coverage questions with the clause that decides them, prepares the claim from the customer's documents in the insurer's own form, submits it after the customer confirms, and brings the insurer's decision back to the chat. Every action runs inside permission tiers enforced in code; money and identity changes are never executed by the agent.
 
-## Scope of claims
+## Files in this folder
 
-- Accuracy figures lead with the extracted-rules condition (84.6 %, n = 390); the 91.8 % figure is the ceiling with the benchmark's own rules and is labelled as such.
-- The API-matched long-context baseline shows no significant difference on the common items; no superiority over frontier models is claimed.
-- Redacted document text, never whole PDFs, is sent to a hosted model; redaction is not claimed perfect.
-- Allocation gains are simulations over real plan terms, not money saved in real life.
-- The three personas are synthetic; public-scheme policies (BPJS Kesehatan, Jasa Raharja) are modelled from regulation.
+| File | Checklist item |
+|---|---|
+| `1_Technical_Documentation.docx` | Technical documentation: architecture, core method, security design |
+| `2_Presentation_Deck.pptx` | Presentation deck, 8 slides, under 10 minutes (speaker notes included) |
+| `3_Video_Script.md` | Script of the demo video |
+| `4_Source_Code_ClauseGuard.zip` | Source code snapshot (same as the repository, without secrets and third-party data) |
+| `5_Security_Self_Assessment.docx` | Permission tiers, threat model, test results, known risks |
+| `6_Execution_Evidence_Index.docx` | Index of the evidence below and how to reproduce each file |
+| `evidence/` | Sandbox operation logs and evaluation reports (see the index) |
 
-## Data and licences
+The `.docx` files are rendered from the Markdown sources in `clauseguard/docs/`; the deck is built from `clauseguard/docs/DECK.md`.
 
-CMS Exchange PUFs PY2026: US Government public domain. UK Financial Ombudsman decisions: Crown copyright, OGL v3. InsuranceQA: research use (Feng et al., 2015). The benchmark (CC-BY-4.0), insurer PDFs and RIPLAY documents are fetched by `scripts/fetch_real_data.py` with URL, date and hash recorded in `data/real/manifest.json`; none is redistributed in this package.
+## Run it yourself
+
+```bash
+git clone https://github.com/bungagana/clauseguard.git && cd clauseguard
+cd clauseguard && pip install -r requirements.txt && python scripts/serve.py --fresh      # backend, http://127.0.0.1:8000
+cd ../clauseguard-web && npm install && npm run dev                                         # web app, http://localhost:3000
+```
+
+No API key is needed: without one, every step runs on its deterministic fallback. Tests: `python -m pytest -q` in `clauseguard/`. Full instructions are in the repository README.
+
+## Key evidence
+
+| Claim | Where |
+|---|---|
+| A complete sandbox operation: four documents uploaded, form prepared, claim confirmed, approved at the desk, decision returned | `evidence/claims_desk_run.md` |
+| 33 scripted claim scenarios pass | `evidence/task_report.md` |
+| 0 of 27 attacks had an effect; 0 of 15 benign requests blocked | `evidence/adversarial_report.md` |
+| 84.6 % accuracy and 1.4 % fabricated denials on a public benchmark | `evidence/bench_report.md` |
+| Hash-chained audit log of a clean run | `evidence/audit_log_scripted_tasks_clean.jsonl` (`python scripts/verify_audit.py`) |
+
+## What is simulated
+
+The insurer is a sandbox: claims are filed into our own claims desk, not a real insurer. The three personas and their policies are synthetic; wordings are modelled on public insurer documents. Public datasets (CMS plans, InsuranceQA, UK ombudsman decisions, Indonesian product summaries) are downloaded by script and are not redistributed here.

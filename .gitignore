@@ -20,3 +20,10 @@ __pycache__/
 .ruff_cache/
 *.sqlite
 *.sqlite-*
+
+# built at submission time by clauseguard/scripts/make_submission_zip.py
+SUBMISSION/*.zip
+
+# local audit fallback chain written while Postgres is unreachable
+*.pgfallback
+*.pgfallback.lock

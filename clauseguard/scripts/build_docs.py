@@ -123,5 +123,10 @@ def render(src: Path, dst: Path) -> None:
 
 
 if __name__ == "__main__":
-    for s, d in TARGETS.items():
-        render(s, d)
+    import sys
+
+    if len(sys.argv) == 3:  # python scripts/build_docs.py SRC.md OUT.docx
+        render(Path(sys.argv[1]), Path(sys.argv[2]))
+    else:
+        for s, d in TARGETS.items():
+            render(s, d)

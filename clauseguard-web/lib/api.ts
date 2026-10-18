@@ -168,8 +168,29 @@ export async function addLlmKey(adminToken: string, apiKey: string): Promise<{ p
 }
 
 // ---------------------------------------------------------------- auth / persona
+const GUEST_KEY = "clauseguard-guest-account";
+
 export function login(persona: string): Promise<LoginResult> {
-  return request<LoginResult>("/login", { method: "POST", body: JSON.stringify({ persona }) });
+  // production mode signs in as a guest account; the browser remembers its id so a reload keeps the same
+  // uploaded policies and history. The id grants nothing by itself: a session token is still issued per login.
+  let account_id: string | undefined;
+  if (persona === "guest") {
+    try {
+      account_id = localStorage.getItem(GUEST_KEY) ?? undefined;
+    } catch {
+      /* storage unavailable: a fresh account each time */
+    }
+  }
+  return request<LoginResult>("/login", { method: "POST", body: JSON.stringify(account_id ? { persona, account_id } : { persona }) }).then((res) => {
+    if (persona === "guest" && res.user_id) {
+      try {
+        localStorage.setItem(GUEST_KEY, res.user_id);
+      } catch {
+        /* noop */
+      }
+    }
+    return res;
+  });
 }
 
 export function getPersonas(): Promise<Persona[]> {

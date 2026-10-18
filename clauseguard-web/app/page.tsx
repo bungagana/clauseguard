@@ -6,16 +6,15 @@ import {
   Bot,
   CalendarClock,
   Code2,
+  FileDown,
   FileSearch,
   FileText,
-  Layers,
-  ListChecks,
+  FlaskConical,
   MessageSquareText,
   ScanLine,
+  Send,
   ShieldCheck,
   Sparkles,
-  Wallet,
-  Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/chat/ThemeToggle";
@@ -24,10 +23,10 @@ import { ArchitectureDiagram } from "@/components/landing/ArchitectureDiagram";
 import { BarChart, StatTile } from "@/components/landing/Charts";
 import { Reveal } from "@/components/landing/Reveal";
 
-const REPO_URL = "https://github.com/Bungalm/LOMBA-CHHINA";
+const REPO_URL = "https://github.com/bungagana/clauseguard";
 
 const NAV = [
-  ["#features", "What it does"],
+  ["#features", "Features"],
   ["#screens", "See it"],
   ["#how", "How it works"],
   ["#results", "Results"],
@@ -49,65 +48,83 @@ const TINTS = [
   "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
 ];
 
-// Each idea lives in exactly one section: outcomes here, proof in "See it", mechanism in
-// "How it works", numbers in "Results", limits of the agent in "Safety".
-const FEATURES = [
-  { icon: FileSearch, title: "Ask in plain language", body: "A clear yes or no, the amount, and the sentence in your policy that says so." },
-  { icon: Layers, title: "See every policy together", body: "National health, your employer's plan and your own cover, read as one portfolio: where you pay twice and where nothing would pay." },
-  { icon: Wallet, title: "Know who pays first", body: "When several policies could respond, they are put in the right order, with what each one needs from you." },
-  { icon: CalendarClock, title: "Keep every deadline", body: "Filing windows, grace periods and expiry dates on one timeline, each with the money at stake." },
-  { icon: Wrench, title: "Fix a refusal", body: "The smallest legitimate change that turns a refused claim into a paid one: a document, a date, a report." },
-  { icon: ListChecks, title: "Close the gaps", body: "Real plans with real premiums, matched to what you lack and what you can afford. A suggestion, not a sale." },
+// Each idea lives in exactly one section: the three features here, proof in "See it", the
+// mechanism in "How it works", numbers in "Results", the limits of the agent in "Safety".
+const CORE = [
+  {
+    icon: FileSearch,
+    name: "ClauseLens",
+    title: "Policy analysis",
+    body: "Whether you are covered, for how much, and by when, read from your own policies and quoted with the clause that decides. Several policies are read together. The assistant asks for one more fact only when that fact would change the answer.",
+  },
+  {
+    icon: Send,
+    name: "ClaimFlow",
+    title: "Claim handling",
+    body: "Reads your documents, checks them against the insurer's list, prepares the insurer's own form, files the claim after you confirm, and brings the insurer's decision back to the chat.",
+  },
+  {
+    icon: ShieldCheck,
+    name: "TrustLock",
+    title: "AI guardrails",
+    body: "You choose how far it may go: Observe, Draft or Act. Sending anything requires your confirmation. Payout accounts and beneficiaries are changed only by a person at the insurer. The insurer can halt the assistant, and every step is written to a tamper-evident log.",
+  },
+] as const;
+
+const SUPPORTING = [
+  { icon: FlaskConical, name: "Claim Simulator", body: "Change one fact and every answer is recomputed." },
+  { icon: CalendarClock, name: "Deadline Tracker", body: "Filing windows, grace periods, lapses and claim updates, before money is lost." },
+  { icon: FileDown, name: "PDF Export", body: "The claim form and the analysis, downloadable and previewable in the chat." },
 ] as const;
 
 const SCREENS = [
   {
     src: "/screens/focus-verdict.png",
-    eyebrow: "A claim question",
+    eyebrow: "ClauseLens",
     title: "Covered for Rp 1.5 million, filed by 26 November, one fact still open",
-    body: "Three days in hospital with dengue. The hospital-cash plan pays; the national plan depends on whether the hospital is a partner facility, so that is the only question asked.",
-  },
-  {
-    src: "/screens/focus-allocation.png",
-    eyebrow: "An accident with four policies",
-    title: "Rp 22 million recovered instead of Rp 20 million",
-    body: "The road-accident fund pays first and the platform cover tops it up. The personal-accident policy is out because the licence had expired, and the card says why.",
-  },
-  {
-    src: "/screens/focus-refusal.png",
-    eyebrow: "A request it will not carry out",
-    title: "Changing a payout account goes to a person",
-    body: "The assistant opens a ticket for the insurer, states that nothing on the account has changed, and does not make an exception for urgency.",
-  },
-  {
-    src: "/screens/focus-whatif.png",
-    eyebrow: "What if",
-    title: "Flip a fact and every answer is recomputed",
-    body: "Only facts that would change an outcome for your policies are offered. With a valid licence, the personal-accident policy moves from refused to one open question.",
+    body: "Three days in hospital with dengue. The hospital-cash plan pays. The national plan depends on whether the hospital is a partner facility, so that is the only question asked.",
   },
   {
     src: "/screens/focus-confirm.png",
-    eyebrow: "Before anything is sent",
-    title: "Submission waits for your tap",
-    body: "A claim with missing documents is held back and the list is shown. Choosing to submit anyway still ends at a confirmation card; nothing leaves before you press Confirm.",
+    eyebrow: "ClaimFlow",
+    title: "The insurer's own form, filled from your documents, shown before anything is sent",
+    body: "Uploaded files are matched to the insurer's document list, and the form is laid out from that insurer's wording. The claim is sent when you press Confirm, and the insurer's decision comes back to the chat.",
+  },
+  {
+    src: "/screens/focus-refusal.png",
+    eyebrow: "TrustLock",
+    title: "Changing a payout account goes to a person",
+    body: "This change is reserved for a person at the insurer. The assistant opens a ticket, confirms that the account is unchanged, and treats an urgent request the same way.",
+  },
+  {
+    src: "/screens/focus-whatif.png",
+    eyebrow: "Claim Simulator",
+    title: "Flip a fact and every answer is recomputed",
+    body: "Only facts that would change an outcome are offered. With a valid licence, the personal-accident policy moves from refused to one open question.",
+  },
+  {
+    src: "/screens/focus-allocation.png",
+    eyebrow: "ClauseLens · several policies",
+    title: "Rp 22 million recovered instead of Rp 20 million",
+    body: "The road-accident fund pays first and the platform cover tops it up. The personal-accident policy is out because the licence had expired, and the card says why.",
   },
 ] as const;
 
 const STEPS = [
   { icon: FileText, title: "You upload a policy", body: "Any PDF. Names, ID numbers and account numbers are removed on your side before the AI reads a word." },
   { icon: ScanLine, title: "The Document Reader builds a rule book", body: "Every rule keeps a link to the sentence it came from, so every later answer can point back to the page." },
-  { icon: Bot, title: "The engine decides, the agents ask", body: "A rules engine checks your facts against the rule book. The Conversation and Fact agents understand what you said; if one missing fact would change the answer, they ask for that one fact." },
-  { icon: BadgeCheck, title: "The Explainer writes it up", body: "In English or Indonesian, in your words. Every amount, date and name is checked against the engine before you see it, and the Watchdog keeps watching your deadlines afterwards." },
+  { icon: Bot, title: "The engine decides, the agents ask", body: "A rules engine checks your facts against the rule book (ClauseLens). The Conversation and Fact agents understand what you said. If one missing fact would change the answer, they ask for that one fact." },
+  { icon: BadgeCheck, title: "The Explainer writes it up", body: "In English or Indonesian, in your words. Every amount, date and name is checked against the engine before you see it. The Watchdog agent, your Deadline Tracker, keeps watching afterwards." },
 ] as const;
 
 const STACK = [
   "Gemini Flash behind the five agents",
-  "Rules engine in Python, no model inside",
+  "Rules engine in plain Python",
   "Checked generation: every figure verified before display",
   "Tamper-evident audit trail",
   "Local redaction and hidden-text detection",
   "FastAPI · Next.js 14 · TypeScript",
-  "532 automated tests · Playwright end-to-end",
+  "Automated tests run without an API key · Playwright end-to-end",
 ] as const;
 
 const BENCH_ACC = [
@@ -116,7 +133,7 @@ const BENCH_ACC = [
   { label: "Claude Sonnet 4.6", value: 87.8, note: "benchmark authors' run, web chat, n = 580" },
   {
     label: "ClauseGuard", value: 84.6, highlight: true, ceiling: 91.8, ceilingLabel: "ceiling with perfect reading",
-    note: "our run, Gemini Flash + rules engine, n = 390. The lighter extension is the engine on the benchmark's own rules (91.8 %): what remains is reading, not reasoning",
+    note: "our run, Gemini Flash + rules engine, n = 390. The lighter extension (91.8 %) is the engine on the benchmark's own rules, so the remaining gap comes from document reading",
   },
 ];
 
@@ -131,14 +148,14 @@ const SAFETY_ROWS = [
   ["Read your own policies and claims", "Runs by itself", "text-success"],
   ["Calculate, explain, draft a letter", "Runs by itself", "text-success"],
   ["Submit a claim, book a call-back", "Only after you tap Confirm", "text-warning-foreground"],
-  ["Move money, change a bank account or beneficiary", "Never. A person at the insurer does it.", "text-destructive"],
+  ["Move money, change a bank account or beneficiary", "A person at the insurer, through a separate channel", "text-destructive"],
 ] as const;
 
 const SAFETY_POINTS = [
-  { title: "Documents cannot give orders", body: "Text hidden in an uploaded invoice (white on white, off the page) is detected, labelled untrusted and ignored." },
-  { title: "Nothing is interpreted as an instruction", body: "What a document or a tool returns is shown to you; it is never pasted into the agents' instructions." },
+  { title: "Documents are treated as data", body: "Text hidden in an uploaded invoice (white on white, off the page) is detected, labelled untrusted and left out of every decision." },
+  { title: "Documents and tool results stay separate", body: "What a document or a tool returns is shown to you. The agents' instructions are fixed and come from the code alone." },
   { title: "Every step is on record", body: "Each action is written by code to a hash-chained log. Alter one line and the verifier points at it." },
-  { title: "New policies start unverified", body: "A policy you upload is usable at once but marked unverified until a person has reviewed the extracted rules." },
+  { title: "New policies start as unverified", body: "A policy you upload is usable at once and marked unverified until a person has reviewed the extracted rules." },
 ] as const;
 
 export default function LandingPage() {
@@ -181,11 +198,12 @@ export default function LandingPage() {
                 FinTechathon 2026 · AI Insurance Assistant
               </span>
               <h1 className="font-display text-balance text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-[3.5rem]">
-                Know exactly what your insurance covers. <span className="text-gradient">With the sentence to prove it.</span>
+                Clarity in every clause, <span className="text-gradient">confidence in every claim.</span>
               </h1>
               <p className="max-w-xl text-balance text-base text-muted-foreground sm:text-lg">
-                ClauseGuard reads your real policies and tells you what you are owed, how to claim it, and which line in the
-                policy says so. It asks only when a missing fact would change the answer, and it never moves money.
+                ClauseGuard is an AI insurance agent that reads your own policies, answers with the clause that decides,
+                prepares and files your claim after you confirm, and brings the insurer&rsquo;s decision back to you, within limits
+                enforced in code.
               </p>
               <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
                 <Button asChild size="lg" className="glow-primary w-full sm:w-auto">
@@ -212,16 +230,33 @@ export default function LandingPage() {
         </section>
 
         {/* What it does */}
-        <Section id="features" eyebrow="What it does" title="Six things a policyholder needs, none of them a guess">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {FEATURES.map((f, i) => (
-              <Reveal key={f.title} delay={i * 0.06}>
-                <div className="card-lift h-full rounded-2xl border border-border bg-card p-5 shadow-soft">
+        <Section id="features" eyebrow="Features" title="Three things it does for a policyholder" lead="Each one is a working part of the app today.">
+          <div className="grid gap-4 lg:grid-cols-3">
+            {CORE.map((f, i) => (
+              <Reveal key={f.name} delay={i * 0.06}>
+                <div className="card-lift h-full rounded-2xl border border-border bg-card p-6 shadow-soft">
                   <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${TINTS[i % TINTS.length]}`}>
                     <f.icon className="h-5 w-5" />
                   </div>
-                  <p className="mt-4 font-display text-[15px] font-semibold">{f.title}</p>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-primary">{f.name}</p>
+                  <p className="mt-1 font-display text-lg font-semibold">{f.title}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <p className="mt-10 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Also included</p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-3">
+            {SUPPORTING.map((f, i) => (
+              <Reveal key={f.name} delay={i * 0.06}>
+                <div className="flex h-full items-start gap-3 rounded-2xl border border-border bg-card p-4">
+                  <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${TINTS[(i + 3) % TINTS.length]}`}>
+                    <f.icon className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="font-display text-[15px] font-semibold">{f.name}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
+                  </div>
                 </div>
               </Reveal>
             ))}
@@ -229,7 +264,7 @@ export default function LandingPage() {
         </Section>
 
         {/* See it */}
-        <Section id="screens" eyebrow="See it" title="Five moments from the running app" lead="Cropped from real conversations, not mock-ups." tone="muted">
+        <Section id="screens" eyebrow="See it" title="The features, as they appear in the app" lead="Cropped from real conversations in the running app." tone="muted">
           <div className="flex flex-col gap-14">
             {SCREENS.map((s, i) => (
               <Reveal key={s.src}>
@@ -299,7 +334,7 @@ export default function LandingPage() {
             />
             <BarChart
               title="How often the system invents a refusal"
-              caption="Share of answers that said 'denied' when the policy simply did not apply, the costliest mistake for a customer."
+              caption="Share of answers that said denied when the policy simply did not apply. For a customer this is the costliest mistake."
               rows={BENCH_FAB}
               max={30}
               lowerIsBetter
@@ -308,15 +343,15 @@ export default function LandingPage() {
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatTile value="0 / 15" label="Honest requests wrongly refused" note="The attack suite's benign twins: none was blocked" />
             <StatTile value="20 / 20" label="Same answer, different wording" note="The same case asked twenty ways gave the same decision every time" />
-            <StatTile value="47 %" label="Households where the usual claim order loses money" note="500 real plan sets; USD 988 more recovered on average with the right order" />
-            <StatTile value="532" label="Automated tests" note="Backend and end-to-end, run without an API key" />
+            <StatTile value="47 %" label="Households where the usual claim order loses money" note="500 real plan sets. USD 988 more recovered on average with the right order" />
+            <StatTile value="8" label="Agents and code components on record" note="Every reply shows which ones ran, in the judge panel" />
           </div>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-border bg-secondary/50 p-5">
               <p className="text-sm font-semibold">Real data behind the numbers</p>
               <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
                 <li>834 US Marketplace plans with real premiums (CMS)</li>
-                <li>30 Indonesian product summaries (RIPLAY); two demo policies quote them word for word</li>
+                <li>30 Indonesian product summaries (RIPLAY). Two demo policies quote them word for word</li>
                 <li>150 UK Financial Ombudsman decisions</li>
                 <li>A public, clause-traced benchmark of 580 labelled questions</li>
               </ul>
@@ -324,16 +359,16 @@ export default function LandingPage() {
             <div className="rounded-2xl border border-border bg-secondary/50 p-5">
               <p className="text-sm font-semibold">Limits we state up front</p>
               <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-                <li>The published model scores were produced by the benchmark authors in web chat on all 580 items; ours is an API run on 390. Our own same-model comparison is a statistical tie.</li>
-                <li>USD 988 is a simulation over real plan terms, not money paid out.</li>
-                <li>The insurer behind the demo is our own sandbox, not a live insurer.</li>
+                <li>The published model scores were produced by the benchmark authors in web chat on all 580 items. Ours is an API run on 390 items, and our own same-model comparison is a statistical tie.</li>
+                <li>USD 988 is a simulation over real plan terms.</li>
+                <li>The insurer behind the demo is our own sandbox.</li>
               </ul>
             </div>
           </div>
         </Section>
 
         {/* Safety */}
-        <Section id="safety" eyebrow="Safety" title="What runs by itself, what waits for you, what never happens" tone="muted">
+        <Section id="safety" eyebrow="TrustLock" title="What runs by itself, what waits for you, and what a person handles" tone="muted">
           <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
             <Reveal>
               <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
@@ -374,7 +409,7 @@ export default function LandingPage() {
           <div className="band-dark dark relative mx-auto max-w-6xl overflow-hidden rounded-3xl px-6 py-14 text-center text-foreground sm:px-12">
             <h2 className="relative font-display text-balance text-3xl font-bold tracking-tight sm:text-4xl">Try it on your own policy</h2>
             <p className="relative mx-auto mt-3 max-w-xl text-balance text-muted-foreground">
-              Upload a PDF and ask what it covers. The demo runs on a sandbox insurer, so nothing you do here reaches a real account.
+              Upload a PDF and ask what it covers. The demo runs on a sandbox insurer, so everything you do here stays in the sandbox.
             </p>
             <div className="relative mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Button asChild size="lg" className="glow-primary">
@@ -397,7 +432,7 @@ export default function LandingPage() {
           <p className="inline-flex items-center gap-1.5">
             <MessageSquareText className="h-3.5 w-3.5" /> ClauseGuard · Institut Teknologi Sepuluh Nopember, Surabaya · FinTechathon 2026 International Track
           </p>
-          <p>Research prototype, not legal or financial advice. Talk to a licensed agent before buying or cancelling cover.</p>
+          <p>Research prototype. Talk to a licensed agent before buying or cancelling cover.</p>
         </div>
       </footer>
     </div>

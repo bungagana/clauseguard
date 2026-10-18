@@ -1,6 +1,6 @@
 # ClauseGuard
 
-**An insurance assistant that decides on clauses, not guesses.**
+**Clarity in every clause, confidence in every claim.**
 FinTechathon 2026 Shenzhen · International Track · Topic D (AI Insurance Assistant)
 
 ClauseGuard reads a policyholder's own insurance documents, turns every clause into a typed rule, and answers *what am I covered for, how much, by when, and how do I claim it* from those rules alone. Every amount is traced to the sentence it came from. Actions (submitting a claim, booking a call-back) run only inside permission tiers enforced in code, after the customer confirms; money and identity changes are never executed by the agent.
@@ -17,10 +17,13 @@ Institut Teknologi Sepuluh Nopember (ITS), Surabaya, Indonesia.
 
 ## What it does
 
-- **Answers from the policy, with the clause.** "Covered for Rp 1,500,000; file by 26 November; here is the sentence that decides it." If one missing fact would change the answer, it asks for that one fact and nothing else.
-- **Works across a whole portfolio.** National health insurance, an employer plan, a hospital-cash plan, an accident policy and a road-accident fund are combined: who pays first, who tops up, what is still owed.
-- **Prepares and submits claims safely.** The insurer's own claim form is laid out from that insurer's wording, filled from typed facts only, shown to the customer, and sent to the sandbox insurer only after a Confirm tap. Uploaded invoices and discharge summaries travel with it.
-- **Shows its work.** A "How was this decided?" panel exposes the clauses that fired, a what-if panel recomputes every answer when a fact is flipped, and a hash-chained audit log records each step.
+Three core features, each a working part of the app:
+
+- **ClauseLens — policy analysis.** "Covered for Rp 1,500,000; file by 26 November; here is the sentence that decides it." If one missing fact would change the answer, it asks for that one fact and nothing else.
+- **ClauseLens, across a portfolio.** National health insurance, an employer plan, a hospital-cash plan, an accident policy and a road-accident fund are combined: who pays first, who tops up, what is still owed.
+- **ClaimFlow — claim handling.** The insurer's own claim form is laid out from that insurer's wording, filled from typed facts only, shown to the customer, and sent to the sandbox insurer only after a Confirm tap. Uploaded invoices and discharge summaries travel with it.
+- **TrustLock — AI guardrails.** Observe/Draft/Act, a one-time confirmation before anything is sent, no tool that can change a payout account, an insurer-side halt switch, a hash-chained audit log.
+- **Also included:** Claim Simulator (change one fact, every answer is recomputed), Deadline Tracker (filing windows, grace periods, lapses, claim updates), PDF Export. **Shows its work.** A "How was this decided?" panel exposes the clauses that fired, a what-if panel recomputes every answer when a fact is flipped, and a hash-chained audit log records each step.
 
 ## Architecture
 

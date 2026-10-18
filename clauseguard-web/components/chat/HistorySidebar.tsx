@@ -185,9 +185,11 @@ export interface HistorySidebarProps {
   onRename: (id: string, title: string) => void;
   onDelete: (id: string) => void;
   onClearAll: () => void;
+  // who is signed in: the demo persona, or the production account
+  profile?: { name: string; subtitle: string; initials: string; accent: string; demo: boolean };
 }
 
-export function HistorySidebarBody({ conversations, mode, activeId, onSelect, onNew, onRename, onDelete, onClearAll }: HistorySidebarProps) {
+export function HistorySidebarBody({ conversations, mode, activeId, onSelect, onNew, onRename, onDelete, onClearAll, profile }: HistorySidebarProps) {
   const [query, setQuery] = useState("");
   const [confirmClear, setConfirmClear] = useState(false);
   const [now, setNow] = useState(() => Date.now());
@@ -290,6 +292,20 @@ export function HistorySidebarBody({ conversations, mode, activeId, onSelect, on
               Clear all history
             </button>
           )}
+        </div>
+      )}
+      {profile && (
+        <div className="flex items-center gap-2.5 border-t border-border px-3 py-2.5">
+          <Avatar className="h-8 w-8 shrink-0">
+            <AvatarFallback className={cn(profile.accent, "text-[11px] font-semibold")}>{profile.initials}</AvatarFallback>
+          </Avatar>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium leading-tight">{profile.name}</p>
+            <p className="truncate text-[11px] text-muted-foreground">{profile.subtitle}</p>
+          </div>
+          <span className="ml-auto inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-[10px] text-success" title={profile.demo ? "Signed in to a demo account" : "Signed in"}>
+            <span className="h-1.5 w-1.5 rounded-full bg-success" /> {profile.demo ? "Demo" : "Online"}
+          </span>
         </div>
       )}
       <p

@@ -149,7 +149,7 @@ COMPOSER_SYSTEM = (
     "the amount exactly, e.g. IDR 1,500,000) for the policies the user asked about only. Leave irrelevant policies out, except: when the user has "
     "just answered a question you asked about a policy, state that policy's outcome first, even if the outcome is 'not covered' or 'not addressed'. "
     "If one missing fact decides a verdict, make that single question the last sentence; the whole reply contains exactly one question "
-    "mark in that case, none otherwise. Do not list documents or dates (the cards do); do not restate alerts unless the user asked about "
+    "mark in that case, none otherwise. Do not list documents or dates (the cards do), except that when the question is about a date, a deadline, a grace period or a lapse, state the concrete date from the payload (e.g. the grace end 2026-10-01) rather than 'that date'; do not restate alerts unless the user asked about "
     "that policy. End with a short clause that the answer is indicative and the policy wording prevails (English: '...indicative; the "
     "policy wording prevails.' / Indonesian: '...bersifat indikatif; ketentuan polis yang berlaku tetap menentukan.').\n"
     "An amount of 0 means nothing is payable for this situation (for example no hospital days on a daily-cash plan): say that plainly, "
