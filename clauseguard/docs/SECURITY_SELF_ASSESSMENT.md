@@ -76,6 +76,13 @@ Claim form and documents: the form layout a model proposes for an insurer is str
 - Tests in `tests/test_accounts.py` log in as two different accounts and check that the second one gets a refusal or an empty list for the first one's uploads, chats, claims and for forged or unconfirmed tokens. A request that names another account's claim is audited as `IDOR_ATTEMPT`.
 - Chats cached in the browser are removed on sign out and whenever a different account signs in.
 
+### 4.2 Model failures, the customer's own key, and actions read from the model
+
+- A turn that cannot use the model is reported to the customer in plain words (quota, key not accepted, no response) instead of being answered from templates; the engine's cards still show. A key rejected by the API is taken out of rotation automatically.
+- A customer may supply their own Gemini key. It is validated once with Google, held only in that session's memory, used only for that session's requests (a per-request context variable, never a global), and never written to disk, logs or the audit chain; its use is audited without the value (`tests/test_own_key.py`).
+- The model may propose an action only together with its own reading that the customer explicitly asked for it now or accepted an offer the assistant made; a greeting cannot prepare a submission (`tests/test_agent_fixes.py`). Every action still passes the enforcement point and the single-use confirmation. The model may escalate a request to a misrepresentation refusal, never relax one.
+- The back-office document viewer serves a file only by the document id on a claim, only from the upload and demo folders, and only with the back-office token.
+
 ## 5. Audit and oversight
 
 - Audit log: hash-chained JSONL (`security/audit.py`). Each line holds the sequence number, time, session, user, event type, tool, tier, argument hash, argument labels, decision, reason, model, prompt hash, previous hash and own hash. Arguments are stored as hashes.

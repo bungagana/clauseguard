@@ -64,7 +64,7 @@ const CORE = [
     icon: Send,
     name: "ClaimFlow",
     title: "Claim handling",
-    body: "Reads your documents, checks them against the insurer's list, prepares the insurer's own form, files the claim after you confirm, and brings the insurer's decision back to the chat.",
+    body: "Reads your documents and shows what it took from each one, checks them against the insurer's list, prepares the insurer's own form for you to review and correct, files the claim after you confirm, and explains the insurer's decision when it comes back, including what to fix or whether an appeal has grounds.",
   },
   {
     icon: ShieldCheck,

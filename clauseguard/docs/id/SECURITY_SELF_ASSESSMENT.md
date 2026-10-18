@@ -64,6 +64,20 @@ Formulir klaim dan dokumen: tata letak formulir yang diusulkan model untuk perus
 - Argumen T2 dan T3 harus berupa handle registri. String literal ditolak.
 - Pemecah (`solver.py`, `allocation.py`, `recourse.py`, `twin.py`, `timeline.py`, `plans/selector.py`) adalah fungsi murni dari catatan bertipe dan fakta bertipe. Recourse tidak pernah mengubah fakta yang menjelaskan peristiwa itu sendiri (`IMMUTABLE_SLOTS`, `MISREPRESENTATION_GUARD`, `tests/test_recourse.py`), sehingga pemecah recourse tidak dapat digunakan untuk melatih misrepresentasi.
 - Urutan untuk klaim: `draft_claim` (T1) menyimpan draf sebagai handle berlabel TOOL, UI menampilkan ringkasan dengan lencana kepercayaan, pengguna mengklik konfirmasi, server mengeluarkan nonce yang terikat ke (sesi, alat, hash argumen), `submit_claim` melewati pemeriksaan penegakan, dan hasilnya diaudit.
+### 4.1 Akun dan isolasi nasabah
+
+- Dengan `CG_AUTH=supabase` tidak ada login anonim. Peramban masuk di Supabase (kata sandi tidak pernah sampai ke backend kami) dan memberikan token akses ke backend. Backend menanyakan ke Supabase pemilik token, mewajibkan email terkonfirmasi, dan menurunkan id pengguna internal dari id akun yang terverifikasi. Id tidak pernah diambil dari permintaan.
+- Setiap rute yang menyentuh data nasabah menyelesaikan sesi lebih dulu dan menyaring dengan id pengguna itu: polis, klaim (`/claims/{id}`), unggahan (`/uploads/{id}`), riwayat (`/history`) dan chat. Satu giliran chat hanya dapat menyebut unggahan milik pemanggil atau berkas demo bawaan.
+- Tes di `tests/test_accounts.py` masuk sebagai dua akun berbeda dan memeriksa bahwa akun kedua mendapat penolakan atau daftar kosong untuk unggahan, chat, klaim milik akun pertama, serta untuk token palsu atau belum terkonfirmasi. Permintaan yang menyebut klaim akun lain diaudit sebagai `IDOR_ATTEMPT`.
+- Chat yang tersimpan di peramban dihapus saat keluar dan setiap kali akun lain masuk.
+
+### 4.2 Kegagalan model, kunci milik nasabah, dan tindakan yang dibaca model
+
+- Giliran yang tidak dapat memakai model dilaporkan ke nasabah dengan kata-kata sederhana (kuota, kunci tidak diterima, tidak ada respons) alih-alih dijawab dari templat; kartu mesin tetap tampil. Kunci yang ditolak API dikeluarkan dari rotasi secara otomatis.
+- Nasabah dapat memakai kunci Gemini sendiri. Kunci divalidasi sekali ke Google, hanya disimpan di memori sesi itu, hanya dipakai untuk permintaan sesi itu (variabel konteks per permintaan, bukan global), dan tidak pernah ditulis ke disk, log, atau rantai audit; pemakaiannya diaudit tanpa nilainya (`tests/test_own_key.py`).
+- Model hanya boleh mengusulkan tindakan bersama pembacaannya sendiri bahwa nasabah secara eksplisit memintanya sekarang atau menerima tawaran asisten; sapaan tidak dapat menyiapkan pengajuan (`tests/test_agent_fixes.py`). Setiap tindakan tetap melewati titik penegakan dan konfirmasi sekali pakai. Model boleh menaikkan permintaan menjadi penolakan misrepresentasi, tidak pernah melonggarkannya.
+- Penampil dokumen di meja penanggung hanya menyajikan berkas melalui id dokumen pada klaim, hanya dari folder unggahan dan demo, dan hanya dengan token back-office.
+
 ## 5. Audit dan pengawasan
 
 - Audit log: JSONL berantai hash (`security/audit.py`). Setiap baris memuat nomor urut, waktu, sesi, pengguna, jenis peristiwa, alat, tingkat, hash argumen, label argumen, keputusan, alasan, model, hash prompt, hash sebelumnya, dan hash sendiri. Argumen disimpan sebagai hash.

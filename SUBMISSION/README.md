@@ -8,7 +8,7 @@ FinTechathon 2026 Shenzhen · International Track · Topic D (AI Insurance Assis
 
 | | |
 |---|---|
-| Live web app | https://clauseguard-red.vercel.app (the backend runs on the team's machine; when it is off, the site replays recorded runs and says so) |
+| Live web app | https://clauseguard.up.railway.app (hosted web and backend; sign in with the demo account credentials given in the submission email) |
 | Source code | https://github.com/bungagana/clauseguard |
 | Demo video | link in the submission email |
 

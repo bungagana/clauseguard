@@ -28,6 +28,7 @@ Tanggal status: 2026-10-11. Semua berkas berada di `evidence/` kecuali jika dica
 
 Rangkaian pengujian: `python -m pytest -q`; jumlah saat ini ada di `README.md`.
 
+| `conversation_eval_baseline.json`, `conversation_eval_v2.json` | 47 giliran percakapan (narasi, bahasa gaul, koreksi, pengandaian, obrolan ringan, serangan) sebelum dan sesudah penulisan ulang penyusun jawaban | `python scripts/conversation_eval.py --base <backend> --label <nama>` terhadap backend yang berjalan dengan kunci model | Ada: 40/47 lalu 42/47, dibuat 2026-10-19 |
 ## 2. Urutan reproduksi
 
 ```bash

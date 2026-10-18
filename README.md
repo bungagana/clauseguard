@@ -29,7 +29,7 @@ Three core features, each a working part of the app:
 
 ![ClauseGuard architecture](clauseguard-web/public/screens/architecture.png)
 
-Live demo: **https://clauseguard-red.vercel.app** (web client on Vercel; the backend runs on the team's machine and is exposed through a tunnel during demonstrations, so it may be offline at other times — the site then replays recorded scenes).
+Live demo: **https://clauseguard.up.railway.app** (web client and backend hosted on Railway; sign in with a demo account, credentials are shared with the judges privately. If the backend is unreachable, the site replays recorded scenes and says so).
 
 | Component | Kind | Responsibility |
 |---|---|---|

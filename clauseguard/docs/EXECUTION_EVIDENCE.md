@@ -24,6 +24,7 @@ Status date: 2026-10-11. All files are in `evidence/` unless noted. Every number
 | `extraction_quality.md` | Precision and recall of extracted values against the benchmark gold annotations | `python scripts/extraction_quality.py` | Present |
 | `audit_log.jsonl` | Hash-chained audit log written by the running system | The running system | Contains development sessions; generate a clean one for the demo (section 3) |
 | `claims_desk_run.md` | One complete sandbox operation: four claim documents uploaded, the insurer's form prepared, the claim submitted after confirmation, approved at the desk with a note, and the decision returned to the customer, with the audit sequence numbers | `python scripts/claims_desk_evidence.py` against a running backend | Present: generated 2026-10-15 |
+| `conversation_eval_baseline.json`, `conversation_eval_v2.json` | 47 conversation turns (narrative, slang, corrections, what-ifs, small talk, attacks) before and after the reply-writer rewrite | `python scripts/conversation_eval.py --base <backend> --label <name>` against a running backend with a model key | Present: 40/47 then 42/47, generated 2026-10-19 |
 | Supabase RLS check (console output) | Every Postgres table denies the database REST API to the publishable key | `python scripts/check_supabase_rls.py` | Run 2026-10-15: six tables, all DENIED |
 
 Test suite: `python -m pytest -q`; the current count is in `README.md`.
