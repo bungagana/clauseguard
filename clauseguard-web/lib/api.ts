@@ -222,7 +222,7 @@ export async function sendChat(
     { method: "POST", body: JSON.stringify({ text, uploads }) },
     token,
     // reading several uploaded documents can take over a minute; the typing indicator stays until the reply
-    uploads.length ? 240000 : 90000,
+    uploads.length ? 240000 : 180000,
     signal
   );
   return normalizeChatReply(raw);
