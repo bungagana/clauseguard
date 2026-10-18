@@ -447,6 +447,16 @@ export function resetSession(token: string): Promise<{ ok: boolean }> {
   return request<{ ok: boolean }>("/session/reset", { method: "POST" }, token);
 }
 
+// The chat engine registers how to sign in again for the active account, so a dialog outside the chat flow
+// (the own-key dialog) can recover from an expired server session the same way the chat does.
+let sessionRenewer: (() => Promise<string | null>) | null = null;
+export function setSessionRenewer(fn: (() => Promise<string | null>) | null): void {
+  sessionRenewer = fn;
+}
+export async function renewSession(): Promise<string | null> {
+  return sessionRenewer ? sessionRenewer() : null;
+}
+
 /** The customer's own Gemini key for this session. It is checked with Google once and kept only in the server's memory. */
 export function setOwnKey(token: string, apiKey: string): Promise<{ ok: boolean }> {
   return request<{ ok: boolean }>("/session/api-key", { method: "POST", body: JSON.stringify({ api_key: apiKey }) }, token, 40000);

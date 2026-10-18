@@ -4,7 +4,7 @@ import { useState } from "react";
 import { KeyRound, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ApiError, clearOwnKey, setOwnKey } from "@/lib/api";
+import { ApiError, clearOwnKey, renewSession, setOwnKey } from "@/lib/api";
 
 const inputClass =
   "w-full rounded-lg border border-input bg-card px-3 py-2 text-sm shadow-soft focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring";
@@ -21,12 +21,21 @@ export function OwnKeyDialog({ sessionToken, label, onChanged }: { sessionToken?
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   async function save() {
-    const token = sessionToken?.();
-    if (!token || !apiKey.trim()) return;
+    if (!apiKey.trim()) return;
     setBusy(true);
     setMsg(null);
     try {
-      await setOwnKey(token, apiKey.trim());
+      let token = sessionToken?.() ?? (await renewSession());
+      if (!token) throw new ApiError("Sign in again, then retry.", 401);
+      try {
+        await setOwnKey(token, apiKey.trim());
+      } catch (err) {
+        // the server session ended (restart or redeploy): sign in again once and retry
+        if (!(err instanceof ApiError && err.status === 401)) throw err;
+        token = await renewSession();
+        if (!token) throw err;
+        await setOwnKey(token, apiKey.trim());
+      }
       setActive(true);
       setApiKey("");
       setMsg({ ok: true, text: "Your key is in use for this session. Press Regenerate under the answer, or ask again, and it will use your key." });

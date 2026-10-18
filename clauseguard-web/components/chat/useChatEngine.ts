@@ -476,6 +476,19 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
     []
   );
 
+  useEffect(() => {
+    api.setSessionRenewer(async () => {
+      try {
+        const fresh = await api.login(personaKey);
+        tokenRef.current[personaKey] = fresh.session_token;
+        return fresh.session_token;
+      } catch {
+        return null;
+      }
+    });
+    return () => api.setSessionRenewer(null);
+  }, [personaKey]);
+
   const sendChatWithRetry = useCallback(
     async (forPersonaKey: string, text: string, uploads: string[], signal?: AbortSignal): Promise<SendChatResult> => {
       const token = tokenRef.current[forPersonaKey];
