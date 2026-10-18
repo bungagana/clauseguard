@@ -22,7 +22,7 @@ import { ClaimStageStrip } from "./ClaimStageStrip";
 import { ReplayStrip } from "./ReplayStrip";
 import { ProcessPanel } from "./ProcessPanel";
 import { SecurityInfoDialog } from "./SecurityInfoDialog";
-import { ApiKeyDialog } from "./ApiKeyDialog";
+import { OwnKeyDialog } from "./OwnKeyDialog";
 import { defaultAppMode, readStoredAppMode, setStoredAppMode, type AppMode } from "@/lib/appMode";
 
 export function ChatApp({ initialModeOverride }: { initialModeOverride?: AppMode }) {
@@ -178,12 +178,12 @@ function ChatShell({ initialModeOverride, account, onSignOut }: { initialModeOve
             awaitingUpload={awaitingFirstUpload}
             onSend={(text) => void engine.sendMessage(text)}
             onAttach={(file) => void engine.attachDocument(file)}
-            onUploadPolicy={(file) => void engine.uploadPolicy(file)}
+            onUploadPolicy={(file) => engine.uploadPolicy(file)}
             onOpenDemo={() => engine.setDemoSheetOpen(true)}
             onStop={engine.stopSending}
             followUps={engine.followUps}
-            uploadedFilename={engine.uploadedDoc?.filename}
-            onClearUpload={engine.clearUpload}
+            attachments={engine.pendingDocs}
+            onRemoveAttachment={engine.removeAttachment}
             uploadBusy={engine.uploadBusy}
             sending={engine.sending}
             disabled={engine.online === null}
@@ -233,7 +233,7 @@ function ChatShell({ initialModeOverride, account, onSignOut }: { initialModeOve
           <SecurityInfoDialog /> How ClauseGuard keeps you in control
         </div>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <ApiKeyDialog /> Use your own Gemini key
+          <OwnKeyDialog sessionToken={engine.sessionToken} label="Use my own Gemini key" /> Keep full answer quality if the free AI runs out
         </div>
       </SessionControls>
 

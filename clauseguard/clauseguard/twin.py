@@ -60,6 +60,8 @@ DOC_TYPE_SATISFIES: dict[DocType, tuple[str, ...]] = {
     DocType.RECEIPT: ("RECEIPT", "ITEMISED_BILL"),
     DocType.MEDICAL_REPORT: ("DOCTOR_STATEMENT", "MEDICAL_REPORT", "MEDICAL_RESUME", "MEDICAL_RESULTS", "DIAGNOSTIC_RESULTS", "SPECIALIST_CONFIRMATION", "PATHOLOGY_REPORT", "PHYSICIAN_CERTIFICATE"),
     DocType.DISCHARGE_SUMMARY: ("DISCHARGE_SUMMARY", "MEDICAL_RESUME"),
+    DocType.PRESCRIPTION: ("PRESCRIPTION",),
+    DocType.LAB_REPORT: ("DIAGNOSTIC_RESULTS", "MEDICAL_RESULTS", "PATHOLOGY_REPORT"),
     DocType.DEATH_CERT: ("DEATH_CERT",),
     DocType.POLICE_REPORT: ("POLICE_REPORT",),
     DocType.ID_CARD: ("ID_CARD", "ID_COPY", "ID_AND_RELATIONSHIP", "BENEFICIARY_ID", "HEIR_ID"),
@@ -159,9 +161,11 @@ def consistency_checks(facts: ScenarioFacts, docs: list[ClaimDocExtract]) -> lis
                 out.append(DocumentCheck(code="DATES_VS_DAYS", detail=f"document {i}: discharge {d.service_end} precedes admission {d.service_start}", doc_index=[i]))
             else:
                 spans.append((i, d.service_start, d.service_end))
-                if d.days_hospitalized is not None and d.days_hospitalized != n:
+                # hospitals count nights (25 to 28 is 3 days), our facts count calendar days (4): either reading is consistent
+                ok_counts = {n, n - 1} if n > 1 else {n}
+                if d.days_hospitalized is not None and d.days_hospitalized not in ok_counts:
                     out.append(DocumentCheck(code="DATES_VS_DAYS", detail=f"document {i}: {d.service_start}..{d.service_end} is {n} days but the document states {d.days_hospitalized}", doc_index=[i]))
-                if stated_days is not None and stated_days != n and d.doc_type in (DocType.DISCHARGE_SUMMARY, DocType.MEDICAL_REPORT, DocType.INVOICE):
+                if stated_days is not None and stated_days not in ok_counts and d.doc_type in (DocType.DISCHARGE_SUMMARY, DocType.MEDICAL_REPORT, DocType.INVOICE):
                     out.append(DocumentCheck(code="DATES_VS_DAYS", detail=f"document {i}: {n} days from its dates, {stated_days} days stated in the claim", doc_index=[i]))
         # invoice total vs line items
         if d.doc_type in (DocType.INVOICE, DocType.RECEIPT) and d.line_items:
@@ -261,6 +265,8 @@ def adjudicate_like_insurer(
     facts = pf.with_policy_defaults(policy, facts)
     required, _ = pf.required_documents(policy, facts)
     present = documents_satisfied(required, docs, documents_present or [])
+    # the insurer's own claim form is the one document the assistant itself prepares from the customer's answers
+    present += [c for c in required if c.upper().startswith("CLAIM_FORM") and c not in present]
     readiness = pf.claim_readiness(policy, facts, present, as_of)
     grounds, open_slots = clause_grounds(policy, facts, as_of=as_of, portfolio=portfolio, facts_by_policy=facts_by_policy)
 

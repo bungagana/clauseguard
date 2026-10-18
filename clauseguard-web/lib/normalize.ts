@@ -40,6 +40,8 @@ export function normalizeChatReply(raw: Partial<ChatReply>): ChatReply {
     submit_offer: raw.submit_offer ?? false,
     suggestions: Array.isArray(raw.suggestions) ? raw.suggestions : [],
     conflicts: Array.isArray(raw.conflicts) ? raw.conflicts : [],
+    doc_reads: Array.isArray(raw.doc_reads) ? raw.doc_reads : [],
+    ai_notice: raw.ai_notice ?? null,
     template_text: raw.template_text || raw.text || "",
     paused: raw.paused,
     stub: raw.stub,

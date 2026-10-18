@@ -129,6 +129,8 @@ export interface ChatReply {
   // short replies the agent offers as chips (each is a complete message), e.g. after a document disagrees with what was said
   suggestions?: string[];
   conflicts?: Array<{ field: string; stated: string; document: string; doc: string }>;
+  doc_reads?: DocRead[];
+  ai_notice?: AiNotice | null;
   paused?: boolean;
   stub?: boolean;
 }
@@ -515,4 +517,20 @@ export interface BackofficeClaimDetail extends BackofficeClaim {
   form: Record<string, unknown> | null;
   documents: Array<{ id: string; type: string; taint_label: string; uploaded_by?: string; uploaded_at?: string }>;
   customer_name?: string | null;
+}
+
+// agent/loop.py::_doc_read: what was read from one uploaded file this turn
+export interface DocRead {
+  filename: string;
+  type: string;
+  fields: Array<{ label: string; value: string }>;
+  checks: string[];
+  counts_as: string[];
+}
+
+// sandbox/api.py::_ai_notice: why the AI could not be used for this answer, in the customer's language
+export interface AiNotice {
+  kind: "quota" | "invalid" | "error";
+  text: string;
+  can_use_own_key: boolean;
 }

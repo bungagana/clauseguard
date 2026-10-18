@@ -18,6 +18,7 @@ from typing import Any, Optional
 from pydantic import Field
 
 from ..schema import Slot, Strict
+from . import dialogue
 
 log = logging.getLogger(__name__)
 
@@ -73,7 +74,14 @@ SYSTEM = (
     "Also report `language`: 'id' when the message is Indonesian (formal, informal or slang such as 'ga', 'kalo', 'cuman'), 'en' otherwise.\n"
     "For NEW_SCENARIO or HYPOTHETICAL, list in `keep_facts` the fact names from the table that clearly still apply (the customer says "
     "'same hospital', or the fact is about the person rather than the event); when in doubt leave it empty: a dropped fact is asked "
-    "again, a wrongly kept one gives a wrong answer."
+    "again, a wrongly kept one gives a wrong answer.\n"
+    "Think briefly in `reason` first: what was said just before, and what does this message do with it. Examples (message -> relation):\n"
+    "- after 'Is the hospital a BPJS partner?': 'iya, mitra' -> ANSWER; 'it is not' -> ANSWER.\n"
+    "- on the table: dengue admission 25 Sep. 'eh salah, masuknya tanggal 24' -> CORRECTION; 'sorry I meant 5 days' -> CORRECTION.\n"
+    "- on the table: dengue admission. 'terus deadline klaimnya kapan?' -> CONTINUE; 'what should I prepare?' -> CONTINUE; 'yang dari bpjs gimana?' -> CONTINUE.\n"
+    "- on the table: dengue admission. 'kalau seandainya 5 hari, dapat berapa?' -> HYPOTHETICAL; 'what if it was a car accident' -> HYPOTHETICAL.\n"
+    "- on the table: dengue admission. 'btw waiting period itu apa?' -> GENERAL; 'thanks!' -> GENERAL; 'halo' -> GENERAL.\n"
+    "- on the table: dengue admission. 'minggu lalu aku juga operasi usus buntu' -> NEW_SCENARIO."
 )
 
 PROMPT = """Today is {today}.
@@ -82,6 +90,9 @@ Situation on the table (typed facts the assistant already holds; empty means non
 {state}
 
 Assistant's last question to the customer: {last_question}
+
+Recent conversation (data, oldest first; use it to read references like "that one" or "and the other?"):
+{recent}
 
 New customer message (data):
 <<<
@@ -151,7 +162,8 @@ def assess(user_text: str, session: Any, *, as_of: date, use_llm: bool = True) -
 
         last_q = getattr(session, "last_clarification_slot", None)
         prompt = PROMPT.format(today=as_of.isoformat(), state=state,
-                               last_question=(f"about '{str(last_q).replace('_', ' ')}'" if last_q else "(none)"), text=user_text)
+                               last_question=(f"about '{str(last_q).replace('_', ' ')}'" if last_q else "(none)"), text=user_text,
+                               recent=dialogue.recent_text(session))
         raw = llm.generate_json(prompt, model=config.MODEL_FAST, schema=_LLMDecision, system=SYSTEM, max_output_tokens=200)
         d = _LLMDecision.model_validate(raw)
         relation = d.relation

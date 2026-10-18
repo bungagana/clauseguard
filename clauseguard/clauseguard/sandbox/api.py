@@ -92,6 +92,10 @@ class ConfirmIn(Strict):
     args: dict[str, Any] = {}
 
 
+class OwnKeyIn(Strict):
+    api_key: str = Field(pattern=r"^[A-Za-z0-9_.\-]{20,90}$")
+
+
 class KillIn(Strict):
     reason: str = ""
 
@@ -214,10 +218,93 @@ def chat(body: ChatIn, s: PepSession = Depends(_session)) -> dict[str, Any]:
     except ImportError:
         text, viol = output_guard.scan(f"(stub) Agent loop not installed yet. I received your message and can answer read-only questions about your {len(s.owned_policy_ids)} policies.", s)
         return {"text": text, "stub": True, "violations": viol}
-    reply = handle_turn(s, body.text, [_resolve_upload(s, u) for u in body.uploads])
+    from .. import llm as _llm
+
+    uploads = [_resolve_upload(s, u) for u in body.uploads]
+    token = _llm.use_user_key(getattr(s, "user_api_key", None))
+    _llm.reset_failure()
+    try:
+        reply = handle_turn(s, body.text, uploads)
+        failure = _llm.last_failure()
+    finally:
+        _llm.reset_user_key(token)
     out = reply.model_dump() if hasattr(reply, "model_dump") else dict(reply)
     out["text"], out["violations"] = output_guard.scan(out.get("text", ""), s)
+    out["ai_notice"] = _ai_notice(failure, out.get("language") or "en", bool(getattr(s, "user_api_key", None)))
+    if out["ai_notice"]:
+        # The AI could not be used for this turn. The customer gets that fact, not a rule-based reply that looks like an answer:
+        # the cards (engine facts) stay, the prose is the notice, and the turn is marked so the UI can offer a retry.
+        lang = out.get("language") or "en"
+        out["degraded"] = True
+        out["text"] = out["ai_notice"]["text"] + (" Kartu di bawah berasal dari mesin aturan saja, bukan dari AI." if lang == "id" else " The cards below come from the rules engine only, not from the AI.")
     return out
+
+
+_AI_NOTICE = {
+    "quota": {
+        "en": "The free AI service has reached its usage limit for now, so this answer used simple rules and may sound stiff. Try again in a few minutes, or use your own Gemini key to keep going.",
+        "id": "Layanan AI gratis sedang mencapai batas pemakaian, jadi jawaban ini memakai aturan sederhana dan bisa terasa kaku. Coba lagi beberapa menit lagi, atau pakai kunci Gemini milikmu sendiri agar tetap berjalan.",
+    },
+    "invalid": {
+        "en": "The AI key set up for this service is not accepted by Google, so this answer used simple rules. Use your own Gemini key to continue.",
+        "id": "Kunci AI yang dipasang untuk layanan ini tidak diterima Google, jadi jawaban ini memakai aturan sederhana. Pakai kunci Gemini milikmu sendiri untuk melanjutkan.",
+    },
+    "error": {
+        "en": "The AI service did not respond, so this answer used simple rules. Please try again.",
+        "id": "Layanan AI tidak merespons, jadi jawaban ini memakai aturan sederhana. Silakan coba lagi.",
+    },
+}
+
+
+def _ai_notice(failure: Optional[str], lang: str, own_key: bool) -> Optional[dict[str, Any]]:
+    """Plain words for the customer when the AI could not be used for this answer, and what they can do about it."""
+    if not failure or failure not in _AI_NOTICE:
+        return None
+    text = _AI_NOTICE[failure].get(lang if lang in ("en", "id") else "en")
+    if own_key:
+        text = ("Your Gemini key was not accepted or has reached its limit, so this answer used simple rules. Check the key or try another."
+                if lang != "id" else "Kunci Gemini milikmu tidak diterima atau sudah mencapai batas, jadi jawaban ini memakai aturan sederhana. Periksa kuncinya atau coba kunci lain.")
+    return {"kind": failure, "text": text, "can_use_own_key": not own_key or failure != "error"}
+
+
+@app.post("/session/reset")
+def session_reset(s: PepSession = Depends(_session)) -> dict[str, Any]:
+    """New chat: the agent forgets the situation on the table (facts, dates, documents, pending forms, recent turns).
+    Policies, claims on file and the audit trail are untouched."""
+    from ..agent.session import LOOP_DEFAULTS
+
+    for k, default in LOOP_DEFAULTS.items():
+        setattr(s, k, default() if callable(default) else default)
+    for k in ("recent_turns", "facility_name", "form_overrides", "rebuild_submit", "submit_offer", "doc_discharge", "dx_codes", "pending_actions"):
+        if hasattr(s, k):
+            setattr(s, k, [] if k in ("recent_turns", "pending_actions") else None)
+    audit.append({"event_type": "AUTONOMY_SET", "session_id": s.session_id, "user_id": s.user_id, "decision": "NEW_CHAT", "reason": "the customer started a new chat; the situation on the table was cleared"})
+    return {"ok": True}
+
+
+@app.post("/session/api-key")
+def session_set_api_key(body: OwnKeyIn, s: PepSession = Depends(_session)) -> dict[str, Any]:
+    """The customer's own Gemini key for this session. Checked once with Google, kept only in this session's memory
+    (gone on restart or sign-out), never written to disk, logged or audited."""
+    from .. import llm as _llm
+
+    verdict = _llm.test_key(body.api_key)
+    if verdict == "invalid":
+        raise HTTPException(400, "Google does not accept this key. Copy it again from Google AI Studio.")
+    if verdict == "quota":
+        raise HTTPException(400, "This key is valid but has no quota left right now. Try another key.")
+    if verdict != "ok":
+        raise HTTPException(502, "Could not reach Google to check the key. Try again in a moment.")
+    s.user_api_key = body.api_key
+    audit.append({"event_type": "AUTONOMY_SET", "session_id": s.session_id, "user_id": s.user_id, "decision": "OWN_AI_KEY_ON", "reason": "customer supplied their own AI key (not recorded)"})
+    return {"ok": True}
+
+
+@app.delete("/session/api-key")
+def session_clear_api_key(s: PepSession = Depends(_session)) -> dict[str, Any]:
+    s.user_api_key = None
+    audit.append({"event_type": "AUTONOMY_SET", "session_id": s.session_id, "user_id": s.user_id, "decision": "OWN_AI_KEY_OFF", "reason": "customer removed their own AI key"})
+    return {"ok": True}
 
 
 def _resolve_upload(s: PepSession, ref: str) -> str:
@@ -348,6 +435,22 @@ def backoffice_decide(claim_id: str, body: DecideIn, _: None = Depends(_admin)) 
     _tools._mirror("claim", claim_id)
     audit.append({"event_type": "ESCALATE", "user_id": "backoffice", "decision": body.decision, "reason": f"claim {claim_id} decided by human"})
     return {"claim_id": claim_id, "status": body.decision}
+
+
+@app.get("/backoffice/documents/{doc_id}")
+def backoffice_document(doc_id: str, _: None = Depends(_admin)):
+    """The file behind a document on a claim, for the adjuster. Only files under the upload or demo folders are served."""
+    from fastapi.responses import FileResponse
+
+    rows = _tools._rows("SELECT file_path, type FROM documents WHERE id=?", doc_id)
+    if not rows or not rows[0].get("file_path"):
+        raise HTTPException(404, "document not found")
+    path = Path(str(rows[0]["file_path"])).resolve()
+    roots = [UPLOAD_DIR.resolve(), (config.DATA_DIR / "demo").resolve()]
+    if not path.is_file() or not any(path.is_relative_to(r) for r in roots):
+        raise HTTPException(404, "file not available")
+    media = "application/pdf" if path.suffix.lower() == ".pdf" else "application/octet-stream"
+    return FileResponse(str(path), media_type=media, filename=path.name, content_disposition_type="inline")
 
 
 @app.get("/backoffice/tickets")
@@ -662,15 +765,23 @@ def upload_policy(file: UploadFile = File(...), product_type_hint: Optional[str]
     policy_id = f"USER-{s.session_id[-8:]}-{uuid.uuid4().hex[:4]}".upper()
     from ..extractor import policy_extractor as _pe
 
+    from .. import llm as _llm
+
     t0 = time.perf_counter()
+    _tok = _llm.use_user_key(getattr(s, "user_api_key", None))
     try:
         with _EXTRACT_LOCK:
             record = _pe.extract_policy(
                 path, policy_id=policy_id, doc_id=safe,
                 source_tier=SourceTier.POLICY_DOC_UNVERIFIED, product_hint=product_type_hint,
             )
-    except RuntimeError as e:
-        raise HTTPException(503, f"extraction temporarily unavailable: {e}")
+    except RuntimeError:
+        why = _llm.last_failure()
+        hint = {"quota": " The free AI service has reached its limit; try again in a few minutes or use your own Gemini key.",
+                "invalid": " The AI key set up for this service is not accepted; use your own Gemini key."}.get(why or "", "")
+        raise HTTPException(503, f"extraction temporarily unavailable.{hint}")
+    finally:
+        _llm.reset_user_key(_tok)
     elapsed = time.perf_counter() - t0
 
     _tools.records()[policy_id] = record
@@ -730,6 +841,12 @@ def portfolio_view(s: PepSession = Depends(_session)) -> dict[str, Any]:
 
 @app.get("/audit/verify")
 def audit_verify() -> dict[str, Any]:
+    from ..security.audit import _use_postgres
+
+    if _use_postgres():
+        # one pass over the stored chain; reading it twice would double a slow request
+        rep = audit.get_default().verify_report()
+        return {"chain_ok": rep["ok"], "first_bad_seq": rep["first_bad_seq"], "total_events": rep["events"], "last_hash": rep.get("last_hash") or audit.GENESIS}
     ok, bad = audit.verify(config.AUDIT_PATH)
     events = audit.get_default().read()
     return {"chain_ok": ok, "first_bad_seq": bad, "total_events": len(events), "last_hash": events[-1]["hash"] if events else audit.GENESIS}

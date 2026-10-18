@@ -8,6 +8,7 @@ Design rules (security-relevant):
 """
 from __future__ import annotations
 
+import contextvars
 import hashlib
 import json
 import logging
@@ -61,9 +62,32 @@ def _bump_live_total() -> int:
     return n
 
 
+# A customer's own Gemini key, for the request being served only. It lives in the request context (never a global,
+# never written to disk or the audit log), so another customer's request can never use it.
+_user_key: contextvars.ContextVar[Optional[str]] = contextvars.ContextVar("cg_user_key", default=None)
+# Why the last call of this request failed ("quota" | "invalid" | "error"), so the reply can tell the customer in plain words.
+_last_failure: contextvars.ContextVar[Optional[str]] = contextvars.ContextVar("cg_llm_failure", default=None)
+
+
+def use_user_key(key: Optional[str]) -> contextvars.Token:
+    return _user_key.set(key or None)
+
+
+def reset_user_key(token: contextvars.Token) -> None:
+    _user_key.reset(token)
+
+
+def last_failure() -> Optional[str]:
+    return _last_failure.get()
+
+
+def reset_failure() -> None:
+    _last_failure.set(None)
+
+
 _clients: dict[str, Any] = {}
 _key_index = 0
-_exhausted: dict[str, float] = {}  # key -> time when it was marked exhausted (per process)
+_exhausted: dict[str, float] = {}  # key -> time until which it is out of rotation (per process)
 
 
 def _keys() -> list[str]:
@@ -77,7 +101,7 @@ def client():
     """Client for the current key of the pool (see rotate_key)."""
     from google import genai
 
-    key = _keys()[_key_index % len(_keys())]
+    key = _user_key.get() or _keys()[_key_index % len(_keys())]
     if key not in _clients:
         _clients[key] = genai.Client(api_key=key, http_options={"timeout": config.LLM_TIMEOUT_MS})
     return _clients[key]
@@ -97,15 +121,30 @@ def add_runtime_key(key: str) -> int:
     return len(existing)
 
 
-def rotate_key() -> bool:
-    """Mark the current key exhausted and move to the next one. False if none left (within 1h)."""
+def _quota_cooldown(msg: str) -> float:
+    """How long a key that hit a quota error should rest: a per-minute limit clears in about a minute, a daily one much later."""
+    if re.search(r"per ?day|PerDay|daily", msg, re.I):
+        return 3600.0
+    m = re.search(r"retry in (\d+(?:\.\d+)?)s", msg, re.I) or re.search(r"retryDelay[^0-9]*(\d+)", msg)
+    if m:
+        return min(float(m.group(1)) + 2.0, 3600.0)
+    return 65.0  # no hint: assume the per-minute limit
+
+
+_INVALID_KEY_MARKERS = ("API key not valid", "API_KEY_INVALID", "API key expired", "API key was reported as leaked")
+
+
+def rotate_key(invalid: bool = False, cooldown: float = 3600.0) -> bool:
+    """Take the current key out of rotation and move to the next one. False if none is available.
+    A per-minute limit is back after about a minute, a daily one after about an hour, and a key the API rejects
+    as invalid is kept out for a day."""
     global _key_index
     keys = _keys()
-    _exhausted[keys[_key_index % len(keys)]] = time.time()
+    _exhausted[keys[_key_index % len(keys)]] = time.time() + (86400 if invalid else cooldown)
     for _ in range(len(keys)):
         _key_index = (_key_index + 1) % len(keys)
         k = keys[_key_index]
-        if time.time() - _exhausted.get(k, 0) > 3600:
+        if time.time() >= _exhausted.get(k, 0):
             log.warning("LLM quota: rotated to key #%d", _key_index + 1)
             return True
     return False
@@ -123,7 +162,7 @@ def pool_status() -> dict[str, Any]:
     except RuntimeError:
         return {"configured": False, "available": False, "pool_size": 0, "active_key_index": 0}
     now = time.time()
-    live_exhausted = sum(1 for k in keys if now - _exhausted.get(k, 0) <= 3600)
+    live_exhausted = sum(1 for k in keys if _exhausted.get(k, 0) > now)
     return {
         "configured": True,
         "available": live_exhausted < len(keys),
@@ -233,6 +272,10 @@ def generate_json(
         except Exception as e:  # noqa: BLE001
             last_err = e
             msg = str(e)
+            own_key = _user_key.get() is not None
+            if any(m in msg for m in _INVALID_KEY_MARKERS) and not own_key and len(_keys()) > 1 and rotate_key(invalid=True):
+                log.error("LLM key rejected as invalid; moved to the next key in the pool")
+                continue  # one bad key in the pool must not turn every answer into a template
             quota = "429" in msg or "RESOURCE_EXHAUSTED" in msg
             if quota:
                 STATS["quota_errors"] += 1
@@ -249,7 +292,7 @@ def generate_json(
                     except Exception:
                         pass
                 continue
-            if quota and len(_keys()) > 1 and rotate_key():
+            if quota and not own_key and len(_keys()) > 1 and rotate_key(cooldown=_quota_cooldown(msg)):
                 continue  # another key in the pool: retry immediately, no backoff, no attempt consumed
             attempt += 1
             if not transient or attempt >= (budget if quota else retries):
@@ -264,6 +307,9 @@ def generate_json(
             log.warning("LLM transient error (%s); retry in %.0fs", msg[:120], wait)
             time.sleep(wait)
             delay = min(delay * 2, 65)
+    _msg = str(last_err or "")
+    _last_failure.set("invalid" if any(m in _msg for m in _INVALID_KEY_MARKERS) else
+                      "quota" if ("429" in _msg or "RESOURCE_EXHAUSTED" in _msg) else "error")
     raise RuntimeError(f"LLM call failed after {attempt} attempts: {last_err}")
 
 
@@ -303,3 +349,21 @@ def embed(texts: list[str], *, model: Optional[str] = None, use_cache: bool = Tr
         if use_cache:
             _cache_key("emb", model, t).write_text(json.dumps(vec), encoding="utf8")
     return out
+
+
+def test_key(key: str) -> str:
+    """Try a key once with the smallest possible call. 'ok' | 'invalid' | 'quota' | 'error'."""
+    try:
+        from google import genai
+        from google.genai import types as gt
+
+        c = genai.Client(api_key=key, http_options={"timeout": 15000})  # keep the client alive for the call
+        c.models.generate_content(model=config.MODEL_FAST, contents="ok", config=gt.GenerateContentConfig(max_output_tokens=4))
+        return "ok"
+    except Exception as e:  # noqa: BLE001
+        msg = str(e)
+        if any(m in msg for m in _INVALID_KEY_MARKERS):
+            return "invalid"
+        if "429" in msg or "RESOURCE_EXHAUSTED" in msg:
+            return "quota"
+        return "error"

@@ -17,6 +17,7 @@ export function ConfirmCard({
   token,
   policies,
   recordedDraft,
+  onCorrect,
 }: {
   action: PendingAction;
   resolved?: ChatMessage["pendingResolved"];
@@ -27,6 +28,7 @@ export function ConfirmCard({
   token?: string;
   policies?: PoliciesResponse | null;
   recordedDraft?: ClaimDraft;
+  onCorrect?: (text: string) => void;
 }) {
   if (resolved === "confirmed") {
     return (
@@ -73,7 +75,7 @@ export function ConfirmCard({
         <div className="min-w-0">
           <p className="text-sm font-semibold">Confirm submission?</p>
           {action.summary && <p className="mt-1 text-sm text-muted-foreground">{action.summary}</p>}
-          {(token || recordedDraft) && action.tool === "submit_claim" && <ClaimFormPreview token={token} tool={action.tool} policies={policies ?? null} recordedDraft={recordedDraft} />}
+          {(token || recordedDraft) && action.tool === "submit_claim" && <ClaimFormPreview token={token} tool={action.tool} policies={policies ?? null} recordedDraft={recordedDraft} onCorrect={resolved ? undefined : onCorrect} />}
           <p className="mt-1 text-xs text-muted-foreground">
             {lockedBy ? `Nothing can be sent in ${lockedBy === "observe" ? "Observe" : "Draft"} mode. Switch the agent to Act to submit.` : "Nothing is sent until you confirm."}
           </p>

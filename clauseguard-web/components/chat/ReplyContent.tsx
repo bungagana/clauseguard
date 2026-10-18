@@ -20,6 +20,9 @@ import { ConfirmCard } from "./cards/ConfirmCard";
 import { ClaimFormPreview } from "./cards/ClaimFormPreview";
 import { RefusalCard } from "./cards/RefusalCard";
 import { AlertBanner } from "./cards/AlertBanner";
+import { DocumentReads } from "./cards/DocumentReads";
+import { AiNoticeBanner } from "./cards/AiNoticeBanner";
+import { EvidenceFold } from "./cards/EvidenceFold";
 import { WhatIfPanel } from "./cards/WhatIfPanel";
 import { StreamedProse } from "./StreamedProse";
 import { EvidenceChain } from "./EvidenceChain";
@@ -96,6 +99,9 @@ export function ReplyContent({
 
   // Answer first: verdicts, then at most one secondary card chosen by what the user asked.
   // Everything else is one tap away under "More".
+  // Evidence cards open by default only for the first answer about a situation. Follow-ups, corrections and answers to a
+  // question are read as text; the same evidence stays one tap away.
+  const compact = Boolean(reply.context_relation) && reply.context_relation !== "NEW_SCENARIO" && !pendingTier2 && !reply.clarification;
   const showAllocationInline = Boolean(allocation);
   const showReadinessInline = Boolean(reply.readiness) && !showAllocationInline && claimIntent;
   const showTimelineInline = Boolean(timeline) && /DEADLINE|DIGEST|TIMELINE|DUE/.test(intent);
@@ -143,20 +149,27 @@ export function ReplyContent({
 
       {proseDone && (
         <>
-          <EvidenceChain reply={reply} policies={policies} />
+          <EvidenceFold compact={compact} label={reply.language === "id" ? "Lihat dasar jawaban ini" : "Show the evidence behind this answer"}>
+            <EvidenceChain reply={reply} policies={policies} />
 
-          {[...decided, ...clarifyOnly].map((v) => (
-            <VerdictCard key={v.policy_id} verdict={v} policies={policies} replyText={transcript} />
-          ))}
+            {[...decided, ...clarifyOnly].map((v) => (
+              <VerdictCard key={v.policy_id} verdict={v} policies={policies} replyText={transcript} />
+            ))}
 
-          {showAllocationInline ? (
-            <AllocationCard allocation={allocation!} policies={policies} />
-          ) : reply.cob.length > 0 ? (
-            <CobList steps={reply.cob} policies={policies} />
-          ) : null}
+            {showAllocationInline ? (
+              <AllocationCard allocation={allocation!} policies={policies} />
+            ) : reply.cob.length > 0 ? (
+              <CobList steps={reply.cob} policies={policies} />
+            ) : null}
 
-          {showReadinessInline && reply.readiness && <ReadinessCard readiness={reply.readiness} twin={message.entitlement?.twin} />}
-          {showTimelineInline && timeline && <TimelineCard timeline={timeline} policies={policies} />}
+            {showReadinessInline && reply.readiness && <ReadinessCard readiness={reply.readiness} twin={message.entitlement?.twin} />}
+            {showTimelineInline && timeline && <TimelineCard timeline={timeline} policies={policies} />}
+
+          </EvidenceFold>
+
+          {Boolean(reply.doc_reads?.length) && <DocumentReads reads={reply.doc_reads!} />}
+
+          {reply.ai_notice && isLatest && <AiNoticeBanner notice={reply.ai_notice} sessionToken={sessionToken} />}
 
           {pendingTier2 && (
             <ConfirmCard
@@ -169,6 +182,7 @@ export function ReplyContent({
               token={message.claimDraft ? undefined : sessionToken?.()}
               policies={policies}
               recordedDraft={message.claimDraft}
+              onCorrect={isLatest ? onQuickReply : undefined}
             />
           )}
 

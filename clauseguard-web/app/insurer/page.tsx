@@ -33,6 +33,18 @@ interface FormSection {
  */
 export default function InsurerPage() {
   const [token, setToken] = useState("");
+  // open an attached document in a new tab; the admin token travels in a header, so the file is fetched here, not by a plain link
+  async function openDocument(docId: string) {
+    try {
+      const res = await fetch(`/api/cg/backoffice/documents/${encodeURIComponent(docId)}`, { headers: { "X-Admin-Token": token } });
+      if (!res.ok) throw new Error(String(res.status));
+      const url = URL.createObjectURL(await res.blob());
+      window.open(url, "_blank", "noopener");
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    } catch {
+      setError("That document could not be opened.");
+    }
+  }
   const [input, setInput] = useState("");
   const [claims, setClaims] = useState<BackofficeClaim[]>([]);
   const [tickets, setTickets] = useState<BackofficeTicket[]>([]);
@@ -279,7 +291,12 @@ export default function InsurerPage() {
                   <ul className="mt-1.5 text-xs text-muted-foreground">
                     {selected.documents.length === 0 && <li>None attached.</li>}
                     {selected.documents.map((d) => (
-                      <li key={d.id}>{d.id} · {humanize(d.type)} · {d.taint_label}</li>
+                      <li key={d.id}>
+                        <a href={`/api/cg/backoffice/documents/${encodeURIComponent(d.id)}`} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline" onClick={(e) => { e.preventDefault(); void openDocument(d.id); }}>
+                          {d.id}
+                        </a>{" "}
+                        · {humanize(d.type)} · {d.taint_label}
+                      </li>
                     ))}
                   </ul>
 

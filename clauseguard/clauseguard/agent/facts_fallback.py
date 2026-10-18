@@ -129,7 +129,7 @@ _ROLE_PATTERNS = [
     ("death", r"(died|death|passed away|deceased|meninggal|wafat)"),
     ("accident", r"(accident|crash|collision|injur|fell|slipped|skidded|kecelakaan|jatuh|tabrak)"),
     ("license_expiry", r"(expired|expiry|licen[cs]e|sim mati|kadaluarsa)"),
-    ("admission", r"(admitted|hospitali|admission|went to hospital|went in|checked in|get hospitali|opname|dirawat|rawat inap|masuk rs|masuk rumah sakit|masuk)"),
+    ("admission", r"(admitted|hospitali|admission|went to hospital|went in|checked in|get hospitali|opname|dirawat|rawat inap|masuk rs|masuk rumah sakit|\bmasuk\b)"),
 ]
 
 

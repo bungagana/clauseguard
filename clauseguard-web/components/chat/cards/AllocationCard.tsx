@@ -69,7 +69,9 @@ export function AllocationCard({ allocation, policies }: { allocation: Allocatio
   // Without a hospital bill the engine can order the payers but not size the amounts: say so
   // instead of showing "Rp 0 recovered".
   const noBill = !allocation.bill_total || Number(allocation.bill_total) === 0;
-  const showComparison = !noBill && greedy !== null && single !== null;
+  // three ways of claiming only matter when they pay differently; with one paying policy they are the same number
+  const allSame = greedy !== null && single !== null && optimized === greedy && optimized === single;
+  const showComparison = !noBill && greedy !== null && single !== null && !allSame;
   const max = Math.max(optimized, greedy ?? 0, single ?? 0, 1);
   const extra = showComparison ? optimized - Math.max(greedy!, single!) : 0;
 
@@ -90,7 +92,10 @@ export function AllocationCard({ allocation, policies }: { allocation: Allocatio
         </div>
       )}
       {!showComparison && !noBill && (
-        <p className="mt-2 text-lg font-semibold">{formatMoney(allocation.total_recovered, allocation.currency ?? "IDR")} recovered</p>
+        <>
+          <p className="mt-2 text-lg font-semibold">{formatMoney(allocation.total_recovered, allocation.currency ?? "IDR")} recovered</p>
+          {allSame && <p className="text-xs text-muted-foreground">Only one of your policies pays for this claim, so every way of claiming gives the same amount.</p>}
+        </>
       )}
       {noBill && (
         <p className="mt-2 text-sm text-muted-foreground">This is the order to claim in. Tell me the total hospital bill and I will work out how much each one pays.</p>

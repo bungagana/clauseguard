@@ -16,6 +16,7 @@ from __future__ import annotations
 import logging
 import re
 import uuid
+from pathlib import Path
 from datetime import date
 from decimal import Decimal
 from typing import Any, Optional
@@ -36,7 +37,7 @@ from ..schema import (
     Verdict,
     VerdictResult,
 )
-from . import claim_form, clarifier, composer, context, derive, doc_match, explainer, plan_flow, planner
+from . import claim_form, clarifier, composer, context, decision_read, derive, dialogue, doc_facts, doc_match, explainer, plan_flow, planner, policy_pick, smalltalk
 from .doclabels import doc_label
 from .facts_fallback import bind_rules, derive_for_policy
 from .planner import TOOL_TIERS, Intent, Plan, ToolCall
@@ -131,6 +132,9 @@ class Reply(Strict):
     language: str = "en"  # language the reply was written in ("en" | "id"); the UI matches its quick replies to it
     suggestions: list[str] = Field(default_factory=list)  # short replies the UI offers as chips (each is a full message)
     conflicts: list[dict] = Field(default_factory=list)  # document vs statement disagreements the customer must settle
+    question_focus: Optional[str] = None  # what the planner read the question to be about (documents, late, ...)
+    focus_lines: list[str] = Field(default_factory=list)  # the deterministic answer to that focus
+    doc_reads: list[dict] = Field(default_factory=list)  # what was read from each file sent this turn (type, values, what it counts for)
     submit_offer: bool = False  # a submission was held back for missing documents; "submit anyway" or attaching them continues
 
 
@@ -263,12 +267,16 @@ def _looks_like_a_question(text: str) -> bool:
     return bool(_QUESTION_WORDS.search(text))
 
 
-def _out_of_scope_text(refused: bool) -> str:
+def _out_of_scope_text(refused: bool, lang: str = "en") -> str:
     if refused:
-        return ("I can only work with the policies and claims on your own account, and I don't disclose system internals or other customers' data. "
-                "This request has been logged. If you need help with your own policy, tell me what happened.")
-    return ("I can help with your own insurance policies: what they cover, where the gaps and overlaps are, and how to claim. "
-            "That question is outside what I can answer.")
+        return _L(lang, "I can only work with the policies and claims on your own account, and I don't disclose system internals or other customers' data. "
+                        "This request has been logged. If you need help with your own policy, tell me what happened.",
+                  "Saya hanya bisa bekerja dengan polis dan klaim di akun Anda sendiri, dan tidak membuka isi sistem atau data pelanggan lain. "
+                  "Permintaan ini dicatat. Jika butuh bantuan soal polis Anda, ceritakan apa yang terjadi.")
+    return _L(lang, "I can help with your own insurance policies: what they cover, where the gaps and overlaps are, and how to claim. "
+                    "That question is outside what I can answer.",
+              "Saya bisa membantu soal polis asuransi Anda sendiri: apa yang ditanggung, celah dan tumpang tindihnya, dan cara mengklaim. "
+              "Pertanyaan itu di luar yang bisa saya jawab.")
 
 
 _INFO_T3 = re.compile(
@@ -287,8 +295,8 @@ def _t3_process_text() -> str:
 _ID_WORDS = re.compile(r"\b(apa|apakah|kenapa|mengapa|bagaimana|gimana|itu|adalah)\b", re.I)
 
 
-def _education_label(user_text: str) -> str:
-    if _ID_WORDS.search(user_text):
+def _education_label(user_text: str, lang: Optional[str] = None) -> str:
+    if lang == "id" or (lang is None and _ID_WORDS.search(user_text)):
         return "Ini informasi umum, bukan nasihat untuk klaim tertentu."
     return "This is general information, not advice about a specific claim."
 
@@ -362,6 +370,7 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
     session.turn += 1
     audit_ids: list[str] = [audit(session, "USER_MSG", text_hash=args_hash({"t": user_text}), turn=session.turn)]
     tool_log: list[dict] = []
+    doc_reads: list[dict] = []
 
     def call(name: str, args: Optional[dict] = None, **kw):
         d, res, eid = router.call(session, name, args or {}, **kw)
@@ -373,11 +382,21 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
     def facts_arg(f: Optional[ScenarioFacts] = None) -> dict:
         return _jsonable(f or session.facts)
 
+    if user_text.startswith("__news__:"):
+        # the insurer decided on a claim filed from this account: react to it, before the customer has to ask
+        return _news_reply(session, user_text.split(":", 1)[1].strip(), router, use_llm, audit_ids, tool_log)
     # ---- 1. plan
+    typed = _form_text_correction(session, user_text)  # on the raw text: typo repair would turn "insured" into "insurer"
     user_text = planner.normalise_typos(user_text)  # rules and the binder see repaired domain words; audit hashes use the raw text
     pl: Plan = planner.plan(user_text, session, use_llm=use_llm)
     pl = _continue_previous_intent(pl, session, user_text)
     pl = _route_plan_turn(pl, session, user_text)
+    if (uploads and pl.intent == Intent.ACTION and any(c.name == "attach_document" for c in pl.tool_calls)
+            and not session.open_claims and "CL-" not in user_text.upper()):
+        # Documents sent before any claim was submitted belong to the claim being prepared, not to a filed one:
+        # they are read and matched to the insurer's list like documents sent with the first message.
+        pl = Plan(intent=Intent.CLAIM_GUIDANCE, tool_calls=[ToolCall(name="get_my_policies", args={}), ToolCall(name="check_coverage", args={})],
+                  needs_facts=True, topics=pl.topics, rule_hits=pl.rule_hits + ["uploads_for_claim_in_preparation"])
     if (uploads and pl.intent in (Intent.GENERAL_EDUCATION, Intent.OUT_OF_SCOPE) and "no_rule" in pl.rule_hits
             and "cross_tenant" not in pl.rule_hits and not _looks_like_a_question(user_text)):
         # an attachment plus text with no question content of its own is not a dead end: answer from
@@ -385,6 +404,11 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         # A real question (interrogative wording, a "?") is left alone: it already has its own answer path.
         pl = Plan(intent=Intent.POLICY_QA, tool_calls=[ToolCall(name="get_my_policies", args={})], needs_facts=False,
                   topics=list(dict.fromkeys(pl.topics + ["SUMMARY"])), rule_hits=pl.rule_hits + ["upload_vague_fallback"])
+    # The form's edit buttons send fixed sentences for free-text fields (hospital, names). While a form waits for
+    # Confirm they are applied here, in code, as the customer's own correction; the form is then rebuilt.
+    if typed is not None:
+        pl = Plan(intent=Intent.ACTION, tool_calls=[ToolCall(name="submit_claim", args={})], needs_facts=pl.needs_facts, topics=pl.topics,
+                  rule_hits=pl.rule_hits + ["form_field_corrected"])
     # how the message relates to the situation already on the table: decided from meaning (model), rules only as fallback
     turn_ctx = context.assess(user_text, session, as_of=session.as_of, use_llm=use_llm)
     session.lang = (context.sticky_language(turn_ctx.language, user_text, getattr(session, "lang", None)) if not user_text.startswith("__confirm__")
@@ -398,6 +422,7 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         template = text
         composed = False
         no_compose = kw.pop("_no_compose", False)
+        kw.setdefault("doc_reads", list(doc_reads))
         if use_llm and pl.intent in COMPOSABLE_INTENTS and not kw.get("refused") and not no_compose:
             payload = _reply_payload(session, pl, user_text, template, policies, _undetermined or [], kw, turn_ctx)
             new_text, cviol = composer.compose(payload)
@@ -417,6 +442,7 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
                                            "verdicts": {v.policy_id: v.verdict.value for v in rep.verdicts},
                                            "clarification_slot": rep.clarification.slot.value if rep.clarification else None,
                                            "refused": rep.refused})
+        dialogue.remember(session, user_text, clean)
         return rep
 
     # ---- 2. hard guardrails before any tool
@@ -437,9 +463,18 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
             pending = _offer_callback(session, call, user_text)
             return finish(_out_of_scope_text(False) + " For an administrative question like this, I can schedule a call-back from the insurer (this needs your confirmation).",
                           actions_pending=pending)
-        return finish(_out_of_scope_text(refused), refused=refused, refusal_reason="AUTHORITY_OR_DATA_EXFIL" if refused else None)
+        lang_ = getattr(session, "lang", "en") or "en"
+        talk = smalltalk.reply(user_text, lang_, use_llm=use_llm) if not refused else None
+        return finish(talk or _out_of_scope_text(refused, lang_), refused=refused,
+                      refusal_reason="AUTHORITY_OR_DATA_EXFIL" if refused else None, _no_compose=True)
+    if "llm:progress" in pl.rule_hits and not uploads:
+        lang_ = getattr(session, "lang", "en") or "en"
+        txt, chips = _progress_text(session, lang_, router, user_text)
+        # the facts are deterministic (live claim status, what is on the table); the wording is the model's, so
+        # "what does that mean?" after an insurer decision is explained, not echoed
+        return finish(txt, suggestions=chips, question_focus="progress", focus_lines=txt.split("\n"))
     if pl.intent == Intent.GENERAL_EDUCATION:
-        label = _education_label(user_text)
+        label = _education_label(user_text, getattr(session, "lang", None))
         if use_llm:
             _, edu_policies = call("get_my_policies")
             gen = _education_reply(user_text, edu_policies or [])
@@ -448,7 +483,7 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         low = user_text.lower()
         hits = [v for k, v in GLOSSARY.items() if k in low]
         txt = hits[0] if hits else "I can explain terms that appear in your own policies (waiting period, grace period, indemnity, co-payment, coordination of benefits...)."
-        return finish(txt + " This is general information, not advice about a specific claim.")
+        return finish(txt + " " + label)
 
     # ---- 3. T3 / T2 actions
     if pl.intent == Intent.ACTION:
@@ -491,6 +526,16 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         return finish("I can only access policies on your own account, not anyone else's.", refused=True, refusal_reason="NOT_OWNER")
 
     # ---- 5. facts (rule binder + model-based binder when importable), uploads, typed extras
+    if turn_ctx.resets_scenario and turn_ctx.relation.value == "NEW_SCENARIO":
+        # Safety net for a misjudged "new scenario": a message that brings no event, date, diagnosis or document of its
+        # own cannot be a new situation; the facts on the table stay and the turn is read as a continuation.
+        _probe, _ex = bind_rules(user_text, session.as_of, prior=None)
+        brings_event = bool(_ex.dates or _ex.diagnosis or _ex.documents_present or (Slot.EVENT in (_ex.bound or set())) or re.search(
+            r"\b(hospitali[sz]ed|admitted|accident|crash|surgery|operation|died|death|diagnos\w*|dirawat|opname|rawat inap|kecelakaan|operasi|meninggal|didiagnosis|terjatuh|jatuh)\b", user_text, re.I))
+        if not brings_event and not uploads and session.facts.has(Slot.EVENT):
+            turn_ctx = context.ContextDecision(relation=context.Relation.CONTINUE, reason="new-scenario judgement without a new event: kept the table",
+                                               language=turn_ctx.language, keep_slots=[], model_used=turn_ctx.model_used)
+            audit_ids.append(audit(session, "PLAN", intent=pl.intent.value, tools=[], rule_hits=["context_guard:continue"], context="CONTINUE"))
     if turn_ctx.resets_scenario:
         # a different event, or a what-if: the previous situation's details must not leak into this one.
         # Only scenario slots are dropped; identity-like slots (age, plan, rider) stay.
@@ -572,9 +617,26 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
     # A correction while a claim submission is waiting for Confirm: the prepared form is stale. It is withdrawn and
     # rebuilt from the corrected facts in this same turn, so the card the customer confirms always shows the latest facts.
     stale = next((p for p in session.pending_actions if p["tool"] == "submit_claim"), None)
-    if stale is not None and (changed or ex.correction or turn_ctx.relation == "CORRECTION"):
+    if stale is not None and (ex.correction or turn_ctx.relation == "CORRECTION") and not (changed or change_parts):
+        # the customer wants to change something, but no fact in the message maps to a field: say so, never pretend the form changed
+        lang_ = getattr(session, "lang", "en") or "en"
+        now = {
+            _L(lang_, "event", "kejadian"): str(session.facts.get(Slot.EVENT) or "").replace("_", " ").lower(),
+            _L(lang_, "cause", "penyebab"): str(session.facts.get(Slot.CAUSE) or "").lower(),
+            _L(lang_, "diagnosis", "diagnosis"): str(session.diagnosis_code or "").replace("_", " ").lower(),
+            _L(lang_, "admission", "masuk"): str(session.event_dates.get("admission") or ""),
+        }
+        shown = "; ".join(f"{k}: {v}" for k, v in now.items() if v)
+        return finish(_L(lang_, f"I understood you want to change something, but I could not tell which value. The form currently says {shown}. "
+                                "Tell me the field and the new value (for example 'the admission date is 24 September'). The event and the diagnosis can only "
+                                "be what your documents show; I cannot relabel them to fit a different policy.",
+                         f"Saya mengerti Anda ingin mengubah sesuatu, tetapi belum jelas nilai yang mana. Formulir saat ini menyatakan {shown}. "
+                         "Sebutkan kolom dan nilai barunya (misalnya 'tanggal masuknya 24 September'). Kejadian dan diagnosis hanya bisa sesuai dokumen Anda; "
+                         "saya tidak dapat melabelnya ulang agar cocok dengan polis lain."), _no_compose=True)
+    if stale is not None and (changed or change_parts):
         session.pending_actions = [p for p in session.pending_actions if p is not stale]
-        session.rebuild_submit = {"ack": bool(stale.get("requires_acknowledgement")), "changes": list(change_parts or changed)}
+        session.rebuild_submit = {"ack": bool(stale.get("requires_acknowledgement")), "changes": list(change_parts or changed),
+                                  "policy_id": _pending_policy_id(session, stale)}
         pl = Plan(intent=Intent.ACTION, tool_calls=[ToolCall(name="submit_claim", args={})], needs_facts=pl.needs_facts, topics=pl.topics,
                   rule_hits=pl.rule_hits + ["draft_rebuilt_after_correction"])
         audit(session, "ESCALATE", kind="PENDING_WITHDRAWN", tool="submit_claim", reason="facts corrected before confirmation")
@@ -589,6 +651,8 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
     doc_sourced = False
     doc_notes: list[str] = []
     doc_conflicts: list[dict] = []
+    doc_results: list[dict] = []
+    session.last_turn_uploads = list(uploads)  # what arrived with this message (an attach request needs a file in hand)
     for path in uploads:
         dh = register_value(session, {"path": str(path)}, "DocRef", SourceTier.USER_UPLOAD, "upload")
         dd, res = call("extract_document", {"doc_handle": dh}, policyholder_name=meta.get("name", ""))
@@ -611,6 +675,14 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
                 "specific diagnosis description if this affects a critical-illness claim."
             )
         dtype = (res or {}).get("doc_type")
+        if res:
+            doc_results.append(res)
+            try:  # the quarantined extractor's typed output, so the adjudication twin and the readiness card see the same files
+                from ..extractor.claim_doc import ClaimDocExtract as _CDE
+
+                register_value(session, _CDE.model_validate(res).model_dump(mode="json"), "ClaimDocExtract", SourceTier.USER_UPLOAD, "extract")
+            except Exception:  # noqa: BLE001 - an extract the schema does not accept simply is not shown to the twin
+                pass
         present_before = set(documents_present)
         if dtype in ("INVOICE", "RECEIPT"):
             # a billed and paid hospital document covers the bill/receipt requirements; whether the insurer
@@ -628,7 +700,6 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         elif dtype == "POLICE_REPORT":
             documents_present.append("POLICE_REPORT")
         if dtype and dtype != "UNKNOWN":
-            doc_notes.append(f"I looked at the document you attached: extracted as {dtype.replace('_', ' ').lower()}.")
             doc_conflicts += _document_conflicts(session, res or {}, dtype)
             # beyond the fixed table: the model checks this file against each policy's own document requirements
             for p in policies:
@@ -636,6 +707,29 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
                 for code in doc_match.match(res or {}, req, p, use_llm=use_llm):
                     if code not in documents_present:
                         documents_present.append(code)
+        doc_reads.append(_doc_read(path, res, [c for c in documents_present if c not in present_before],
+                                   getattr(session, "lang", "en") or "en", getattr(session, "user_id", "")))
+        if res and dtype in ("DISCHARGE_SUMMARY", "MEDICAL_REPORT") and res.get("service_end"):
+            try:
+                session.doc_discharge = date.fromisoformat(str(res["service_end"])[:10])
+            except ValueError:
+                pass
+        # the same diagnosis should carry the same code in every file; a difference is shown, not silently resolved
+        code = str((res or {}).get("diagnosis_icd10") or "")
+        if code:
+            seen = dict(getattr(session, "dx_codes", None) or {})
+            for other, ocode in seen.items():
+                if other != doc_reads[-1]["filename"] and ocode and ocode != code:
+                    lang_ = getattr(session, "lang", "en") or "en"
+                    doc_reads[-1]["checks"].append(_L(lang_, f"diagnosis code {code} here, {ocode} in {other}: ask the hospital which applies",
+                                                      f"kode diagnosis {code} di sini, {ocode} di {other}: tanyakan ke rumah sakit mana yang berlaku"))
+                    for earlier in doc_reads[:-1]:
+                        if earlier["filename"] == other:
+                            earlier["checks"].append(_L(lang_, f"diagnosis code {ocode} here, {code} in {doc_reads[-1]['filename']}: ask the hospital which applies",
+                                                        f"kode diagnosis {ocode} di sini, {code} di {doc_reads[-1]['filename']}: tanyakan ke rumah sakit mana yang berlaku"))
+                    break
+            seen[doc_reads[-1]["filename"]] = code
+            session.dx_codes = seen
         # only a file proves a requirement; what the customer merely says they have stays "declared"
         for code in documents_present:
             if code not in present_before and code not in session.docs_attached:
@@ -680,6 +774,32 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         if claim.get("breakdown"):
             bill_breakdown = {k: Decimal(v) for k, v in claim["breakdown"].items()}
 
+    # Hospital documents already say what happened: the model reads their typed summaries (agent/doc_facts.py), so the
+    # customer is not asked to repeat it. The values are marked as coming from the documents.
+    if doc_results and (not session.facts.has(Slot.EVENT) or not session.facts.has(Slot.CAUSE) or not session.diagnosis_code):
+        from .facts_fallback import DIAGNOSES
+
+        inferred = doc_facts.read(doc_results, list(DIAGNOSES.values()), use_llm=use_llm)
+        if inferred.event is None and not use_llm and doc_facts.has_stay_evidence(doc_results):
+            inferred.event = "HOSPITALIZATION"  # without a model: the document type alone shows a stay
+        if inferred.event and not session.facts.has(Slot.EVENT):
+            session.facts = session.facts.bind(Slot.EVENT, inferred.event)
+            stay = next((r for r in doc_results if r.get("service_start")), None)
+            if stay and "admission" not in session.event_dates:
+                try:
+                    session.event_dates["admission"] = date.fromisoformat(str(stay["service_start"])[:10])
+                except ValueError:
+                    pass
+            days = next((r.get("days_hospitalized") for r in doc_results if r.get("days_hospitalized")), None)
+            if days and not session.facts.has(Slot.DAYS_HOSPITALIZED):
+                session.facts = session.facts.bind(Slot.DAYS_HOSPITALIZED, int(days))
+            doc_sourced = True
+        if inferred.cause and not session.facts.has(Slot.CAUSE):
+            session.facts = session.facts.bind(Slot.CAUSE, inferred.cause)
+            doc_sourced = True
+        if inferred.diagnosis and not session.diagnosis_code:
+            session.diagnosis_code = inferred.diagnosis
+            doc_sourced = True
     facility = _facility_named(user_text)
     if facility is not None and Slot.FACILITY_BPJS_PARTNER not in ex.bound:
         session.facts = session.facts.bind(Slot.FACILITY_BPJS_PARTNER, facility[1])
@@ -718,6 +838,12 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
 
     # ---- 6. per-policy derived facts, focus selection, payment status
     eff_dates, derived = derive.derive_event_dates(session.event_dates, session.facts)
+    doc_end = getattr(session, "doc_discharge", None)
+    if doc_end is not None and "discharge" in derived:
+        # the customer gave a stay length, not a discharge date: the date printed on the discharge summary is the better anchor
+        eff_dates["discharge"] = doc_end
+        eff_dates["treatment_end"] = doc_end
+        derived = {k: v for k, v in derived.items() if k != "discharge"}
     session.derived = derived
     session.eff_dates = eff_dates
     focus_types = _focus_types(user_text)
@@ -780,7 +906,7 @@ def handle_turn(session: Session, user_text: str, uploads: Optional[list[str]] =
         return _gap_reply(session, router, call, finish, policies, meta, pl, pay_rows or [], alerts_for())
 
     if pl.intent == Intent.ACTION:
-        return _action_reply(session, router, call, finish, policies, relevant, facts_by_policy, documents_present, pl, doc_sourced, user_text, ctx=ctx)
+        return _action_reply(session, router, call, finish, policies, relevant, facts_by_policy, documents_present, pl, doc_sourced, user_text, ctx=ctx, use_llm=use_llm)
 
     # POLICY_QA without a scenario -> clause lookup
     if pl.intent == Intent.POLICY_QA and not (pl.needs_facts or session.facts.has(Slot.EVENT)):
@@ -842,6 +968,7 @@ def _reply_payload(session, pl: Plan, user_text: str, template: str, policies: l
     return composer.ReplyPayload(
         intent=pl.intent.value, user_question=user_text, language=getattr(session, "lang", None) or composer.detect_language(user_text), as_of=session.as_of,
         context_relation=turn_ctx.relation.value if turn_ctx else None, hypothetical=bool(turn_ctx and turn_ctx.hypothetical),
+        recent_turns=dialogue.recent(session), question_focus=kw.get("question_focus"), focus_lines=list(kw.get("focus_lines") or []),
         verdicts=verdict_items, not_determinable=nd_items, clarification=clar_item, cob=cob_items, readiness=readiness_item,
         deadline=kw.get("deadline"), payable=kw.get("payable"), actions_pending=pending,
         alerts=[a for a in alerts if a.startswith("Alert:") or a.startswith("  Note")],
@@ -946,6 +1073,44 @@ def _match_claim(meta: dict, session, by_diagnosis: bool = False) -> Optional[di
             return c
         if by_diagnosis and session.diagnosis_code and c.get("diagnosis") == session.diagnosis_code and (not c.get("person") or c.get("person") == session.person_id):
             return c
+    return None
+
+
+_FORM_TEXT_PATTERNS = (
+    ("facility_name", re.compile(r"^\s*the hospital is\s+(.+?)\s*\.?\s*$", re.I), "hospital"),
+    ("insured_name", re.compile(r"^\s*the insured person'?s name is\s+(.+?)\s*\.?\s*$", re.I), "insured person"),
+    ("claimant_name", re.compile(r"^\s*the person submitting the claim is\s+(.+?)\s*\.?\s*$", re.I), "claimant"),
+    ("diagnosis", re.compile(r"^\s*the diagnosis is\s+(.+?)\s*\.?\s*$", re.I), "diagnosis"),
+)
+_NAME_OK = re.compile(r"^[\w][\w .,'&()/-]{1,79}$", re.UNICODE)
+
+
+def _form_text_correction(session, text: str) -> Optional[str]:
+    """Apply a typed correction of a free-text form field while a claim form waits for Confirm.
+    Returns the field changed, or None. The value is the customer's own text, kept as such (label USER)."""
+    stale = next((p for p in session.pending_actions if p["tool"] == "submit_claim"), None)
+    if stale is None:
+        return None
+    for field, rx, label in _FORM_TEXT_PATTERNS:
+        m = rx.match(text)
+        if not m:
+            continue
+        value = re.sub(r"\s+", " ", m.group(1)).strip()
+        if not _NAME_OK.match(value):
+            return None
+        if field == "facility_name":
+            old = getattr(session, "facility_name", None)
+            session.facility_name = value
+        else:
+            ov = dict(getattr(session, "form_overrides", None) or {})
+            old = ov.get(field)
+            ov[field] = value
+            session.form_overrides = ov
+        session.pending_actions = [p for p in session.pending_actions if p is not stale]
+        session.rebuild_submit = {"ack": bool(stale.get("requires_acknowledgement")), "policy_id": _pending_policy_id(session, stale),
+                                  "changes": [f"{label} {ARROW} {value}" if old else f"{label}: {value}"]}
+        audit(session, "ESCALATE", kind="PENDING_WITHDRAWN", tool="submit_claim", reason=f"form field corrected before confirmation: {field}")
+        return field
     return None
 
 
@@ -1180,14 +1345,23 @@ def _coverage_reply(session, router, call, finish, policies, relevant, facts_by_
 
     # ---- claim guidance extras
     cob_steps: list[portfolio.PayerStep] = []
+    focus_lines: list[str] = []
     if pl.intent == Intent.CLAIM_GUIDANCE:
         if focus_policy is not None and (results[focus_policy.id].verdict == Verdict.COVERED or "DEADLINE" in pl.topics):
+            # the insurer's own claim form is prepared by the assistant at submission, so it is never what the customer is "missing"
+            _req = portfolio.required_documents(focus_policy, facts_by_policy[focus_policy.id])[0]
+            _have = list(documents_present) + [c for c in _req if str(c).upper().startswith("CLAIM_FORM") and c not in documents_present]
             _, readiness = call("claim_readiness", {"policy_id": focus_policy.id, "claim_facts": _jsonable(facts_by_policy[focus_policy.id])},
-                                facts=facts_by_policy[focus_policy.id], policy=focus_policy, documents_present=documents_present)
+                                facts=facts_by_policy[focus_policy.id], policy=focus_policy, documents_present=_have)
             if readiness:
                 lines += _readiness_lines(focus_policy, readiness, derived, lang, deadline_only=results[focus_policy.id].verdict != Verdict.COVERED)
                 deadline = readiness.deadline
                 deadline_note = _deadline_note(focus_policy, readiness)
+                # the reply will invite the customer to say "submit": remember the offer so a plain "yes" / "buatkan" is honoured
+                session.submit_invited = readiness.verdict.verdict == Verdict.COVERED and not [c for c in readiness.missing_documents if not str(c).upper().startswith("CLAIM_FORM")]
+                focus_lines = _focus_lines(_asks(pl), focus_policy, readiness, lang)
+                if focus_lines:
+                    lines = focus_lines + lines  # the direct answer to the question comes first, whatever else is known
         multi = session.facts.has(Slot.BILLED_AMOUNT) or len([pid for pid in decided if results[pid].verdict == Verdict.COVERED]) >= 2 or "COB" in pl.topics
         if multi:
             _, cob_steps = call("cob_plan", {"claim_facts": _jsonable(session.facts)}, facts_by_policy=facts_by_policy, policies=policies, bill_breakdown=bill_breakdown, facts=session.facts)
@@ -1230,7 +1404,8 @@ def _coverage_reply(session, router, call, finish, policies, relevant, facts_by_
     session.last_stay = {"discharge": discharge_now, "deadline": deadline, "payable": payable}
     session.last_payable = payable
     return finish("\n".join(lines + alerts), _undetermined=undetermined, verdicts=verdicts, clarification=clar, denial_codes=codes, readiness=readiness,
-                  cob=cob_steps, deadline=deadline, payable=payable, alerts=alerts, changed=changed, derivations=derivations, update_note=note, deadline_note=deadline_note, total_note=total_line)
+                  cob=cob_steps, deadline=deadline, payable=payable, alerts=alerts, changed=changed, derivations=derivations, update_note=note, deadline_note=deadline_note, total_note=total_line,
+                  question_focus=(_asks(pl) if focus_lines else None), focus_lines=focus_lines)
 
 
 def _why_tuple(p: PolicyRecord, c: ClarificationRequest) -> Optional[ClauseTuple]:
@@ -1342,6 +1517,201 @@ def _total_line(session: Session, results: dict, by_id: dict, facts_by_policy: d
     return f"Total across policies for this event: {_money(sure)} confirmed; up to {_money(top)} ({parts}) if {slots} turns out in your favour."
 
 
+def _doc_read(path: Any, res: Optional[dict], newly_counted: list[str], lang: str, user_id: str) -> dict:
+    """What was read from one uploaded file, in plain fields, so the customer can see (and correct) what the claim rests on."""
+    name = Path(str(path)).name
+    if user_id and name.startswith(f"{user_id}-"):
+        name = name[len(user_id) + 1:].split("-", 1)[-1]
+    r = res or {}
+    dtype = str(r.get("doc_type") or "UNKNOWN")
+    fields: list[dict] = []
+
+    def add(en: str, id_: str, value: Any) -> None:
+        if value not in (None, "", []):
+            fields.append({"label": _L(lang, en, id_), "value": str(value)})
+
+    cur = r.get("currency") or "IDR"
+    try:
+        total = Decimal(str(r.get("total_amount") or 0))
+    except Exception:  # noqa: BLE001
+        total = Decimal(0)
+    if total > 0:
+        add("Total amount", "Jumlah total", f"{cur} {int(total):,}")
+    s0, s1, issued = r.get("service_start"), r.get("service_end"), r.get("issue_date")
+    if s0 and s1 and s0 != s1:
+        add("Treatment dates", "Tanggal perawatan", f"{s0} to {s1}" if lang != "id" else f"{s0} sampai {s1}")
+    elif s0 or s1:
+        add("Treatment date", "Tanggal perawatan", s0 or s1)
+    if issued:
+        add("Issued", "Diterbitkan", issued)
+    add("Days in hospital", "Hari rawat", r.get("days_hospitalized"))
+    dx = r.get("diagnosis_text") or ""
+    code = r.get("diagnosis_icd10") or ""
+    if dx or code:
+        add("Diagnosis", "Diagnosis", f"{dx} ({code})" if dx and code else dx or code)
+    items = r.get("line_items") or []
+    if items:
+        parts = []
+        for it in items[:6]:
+            cat = str(it.get("description_category", "")).replace("_", " ").lower()
+            amt = it.get("amount")
+            parts.append(f"{cat} {cur} {int(Decimal(str(amt))):,}" if amt not in (None, "") else cat)
+        add("Charges", "Rincian biaya", "; ".join(parts))
+    if "patient_name_matches_policyholder" in r:
+        add("Patient is the policyholder", "Pasien adalah pemegang polis",
+            _L(lang, "yes", "ya") if r.get("patient_name_matches_policyholder") else _L(lang, "no, please check", "tidak, mohon periksa"))
+    checks: list[str] = []
+    if r.get("suspicious") or r.get("contains_instruction_like_text"):
+        checks.append(_L(lang, "hidden or instruction-like text found and ignored", "teks tersembunyi atau berisi perintah ditemukan dan diabaikan"))
+    if r.get("consistency_ok") is False:
+        checks.append(_L(lang, "totals do not add up, please check", "total tidak cocok, mohon periksa"))
+    if str(r.get("extract_quality") or "").upper() == "LOW":
+        checks.append(_L(lang, "low scan quality, some values may be missing", "kualitas pindaian rendah, sebagian nilai mungkin hilang"))
+    return {"filename": name, "type": dtype.replace("_", " ").lower(), "fields": fields, "checks": checks,
+            "counts_as": [doc_label(c, lang) for c in newly_counted][:8]}
+
+
+def _pending_policy_id(session, pending: dict) -> Optional[str]:
+    """The policy a waiting submission was prepared for, so a correction rebuilds the same form, not another policy's."""
+    try:
+        h = (pending.get("args") or {}).get("draft_handle")
+        tv = session.registry.resolve(h) if isinstance(h, str) else None
+        pid = (tv.value or {}).get("policy_id") if tv is not None else None
+        return str(pid) if pid else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _progress_text(session, lang: str, router=None, user_text: str = "") -> tuple[str, list[str]]:
+    """Where the customer's claim stands: the live status of claims filed from this chat (read from the insurer's desk, not from
+    memory), else what is on the table (typed facts, files read, the form waiting)."""
+    parts: list[str] = []
+    filed = [str(c.get("id")) for c in (session.open_claims or []) if c.get("id")]
+    pending = next((p for p in session.pending_actions if p["tool"] == "submit_claim"), None)
+    live = {str(c.get("id")): c for c in (router._sandbox_claims(session) if router is not None else [])}
+    # a claim named in the message, or (in a fresh chat) the account's latest claims filed from the assistant: looked up live
+    named = [m.upper() for m in re.findall(r"\bCL-[A-Z0-9]{8}\b", user_text, re.I) if m.upper() in live]
+    if named:
+        filed = named
+    elif not filed:
+        recent = sorted((c for c in live.values() if str(c.get("status")) != "draft" and str(c.get("created_via") or "").lower().find("assist") >= 0),
+                        key=lambda c: str(c.get("filed_date") or ""), reverse=True)
+        filed = [str(c["id"]) for c in recent[:1]]
+    if filed:
+        for cid in filed[-2:]:
+            c = live.get(cid) or next((x for x in session.open_claims if str(x.get("id")) == cid), {})
+            status = str(c.get("status") or "submitted").replace("_", " ")
+            amount = c.get("claim_amount") or c.get("amount")
+            note = (c.get("decision_note") or "").strip()
+            meaning = {
+                "submitted": _L(lang, "the insurer has received it and has not started reviewing yet", "penanggung sudah menerimanya dan belum mulai meninjau"),
+                "under review": _L(lang, "an assessor at the insurer is checking the form and documents", "petugas penanggung sedang memeriksa formulir dan dokumen"),
+                "approved": _L(lang, "the insurer accepted the claim and will pay the approved amount; nothing more is needed from you", "penanggung menerima klaim dan akan membayar jumlah yang disetujui; tidak ada lagi yang perlu Anda lakukan"),
+                "rejected": _L(lang, "the insurer declined it; tell me if you want to look at an appeal", "penanggung menolaknya; beri tahu saya jika ingin melihat peluang banding"),
+                "paid": _L(lang, "the money has been paid out", "uangnya sudah dibayarkan"),
+            }.get(status, "")
+            amt = f" (IDR {int(float(amount)):,})" if amount not in (None, "") else ""
+            if status == "rejected":
+                code = str(c.get("rejection_code") or "").replace("_", " ").lower()
+                meaning = (_L(lang, f"the insurer declined it, reason given: {code}", f"penanggung menolaknya, alasan yang diberikan: {code}") if code
+                           else _L(lang, "the insurer declined it and gave no written reason", "penanggung menolaknya tanpa alasan tertulis"))
+                meaning += _L(lang, ". I can check whether the rejection has grounds under the policy wording and, if not, prepare an appeal for your confirmation; a claim is not re-filed with changed facts",
+                              ". Saya bisa memeriksa apakah penolakan itu berdasar menurut ketentuan polis dan, jika tidak, menyiapkan banding untuk Anda konfirmasi; klaim tidak diajukan ulang dengan fakta yang diubah")
+            parts.append(_L(lang, f"Claim {cid} ({c.get('policy_id') or ''}) is {status}{amt}: {meaning}." + (f' The insurer note: "{note}".' if note else ""),
+                            f"Klaim {cid} ({c.get('policy_id') or ''}) berstatus {status}{amt}: {meaning}." + (f' Catatan penanggung: "{note}".' if note else "")))
+        chips: list[str] = []
+        if any(str(live.get(cid, {}).get("status")) == "rejected" for cid in filed[-2:]):
+            chips.append(_L(lang, "Check whether an appeal has grounds", "Periksa apakah ada dasar banding"))
+        if not any(str(live.get(cid, {}).get("status")) in ("approved", "rejected", "paid") for cid in filed[-2:]):
+            parts.append(_L(lang, "I will tell you here as soon as the insurer decides.", "Saya akan memberi tahu di sini begitu penanggung memutuskan."))
+        return "\n".join(parts), chips
+    known = []
+    if session.facts.has(Slot.EVENT):
+        known.append(str(session.facts.get(Slot.EVENT)).replace("_", " ").lower())
+    adm = session.event_dates.get("admission")
+    if adm:
+        known.append(_L(lang, f"admitted {adm}", f"masuk {adm}"))
+    if session.diagnosis_code:
+        known.append(str(session.diagnosis_code).replace("_", " ").lower())
+    files = len(session.doc_uploads or [])
+    if not known and not files:
+        return (_L(lang, "There is no claim in progress yet. Tell me what happened, or send your documents, and I will start the draft.",
+                   "Belum ada klaim yang berjalan. Ceritakan apa yang terjadi, atau kirim dokumen Anda, lalu saya mulai drafnya."), [])
+    if known:
+        parts.append(_L(lang, "So far I know: " + ", ".join(known) + ".", "Yang saya ketahui sejauh ini: " + ", ".join(known) + "."))
+    if files:
+        parts.append(_L(lang, f"{files} document{'s' if files != 1 else ''} read and matched to the insurer's list.", f"{files} dokumen sudah dibaca dan dicocokkan dengan daftar penanggung."))
+    if pending:
+        parts.append(_L(lang, "The claim form is ready and waiting for your Confirm; nothing has been sent yet.",
+                        "Formulir klaim sudah siap dan menunggu Konfirmasi Anda; belum ada yang terkirim."))
+        return " ".join(parts), []
+    slot = getattr(session, "last_clarification_slot", None)
+    if slot:
+        parts.append(_L(lang, f"One thing is still open: {str(slot).replace('_', ' ')}.", f"Satu hal masih terbuka: {str(slot).replace('_', ' ')}."))
+    parts.append(_L(lang, "Nothing has been sent to the insurer yet. When you are ready, ask me to submit the claim and I will prepare the form for your confirmation.",
+                    "Belum ada yang dikirim ke penanggung. Kalau sudah siap, minta saya mengajukan klaim dan saya siapkan formulirnya untuk Anda konfirmasi."))
+    return " ".join(parts), [_L(lang, "Submit the claim for me", "Ajukan klaim saya")]
+
+
+def _news_reply(session, claim_id: str, router, use_llm: bool, audit_ids: list[str], tool_log: list[dict]) -> Reply:
+    """The agent's own reaction to an insurer decision: what it means, and the one next step it can offer."""
+    lang = getattr(session, "lang", "en") or "en"
+    live = {str(c.get("id")): c for c in (router._sandbox_claims(session) if router is not None else [])}
+    c = live.get(claim_id)
+    if c is None:
+        return Reply(text="", audit_ids=audit_ids, tool_calls=tool_log, language=lang)
+    status = str(c.get("status") or "").replace("_", " ")
+    note = (c.get("decision_note") or "").strip()
+    pid = str(c.get("policy_id") or "")
+    amount = c.get("claim_amount")
+    amt = f" (IDR {int(float(amount)):,})" if amount not in (None, "") else ""
+    head = _L(lang, f"The insurer has decided on claim {claim_id} ({pid}): {status}{amt}.", f"Penanggung sudah memutuskan klaim {claim_id} ({pid}): {status}{amt}.")
+    if note:
+        head += _L(lang, f' Their note: "{note}".', f' Catatan mereka: "{note}".')
+    chips: list[str] = []
+    body = ""
+    if status == "approved":
+        body = _L(lang, "Nothing more is needed from you; the approved amount will be paid out. I will tell you when it is marked paid.",
+                  "Tidak ada lagi yang perlu Anda lakukan; jumlah yang disetujui akan dibayarkan. Saya beri tahu saat sudah ditandai dibayar.")
+    elif status == "paid":
+        body = _L(lang, "The money has been paid out. This claim is closed.", "Uangnya sudah dibayarkan. Klaim ini selesai.")
+    elif status == "rejected":
+        facts = "; ".join(f"{k.value}: {v}" for k, v in session.facts.values.items())
+        terms = ""
+        try:
+            pol = next((p for p in router.policies(session) if p.id == pid), None) if router is not None else None
+            if pol is not None:
+                terms = "; ".join(f"{t.relation.value} {t.object}: {(t.evidence.text or '')[:160]}" for t in pol.tuples if t.relation.value in ("HAS_PERIOD", "EXCLUDES", "REQUIRES_DOCUMENT"))[:1500]
+        except Exception:  # noqa: BLE001
+            terms = ""
+        rd = decision_read.read(note, status, facts or "(none)", terms or "(none)", use_llm=use_llm)
+        kind = rd.kind if rd else "UNCLEAR"
+        audit_ids.append(audit(session, "ESCALATE", kind="INSURER_DECISION_READ", reason=f"{claim_id}:{status}:{kind}"))
+        if kind == "FIXABLE":
+            need = rd.what_is_needed or _L(lang, "the value the note asks for", "nilai yang diminta dalam catatan")
+            body = _L(lang, f"This is something we can fix: {need} Give it to me here and I will prepare a corrected submission for your confirmation; the facts of the event stay as they are.",
+                      f"Ini bisa kita perbaiki: {need} Berikan di sini dan saya siapkan pengajuan koreksi untuk Anda konfirmasi; fakta kejadiannya tetap seperti semula.")
+            session.submit_invited = True
+        elif kind == "WRONG":
+            body = _L(lang, f"I think this reason does not hold: {rd.what_is_needed} I can prepare an appeal that quotes the clause, for your confirmation.",
+                      f"Menurut saya alasan ini tidak berdasar: {rd.what_is_needed} Saya bisa menyiapkan banding yang mengutip klausulnya, untuk Anda konfirmasi.")
+            chips.append(_L(lang, "Prepare the appeal", "Siapkan banding"))
+        elif kind == "VALID":
+            body = _L(lang, "On the facts I have, the reason stands, so I would not advise an appeal. If you have information that changes the picture, tell me.",
+                      "Berdasarkan fakta yang saya pegang, alasan itu berdasar, jadi saya tidak menyarankan banding. Jika ada informasi yang mengubah gambarannya, beri tahu saya.")
+        else:
+            body = _L(lang, "The note gives no usable reason. I can check whether the rejection has grounds under the policy wording.",
+                      "Catatan itu tidak memberi alasan yang bisa dipakai. Saya bisa memeriksa apakah penolakan ini berdasar menurut ketentuan polis.")
+            chips.append(_L(lang, "Check whether an appeal has grounds", "Periksa apakah ada dasar banding"))
+    elif status == "under review":
+        body = _L(lang, "An assessor is now checking the form and documents." + (" If the note asks for something, give it to me here and I will attach or correct it." if note else ""),
+                  "Petugas sedang memeriksa formulir dan dokumen." + (" Jika catatannya meminta sesuatu, berikan di sini dan saya lampirkan atau perbaiki." if note else ""))
+    text = (head + " " + body).strip()
+    audit_ids.append(audit(session, "REPLY", intent="CLAIM_GUIDANCE", text_hash=args_hash({"t": text}), composed=False))
+    dialogue.remember(session, f"(insurer decision on {claim_id})", text)
+    return Reply(text=text, intent=Intent.CLAIM_GUIDANCE, audit_ids=audit_ids, tool_calls=tool_log, language=lang, suggestions=chips, context_relation="GENERAL")
+
+
 def _L(lang: str, en: str, id_: str) -> str:
     return id_ if lang == "id" else en
 
@@ -1362,6 +1732,38 @@ def _deadline_note(p: PolicyRecord, rr: portfolio.ReadinessReport) -> Optional[s
         return None
     need = {"TREATMENT_END": "discharge date (or how many days you stayed)", "DISCHARGE": "discharge date (or how many days you stayed)"}.get(anchor.value if anchor else "", "date")
     return f"the filing deadline is {days} days from {what}, but I do not have your {need} yet"
+
+
+def _asks(pl: Plan) -> Optional[str]:
+    """What the customer wants to know this turn, as the planner model read it ("llm:asks:<x>" in the rule hits)."""
+    return next((h.split(":", 2)[2] for h in pl.rule_hits if h.startswith("llm:asks:")), None)
+
+
+def _focus_lines(asks: Optional[str], p: PolicyRecord, rr: portfolio.ReadinessReport, lang: str) -> list[str]:
+    """The direct, deterministic answer to a documents / how-to-submit / late question, in the order a person would say it."""
+    out: list[str] = []
+    if asks in ("documents", "how_to_submit"):
+        req = [_doc(c, lang) for c in rr.required_documents if not str(c).upper().startswith("CLAIM_FORM")]
+        miss = [_doc(c, lang) for c in rr.missing_documents if not str(c).upper().startswith("CLAIM_FORM")]
+        if req:
+            out.append(_L(lang, f"For {p.product_name} ({p.id}) the insurer asks for: {', '.join(req)}. The claim form itself I prepare for you.",
+                          f"Untuk {p.product_name} ({p.id}) penanggung meminta: {', '.join(req)}. Formulir klaimnya saya yang siapkan."))
+        if miss:
+            out.append(_L(lang, f"Still to send: {', '.join(miss)}. Attach them with the paperclip, then ask me to submit and I will prepare the form for your confirmation.",
+                          f"Yang masih perlu dikirim: {', '.join(miss)}. Lampirkan lewat ikon klip, lalu minta saya mengajukan dan saya siapkan formulirnya untuk Anda konfirmasi."))
+        elif req:
+            out.append(_L(lang, "Everything is in. Ask me to submit the claim and I will prepare the form for your confirmation.",
+                          "Semua sudah lengkap. Minta saya mengajukan klaim dan saya siapkan formulirnya untuk Anda konfirmasi."))
+    elif asks == "late":
+        if rr.deadline:
+            effect = {"REJECT": _L(lang, "a claim received after that date is rejected", "klaim yang diterima setelah tanggal itu ditolak"),
+                      "DISCRETIONARY": _L(lang, "the insurer may reject a claim received after that date", "penanggung dapat menolak klaim yang diterima setelah tanggal itu")}.get(rr.late_effect or "", _L(lang, "the wording does not say what happens to a late claim", "ketentuan tidak menyebut akibat klaim yang terlambat"))
+            out.append(_L(lang, f"If you file late: {effect}. The last day to file for {p.id} is {rr.deadline.isoformat()}" + (f", {rr.days_left} days from now." if rr.days_left is not None and rr.days_left >= 0 else "."),
+                          f"Kalau terlambat: {effect}. Hari terakhir pengajuan untuk {p.id} adalah {rr.deadline.isoformat()}" + (f", {rr.days_left} hari lagi." if rr.days_left is not None and rr.days_left >= 0 else ".")))
+        else:
+            out.append(_L(lang, f"The extracted wording of {p.id} states no filing deadline, so file as soon as the documents are ready.",
+                          f"Ketentuan {p.id} yang terbaca tidak menyebut batas pengajuan, jadi ajukan segera setelah dokumen siap."))
+    return out
 
 
 def _readiness_lines(p: PolicyRecord, rr: portfolio.ReadinessReport, derived: Optional[dict] = None, lang: str = "en", *, deadline_only: bool = False) -> list[str]:
@@ -1777,7 +2179,7 @@ def _submitted_text(session: Session, res: dict, pa: dict) -> str:
     return " ".join(parts) + " " + INDICATIVE
 
 
-def _action_reply(session, router, call, finish, policies, relevant, facts_by_policy, documents_present, pl, doc_sourced, user_text, ctx=None) -> Reply:
+def _action_reply(session, router, call, finish, policies, relevant, facts_by_policy, documents_present, pl, doc_sourced, user_text, ctx=None, use_llm=True) -> Reply:
     tool = next((c.name for c in pl.tool_calls if _by_tier(c.name) == 2), None)
     if tool is None:
         return finish("I did not recognise an action I can prepare. I can draft and, after your confirmation, submit a claim, attach a document or schedule a call-back.")
@@ -1803,7 +2205,16 @@ def _action_reply(session, router, call, finish, policies, relevant, facts_by_po
                 if step is not None and step.status == "AWAITING_CONFIRMATION":
                     step.status, step.draft_id = "PLANNED", None
                 session.pending_actions = [x for x in session.pending_actions if x is not pa]
-            return finish(f"The confirmation was not accepted ({d.reason}); nothing was executed.", refused=True, refusal_reason=d.reason)
+            lang_ = getattr(session, "lang", "en") or "en"
+            if str(d.reason).startswith("RATE_OR_AMOUNT_LIMIT"):
+                why = _L(lang_, "This chat has reached its limit of confirmed submissions (three per session), a guard against runaway filing. "
+                                "Nothing was sent. Start a new chat to file another claim; the claims already filed are unaffected.",
+                         "Chat ini sudah mencapai batas pengajuan terkonfirmasi (tiga per sesi), pengaman terhadap pengajuan beruntun. "
+                         "Tidak ada yang terkirim. Mulai chat baru untuk mengajukan klaim lain; klaim yang sudah terkirim tidak terpengaruh.")
+            else:
+                why = _L(lang_, f"The confirmation was not accepted ({d.reason}); nothing was executed.",
+                         f"Konfirmasi tidak diterima ({d.reason}); tidak ada yang dijalankan.")
+            return finish(why, refused=True, refusal_reason=d.reason)
     plan = getattr(session, "claim_plan", None)
     if tool == "submit_claim" and ctx is not None and plan is not None and any(s.status in ("PLANNED", "AWAITING_CONFIRMATION") for s in plan.steps):
         nxt = next((s for s in plan.steps if s.status == "AWAITING_CONFIRMATION"), None) or plan_flow.cp.next_step(plan)
@@ -1821,9 +2232,32 @@ def _action_reply(session, router, call, finish, policies, relevant, facts_by_po
     if tool == "submit_claim":
         if not session.facts.has(Slot.EVENT):
             c = ClarificationRequest(slot=Slot.EVENT, verdict_by_value={})
-            return finish("Which claim? Tell me what happened (event, dates, hospital) and which policy, and I will prepare the draft first.", clarification=c)
+            return finish(_L(getattr(session, "lang", "en"), "Which claim? Tell me what happened (event, dates, hospital) and which policy, and I will prepare the draft first.",
+                             "Klaim yang mana? Ceritakan apa yang terjadi (peristiwa, tanggal, rumah sakit) dan polis mana, lalu saya siapkan drafnya dulu."), clarification=c)
         offer_pid = (session.submit_offer or {}).get("policy_id") if _SUBMIT_ANYWAY.search(user_text) else None
-        focus = (next((p for p in policies if p.id == offer_pid), None)  # "submit anyway" answers the offer that was made, whatever is in focus now
+        chosen_pid: Optional[str] = None
+        if not offer_pid and not (getattr(session, "rebuild_submit", None) or {}).get("policy_id"):
+            # more than one policy could take this claim: the customer decides, the agent does not guess
+            covered = []
+            for p in relevant:
+                r = portfolio.decide_mapped(p, facts_by_policy[p.id])
+                if r.verdict == Verdict.COVERED and not r.clarification and not r.missing_slots:
+                    covered.append(p)
+            if len(covered) > 1:
+                chosen_pid = policy_pick.pick(user_text, covered, session.focus_policy_id, use_llm=use_llm)
+                if chosen_pid is None:
+                    lang_ = getattr(session, "lang", "en") or "en"
+                    names = "; ".join(f"{p.product_name} ({p.id})" for p in covered)
+                    chips = [_L(lang_, f"Submit the claim for {p.id} ({p.product_name})", f"Ajukan klaim untuk {p.id} ({p.product_name})") for p in covered]
+                    audit(session, "ESCALATE", kind="POLICY_CHOICE_ASKED", reason=f"{len(covered)} policies could take the claim")
+                    return finish(_L(lang_,
+                                     f"More than one of your policies could take this claim: {names}. I prepare one claim per policy, so which one should I file first? You can file the other afterwards.",
+                                     f"Lebih dari satu polis Anda bisa menerima klaim ini: {names}. Saya menyiapkan satu klaim per polis, jadi yang mana dulu yang diajukan? Yang lain bisa diajukan sesudahnya."),
+                                  suggestions=chips, _no_compose=True)
+        rebuild_pid = (getattr(session, "rebuild_submit", None) or {}).get("policy_id")  # a correction rebuilds the form that was waiting
+        focus = (next((p for p in policies if p.id == rebuild_pid), None)
+                 or next((p for p in policies if p.id == chosen_pid), None)
+                 or next((p for p in policies if p.id == offer_pid), None)  # "submit anyway" answers the offer that was made, whatever is in focus now
                  or next((p for p in relevant if p.id == session.focus_policy_id), None)
                  or next((p for p in relevant if not portfolio.is_statutory(p)), None))
         if focus is None:
@@ -1924,13 +2358,30 @@ def _action_reply(session, router, call, finish, policies, relevant, facts_by_po
         return finish(txt, actions_pending=[pending])
 
     if tool == "attach_document":
-        claim = next((c for c in session.open_claims), None)
-        if claim is None:
-            return finish("There is no submitted claim to attach documents to yet. Prepare and confirm the claim first; I can then attach the document after your confirmation.")
-        handle = register_value(session, claim["id"], "ClaimId", SourceTier.TOOL, claim["id"])
-        doc_handle = register_value(session, {"path": "upload"}, "DocRef", SourceTier.USER_UPLOAD, "upload")
-        pending = _pending(session, "attach_document", {"claim_id": handle, "doc_handle": doc_handle}, f"Attach document to {claim['id']}")
-        return finish(f"Ready to attach the document to claim {claim['id']} after you confirm in the interface.", actions_pending=[pending])
+        lang_ = getattr(session, "lang", "en") or "en"
+        live = {str(c.get("id")): c for c in (router._sandbox_claims(session) if router is not None else [])}
+        filed = [str(c.get("id")) for c in (session.open_claims or []) if c.get("id")]
+        named = [m.upper() for m in re.findall("CL-[A-Z0-9]{8}", user_text.upper()) if m in live]
+        # the claim the attachment is for: the one named, else the one whose latest insurer note asked for something, else this chat's last claim
+        asked = [cid for cid, c in live.items() if str(c.get("status")) == "under_review" and (c.get("decision_note") or "").strip()]
+        asked.sort(key=lambda cid: str(live[cid].get("decided_at") or ""))
+        target = (named or asked[-1:] or filed[-1:] or [None])[0]
+        if target is None:
+            return finish(_L(lang_, "There is no filed claim to attach documents to yet. Prepare and confirm the claim first; after that I can attach documents to it.",
+                             "Belum ada klaim terkirim untuk dilampiri dokumen. Siapkan dan konfirmasi klaimnya dulu; setelah itu saya bisa melampirkan dokumen ke klaim itu."))
+        note = (live.get(target, {}).get("decision_note") or "").strip()
+        have = [_doc(c, lang_) for c in (session.docs_attached or []) if not str(c).upper().startswith("CLAIM_FORM")]
+        if not getattr(session, "last_turn_uploads", None):
+            return finish(_L(lang_, f"I do not have that file yet. On your account I hold: {', '.join(have) or 'no documents'}." + (f' The insurer asked: "{note}".' if note else "")
+                                    + f" Attach the file with the paperclip and tell me to send it, and I will attach it to claim {target} after your confirmation.",
+                             f"Saya belum punya berkas itu. Yang ada di akun Anda: {', '.join(have) or 'belum ada dokumen'}." + (f' Permintaan penanggung: "{note}".' if note else "")
+                                    + f" Lampirkan berkasnya lewat ikon klip dan minta saya mengirimnya, lalu saya lampirkan ke klaim {target} setelah Anda konfirmasi."))
+        handle = register_value(session, target, "ClaimId", SourceTier.TOOL, target)
+        doc_handle = session.doc_uploads[-1] if session.doc_uploads else register_value(session, {"path": str(session.last_turn_uploads[-1])}, "DocRef", SourceTier.USER_UPLOAD, "upload")
+        pending = _pending(session, "attach_document", {"claim_id": handle, "doc_handle": doc_handle}, f"Attach document to {target}")
+        return finish(_L(lang_, f"Ready to attach your file to claim {target}" + (f' (the insurer asked: "{note}")' if note else "") + ". Press Confirm and it goes to the insurer's desk; nothing is sent before that.",
+                         f"Siap melampirkan berkas Anda ke klaim {target}" + (f' (permintaan penanggung: "{note}")' if note else "") + ". Tekan Konfirmasi dan berkas masuk ke meja penanggung; sebelum itu tidak ada yang terkirim."),
+                      actions_pending=[pending])
     return finish("Action not available.")
 
 

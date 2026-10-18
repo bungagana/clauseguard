@@ -176,7 +176,7 @@ export async function login(persona: string): Promise<LoginResult> {
     // signed-in accounts: the person is identified by the verified access token, never by a persona name
     const token = await accessToken();
     if (!token) throw new ApiError("signed out", 401);
-    const res = await request<LoginResult>("/login", { method: "POST", body: JSON.stringify({ access_token: token }) });
+    const res = await request<LoginResult>("/login", { method: "POST", body: JSON.stringify({ access_token: token }) }, undefined, 60000);
     rememberAccount({ email: res.account ?? "", personaKey: res.persona_key ?? "account", demo: Boolean(res.demo) });
     return res;
   }
@@ -333,7 +333,8 @@ export async function exportPdf(token: string, body: ExportRequest): Promise<Blo
 export function uploadDocument(token: string, file: File): Promise<UploadResult> {
   const form = new FormData();
   form.append("file", file);
-  return request<UploadResult>("/upload", { method: "POST", body: form }, token, 30000);
+  // several files go up together and each one writes an audit entry; a distant database makes that slow, so allow time
+  return request<UploadResult>("/upload", { method: "POST", body: form }, token, 180000);
 }
 
 export function getAudit(token: string): Promise<{ chain_ok: boolean; events: AuditEvent[] }> {
@@ -439,4 +440,18 @@ export function deleteHistory(token: string, id: string): Promise<{ deleted: num
 
 export function clearHistoryRemote(token: string): Promise<{ deleted: number }> {
   return request("/history", { method: "DELETE" }, token);
+}
+
+/** New chat: the agent forgets the situation on the table (not the account's policies or claims). */
+export function resetSession(token: string): Promise<{ ok: boolean }> {
+  return request<{ ok: boolean }>("/session/reset", { method: "POST" }, token);
+}
+
+/** The customer's own Gemini key for this session. It is checked with Google once and kept only in the server's memory. */
+export function setOwnKey(token: string, apiKey: string): Promise<{ ok: boolean }> {
+  return request<{ ok: boolean }>("/session/api-key", { method: "POST", body: JSON.stringify({ api_key: apiKey }) }, token, 40000);
+}
+
+export function clearOwnKey(token: string): Promise<{ ok: boolean }> {
+  return request<{ ok: boolean }>("/session/api-key", { method: "DELETE" }, token);
 }

@@ -34,7 +34,7 @@ class ScriptedLLM:
         name = getattr(schema, "__name__", "")
         self.calls.append({"schema": name, "prompt": prompt, "system": system})
         if name == "_LLMComposed" and self.composed_text is not None:
-            return {"text": self.composed_text}
+            return {"analysis": "test", "candidates": [self.composed_text], "best": 0}
         raise RuntimeError("LLM disabled")
 
 
@@ -171,3 +171,19 @@ def test_composer_is_skipped_for_refusals_and_actions(monkeypatch):
         r, f, s = run(monkeypatch, text, GOOD_EN)
         assert not r.composed
         assert not any(c["schema"] == "_LLMComposed" for c in f.calls)
+
+
+def test_the_second_candidate_is_used_when_the_picked_one_breaks_a_rule(monkeypatch):
+    """The model writes two candidates; the verifier tries the picked one first and the other one next."""
+    from clauseguard import llm
+    from clauseguard.agent import composer
+
+    payload = composer.ReplyPayload(intent="CLAIM_GUIDANCE", user_question="berapa?", language="id", as_of="2026-10-19", disclaimer_required=True)
+    bad = "Anda mendapat IDR 9,999,999. Jawaban ini bersifat indikatif; ketentuan polis yang berlaku tetap menentukan."
+    good = "Saya belum bisa menyebut jumlahnya. Jawaban ini bersifat indikatif; ketentuan polis yang berlaku tetap menentukan."
+    monkeypatch.setattr(llm, "generate_json", lambda *a, **k: {"analysis": "x", "candidates": [bad, good], "best": 0})
+    text, violations = composer.compose(payload)
+    assert text == good and violations == []
+    monkeypatch.setattr(llm, "generate_json", lambda *a, **k: {"analysis": "x", "candidates": [bad, bad], "best": 1})
+    text, violations = composer.compose(payload)
+    assert text is None and any(v.startswith("NUMBER") for v in violations)

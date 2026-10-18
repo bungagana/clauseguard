@@ -7,6 +7,15 @@ from clauseguard import config
 from clauseguard.security import audit, kill_switch
 
 
+@pytest.fixture(autouse=True)
+def _open_sandbox_login(monkeypatch):
+    """Tests never depend on the developer's .env: the open sandbox login is on unless a test turns accounts on itself."""
+    monkeypatch.setattr(config, "AUTH_MODE", "")
+    # nor on its storage setting: a test must never write to, or hold connections on, the real Postgres chain
+    monkeypatch.setattr(config, "STORAGE", "local")
+    audit._default = None
+
+
 @pytest.fixture
 def isolated_paths(tmp_path, monkeypatch):
     """Point audit/kill-switch/DB at tmp so tests never touch evidence/ or data/sandbox.sqlite."""

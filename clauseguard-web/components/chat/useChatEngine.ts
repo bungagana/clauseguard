@@ -86,7 +86,7 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
   const [securityPanelOpen, setSecurityPanelOpen] = useState(false);
   const [demoSheetOpen, setDemoSheetOpen] = useState(false);
   // several files can be attached before one message; they travel together as `uploads`
-  const [uploadedDocs, setUploadedDocs] = useState<Array<{ doc_id: string; filename: string }>>([]);
+  const [uploadedDocs, setUploadedDocs] = useState<Array<{ doc_id: string; filename: string; file?: File }>>([]);
   const uploadedDoc = uploadedDocs.length === 0 ? null : { doc_id: uploadedDocs[uploadedDocs.length - 1].doc_id, filename: uploadedDocs.length === 1 ? uploadedDocs[0].filename : `${uploadedDocs.length} files attached` };
   const [digest, setDigest] = useState<DigestResponse | null>(null);
   const [digestDismissed, setDigestDismissed] = useState(false);
@@ -335,7 +335,10 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
   const newConversation = useCallback(() => {
     setIsDemo(false);
     beginConversation(personaKey, [{ id: nextId(), role: "assistant", text: greetingFor(personaKey, mode) }]);
-  }, [personaKey, beginConversation, mode]);
+    // the agent starts from a clean table too, so an earlier conversation cannot leak into this one
+    const token = tokenRef.current[personaKey];
+    if (token && online) api.resetSession(token).catch(() => undefined);
+  }, [personaKey, beginConversation, mode, online]);
 
   const loadConversation = useCallback(
     async (id: string) => {
@@ -440,6 +443,39 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
 
   const abortRef = useRef<AbortController | null>(null);
 
+  // Sessions live in the backend's memory, so a restart or redeploy ends them. Any call that gets a 401 signs in again
+  // once (the account is the same, so its uploads and history are still there) and repeats the call.
+  const renewing = useRef<Record<string, Promise<string>>>({});
+  const withRenewedSession = useCallback(
+    async <T,>(forPersonaKey: string, run: (token: string) => Promise<T>): Promise<T> => {
+      // one sign-in at a time per account, shared by every call that is waiting for it (several files go up together)
+      const signInAgain = (): Promise<string> => {
+        const running = renewing.current[forPersonaKey];
+        if (running) return running;
+        const p = api
+          .login(forPersonaKey)
+          .then((fresh) => {
+            tokenRef.current[forPersonaKey] = fresh.session_token;
+            return fresh.session_token;
+          })
+          .finally(() => {
+            delete renewing.current[forPersonaKey];
+          });
+        renewing.current[forPersonaKey] = p;
+        return p;
+      };
+      const existing = tokenRef.current[forPersonaKey];
+      if (!existing) return run(await signInAgain());
+      try {
+        return await run(existing);
+      } catch (err) {
+        if (!(err instanceof api.ApiError && err.status === 401)) throw err;
+        return run(await signInAgain());
+      }
+    },
+    []
+  );
+
   const sendChatWithRetry = useCallback(
     async (forPersonaKey: string, text: string, uploads: string[], signal?: AbortSignal): Promise<SendChatResult> => {
       const token = tokenRef.current[forPersonaKey];
@@ -455,6 +491,12 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
             const fresh = await api.login(forPersonaKey);
             tokenRef.current[forPersonaKey] = fresh.session_token;
             api.getPolicies(fresh.session_token).then(setPolicies).catch(() => undefined);
+            // the server session was gone (restart or redeploy): the agent no longer holds this conversation's facts.
+            // Say so instead of answering from an empty table as if nothing happened.
+            pushMessage({
+              role: "assistant",
+              text: "The server restarted, so I lost what we had established in this chat. Please tell me the situation again in one message (what happened, the dates, the hospital) and I will pick it up from there.",
+            });
             const reply = await api.sendChat(fresh.session_token, text, uploads, signal);
             return { ok: true, reply, token: fresh.session_token };
           } catch (retryErr) {
@@ -467,7 +509,7 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
         return { ok: false, reason: "network" };
       }
     },
-    []
+    [pushMessage]
   );
 
   const stopSending = useCallback(() => {
@@ -674,17 +716,16 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
       }
       setUploadBusy(true);
       try {
-        const token = tokenRef.current[personaKey];
-        const res = await api.uploadDocument(token, file);
+        const res = await withRenewedSession(personaKey, (token) => api.uploadDocument(token, file));
         // the file waits in the composer; it enters the conversation only when the customer sends a message
-        setUploadedDocs((prev) => [...prev, { doc_id: res.doc_id, filename: file.name }]);
+        setUploadedDocs((prev) => [...prev, { doc_id: res.doc_id, filename: file.name, file }]);
       } catch {
         pushMessage({ role: "assistant", text: "That upload didn't go through. Please try again." });
       } finally {
         setUploadBusy(false);
       }
     },
-    [online, personaKey, pushMessage]
+    [online, personaKey, pushMessage, withRenewedSession]
   );
 
   // ------------------------------------------------------------ upload my own policy (live extraction demo)
@@ -697,10 +738,10 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
         });
         return;
       }
-      const token = tokenRef.current[personaKey];
       const id = pushMessage({ role: "user", policyUpload: { filename: file.name, status: "extracting" } });
       try {
-        const result = await api.uploadPolicy(token, file);
+        const result = await withRenewedSession(personaKey, (token) => api.uploadPolicy(token, file));
+        const token = tokenRef.current[personaKey];
         patchMessage(id, { policyUpload: { filename: file.name, status: "done", result } });
         // merge immediately so the panel shows it without waiting on a round trip, then
         // refetch to prove it is real server-side state, not just a client-side merge.
@@ -726,7 +767,7 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
         patchMessage(id, { policyUpload: { filename: file.name, status: "error", error: message } });
       }
     },
-    [online, personaKey, pushMessage, patchMessage, mode]
+    [online, personaKey, pushMessage, patchMessage, mode, withRenewedSession]
   );
 
   const viewUploadedPolicy = useCallback((policyId: string) => {
@@ -758,6 +799,15 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
         statuses.forEach((text, claimId) => {
           if (claimStatusSeen.current?.get(claimId) !== text) {
             pushMessage({ role: "assistant", text: `News from the insurer: ${text}` });
+            // the agent reads the decision and says what it means and what it can do next
+            void (async () => {
+              try {
+                const reply = await api.sendChat(token, `__news__:${claimId}`, []);
+                if (reply.text) pushMessage({ role: "assistant", reply, liveReply: true });
+              } catch {
+                /* the plain news line above already reached the customer */
+              }
+            })();
           }
         });
       }
@@ -990,6 +1040,8 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
     demoSheetOpen,
     setDemoSheetOpen,
     uploadedDoc,
+    pendingDocs: uploadedDocs,
+    removeAttachment: (id: string) => setUploadedDocs((prev) => prev.filter((d) => d.doc_id !== id)),
     uploadBusy,
     switchPersona,
     sendMessage,

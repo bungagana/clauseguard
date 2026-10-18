@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertTriangle, Check, Download, Eye, FileText, Loader2, X } from "lucide-react";
+import { AlertTriangle, Check, Download, Eye, FileText, Loader2, Pencil, X } from "lucide-react";
 import { exportPdf, getChatPending, getMyClaim } from "@/lib/api";
 import type { PoliciesResponse } from "@/lib/types";
 import { policyName } from "@/lib/clauses";
@@ -25,12 +25,65 @@ function fieldText(f: FormField, currency: string): string {
   return String(v);
 }
 
-function Row({ k, v }: { k: string; v: React.ReactNode }) {
+// Fields the customer states about themselves and the event. The rest is derived (policy, insurer, deadline,
+// amount claimed, documents) and can only change by changing the facts or the documents behind it.
+const EDITABLE: Record<string, { input: "text" | "date" | "number"; say: (v: string) => string }> = {
+  insured_name: { input: "text", say: (v) => `The insured person's name is ${v}.` },
+  claimant_name: { input: "text", say: (v) => `The person submitting the claim is ${v}.` },
+  facility_name: { input: "text", say: (v) => `The hospital is ${v}.` },
+  diagnosis: { input: "text", say: (v) => `The diagnosis is ${v}.` },
+  admission_date: { input: "date", say: (v) => `The admission date is ${v}.` },
+  discharge_date: { input: "date", say: (v) => `The discharge date is ${v}.` },
+  billed_amount: { input: "number", say: (v) => `The total hospital bill is ${v} rupiah.` },
+};
+
+function Row({ k, v, onEdit }: { k: string; v: React.ReactNode; onEdit?: { input: "text" | "date" | "number"; current: string; send: (value: string) => void } }) {
+  const [editing, setEditing] = useState(false);
+  const [val, setVal] = useState("");
   if (v === null || v === undefined || v === "") return null;
   return (
     <div className="grid grid-cols-[9.5rem_1fr] gap-2 border-b border-border/60 py-1 last:border-b-0">
       <dt className="text-[11px] uppercase tracking-wide text-muted-foreground">{k}</dt>
-      <dd className="text-xs text-foreground">{v}</dd>
+      <dd className="flex items-start gap-1.5 text-xs text-foreground">
+        {editing && onEdit ? (
+          <form
+            className="flex w-full items-center gap-1.5"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (val.trim()) onEdit.send(val.trim());
+              setEditing(false);
+            }}
+          >
+            <input
+              autoFocus
+              type={onEdit.input}
+              value={val}
+              onChange={(e) => setVal(e.target.value)}
+              className="min-w-0 flex-1 rounded-md border border-input bg-background px-2 py-1 text-xs outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            />
+            <button type="submit" aria-label="Apply change" className="rounded p-1 text-success hover:bg-muted"><Check className="h-3.5 w-3.5" /></button>
+            <button type="button" aria-label="Cancel change" onClick={() => setEditing(false)} className="rounded p-1 text-muted-foreground hover:bg-muted"><X className="h-3.5 w-3.5" /></button>
+          </form>
+        ) : (
+          <>
+            <span className="min-w-0 flex-1">{v}</span>
+            {onEdit && (
+              <button
+                type="button"
+                aria-label={`Edit ${k}`}
+                title="Correct this value"
+                onClick={() => {
+                  setVal(onEdit.input === "number" ? onEdit.current.replace(/[^0-9]/g, "") : onEdit.input === "date" ? onEdit.current : onEdit.current === "—" ? "" : onEdit.current);
+                  setEditing(true);
+                }}
+                className="shrink-0 rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+              >
+                <Pencil className="h-3 w-3" />
+              </button>
+            )}
+          </>
+        )}
+      </dd>
     </div>
   );
 }
@@ -41,13 +94,14 @@ function Row({ k, v }: { k: string; v: React.ReactNode }) {
  * prepared), never rebuilt in the browser. When the draft carries the insurer's own form layout
  * (derived from that policy's clauses), the form follows it; otherwise the standard rows show.
  */
-export function ClaimFormPreview({ token, tool, policies, recordedDraft, claimId, sent }: {
+export function ClaimFormPreview({ token, tool, policies, recordedDraft, claimId, sent, onCorrect }: {
   token?: string;
   tool: string;
   policies: PoliciesResponse | null;
   recordedDraft?: Draft;
   claimId?: string; // a claim already filed: the form is read from the customer's own claim record
   sent?: boolean; // heading for a form that has already been sent
+  onCorrect?: (text: string) => void; // a pending form: the customer corrects a value, which goes back through the agent
 }) {
   const replay = Boolean(recordedDraft); // a recorded scene carries its own draft: nothing is fetched, nothing is exported
   const [draft, setDraft] = useState<Draft | null | undefined>(recordedDraft ?? undefined);
@@ -183,7 +237,20 @@ export function ClaimFormPreview({ token, tool, policies, recordedDraft, claimId
                     </dd>
                   </div>
                 ) : (
-                  <Row key={f.label} k={f.label} v={<span className={f.state === "filled" ? "" : "text-muted-foreground"}>{fieldText(f, currency)}</span>} />
+                  <Row
+                    key={f.label}
+                    k={f.label}
+                    v={<span className={f.state === "filled" ? "" : "text-muted-foreground"}>{fieldText(f, currency)}</span>}
+                    onEdit={
+                      onCorrect && !replay && !sent && EDITABLE[f.source]
+                        ? {
+                            input: EDITABLE[f.source].input,
+                            current: typeof f.value === "string" || typeof f.value === "number" ? String(f.value) : "",
+                            send: (value) => onCorrect(EDITABLE[f.source].say(value)),
+                          }
+                        : undefined
+                    }
+                  />
                 )
               )}
             </dl>

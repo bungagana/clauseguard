@@ -202,10 +202,14 @@ def attach(draft: dict[str, Any], *, policy: PolicyRecord, session: Any, meta: d
     person = getattr(session, "person_id", None)
     if person:
         insured = meta.get("persons", {}).get(person, insured)
-    vals = values_from_draft(draft, policy=policy, insured_name=insured, claimant_name=meta.get("name"),
+    typed = getattr(session, "form_overrides", None) or {}  # the customer's own corrections of free-text fields
+    insured = typed.get("insured_name", insured)
+    vals = values_from_draft(draft, policy=policy, insured_name=insured, claimant_name=typed.get("claimant_name", meta.get("name")),
                              facility_name=getattr(session, "facility_name", None), documents_present=documents_present,
                              documents_attached=list(getattr(session, "docs_attached", []) or []),
                              as_of=getattr(session, "as_of", ""), lang=lang)
+    if typed.get("diagnosis"):
+        vals["diagnosis"] = typed["diagnosis"]  # the customer's own wording of the diagnosis, shown as typed
     # the form being prepared here is the insurer's claim form: that requirement is met by this draft itself
     form_codes = [c for c in (draft.get("required_documents") or []) if str(c).startswith("CLAIM_FORM")]
     if form_codes:

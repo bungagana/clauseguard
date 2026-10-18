@@ -225,7 +225,8 @@ def test_vague_message_with_an_attachment_summarises_real_coverage_instead_of_th
 def test_a_real_question_with_an_attachment_is_not_rerouted_to_the_coverage_summary():
     r = upload_turn("rizky", "apa itu subrogasi?", ["/tmp/fake_policy.pdf"])
     assert r.intent == Intent.OUT_OF_SCOPE
-    assert "That question is outside what I can answer" in r.text
+    # the refusal is worded in the customer's language
+    assert "That question is outside what I can answer" in r.text or "di luar yang bisa saya jawab" in r.text
 
 
 def test_same_vague_message_without_an_attachment_is_unchanged():
@@ -256,7 +257,8 @@ def test_recognised_attached_document_is_acknowledged_in_the_reply(monkeypatch):
     monkeypatch.setattr(_TR, "_t_extract_document", lambda self, session, args, **kw: {"doc_type": "INVOICE", "total_amount": None, "suspicious": False})
     r = upload_turn("rizky", "ok", ["/tmp/fake_invoice.pdf"])
     assert r.intent == Intent.POLICY_QA
-    assert "extracted as invoice" in r.text
+    # the document is acknowledged by its own card (what was read from it), not by a note in the text
+    assert r.doc_reads and r.doc_reads[0]["type"] == "invoice"
 
 
 def test_unmappable_policy_question_still_gets_the_callback_offer():
@@ -344,3 +346,17 @@ def test_model_binder_leaves_agreement_unchanged(monkeypatch):
     s = Session("rizky", "rizky", as_of=AS_OF)
     handle_turn(s, "I was hospitalised at a non-bpjs partner hospital", router=ToolRouter(PolicySource(mode="fixtures")), use_llm=True)
     assert s.facts.values.get(Slot.FACILITY_BPJS_PARTNER) is False
+
+
+def test_a_greeting_never_prepares_an_action_even_if_the_model_proposes_one(monkeypatch):
+    from clauseguard import llm
+    from clauseguard.agent import planner
+
+    # the model proposes an action but reads neither an explicit request nor an accepted offer: not accepted
+    monkeypatch.setattr(llm, "generate_json", lambda *a, **k: {"intent": "ACTION", "action_tool": "schedule_callback", "tools": []})
+    pl = planner.plan("hii, can you help me?", None, use_llm=True)
+    assert pl.intent != Intent.ACTION and not any(c.name == "schedule_callback" for c in pl.tool_calls)
+    # a real request, read as such by the model, goes through
+    monkeypatch.setattr(llm, "generate_json", lambda *a, **k: {"intent": "ACTION", "action_tool": "schedule_callback", "tools": [], "explicit_request": True})
+    pl = planner.plan("can someone call me about my claim?", None, use_llm=True)
+    assert pl.intent == Intent.ACTION and pl.tool_calls[0].name == "schedule_callback"

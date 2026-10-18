@@ -549,7 +549,9 @@ def appeal_turn(ctx: Ctx) -> Any:
         rejected = [c for c in rejected if by_id[c["policy_id"]].product_type in ctx.focus_types] or []
     code = appeal_mod.reason_from_text(ctx.user_text)
     if rejected:
-        row = rejected[-1]
+        mine = {str(c.get("id")) for c in (getattr(s, "open_claims", None) or [])}
+        rejected.sort(key=lambda c: (str(c.get("id")) in mine, str(c.get("decided_at") or ""), str(c.get("id"))))
+        row = rejected[-1]  # the claim this chat filed, else the most recently decided one
         policy = by_id[row["policy_id"]]
         dates = _claim_dates(row)
         facts = ctx.facts_by_policy.get(policy.id, s.facts)

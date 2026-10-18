@@ -69,6 +69,7 @@ COMPLAINT_ROUTE_ID = ("Jalur pengaduan (sebagai informasi, tidak saya ajukan): p
 class AppealGround(Strict):
     code: str
     clause_id: Optional[str] = None
+    clause_ref: str = ""  # the section as printed in the policy, for a letter a person reads
     clause_text: str = Field(default="", max_length=1200)
     finding_en: str = Field(max_length=600)
     finding_id: str = Field(max_length=600)
@@ -159,6 +160,23 @@ def _clause_text(policy: PolicyRecord, tid: Optional[str]) -> str:
     return t.evidence.text if t is not None else ""
 
 
+def clause_ref(policy: PolicyRecord, tid: Optional[str], lang: str = "en") -> str:
+    """How a person would cite the clause: the section printed in the policy, never an internal tuple id."""
+    t = policy.tuple_index().get(tid) if tid else None
+    sec = (t.evidence.section or "").strip() if t is not None else ""
+    if sec:
+        return sec
+    return "the benefit clause" if lang == "en" else "klausul manfaat"
+
+
+def reason_words(code: str, lang: str = "en") -> str:
+    """The insurer's stated reason in words; 'not specified' becomes an honest 'no reason was stated'."""
+    c = (code or "").replace("_", " ").strip().lower()
+    if not c or c in ("not specified", "unspecified", "none"):
+        return "no reason was stated" if lang == "en" else "tanpa alasan tertulis"
+    return c
+
+
 def _alternatives(policy: PolicyRecord, others: list[PolicyRecord], facts_by_policy: dict[str, ScenarioFacts], dates: dict[str, date], as_of: date) -> list[Alternative]:
     out = []
     for o in others:
@@ -243,8 +261,9 @@ def analyse(policy: PolicyRecord, facts: ScenarioFacts, *, as_of: date, rejectio
         cites = [t for t in r.fired_tuple_ids if t][:3]
         case.grounds.append(AppealGround(
             code="COVERED_ON_RECORDED_FACTS", clause_id=cites[0] if cites else None, clause_text=_clause_text(policy, cites[0] if cites else None),
-            finding_en=f"On the facts recorded for this claim the policy wording grants the benefit (clauses {', '.join(cites) or 'n/a'}); the stated reason ({code.replace('_', ' ').lower()}) does not apply.",
-            finding_id=f"Berdasarkan fakta yang tercatat untuk klaim ini, ketentuan polis memberikan manfaat (klausul {', '.join(cites) or 'n/a'}); alasan yang disebut ({code.replace('_', ' ').lower()}) tidak berlaku."))
+            clause_ref=clause_ref(policy, cites[0] if cites else None, "en"),
+            finding_en=f"On the facts recorded for this claim, the policy wording ({clause_ref(policy, cites[0] if cites else None, 'en')}) grants the benefit, so the rejection ({reason_words(code, 'en')}) does not apply.",
+            finding_id=f"Berdasarkan fakta yang tercatat untuk klaim ini, ketentuan polis ({clause_ref(policy, cites[0] if cites else None, 'id')}) memberikan manfaat, sehingga penolakan ({reason_words(code, 'id')}) tidak berlaku."))
         return case
     if r.verdict == Verdict.CLARIFY:
         case.needs = [s.value for s in (r.missing_slots or ([r.clarification.slot] if r.clarification else []))]
@@ -294,7 +313,7 @@ def _money(v: Optional[Decimal], cur: str) -> str:
 
 
 def letter_template(case: AppealCase, lang: str, claimant: str) -> str:
-    reason = case.rejection_code.replace("_", " ").lower()
+    reason = case.rejection_code
     ref = case.claim_id or _L(lang, "(claim reference as on your rejection letter)", "(nomor klaim sesuai surat penolakan)")
     when = ""
     if case.event_date:
@@ -307,14 +326,15 @@ def letter_template(case: AppealCase, lang: str, claimant: str) -> str:
            f"Perihal: Banding atas penolakan klaim {ref} pada polis {case.policy_id} ({case.product_name})"),
         "",
         _L(lang, "Dear Sir or Madam,", "Dengan hormat,"),
-        _L(lang, f"I appeal the rejection of claim {ref}{when}, which was rejected on the ground of {reason}.",
-           f"Saya mengajukan banding atas penolakan klaim {ref}{when}, yang ditolak dengan alasan {reason}."),
+        _L(lang, f"I appeal the rejection of claim {ref}{when}. The rejection was issued with {reason_words(reason, 'en')}.",
+           f"Saya mengajukan banding atas penolakan klaim {ref}{when}. Penolakan tersebut disampaikan {reason_words(reason, 'id')}."),
     ]
     for g in case.grounds:
         lines.append(g.finding_id if lang == "id" else g.finding_en)
         if g.clause_id and g.clause_text:
-            lines.append(_L(lang, f'The policy wording [{case.policy_id} {g.clause_id}] states: "{g.clause_text}"',
-                            f'Ketentuan polis [{case.policy_id} {g.clause_id}] menyatakan: "{g.clause_text}"'))
+            sec = g.clause_ref or "the policy wording"
+            lines.append(_L(lang, f'The policy wording ({sec}) states: "{g.clause_text}"',
+                            f'Ketentuan polis ({sec}) menyatakan: "{g.clause_text}"'))
     if case.documents_to_provide:
         lines.append(_L(lang, "I enclose: " + "; ".join(doc_label(d, lang) for d in case.documents_to_provide) + ".",
                         "Bersama ini saya lampirkan: " + "; ".join(doc_label(d, lang) for d in case.documents_to_provide) + "."))
@@ -388,7 +408,7 @@ def compose_letter(case: AppealCase, lang: str, claimant: str, *, use_llm: bool)
 
 # --------------------------------------------------------------------------- reply text
 def summary_lines(case: AppealCase, lang: str) -> list[str]:
-    reason = case.rejection_code.replace("_", " ").lower()
+    reason = reason_words(case.rejection_code, lang)
     ref = f" {case.claim_id}" if case.claim_id else ""
     src = _L(lang, " (as you reported)", " (sesuai laporan Anda)") if case.rejection_source == "USER_REPORTED" else ""
     out = [_L(lang, f"I re-checked the rejection of your {case.product_name} ({case.policy_id}) claim{ref}, reason: {reason}{src}.",
