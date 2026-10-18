@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import secrets
 import threading
 import time
@@ -67,7 +68,11 @@ class Strict(BaseModel):
 
 
 class LoginIn(Strict):
-    persona: str
+    persona: str = ""
+    # CG_AUTH=supabase: the Supabase access token of a signed-in, email-confirmed user
+    access_token: Optional[str] = Field(default=None, max_length=4096)
+    # open sandbox login only: the browser's remembered guest account id
+    account_id: Optional[str] = Field(default=None, pattern=r"^C-GUEST-[0-9A-F]{16}$")
     # production mode: the browser remembers its guest account id so a reload keeps the same policies and history
     account_id: Optional[str] = Field(default=None, pattern=r"^C-GUEST-[0-9A-F]{16}$")
 
@@ -131,11 +136,57 @@ def _admin(x_admin_token: Optional[str] = Header(default=None)) -> None:
         raise HTTPException(403, "admin token required")
 
 
+def _auth_on() -> bool:
+    return config.AUTH_MODE == "supabase"
+
+
+def _verified_account(access_token: str) -> dict[str, str]:
+    """Ask Supabase who owns this access token. Works for any signing algorithm; the password never reaches us."""
+    import httpx
+
+    if not (config.SUPABASE_URL and config.SUPABASE_PUBLISHABLE_KEY):
+        raise HTTPException(503, "sign-in is not configured on this server")
+    try:
+        r = httpx.get(
+            f"{config.SUPABASE_URL}/auth/v1/user",
+            headers={"apikey": config.SUPABASE_PUBLISHABLE_KEY, "Authorization": f"Bearer {access_token}"},
+            timeout=10,
+        )
+    except httpx.HTTPError:
+        raise HTTPException(503, "sign-in service unreachable")
+    if r.status_code != 200:
+        raise HTTPException(401, "sign in again")
+    u = r.json()
+    sub = str(u.get("id") or "")
+    if not re.fullmatch(r"[0-9a-fA-F-]{36}", sub):
+        raise HTTPException(401, "sign in again")
+    if not u.get("email_confirmed_at"):
+        raise HTTPException(403, "confirm your email first")
+    return {"sub": sub, "email": str(u.get("email") or "").lower()}
+
+
+def _demo_persona_for(email: str) -> Optional[str]:
+    for pair in config.DEMO_ACCOUNTS.split(","):
+        addr, _, persona = pair.strip().partition("=")
+        if addr.strip().lower() == email and persona.strip() in _seed.PERSONAS:
+            return persona.strip()
+    return None
+
+
 @app.post("/login")
 def login(body: LoginIn) -> dict[str, Any]:
-    if body.persona == "guest":
-        # production mode: an account with no seeded policies; whatever the customer uploads belongs to it alone.
-        # A remembered id reopens the same account (its uploads and history); otherwise a new one is created.
+    if _auth_on():
+        if not body.access_token:
+            raise HTTPException(401, "sign in with your account")
+        acct = _verified_account(body.access_token)
+        demo = _demo_persona_for(acct["email"])
+        if demo:
+            p = dict(_seed.persona_user(demo))
+        else:
+            p = {"user_id": "U-" + acct["sub"].replace("-", "").upper(), "label": acct["email"]}
+        body = LoginIn(persona=demo or "account")
+    elif body.persona == "guest":
+        # open sandbox login (no CG_AUTH): an account with no seeded policies, reopened by its remembered id
         p = {"user_id": body.account_id or f"C-GUEST-{uuid.uuid4().hex[:16].upper()}", "label": "Your account"}
     else:
         try:
@@ -150,7 +201,7 @@ def login(body: LoginIn) -> dict[str, Any]:
     s.t3_tickets_last_24h = _tools.t3_tickets_last_24h(s.user_id)
     SESSIONS[token] = s
     audit.append({"event_type": "LOGIN", "session_id": s.session_id, "user_id": s.user_id, "decision": "OK", "reason": body.persona})
-    return {"session_token": token, "session_id": s.session_id, "user_id": s.user_id, "persona": p["label"]}
+    return {"session_token": token, "session_id": s.session_id, "user_id": s.user_id, "persona": p["label"], "persona_key": body.persona, "demo": bool(_seed.PERSONAS.get(body.persona)), "account": acct["email"] if _auth_on() else None}
 
 
 @app.post("/chat")
@@ -170,12 +221,19 @@ def chat(body: ChatIn, s: PepSession = Depends(_session)) -> dict[str, Any]:
 
 
 def _resolve_upload(s: PepSession, ref: str) -> str:
-    """The UI passes the `doc_id` returned by /upload. Only this session's own uploads resolve
-    (the id is prefixed with the server-side user id); anything else is passed through unchanged."""
+    """The UI passes the `doc_id` returned by /upload. Only this session's own uploads resolve (the id is
+    prefixed with the server-side user id). A path is accepted only inside the bundled demo data, so one
+    account can never name another account's file."""
     name = Path(ref).name
     if name == ref and name.startswith(f"{s.user_id}-") and (UPLOAD_DIR / name).exists():
         return str(UPLOAD_DIR / name)
-    return ref
+    try:
+        p = Path(ref).resolve()
+        if p.is_file() and p.is_relative_to((config.DATA_DIR / "demo").resolve()):
+            return str(p)
+    except (OSError, ValueError):
+        pass
+    raise HTTPException(403, "that upload is not on your account")
 
 
 @app.get("/tools")
@@ -531,6 +589,8 @@ def _pay_view(s: PepSession, policy_id: str, status: str, grace_days: int) -> di
 
 @app.get("/personas")
 def personas() -> list[dict[str, Any]]:
+    if _auth_on():
+        return []
     return [{"key": k, "label": v["label"], "user_id": v["user_id"], "description": PERSONA_DESCRIPTIONS.get(k, "")} for k, v in _seed.PERSONAS.items()]
 
 
@@ -672,7 +732,7 @@ def portfolio_view(s: PepSession = Depends(_session)) -> dict[str, Any]:
 def audit_verify() -> dict[str, Any]:
     ok, bad = audit.verify(config.AUDIT_PATH)
     events = audit.get_default().read()
-    return {"chain_ok": ok, "first_bad_seq": bad, "total_events": len(events), "path": str(config.AUDIT_PATH), "last_hash": events[-1]["hash"] if events else audit.GENESIS}
+    return {"chain_ok": ok, "first_bad_seq": bad, "total_events": len(events), "last_hash": events[-1]["hash"] if events else audit.GENESIS}
 
 
 @app.post("/demo/audit_tamper")

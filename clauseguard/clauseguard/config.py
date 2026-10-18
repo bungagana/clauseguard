@@ -40,6 +40,15 @@ CLAIM_AMOUNT_CAP_IDR: int = int(os.getenv("CG_CLAIM_AMOUNT_CAP_IDR", "100000000"
 # .env before any admin/backoffice demo.
 ADMIN_TOKEN: str = os.getenv("CG_ADMIN_TOKEN", "")
 
+# Account sign-in. CG_AUTH=supabase turns on real accounts: /login then needs a Supabase access token for a
+# confirmed email, and the persona/guest shortcuts are closed. Unset keeps the open sandbox login that the
+# tests, the evidence scripts and a local clone use.
+AUTH_MODE: str = os.getenv("CG_AUTH", "").strip().lower()
+SUPABASE_URL: str = os.getenv("SUPABASE_URL", "").strip().rstrip("/")
+SUPABASE_PUBLISHABLE_KEY: str = os.getenv("SUPABASE_PUBLISHABLE_KEY", "").strip()
+# email=persona pairs: these confirmed accounts open a seeded persona; any other account starts empty
+DEMO_ACCOUNTS: str = os.getenv("CG_DEMO_ACCOUNTS", "rizky@demo.clauseguard.id=rizky,santoso@demo.clauseguard.id=santoso,dewi@demo.clauseguard.id=dewi")
+
 STORAGE: str = os.getenv("CG_STORAGE", "local").strip().lower()
 DATABASE_URL: str = os.getenv("DATABASE_URL", "")
 

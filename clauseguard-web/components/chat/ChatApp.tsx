@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import { authEnabled, hasSession, signOut, storedAccount, type AccountInfo } from "@/lib/auth";
+import { login } from "@/lib/api";
 import { useChatEngine } from "./useChatEngine";
 import { TopBar } from "./TopBar";
 import { MessageList } from "./MessageList";
@@ -22,7 +26,55 @@ import { ApiKeyDialog } from "./ApiKeyDialog";
 import { defaultAppMode, readStoredAppMode, setStoredAppMode, type AppMode } from "@/lib/appMode";
 
 export function ChatApp({ initialModeOverride }: { initialModeOverride?: AppMode }) {
-  const [mode, setMode] = useState<AppMode>(initialModeOverride ?? defaultAppMode());
+  const router = useRouter();
+  const [account, setAccount] = useState<AccountInfo | null>(null);
+  const [ready, setReady] = useState(!authEnabled);
+
+  // With accounts on, nothing renders until we know who is signed in; otherwise back to the sign-in page.
+  useEffect(() => {
+    if (!authEnabled) return;
+    if (!hasSession()) {
+      router.replace("/login");
+      return;
+    }
+    const known = storedAccount();
+    if (known) {
+      setAccount(known);
+      setReady(true);
+      return;
+    }
+    login("")
+      .then((res) => {
+        setAccount({ email: res.account ?? "", personaKey: res.persona_key ?? "account", demo: Boolean(res.demo) });
+        setReady(true);
+      })
+      .catch(() => {
+        signOut();
+        router.replace("/login");
+      });
+  }, [router]);
+
+  if (!ready) {
+    return (
+      <div className="flex h-dvh items-center justify-center bg-background text-muted-foreground">
+        <Loader2 className="h-5 w-5 animate-spin" />
+      </div>
+    );
+  }
+  return (
+    <ChatShell
+      initialModeOverride={initialModeOverride}
+      account={account}
+      onSignOut={() => {
+        signOut();
+        router.replace("/login");
+      }}
+    />
+  );
+}
+
+function ChatShell({ initialModeOverride, account, onSignOut }: { initialModeOverride?: AppMode; account: AccountInfo | null; onSignOut: () => void }) {
+  const [mode, setMode] = useState<AppMode>(account ? (account.demo ? "demo" : "production") : initialModeOverride ?? defaultAppMode());
 
   // The query param (set by the landing page's two CTAs) wins and is remembered for this
   // browser; otherwise fall back to whatever was remembered last, then the env default. This
@@ -30,6 +82,7 @@ export function ChatApp({ initialModeOverride }: { initialModeOverride?: AppMode
   // effect below (same render, earlier hook), so the persona/greeting it picks already sees
   // the right mode.
   useEffect(() => {
+    if (account) return; // the account decides the mode
     if (initialModeOverride) {
       setStoredAppMode(initialModeOverride);
       return;
@@ -39,7 +92,7 @@ export function ChatApp({ initialModeOverride }: { initialModeOverride?: AppMode
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const engine = useChatEngine(mode);
+  const engine = useChatEngine(mode, account?.personaKey);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [processOpen, setProcessOpen] = useState(true);
 
@@ -54,6 +107,7 @@ export function ChatApp({ initialModeOverride }: { initialModeOverride?: AppMode
         mode={mode}
         personas={engine.personas}
         activePersona={engine.personaKey}
+        accountLocked={Boolean(account)}
         onSwitchPersona={engine.switchPersona}
         fromHistory={engine.fromHistory}
         onOpenPolicies={() => engine.setPoliciesPanelOpen(true)}
@@ -83,8 +137,14 @@ export function ChatApp({ initialModeOverride }: { initialModeOverride?: AppMode
           onClearAll={engine.clearHistory}
           profile={(() => {
             const m = personaMeta(engine.personaKey);
-            return { name: m.name, subtitle: m.tagline, initials: m.initials, accent: m.accent, demo: mode === "demo" };
+            if (account && !account.demo) {
+              const local = account.email.split("@")[0] || "You";
+              return { name: local, subtitle: account.email, initials: local.slice(0, 2).toUpperCase(), accent: m.accent, demo: false };
+            }
+            return { name: m.name, subtitle: account ? account.email : m.tagline, initials: m.initials, accent: m.accent, demo: mode === "demo" };
           })()}
+          onSignOut={account ? onSignOut : undefined}
+          accountMode={Boolean(account)}
         />
 
         <div className="flex min-w-0 flex-1 flex-col">

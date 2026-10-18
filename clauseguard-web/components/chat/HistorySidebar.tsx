@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Check, History, MessageSquarePlus, Pencil, Search, Trash2, X } from "lucide-react";
+import { Check, History, LogOut, MessageSquarePlus, Pencil, Search, Trash2, X } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -187,9 +187,12 @@ export interface HistorySidebarProps {
   onClearAll: () => void;
   // who is signed in: the demo persona, or the production account
   profile?: { name: string; subtitle: string; initials: string; accent: string; demo: boolean };
+  // signed-in accounts: sign out, and the history copy says it is kept on the account
+  onSignOut?: () => void;
+  accountMode?: boolean;
 }
 
-export function HistorySidebarBody({ conversations, mode, activeId, onSelect, onNew, onRename, onDelete, onClearAll, profile }: HistorySidebarProps) {
+export function HistorySidebarBody({ conversations, mode, activeId, onSelect, onNew, onRename, onDelete, onClearAll, profile, onSignOut, accountMode }: HistorySidebarProps) {
   const [query, setQuery] = useState("");
   const [confirmClear, setConfirmClear] = useState(false);
   const [now, setNow] = useState(() => Date.now());
@@ -306,13 +309,18 @@ export function HistorySidebarBody({ conversations, mode, activeId, onSelect, on
           <span className="ml-auto inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-[10px] text-success" title={profile.demo ? "Signed in to a demo account" : "Signed in"}>
             <span className="h-1.5 w-1.5 rounded-full bg-success" /> {profile.demo ? "Demo" : "Online"}
           </span>
+          {onSignOut && (
+            <button type="button" onClick={onSignOut} aria-label="Sign out" title="Sign out" className="shrink-0 rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground">
+              <LogOut className="h-4 w-4" />
+            </button>
+          )}
         </div>
       )}
       <p
         className="border-t border-border px-3 py-1.5 text-[10px] text-muted-foreground"
         title={mode === "backend" ? "Saved by the ClauseGuard backend on this computer" : "The backend history store is unreachable; chats stay in this browser until it returns"}
       >
-        {mode === "backend" ? "Stored locally on this computer" : "Stored locally in this browser only"}
+        {mode === "backend" ? (accountMode ? "Saved to your account" : "Stored locally on this computer") : "Not synced yet. Saved in this browser until the server is reachable"}
       </p>
     </div>
   );

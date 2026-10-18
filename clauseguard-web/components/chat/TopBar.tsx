@@ -19,6 +19,7 @@ const AUTONOMY: { key: AutonomyMode; label: string }[] = [
 
 export function TopBar({
   mode,
+  accountLocked,
   personas,
   activePersona,
   onSwitchPersona,
@@ -35,6 +36,7 @@ export function TopBar({
   onAutonomyChange,
 }: {
   mode: AppMode;
+  accountLocked?: boolean;
   personas: Persona[];
   activePersona: string;
   onSwitchPersona: (key: string) => void;
@@ -108,7 +110,7 @@ export function TopBar({
       </div>
 
       <div className="flex shrink-0 items-center gap-0.5 sm:gap-2">
-        {mode === "demo" && <PersonaSwitcher personas={personas} activeKey={activePersona} onSwitch={onSwitchPersona} />}
+        {mode === "demo" && !accountLocked && <PersonaSwitcher personas={personas} activeKey={activePersona} onSwitch={onSwitchPersona} />}
         <Button
           variant="ghost"
           size="icon"

@@ -23,6 +23,9 @@ import { ArchitectureDiagram } from "@/components/landing/ArchitectureDiagram";
 import { BarChart, StatTile } from "@/components/landing/Charts";
 import { Reveal } from "@/components/landing/Reveal";
 
+// with accounts on, every entry goes through the sign-in page
+const chatHref = (m: "demo" | "production") => (process.env.NEXT_PUBLIC_SUPABASE_URL ? "/login" : `/chat?mode=${m}`);
+
 const REPO_URL = "https://github.com/bungagana/clauseguard";
 
 const NAV = [
@@ -178,10 +181,10 @@ export default function LandingPage() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex">
-              <Link href="/chat?mode=demo">Open the demo</Link>
+              <Link href={chatHref("demo")}>Open the demo</Link>
             </Button>
             <Button asChild size="sm">
-              <Link href="/chat?mode=production">Try with your policy</Link>
+              <Link href={chatHref("production")}>Try with your policy</Link>
             </Button>
           </div>
         </div>
@@ -207,12 +210,12 @@ export default function LandingPage() {
               </p>
               <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
                 <Button asChild size="lg" className="glow-primary w-full sm:w-auto">
-                  <Link href="/chat?mode=demo">
+                  <Link href={chatHref("demo")}>
                     Open the demo <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
-                  <Link href="/chat?mode=production">Upload your own policy</Link>
+                  <Link href={chatHref("production")}>Upload your own policy</Link>
                 </Button>
               </div>
               <dl className="mt-2 grid w-full grid-cols-3 gap-4 border-t border-border/70 pt-5">
@@ -413,7 +416,7 @@ export default function LandingPage() {
             </p>
             <div className="relative mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <Button asChild size="lg" className="glow-primary">
-                <Link href="/chat?mode=production">
+                <Link href={chatHref("production")}>
                   Upload a policy <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>

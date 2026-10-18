@@ -26,6 +26,7 @@ import type {
   SessionState,
 } from "./types";
 import { normalizeChatReply } from "./normalize";
+import { accessToken, authEnabled, rememberAccount } from "./auth";
 
 const BASE = "/api/cg";
 
@@ -170,9 +171,17 @@ export async function addLlmKey(adminToken: string, apiKey: string): Promise<{ p
 // ---------------------------------------------------------------- auth / persona
 const GUEST_KEY = "clauseguard-guest-account";
 
-export function login(persona: string): Promise<LoginResult> {
-  // production mode signs in as a guest account; the browser remembers its id so a reload keeps the same
-  // uploaded policies and history. The id grants nothing by itself: a session token is still issued per login.
+export async function login(persona: string): Promise<LoginResult> {
+  if (authEnabled) {
+    // signed-in accounts: the person is identified by the verified access token, never by a persona name
+    const token = await accessToken();
+    if (!token) throw new ApiError("signed out", 401);
+    const res = await request<LoginResult>("/login", { method: "POST", body: JSON.stringify({ access_token: token }) });
+    rememberAccount({ email: res.account ?? "", personaKey: res.persona_key ?? "account", demo: Boolean(res.demo) });
+    return res;
+  }
+  // open sandbox login: production mode signs in as a guest account; the browser remembers its id so a reload
+  // keeps the same uploaded policies and history. The id grants nothing by itself.
   let account_id: string | undefined;
   if (persona === "guest") {
     try {

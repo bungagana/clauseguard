@@ -396,6 +396,9 @@ export interface LoginResult {
   session_id: string;
   user_id: string;
   persona: string;
+  persona_key?: string;
+  demo?: boolean;
+  account?: string | null;
 }
 
 // clauseguard/agent/digest.py::DigestAction / DigestItem, via GET /entitlement/digest

@@ -45,6 +45,10 @@ Set in Space settings, "Variables and secrets". All optional: without them the a
 | `CG_ENV` | variable | `production` (set in the image) |
 | `PORT` | variable | defaults to 7860, which the Space requires |
 
+### Accounts
+
+With `CG_AUTH=supabase` the backend closes the open persona and guest login. Every request starts from a Supabase access token, and the backend asks Supabase (`/auth/v1/user`) who owns it and whether the email is confirmed. Set on the backend: `CG_AUTH=supabase`, `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`. Set on the web service before it builds: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`. In Supabase: Authentication, Providers, Email with "Confirm email" on; Authentication, URL Configuration, Site URL set to the web address. The three sandbox customers are three confirmed Supabase users whose emails are listed in `CG_DEMO_ACCOUNTS`; any other account starts with no policies.
+
 The container filesystem is ephemeral: the sandbox database and uploads reset on every restart or rebuild. With `CG_STORAGE=postgres` the audit chain, conversation history and the claims/tickets mirror survive restarts; without it everything stays local, which is enough for a demo.
 
 ## Backend: create the Space

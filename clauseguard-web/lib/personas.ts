@@ -36,6 +36,7 @@ export const PERSONA_META: Record<string, PersonaMeta> = {
 };
 
 // production mode signs in as a fresh account with no policies on file
+PERSONA_META.account = { key: "account", name: "Your account", tagline: "Policies you upload stay on your account", initials: "ME", accent: "bg-primary/10 text-primary" };
 PERSONA_META.guest = { key: "guest", name: "Your account", tagline: "Policies you upload stay in this session", initials: "ME", accent: "bg-primary/10 text-primary" };
 
 export const FALLBACK_PERSONAS: Persona[] = [

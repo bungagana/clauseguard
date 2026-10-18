@@ -69,6 +69,13 @@ Claim form and documents: the form layout a model proposes for an insurer is str
 - The solvers (`solver.py`, `allocation.py`, `recourse.py`, `twin.py`, `timeline.py`, `plans/selector.py`) are pure functions of typed records and typed facts. Recourse never changes a fact that describes the event itself (`IMMUTABLE_SLOTS`, `MISREPRESENTATION_GUARD`, `tests/test_recourse.py`), so the recourse solver cannot be used to coach misrepresentation.
 - Sequence for a claim: `draft_claim` (T1) stores the draft as a handle labelled TOOL, the UI shows a summary with trust badges, the user clicks confirm, the server issues a nonce bound to (session, tool, argument hash), `submit_claim` passes the enforcement check, and the result is audited.
 
+### 4.1 Accounts and customer isolation
+
+- With `CG_AUTH=supabase` there is no anonymous login. The browser signs in at Supabase (the password never reaches our backend) and gives the backend the access token. The backend asks Supabase who owns the token, requires a confirmed email, and derives the internal user id from the verified account id. The id is never taken from the request.
+- Every route that touches customer data resolves the session first and filters on that user id: policies, claims (`/claims/{id}`), uploads (`/uploads/{id}`), history (`/history`) and chat. A chat turn can only name the caller's own uploads or the bundled demo files.
+- Tests in `tests/test_accounts.py` log in as two different accounts and check that the second one gets a refusal or an empty list for the first one's uploads, chats, claims and for forged or unconfirmed tokens. A request that names another account's claim is audited as `IDOR_ATTEMPT`.
+- Chats cached in the browser are removed on sign out and whenever a different account signs in.
+
 ## 5. Audit and oversight
 
 - Audit log: hash-chained JSONL (`security/audit.py`). Each line holds the sequence number, time, session, user, event type, tool, tier, argument hash, argument labels, decision, reason, model, prompt hash, previous hash and own hash. Arguments are stored as hashes.

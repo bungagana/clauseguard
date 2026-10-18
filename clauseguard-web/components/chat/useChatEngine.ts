@@ -71,10 +71,10 @@ function findOfflineStep(personaKey: string, text: string): SceneStep | undefine
   return undefined;
 }
 
-export function useChatEngine(mode: AppMode) {
+export function useChatEngine(mode: AppMode, accountPersona?: string) {
   const [online, setOnline] = useState<boolean | null>(null);
   const [personas, setPersonas] = useState<Persona[]>(FALLBACK_PERSONAS);
-  const [personaKey, setPersonaKey] = useState(mode === "production" ? PRODUCTION_PERSONA : DEFAULT_PERSONA);
+  const [personaKey, setPersonaKey] = useState(accountPersona ?? (mode === "production" ? PRODUCTION_PERSONA : DEFAULT_PERSONA));
   const [policies, setPolicies] = useState<PoliciesResponse | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [followUps, setFollowUps] = useState<string[]>([]);
@@ -277,7 +277,7 @@ export function useChatEngine(mode: AppMode) {
   // load the default persona once we know whether the backend is reachable
   useEffect(() => {
     if (online === null) return;
-    const first = mode === "production" ? PRODUCTION_PERSONA : DEFAULT_PERSONA;
+    const first = accountPersona ?? (mode === "production" ? PRODUCTION_PERSONA : DEFAULT_PERSONA);
     loadPersona(first, online);
     beginConversation(first, [{ id: nextId(), role: "assistant", text: greetingFor(first, mode) }]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -977,7 +977,8 @@ export function useChatEngine(mode: AppMode) {
     sending,
     isDemo,
     replay,
-    scenes: SCENES,
+    // a signed-in account only plays the scenes written for its own persona
+    scenes: accountPersona ? SCENES.filter((s) => s.personaKey === accountPersona) : SCENES,
     policiesPanelOpen,
     setPoliciesPanelOpen,
     focusPolicyId,
