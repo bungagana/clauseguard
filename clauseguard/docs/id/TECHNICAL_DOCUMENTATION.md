@@ -6,194 +6,241 @@ FinTechathon 2026 · International Track · Topik D: AI Insurance Assistant
 Tim: Bunga Laelatul Muna, Izra, Wan Sabrina · Institut Teknologi Sepuluh Nopember, Indonesia
 Demo langsung: https://clauseguard.up.railway.app · Kode sumber: https://github.com/bungagana/clauseguard
 
-## 1. Ringkasan
+## 1. Problem & scope
 
-ClauseGuard adalah asisten asuransi berbasis AI untuk pemegang polis. Nasabah menceritakan apa yang terjadi dengan kata-katanya sendiri, dalam bahasa Indonesia atau Inggris, dan ClauseGuard menjawab tiga pertanyaan dari polis milik nasabah itu sendiri: apakah ditanggung, berapa yang dibayar, dan kapan batas pengajuan klaimnya. Setiap jawaban mengutip klausul yang menentukannya. Setelah itu ClauseGuard membaca dokumen rumah sakit nasabah, menyiapkan formulir klaim milik penanggung, mengajukan klaim setelah nasabah mengonfirmasi, dan menyampaikan keputusan penanggung kembali ke chat beserta langkah berikutnya.
+### 1.1 Topik dan masalah
 
-Rancangannya bertumpu pada satu prinsip: **model bahasa memahami dan menjelaskan, kode memutuskan dan bertindak.** Putusan cakupan, jumlah, dan tenggat berasal dari mesin aturan deterministik yang bekerja atas redaksi polis yang telah dikompilasi menjadi aturan bertipe. Tindakan berjalan di dalam empat tingkat izin yang ditegakkan oleh kode. Perubahan yang menyangkut uang dan identitas tidak pernah dijalankan oleh asisten.
+ClauseGuard menjawab Topik D, asisten asuransi berbasis AI. Banyak rumah tangga memegang beberapa polis sekaligus, misalnya BPJS Kesehatan, asuransi dari kantor, polis pribadi, dan perlindungan kecelakaan. Aturan yang menentukan sebuah klaim ada di dokumen polis yang panjang dan jarang dibaca. Aturan itu mencakup batas waktu pengajuan, masa tunggu, dokumen wajib, dan urutan pembayar. OJK melaporkan bahwa lebih dari separuh pengaduan asuransi di Indonesia menyangkut kesulitan klaim. Di Amerika Serikat, sekitar satu dari lima klaim in-network ditolak pada 2023 dan kurang dari 1% yang diajukan banding (KFF, 2025).
 
-| Ukuran | Hasil |
-|---|---|
-| Serangan yang berhasil mengubah sesuatu, dari 27 (penegakan izin aktif) | 0 |
-| Akurasi pada benchmark asuransi publik (390 label) | 84,6% |
-| Penolakan yang dikarang padahal tidak ada klausul yang berlaku | 1,4% |
-| Tugas klaim terskrip yang lulus | 33 dari 33 |
-| Tes otomatis yang lulus | 554 |
+Lima kesalahan mahal terus berulang. Klaim diajukan setelah tenggat. Klaim diajukan di dalam masa tunggu. Klaim diajukan ke pembayar yang salah lebih dulu. Nasabah membayar dua kali untuk perlindungan yang tumpang tindih atau melewatkan manfaat yang bisa ditumpuk. Polis dibiarkan lapse di masa tenggang. Kelima kesalahan ini sebenarnya dapat dihitung dari dokumen milik nasabah sendiri.
 
-## 2. Masalah
+### 1.2 Persona pengguna
 
-Banyak rumah tangga memegang beberapa polis sekaligus: jaminan kesehatan nasional, asuransi dari kantor, polis pribadi, rider, dan perlindungan kecelakaan. Aturan yang menentukan sebuah klaim (batas pengajuan, masa tunggu, dokumen wajib, siapa yang membayar lebih dulu) berada di dokumen yang jarang dibaca nasabah. Di Indonesia, OJK melaporkan bahwa lebih dari separuh pengaduan asuransi menyangkut kesulitan klaim. Di Amerika Serikat, penanggung di marketplace menolak sekitar satu dari lima klaim in-network pada 2023, dan kurang dari 1% yang diajukan banding (KFF, 2025). Di Tiongkok dan Hong Kong, sengketa yang dipublikasikan berpusat pada definisi penyakit kritis yang ketat dan ketidakterbukaan informasi.
-
-Chatbot umum menjawab pertanyaan ini dari ingatan dan dapat menyatakan aturan yang salah dengan yakin. Lima kesalahan mahal terus berulang, dan masing-masing sebenarnya adalah hitungan atas dokumen nasabah sendiri: mengajukan setelah tenggat, mengklaim di dalam masa tunggu, mengklaim ke penanggung yang salah lebih dulu, membayar dua kali untuk perlindungan yang tumpang tindih atau melewatkan manfaat yang bisa ditumpuk, serta membiarkan polis lapse di masa tenggang.
-
-## 3. Apa yang dilakukan ClauseGuard
-
-### 3.1 Fitur utama
-
-**ClauseLens: memahami perlindungan Anda.** Nasabah bertanya dengan bahasa sehari-hari ("dirawat tiga hari karena DBD, bisa klaim?"). ClauseLens membaca semua polis nasabah sekaligus dan menjawab per polis: ditanggung atau tidak, perkiraan jumlahnya, dan hari terakhir pengajuan, disertai kutipan klausul penentunya kata per kata. Bila satu fakta yang belum diketahui akan mengubah jawaban, hanya fakta itu yang ditanyakan. Bila beberapa polis berlaku, ClauseLens menghitung siapa yang membayar lebih dulu dan berapa bagian masing-masing.
-
-**ClaimFlow: mengurus klaim Anda.** Nasabah mengirim dokumen rumah sakit (kuitansi, resume medis, resep, hasil laboratorium). ClaimFlow menampilkan apa yang dibaca dari setiap berkas, mencocokkannya dengan daftar dokumen wajib milik penanggung, dan mengisi formulir klaim penanggung tersebut. Nasabah dapat mengoreksi kolom mana pun sebelum mengirim. Klaim baru diajukan setelah nasabah menekan Konfirmasi. Saat penanggung memutuskan, keputusan dan catatan petugas muncul di chat, beserta apa yang dapat diperbaiki atau ada tidaknya dasar banding.
-
-**TrustLock: Anda tetap memegang kendali.** Nasabah memilih seberapa jauh asisten boleh bertindak (Observe, Draft, atau Act). Mengirim apa pun memerlukan konfirmasi sekali pakai yang tidak dapat dibuat oleh model. Perubahan rekening pencairan atau ahli waris hanya dilakukan oleh petugas penanggung. Instruksi tersembunyi di dalam berkas yang diunggah dideteksi dan diabaikan. Setiap langkah dicatat dalam log yang tahan manipulasi.
-
-### 3.2 Fitur pendukung
-
-| Fitur | Manfaat bagi nasabah |
-|---|---|
-| Deadline Tracker | Peringatan sebelum batas pengajuan klaim atau masa tenggang premi habis |
-| Claim Simulator | Jawaban pengandaian ("kalau saya dirawat lima hari") tanpa memengaruhi klaim sungguhan |
-| Unggah polis sendiri | PDF polis apa pun dibaca langsung dan bisa ditanyakan saat itu juga; ditandai belum terverifikasi sampai ditinjau |
-| Pembaca dokumen | Ringkasan per berkas: jumlah, tanggal, diagnosis, dan persyaratan yang dipenuhi berkas itu |
-| Bantuan banding | Memeriksa apakah penolakan bertentangan dengan polis dan menyusun surat banding yang mengutip klausulnya |
-| Ekspor PDF | Jawaban, bukti, dan formulir klaim dalam bentuk dokumen |
-| Dua bahasa | Membalas dalam bahasa yang dipakai nasabah, Indonesia atau Inggris |
-| Akun dan riwayat | Masuk dengan email; polis, klaim, dan chat setiap nasabah tersimpan di akunnya |
-
-### 3.3 Satu klaim, dari awal sampai akhir
-
-1. Rizky, seorang mahasiswa pascasarjana, menulis: "Saya dirawat karena DBD mulai 25 September selama tiga hari."
-2. ClauseLens menjawab: polis santunan harian menanggungnya, Rp 1.500.000, ajukan paling lambat 27 November, dengan kutipan Pasal Manfaat 1. Untuk jaminan kesehatan nasional, ia menanyakan satu hal: apakah rumah sakitnya mitra BPJS?
-3. Rizky mengirim empat berkas rumah sakit. ClaimFlow menampilkan isi setiap berkas dan menyatakan seluruh dokumen wajib sudah lengkap.
-4. Rizky meminta asisten mengajukan klaim. ClaimFlow menampilkan formulir klaim penanggung yang sudah terisi; Rizky menekan Konfirmasi.
-5. Petugas di meja klaim penanggung menyetujui klaim dengan catatan. Keputusan itu muncul di chat Rizky tanpa perlu ditanyakan.
-
-Alur ini direkam terhadap penanggung sandbox lengkap dengan nomor urut audit (bukti eksekusi, butir "claims desk run").
-
-## 4. Arsitektur
-
-![Gambar 1. Arsitektur ClauseGuard: agen AI memahami dan menjelaskan; mesin aturan memutuskan; penjaga menegakkan izin; setiap langkah dicatat.](../img/architecture.png)
-
-| Komponen | Jenis | Tanggung jawab |
+| Persona | Profil | Polis yang dimiliki |
 |---|---|---|
-| Conversation Agent | AI | Membaca hubungan pesan dengan percakapan: situasi baru, koreksi, jawaban atas pertanyaan asisten, pengandaian, atau pertanyaan umum |
-| Fact Agent | AI | Mengubah teks bebas menjadi fakta bertipe (tanggal, hari rawat, tagihan, penyebab) |
-| Document Reader Agent | AI, terisolasi | Menghapus data pribadi secara lokal, lalu mengubah redaksi polis dan dokumen klaim menjadi catatan bertipe; tidak punya alat dan tidak melihat riwayat percakapan |
-| Mesin aturan | Kode | Memutuskan cakupan, jumlah, tenggat, urutan pembayar, dan kesiapan klaim dari aturan bertipe |
-| Penjaga (Guardian) | Kode | Menegakkan empat tingkat izin pada setiap pemanggilan alat |
-| Explainer Agent | AI | Menyusun kalimat jawaban; setiap jumlah, tanggal, dan nomor diperiksa terhadap hasil mesin sebelum ditampilkan |
-| Watchdog Agent | AI dan kode | Memantau tenggat dan keputusan klaim, dan memberi tahu nasabah sebelum uang hilang |
-| Log audit | Kode | Catatan berantai hash atas setiap langkah, hanya ditulis oleh kode |
+| Rizky, 24 tahun | Mahasiswa pascasarjana, sedang mengurus klaim rawat inap DBD | Santunan harian rumah sakit (Sompo), asuransi jiwa berjangka (premi menunggak), penyakit kritis, BPJS Kesehatan kelas 2 |
+| Keluarga Santoso | Keluarga empat orang, kepala keluarga karyawan swasta | Asuransi kesehatan dan jiwa kelompok dari kantor, rider santunan harian keluarga, polis kesehatan pribadi istri, BPJS Kesehatan kelas 1 |
+| Dewi, 29 tahun | Kurir ojek daring | Asuransi kecelakaan diri, perlindungan kecelakaan dari platform saat bertugas, BPJS Kesehatan kelas 3 (menunggak tiga bulan), Jasa Raharja |
 
-Setiap pemanggilan model bahasa dibatasi skema: model mengisi struktur tertutup (maksud dari daftar tetap, pilihan di antara kandidat yang diberikan, fakta dari kosakata tetap), dan kode memvalidasi hasilnya sebelum dipakai. Keluaran model tidak pernah menjadi argumen untuk pengajuan, dan tidak ada model di dalam mesin aturan.
+Ketiga persona dan polisnya bersifat sintetis. Redaksi polisnya dimodelkan dari dokumen publik penanggung. Nasabah sungguhan juga dapat mendaftar, mengunggah PDF polisnya sendiri, dan langsung bertanya.
 
-## 5. Metode inti
+### 1.3 Task keuangan yang diselesaikan agent
 
-### 5.1 Polis sebagai aturan bertipe
+1. **Memeriksa cakupan.** Untuk setiap polis, agent menentukan apakah kejadian ditanggung, berapa perkiraan manfaatnya, dan kapan batas pengajuannya, disertai kutipan klausul.
+2. **Menentukan urutan pembayar.** Untuk satu tagihan rumah sakit, agent menghitung polis mana yang membayar lebih dulu dan berapa bagian masing-masing.
+3. **Menyiapkan dan mengajukan klaim.** Agent membaca dokumen rumah sakit, mencocokkannya dengan daftar dokumen wajib, mengisi formulir klaim milik penanggung, lalu mengajukannya setelah nasabah menekan Konfirmasi.
+4. **Menindaklanjuti keputusan.** Agent menyampaikan keputusan penanggung, menjelaskan apa yang perlu diperbaiki, dan memeriksa apakah penolakan punya dasar banding.
+5. **Memantau tenggat dan status polis.** Agent mengingatkan batas pengajuan dan masa tenggang premi sebelum terlewat.
+6. **Menutup celah perlindungan.** Agent merekomendasikan produk yang menutup celah terbesar sesuai anggaran bulanan.
 
-Setiap polis dikompilasi menjadi kumpulan aturan klausul: *menanggung*, *mengecualikan*, *pengecualian atas pengecualian*, *bersyarat*, *periode* (masa tunggu, masa tenggang, batas pengajuan, masa bertahan hidup), *membayar*, *mewajibkan dokumen*, *berakhir jika*. Setiap aturan membawa kualifikasi bertipe (jumlah, batas per hari, deductible, co-payment, rentang waktu, syarat) dan teks klausul asli beserta nomor bagiannya. Teks klausul ditampilkan kepada nasabah tetapi tidak pernah dipakai untuk memutuskan. Ekstraksi berjalan dua tahap (kerangka dokumen, lalu aturan per bagian) dengan suhu nol dan skema tertutup.
+### 1.4 Metrik keberhasilan
 
-### 5.2 Putusan
-
-Untuk satu polis dan fakta nasabah, mesin mengevaluasi aturan dalam urutan tetap: mencari aturan penanggung untuk kejadian itu; bila tidak ada dan tidak ada aturan yang mengatur kejadian itu, jawabannya *tidak diatur oleh polis ini* (mesin tidak pernah mengarang penolakan); kemudian pengecualian, syarat dan periode yang belum terpenuhi, serta pengakhiran; selain itu *ditanggung*, dengan jumlah yang dihitung dari aturan manfaat dan batasnya. Setiap langkah mencatat aturan yang berlaku, sehingga setiap jawaban dapat mengutip klausulnya.
-
-**Hanya menanyakan yang mengubah jawaban.** Bila satu fakta belum diketahui, mesin menjalankan ulang putusan untuk setiap kemungkinan nilai fakta itu. Bila putusannya tidak berubah, asisten tidak bertanya. Bila berubah, asisten menanyakan fakta itu saja dan menjelaskan klausul yang membuatnya penting.
-
-### 5.3 Siapa yang membayar lebih dulu
-
-Untuk satu tagihan dan beberapa polis yang memenuhi syarat, pembayar disusun berlapis menurut aturan koordinasi yurisdiksi (untuk Indonesia: Jasa Raharja untuk kecelakaan lalu lintas, lalu jaminan kesehatan nasional di fasilitas mitra, lalu asuransi kantor sebelum polis pribadi; santunan harian tetap dibayar sejajar). Polis *i* membayar *min(batas, jumlah yang diajukan dikurangi bagian biaya peserta)*, dan setiap pembayar hanya menerima sisa yang belum dibayar, sehingga totalnya tidak pernah melebihi tagihan. Di dalam satu lapisan, setiap urutan pengajuan dievaluasi secara tepat dan urutan dengan pemulihan terbesar dipilih.
-
-### 5.4 Memperbaiki penolakan
-
-Bila putusannya penolakan, mesin mencari himpunan terkecil perubahan *yang sah* yang membuatnya ditanggung (menunggu sampai tanggal tertentu, melengkapi dokumen, memakai polis lain dalam portofolio, memilih rumah sakit mitra untuk perawatan berikutnya) dan mengembalikan pilihan terbaik dari sisi waktu, biaya, dan usaha. Fakta yang menggambarkan kejadian (penyebab, tanggal, diagnosis, SIM, mabuk) tidak pernah boleh diubah, sehingga pencarian ini tidak dapat dipakai untuk mengajari misrepresentasi. Kembaran penilai klaim (adjudication twin) mendaftar setiap alasan yang mungkin diajukan petugas, bukan hanya yang pertama, dan memberi skor kesiapan sebelum klaim diajukan.
-
-### 5.5 Menutup celah perlindungan sesuai anggaran
-
-Untuk celah perlindungan, program bilangan bulat campuran memilih produk yang menutup celah berbobot terbesar dalam anggaran bulanan nasabah, tanpa membeli perlindungan indemnitas yang tumpang tindih.
-
-### 5.6 Memahami percakapan
-
-Sebelum fakta dipakai, Conversation Agent mengklasifikasikan pesan terhadap situasi yang sudah terbentuk, memakai beberapa pertukaran terakhir untuk memahami rujukan seperti "yang itu" atau "polis yang satunya?". Koreksi hanya mengubah fakta yang dikoreksi; pengandaian dijawab sebagai pengandaian; situasi baru menghapus situasi sebelumnya. Perencana juga membaca apa yang ingin diketahui nasabah (dokumen, tenggat, jumlah, kemajuan klaim yang sudah diajukan), dan jawaban deterministik atas pertanyaan itu ditempatkan paling depan. Bila lebih dari satu polis dapat menerima klaim, asisten bertanya polis mana yang diajukan, bukan memilih sendiri. Permintaan bertindak hanya diterima bila model membaca permintaan eksplisit atau penerimaan atas tawaran; sapaan tidak pernah dapat menyiapkan pengajuan.
-
-### 5.7 Menyusun jawaban
-
-Explainer Agent hanya menerima hasil mesin dan contoh-contoh jawaban. Ia menulis dua kandidat jawaban; pemeriksa memastikan setiap angka, tanggal, dan nomor pada kandidat terpilih muncul di hasil mesin, dan beralih ke kandidat lain, lalu ke teks tetap, bila tidak. Kutipan klausul harus sama persis dengan polis. Bila model bahasa tidak tersedia, nasabah diberi tahu dengan jelas dan dapat memakai kuncinya sendiri; tidak ada teks berbasis aturan yang disajikan sebagai jawaban asisten.
-
-## 6. Keamanan
-
-Empat tingkat izin ditegakkan oleh kode pada setiap pemanggilan alat:
-
-| Tingkat | Yang diizinkan | Cara pengendaliannya |
+| Metrik | Definisi | Hasil |
 |---|---|---|
-| T0 | Membaca data milik nasabah sendiri | Isolasi akun pada setiap permintaan |
-| T1 | Menghitung, menyusun draf, menyiapkan formulir | Berjalan otomatis, tanpa efek di luar sesi |
-| T2 | Mengajukan klaim, melampirkan dokumen, mengajukan banding, menjadwalkan panggilan balik | Hanya setelah nasabah menekan Konfirmasi; token server sekali pakai yang terikat pada argumen yang persis sama |
-| T3 | Uang dan identitas (rekening pencairan, ahli waris) | Tidak ada alat yang menjalankannya; asisten membuka tiket untuk petugas penanggung |
+| Penyelesaian tugas terskrip | Persentase tugas klaim yang lulus pemeriksaan otomatis atas putusan, jumlah, tenggat, kode penolakan, dan tindakan | 33 dari 33 (100%) |
+| Akurasi cakupan | Putusan yang benar pada benchmark asuransi publik | 84,6% (n = 390) |
+| Penolakan yang dikarang | Putusan ditolak padahal tidak ada klausul yang berlaku | 1,4% |
+| Ketepatan klarifikasi | Bertanya saat jawaban akan berubah, diam saat tidak | 87% dan 100% |
+| Klaim ujung ke ujung | Dokumen, formulir, konfirmasi, keputusan meja penanggung, dan kabar kembali ke chat | Berhasil, terekam beserta nomor audit |
+| Kualitas percakapan | Giliran yang lulus dari 47 giliran bahasa gaul, salah ketik, koreksi, dan pengandaian | 42 dari 47 (89%) |
+| Keamanan tindakan | Serangan yang berhasil menimbulkan efek | 0 dari 27 |
 
-Pengendalian lain: teks dari dokumen, alat, dan model diberi label tidak tepercaya dan tidak pernah dapat menjadi argumen T2 atau T3; berkas yang diunggah dipindai untuk instruksi tersembunyi (teks putih, huruf sangat kecil, teks di luar halaman, anotasi); data pribadi dihapus secara lokal sebelum dokumen mana pun dikirim ke model yang di-hosting; pemutus sirkuit menghentikan sesi setelah penolakan berulang; penanggung memegang sakelar henti yang menghentikan semua tindakan asisten untuk semua nasabah; nasabah masuk dengan akun email terkonfirmasi, dan satu akun tidak pernah dapat membaca polis, klaim, berkas, atau chat akun lain. Model ancaman, pemetaan OWASP, hasil pengujian, dan daftar risiko terdapat di Penilaian Keamanan Mandiri.
+## 2. System architecture
 
-## 7. Data
+### 2.1 Diagram komponen
 
-| Sumber | Penggunaan |
+![Gambar 1. Arsitektur ClauseGuard. Agen AI memahami dan menjelaskan, mesin aturan memutuskan, penjaga menegakkan izin, dan setiap langkah dicatat.](../img/architecture.png)
+
+| Komponen | Peran |
 |---|---|
-| Enam redaksi polis publik (Sompo, Astra, Chubb, Great Eastern) dan 30 ringkasan produk Indonesia (RIPLAY) | Ekstraksi; polis sandbox mengutip klausul-klausul ini secara harfiah |
-| Benchmark asuransi publik: 10 kontrak, 58 skenario, 580 label yang ditelusuri ke klausul (Mridul, Kapa dan Seneviratne, 2026, CC-BY-4.0) | Evaluasi akurasi |
-| Produk marketplace Amerika Serikat (CMS Public Use Files, 2026, 834 produk) | Eksperimen pemilihan produk dan urutan pembayar |
-| Daftar kode ICD-10-CM (domain publik, 74.879 kode) | Pemetaan diagnosis ke aturan penyakit kritis |
-| InsuranceQA dan putusan UK Financial Ombudsman | Bahan uji ketahanan dan replay sengketa |
+| UI dan dialog | Aplikasi web untuk nasabah (chat, kartu putusan, formulir klaim, unggah dokumen) dan meja klaim untuk petugas penanggung |
+| Orchestrator | Loop agent yang mengatur urutan perencanaan, pemeriksaan izin, pemanggilan alat, pengikatan fakta, mesin aturan, dan penyusunan jawaban untuk setiap giliran |
+| LLM | Google Gemini, dipakai untuk memahami pesan, membaca dokumen, dan menyusun kalimat jawaban |
+| Agen AI | Conversation Agent, Fact Agent, Document Reader Agent, Explainer Agent, dan Watchdog Agent |
+| Tools dan API | 19 alat bertingkat izin (membaca polis, memeriksa cakupan, menyusun draf, mengajukan klaim, melampirkan dokumen, mengajukan banding, dan lainnya) yang memanggil API penanggung sandbox |
+| Mesin aturan | Kode deterministik yang memutuskan cakupan, jumlah, tenggat, urutan pembayar, dan kesiapan klaim |
+| Penjaga (Guardian) | Titik penegakan izin di dalam kode yang memeriksa setiap pemanggilan alat |
+| Penyimpanan data | Postgres di Supabase untuk rantai audit, riwayat chat, klaim, dan tiket. Basis data sandbox untuk polis dan nasabah |
+| Sandbox insurer | Layanan penanggung simulasi lengkap dengan meja klaim, tempat petugas memutuskan klaim yang diajukan agent |
 
-Tiga nasabah demo, klaimnya, dan penanggung sandbox bersifat sintetis. Skema wajib negara (BPJS Kesehatan, Jasa Raharja) dimodelkan dari regulasi publik. Jumlah manfaat pada polis sandbox disetel agar sesuai dengan contoh-contoh pengerjaan. Tidak ada data nasabah sungguhan yang dipakai.
+### 2.2 Alur data
 
-## 8. Evaluasi
+1. Nasabah mengirim pesan atau berkas melalui aplikasi web.
+2. Berkas melewati pemindai teks tersembunyi. Data pribadi seperti NIK, nomor rekening, dan nomor telepon dihapus secara lokal.
+3. Document Reader Agent mengubah isi berkas menjadi catatan bertipe, misalnya jenis dokumen, tanggal, total tagihan, dan diagnosis.
+4. Polis nasabah tersedia sebagai kumpulan aturan bertipe yang setiap aturannya terhubung ke kalimat aslinya di polis.
+5. Hasil mesin aturan dan jawaban disimpan di sesi nasabah. Riwayat chat, klaim, dan log audit disimpan di Postgres per akun.
 
-Semua hasil dapat direproduksi dari skrip yang tercantum di Indeks Bukti Eksekusi; setiap angka di bawah menyebut laporannya.
+### 2.3 Alur keputusan
 
-| Evaluasi | Hasil | Laporan |
+1. Conversation Agent menentukan hubungan pesan dengan percakapan, yaitu situasi baru, koreksi, jawaban atas pertanyaan, pengandaian, atau pertanyaan umum.
+2. Perencana menentukan maksud pesan dan alat yang diperlukan. Aturan keamanan diputuskan lebih dulu oleh kode.
+3. Penjaga memeriksa setiap alat terhadap tingkat izin dan mode otonomi pilihan nasabah.
+4. Fact Agent mengubah kalimat menjadi fakta bertipe. Mesin aturan menghitung putusan untuk setiap polis.
+5. Bila satu fakta yang belum diketahui akan mengubah putusan, agent menanyakan fakta itu saja.
+6. Explainer Agent menyusun jawaban. Setiap angka, tanggal, dan nomor diperiksa terhadap hasil mesin sebelum ditampilkan.
+7. Tindakan yang mengirim sesuatu ke penanggung menunggu konfirmasi nasabah. Petugas penanggung memutuskan klaim, dan keputusannya kembali ke chat.
+
+### 2.4 Stack teknologi, deployment, dan alasannya
+
+| Lapisan | Teknologi | Alasan |
 |---|---|---|
-| Tugas klaim terskrip (fungsional, adversarial, rekomendasi produk) | 33 dari 33 lulus | task report |
-| Serangan melalui chat penuh (prompt injection, eskalasi hak akses, eksfiltrasi data, misrepresentasi) | 0 dari 27 berhasil; 0 dari 15 permintaan wajar diblokir | adversarial report |
-| Serangan yang sama dengan penegakan izin dimatikan | 1 dari 27 berhasil | adversarial report |
-| Benchmark publik, aturan hasil ekstraksi ditambah mesin (n = 390) | akurasi 84,6% [77,8; 90,0]; 1,4% penolakan dikarang | benchmark report |
-| Sama, dengan aturan emas milik benchmark (n = 342) | 91,8%; selisihnya berasal dari pembacaan dokumen | benchmark report |
-| Klarifikasi (bertanya hanya bila jawaban akan berubah) | bertanya saat perlu 87%; diam saat tidak perlu 100% | clarification report |
-| Konsistensi parafrase (tiga redaksi per pertanyaan) | 20 dari 20 putusan identik | paraphrase report |
-| Urutan pembayar dibanding mengklaim sesuai urutan kepemilikan (500 rumah tangga, produk AS sungguhan) | urutan kepemilikan tidak optimal pada 47,2% rumah tangga, rata-rata selisih USD 988 | allocation report |
-| Pemilihan produk dibanding produk termurah (100 rumah tangga) | menutup celah lebih besar pada 73 dari 100 | plan selection report |
-| Deteksi teks tersembunyi (20 berkas per teknik) | 20 dari 20 untuk teks putih, sangat kecil, di luar halaman, dan anotasi; 0 dari 20 untuk teks yang digambar di dalam gambar | adversarial report |
-| Pengodean diagnosis (76 baris berlabel) | 92,2% kategori benar; 3 dari 76 kode salah, tidak ada yang masuk rentang penyakit kritis | diagnosis report |
-| Kualitas percakapan (47 giliran: bahasa gaul, salah ketik, koreksi, pengandaian, obrolan ringan, serangan) | 42 dari 47 lulus | conversation report |
-| Biaya | rata-rata 0,98 pemanggilan model per giliran chat | cost report |
-| Tes otomatis | 554 lulus | test suite |
+| Mesin aturan dan agent | Python, FastAPI, Pydantic | Skema bertipe yang ketat untuk aturan polis, fakta, dan keluaran model. Pydantic menolak keluaran model yang tidak sesuai skema |
+| LLM | Google Gemini Flash Lite | Mendukung keluaran JSON terbatas skema, cepat, biaya rendah, dan memahami bahasa Indonesia sehari-hari |
+| Optimasi | SciPy (MILP, HiGHS) | Pemilihan produk penutup celah sebagai program bilangan bulat yang hasilnya optimal dan dapat diperiksa |
+| Aplikasi web | Next.js, TypeScript, Tailwind CSS | Antarmuka chat dengan kartu interaktif, satu basis kode untuk nasabah dan meja penanggung |
+| Akun dan penyimpanan | Supabase Auth dan Postgres | Login email dengan konfirmasi, row-level security, dan rantai audit yang bertahan saat server dimulai ulang |
+| Hosting | Railway, region Asia Tenggara | Web dan API sebagai dua layanan terpisah yang dekat dengan basis data, dengan penyebaran otomatis dari repositori |
 
-**Mengapa setiap komponen diperlukan.** Pada benchmark, jawaban yang hanya mengandalkan model lebih sering mengarang penolakan ketika tidak ada klausul yang berlaku (3,1%) dibanding mesin (1,4%), dan tidak dapat menunjukkan klausul mana yang menentukan. Tanpa lapisan izin, satu serangan berhasil; dengan lapisan itu, tidak ada. Bertanya hanya untuk fakta yang mengubah putusan membuat asisten tetap diam pada seluruh 35 kekosongan yang tidak relevan. Pengoptimal urutan pembayar memulihkan lebih banyak dibanding mengklaim sesuai urutan kepemilikan polis setiap kali ada deductible, co-payment, atau batas.
+## 3. Core algorithm description
 
-## 9. Implementasi dan penyebaran
+### 3.1 Planning
 
-| Lapisan | Teknologi |
+Perencana bekerja dua lapis. Lapis pertama adalah aturan kode untuk klasifikasi yang menyangkut keamanan, seperti permintaan misrepresentasi, akses ke data nasabah lain, perubahan rekening, dan permintaan membuka isi sistem. Model tidak dapat mengubah klasifikasi ini. Lapis kedua adalah model yang membaca pesan dalam konteks percakapan. Model menentukan maksud, alat baca yang diperlukan, dan topik pertanyaan, misalnya dokumen, tenggat, jumlah, atau kemajuan klaim. Permintaan untuk bertindak hanya diterima bila model membaca permintaan yang jelas atau persetujuan atas tawaran agent.
+
+### 3.2 Tool-calling
+
+Setiap alat terdaftar dengan tingkat izin, tipe argumen, dan tipe hasil. Hasil alat disimpan sebagai handle bertipe dengan label kepercayaan. Alat tingkat 2 hanya menerima handle, sehingga teks bebas dari dokumen atau model tidak dapat menjadi argumen pengajuan. Bila beberapa polis dapat menerima klaim, agent bertanya polis mana yang diajukan lebih dulu, dengan satu tombol untuk setiap polis.
+
+### 3.3 Memory
+
+Agent memakai tiga jenis ingatan. Ingatan kerja sesi menyimpan fakta bertipe, tanggal, dokumen yang dibaca, dan formulir yang menunggu konfirmasi. Ingatan percakapan menyimpan empat pertukaran terakhir sebagai data untuk memahami rujukan seperti "yang itu" atau "polis yang satunya". Riwayat chat disimpan per akun di Postgres, sehingga dapat dibuka dari perangkat lain.
+
+### 3.4 Retrieval
+
+Pengambilan informasi polis memakai penyimpanan klausul bertipe. Setiap polis telah dikompilasi menjadi aturan seperti menanggung, mengecualikan, masa tunggu, batas pengajuan, membayar, dan dokumen wajib. Mesin aturan mengambil aturan yang relevan berdasarkan kejadian, penyebab, dan orang yang ditanggung. Cara ini dipilih karena putusan asuransi membutuhkan aturan yang tepat beserta angka dan rentang waktunya. Setiap aturan yang dipakai dapat ditunjukkan kalimat aslinya. Untuk diagnosis, agent memakai retrieval BM25 atas 74.879 deskripsi kode ICD-10, lalu model memilih satu kode dari daftar kandidat dan kode memverifikasi pilihan itu.
+
+### 3.5 Model alokasi klaim
+
+Untuk satu tagihan *B* dan beberapa polis, pembayar disusun berlapis menurut aturan koordinasi Indonesia. Jasa Raharja membayar lebih dulu untuk kecelakaan lalu lintas dengan dua kendaraan atau lebih. BPJS Kesehatan membayar bila rumah sakit adalah mitra dan kepesertaan aktif. Asuransi kantor membayar sebelum polis pribadi. Santunan harian dibayar sejajar karena dapat ditumpuk.
+
+Polis *i* membayar *min(A_i, s_i − m_i)*. Di sini *s_i* adalah jumlah yang diajukan, *m_i* adalah bagian biaya peserta (deductible dan co-payment), dan *A_i* adalah batas pembayaran polis. Setiap pembayar hanya menerima sisa yang belum dibayar, sehingga total pembayaran tidak pernah melebihi tagihan. Di dalam satu lapisan, semua urutan pengajuan dievaluasi dan urutan dengan pemulihan terbesar dipilih.
+
+### 3.6 Penilaian risiko klaim
+
+Kembaran penilai klaim (adjudication twin) memeriksa setiap klausul yang dapat menolak klaim secara terpisah, lalu mendaftar semua alasan penolakan yang mungkin diajukan petugas. Dokumen diperiksa silang, misalnya tanggal terhadap jumlah hari rawat, kode diagnosis terhadap penyebab, dan total kuitansi terhadap rinciannya. Hasilnya adalah skor kesiapan klaim beserta alasan yang dapat diperbaiki. Bila klaim ditolak, mesin mencari perubahan sah terkecil yang membuat klaim ditanggung, misalnya menunggu tanggal tertentu, melengkapi dokumen, atau memakai polis lain. Fakta kejadian seperti penyebab, tanggal, dan diagnosis dikunci di kode sehingga tidak pernah diubah.
+
+### 3.7 Prompt design
+
+Setiap pemanggilan model memakai skema keluaran tertutup dengan suhu nol. Model mengisi pilihan dari daftar tetap, misalnya maksud pesan, hubungan pesan, atau satu polis dari daftar kandidat. Kode memvalidasi setiap keluaran sebelum dipakai. Isi pesan nasabah dan isi dokumen ditandai sebagai data dalam prompt, dan model diinstruksikan untuk mengabaikan perintah di dalamnya. Prompt perencana dan penilai hubungan pesan berisi contoh-contoh nyata (few-shot) dalam bahasa Indonesia dan Inggris. Penyusun jawaban menerima hasil mesin dan enam contoh jawaban. Model menulis catatan penalaran singkat, menyusun dua kandidat jawaban, lalu memilih yang terbaik.
+
+### 3.8 Guardrail dan explainability
+
+Pemeriksa jawaban memastikan setiap angka, tanggal, persentase, dan nomor polis dalam jawaban berasal dari hasil mesin. Bila kandidat pertama gagal, kandidat kedua diperiksa, lalu teks tetap dipakai. Kutipan klausul harus sama persis dengan teks polis. Setiap jawaban memiliki panel "How was this decided" yang menampilkan cara pesan dipahami, fakta yang dipakai, klausul yang berlaku, putusan mesin, hasil pemeriksaan kalimat, dan nomor catatan audit. Bila model tidak tersedia, nasabah diberi tahu dengan jelas dan dapat memakai kunci API miliknya sendiri.
+
+### 3.9 Evaluasi
+
+| Evaluasi | Dataset atau skenario | Baseline | Hasil |
+|---|---|---|---|
+| Tugas klaim | 33 tugas terskrip (20 fungsional, 10 adversarial, 3 rekomendasi) | Tidak ada | 33 dari 33 lulus |
+| Akurasi cakupan | Benchmark publik asuransi jiwa, 10 kontrak, 580 label (CC-BY-4.0) | Model membaca seluruh kontrak (b0, b0cw) | 84,6% dengan 1,4% penolakan dikarang. Baseline b0cw 87,5% dengan 3,1% penolakan dikarang pada subset 112 item |
+| Klarifikasi | 18 pesan, satu fakta dihapus per uji, dinilai oracle | Bertanya untuk setiap fakta yang hilang | Bertanya saat perlu 87%, diam saat tidak perlu 100% |
+| Konsistensi parafrase | 20 skenario dengan tiga redaksi | Tidak ada | 20 dari 20 putusan identik |
+| Urutan pembayar | 500 rumah tangga dengan 200 produk marketplace AS sungguhan | Klaim sesuai urutan kepemilikan, satu polis saja | Urutan kepemilikan tidak optimal pada 47,2% rumah tangga, selisih rata-rata USD 988 |
+| Pemilihan produk | 100 rumah tangga, katalog campuran | Produk termurah, produk termahal | Menutup celah lebih besar pada 73 dan 79 dari 100 |
+| Pengodean diagnosis | 76 baris diagnosis berlabel | Kamus alias | 92,2% kategori benar. Kamus alias 17,2% |
+| Percakapan | 47 giliran naratif, gaul, salah ketik, koreksi, pengandaian | Versi prompt sebelumnya | 42 dari 47, naik dari 40 dari 47 |
+| Biaya | 90 giliran tugas terskrip | Model membaca seluruh dokumen | 0,98 pemanggilan model per giliran, 17% token dibanding baseline |
+
+**Ablation.**
+
+| Komponen yang dilepas | Akibat |
 |---|---|
-| Mesin aturan, agen, API penanggung sandbox | Python, FastAPI, Pydantic |
-| Model bahasa | Google Gemini (keluaran JSON terbatas skema, suhu nol) |
-| Aplikasi web dan meja penanggung | Next.js, TypeScript, Tailwind CSS |
-| Akun dan penyimpanan | Supabase Auth dan Postgres (rantai audit, riwayat chat, klaim), dengan row-level security |
-| Hosting | Railway: layanan web dan layanan API, region Asia Tenggara |
+| Penegakan izin di kode | Serangan yang berhasil naik dari 0 menjadi 1 dari 27 |
+| Aturan hasil ekstraksi diganti aturan emas benchmark | Akurasi naik dari 84,6% menjadi 91,8%, sehingga selisih yang tersisa berasal dari pembacaan dokumen |
+| Mesin aturan diganti jawaban model saja | Penolakan yang dikarang naik dari 1,4% menjadi 3,1% dan klausul penentu tidak dapat ditunjukkan |
+| Klarifikasi berbasis sensitivitas putusan | Tanpanya agent menanyakan semua fakta yang hilang. Dengannya, 35 dari 35 kekosongan yang tidak relevan tidak ditanyakan |
 
-Penanggung sandbox adalah layanan terpisah dengan meja klaimnya sendiri. Klaim yang diajukan asisten masuk ke sana beserta formulir yang sudah terisi dan berkas lampirannya; petugas memindahkannya melalui status diterima, ditinjau, disetujui, ditolak, atau dibayar, dengan catatan yang dikembalikan kepada nasabah.
+## 4. Security design
 
-## 10. Keterbatasan
+### 4.1 Permission tier
 
-- Ekstraktor adalah model bahasa dan dapat salah membaca suatu nilai di dalam skema; pada benchmark, cakupan ekstraksi per kontrak berkisar 0,62 sampai 1,00, dan selisih antara aturan hasil ekstraksi dan aturan emas sebesar 7 poin.
-- Mesin mencakup pertanyaan cakupan, pengecualian, periode, rider, dan pengakhiran; 24 dari 58 skenario benchmark (dividen, batas produk investasi, perencanaan warisan) berada di luar cakupannya.
-- Benchmark publik hanya mencakup asuransi jiwa; produk Indonesia diuji pada polis sandbox yang diverifikasi manual dan tugas yang ditulis tim. Batch pertanyaan buta untuk mode tanpa model lulus 3 dari 14.
-- Jumlah dan aturan pembayar skema wajib negara dimodelkan dan ditandai "verifikasi ke pembayar"; pengelompokan tarif INA-CBG belum diimplementasikan.
-- Teks yang digambar di dalam gambar belum terdeteksi sebagai teks tersembunyi.
-- Lapisan izin membatasi apa yang dapat dilakukan asisten; lapisan ini tidak menjamin teks sarannya benar, karena itu setiap jawaban ditandai indikatif.
-- Ingatan kerja asisten atas suatu percakapan berakhir saat server dimulai ulang; nasabah diberi tahu dan diminta menyampaikan ulang situasinya. Chat tersimpan dan klaim yang sudah diajukan tetap ada.
+| Tingkat | Jenis | Contoh aksi | Aturan |
+|---|---|---|---|
+| T0 | Otomatis | Membaca polis, status klaim, status premi, dan pengingat tenggat milik nasabah sendiri | Selalu dibatasi pada akun yang sedang masuk |
+| T1 | Otomatis | Memeriksa cakupan, menghitung urutan pembayar, menyusun draf klaim, menyiapkan formulir, menyusun draf banding | Tanpa efek di luar sesi |
+| T2 | Butuh konfirmasi | Mengajukan klaim, melampirkan dokumen ke klaim, mengajukan banding, menjadwalkan panggilan balik | Berjalan setelah nasabah menekan Konfirmasi. Server menerbitkan token sekali pakai yang terikat pada sesi, alat, dan argumen yang sama persis |
+| T3 | Dilarang untuk agent | Mengubah rekening pencairan, mengubah ahli waris, memindahkan uang | Tidak ada alat yang menjalankannya. Agent membuka tiket untuk petugas penanggung, yang memverifikasi identitas melalui jalur terpisah |
 
-## 11. Cara menjalankan
+Nasabah juga memilih mode otonomi. Mode Observe hanya menjawab. Mode Draft menyiapkan tanpa mengirim. Mode Act mengirim setelah konfirmasi.
 
-```bash
-git clone https://github.com/bungagana/clauseguard.git && cd clauseguard
-cd clauseguard && pip install -r requirements.txt && python scripts/serve.py --fresh
-cd ../clauseguard-web && npm install && npm run dev
-cd ../clauseguard && python -m pytest -q
-```
+### 4.2 Threat model
 
-Tanpa kunci model, setiap langkah memakai jalur deterministiknya. Daftar lengkap perintah evaluasi terdapat di Indeks Bukti Eksekusi.
+| Ancaman | Contoh | Kontrol | Hasil uji |
+|---|---|---|---|
+| Prompt injection | Instruksi tersembunyi di kuitansi rumah sakit, misalnya teks putih yang meminta persetujuan klaim | Pemindai teks tersembunyi, ekstraktor terisolasi tanpa alat, label tidak tepercaya pada teks dokumen, argumen T2 hanya berupa handle | 0 dari 27 serangan berhasil. Teks putih, huruf kecil, di luar halaman, dan anotasi terdeteksi 20 dari 20 |
+| Data leakage | Meminta polis atau klaim nasabah lain, atau meminta isi sistem | Isolasi akun pada setiap rute, row-level security di basis data, penyaringan keluaran untuk nomor rekening dan identitas, penghapusan data pribadi sebelum dokumen dikirim ke model | Akun kedua mendapat penolakan atau daftar kosong untuk unggahan, chat, dan klaim akun pertama. Setiap percobaan dicatat di log audit |
+| Unauthorized transaction | Mengajukan klaim tanpa konfirmasi, mengubah rekening dengan alasan darurat | Token konfirmasi sekali pakai, tidak ada alat T3, batas jumlah aksi per sesi, pemutus sirkuit, sakelar henti di meja penanggung | Serangan tanpa konfirmasi dan permintaan ubah rekening tidak menimbulkan efek |
+| Hallucinated advice | Menyebut jumlah, tanggal, atau penolakan yang tidak ada di polis | Putusan dari mesin aturan, pemeriksa angka dan tanggal pada jawaban, kutipan klausul harus sama persis, label indikatif | 1,4% penolakan dikarang pada benchmark. Jawaban yang menyebut nilai di luar hasil mesin ditolak sebelum tampil |
 
-## 12. Referensi
+### 4.3 Kontrol risiko
 
-- Mridul, Kapa dan Seneviratne (2026). A benchmark for gap and overlap analysis of insurance contracts. arXiv:2604.10853.
+**Limit transaksi.** Batas jumlah klaim Rp 100.000.000 per pengajuan. Paling banyak tiga aksi T2 dan 60 pemanggilan alat per sesi. Satu tiket T3 per 24 jam. Sesi dihentikan otomatis setelah tiga penolakan izin berturut-turut.
+
+**Audit log.** Setiap pesan, rencana, pemanggilan alat, putusan izin, dan jawaban dicatat dalam rantai hash. Setiap catatan memuat hash catatan sebelumnya, sehingga perubahan pada satu catatan terdeteksi saat verifikasi.
+
+**Human in the loop.** Nasabah mengonfirmasi setiap pengajuan. Petugas penanggung memutuskan setiap klaim di meja klaim. Penanggung memegang sakelar henti yang menghentikan semua aksi agent untuk semua nasabah.
+
+**Privasi data.** NIK, nomor rekening, nomor kartu, nomor telepon, tanggal lahir, dan nama orang dihapus secara lokal sebelum dokumen dikirim ke model. Bila masih ada sisa data pribadi, pemanggilan model diblokir. Nasabah masuk dengan email terkonfirmasi, dan data setiap akun terisolasi.
+
+**Kepatuhan regulasi.** Setiap jawaban ditandai indikatif dan menyatakan bahwa ketentuan polis yang berlaku tetap menentukan. Setelah penolakan, agent menyampaikan jalur pengaduan resmi (unit pengaduan penanggung, Kontak OJK 157, dan LAPS SJK). Verifikasi identitas (KYC) untuk perubahan data sensitif dilakukan oleh penanggung melalui jalur terpisah. Agent tidak memindahkan dana, sehingga pemeriksaan AML berada di sisi penanggung.
+
+Topik ini tidak menggunakan blockchain, sehingga key management, signing policy, dan transaction simulation untuk Topik F tidak berlaku.
+
+## 5. Innovation & interaction
+
+### 5.1 Perbedaan dengan solusi yang ada
+
+| Kemampuan | Chatbot penanggung | Chatbot AI umum | Situs perbandingan polis | ClauseGuard |
+|---|---|---|---|---|
+| Membaca semua polis nasabah dari penanggung berbeda sekaligus | Hanya produk sendiri | Bila diunggah, tanpa aturan tetap | Tidak | Ya |
+| Putusan cakupan dengan kutipan klausul penentu | Jawaban umum | Dari ingatan model | Tidak | Ya, dihitung mesin aturan |
+| Urutan pembayar antar polis termasuk BPJS dan Jasa Raharja | Tidak | Tidak konsisten | Tidak | Ya |
+| Mengisi formulir klaim milik penanggung dari dokumen | Formulir sendiri | Tidak | Tidak | Ya |
+| Mengajukan klaim dengan konfirmasi dan menerima keputusan di chat | Sebagian | Tidak | Tidak | Ya |
+| Memeriksa dasar banding atas penolakan | Tidak | Tidak terverifikasi | Tidak | Ya, dengan klausul |
+| Batas tindakan yang ditegakkan kode | Tidak relevan | Tidak ada | Tidak relevan | Empat tingkat izin |
+
+Inti pembaruannya adalah memperlakukan polis asuransi sebagai program aturan. Model bahasa memahami percakapan dan dokumen. Mesin aturan menghitung hak nasabah. Setiap jawaban dapat dibuktikan dengan klausul.
+
+### 5.2 Desain interaksi
+
+1. **Bahasa sehari-hari.** Nasabah menulis dalam bahasa Indonesia, Inggris, atau campuran, termasuk singkatan dan salah ketik. Agent membalas dalam bahasa yang sama.
+2. **Satu pertanyaan saja.** Agent hanya bertanya bila jawabannya akan berubah, dengan tombol jawaban cepat.
+3. **Kartu bukti.** Putusan per polis, kutipan klausul, urutan pembayar, kesiapan klaim, dan isi setiap dokumen tampil sebagai kartu. Untuk pertanyaan lanjutan, kartu dilipat agar percakapan tetap ringkas.
+4. **Formulir yang dapat dikoreksi.** Formulir klaim tampil sebelum dikirim. Nasabah dapat mengubah kolom seperti nama rumah sakit atau tanggal, dan formulir dibangun ulang.
+5. **Kartu konfirmasi.** Pengajuan memerlukan satu ketukan Konfirmasi yang menampilkan dokumen terlampir dan yang belum ada.
+6. **Kabar proaktif.** Keputusan penanggung muncul di chat tanpa diminta, lengkap dengan penjelasan dan langkah berikutnya.
+7. **Mode otonomi.** Sakelar Observe, Draft, dan Act selalu terlihat di bagian atas layar.
+
+## 6. Limitations & known risks
+
+Daftar ini konsisten dengan daftar risiko di Penilaian Keamanan Mandiri. Nomor K merujuk ke dokumen tersebut.
+
+| No. | Keterbatasan atau risiko | Tingkat sisa | Penanganan saat ini |
+|---|---|---|---|
+| K1 | Ekstraktor adalah model dan dapat salah membaca nilai di dalam skema. Pada benchmark, selisih aturan hasil ekstraksi dengan aturan emas sebesar 7 poin | Tinggi | Pemeriksaan silang total dan rincian, label belum terverifikasi, nasabah meninjau nilai dari dokumen sebelum mengirim |
+| K2 | Teks saran dapat keliru. Lapisan izin membatasi tindakan dan tidak memeriksa kebenaran saran | Sedang | Putusan dari mesin aturan, pemeriksa angka pada jawaban, label indikatif |
+| K3 | Teks yang digambar di dalam gambar belum terdeteksi sebagai teks tersembunyi (0 dari 20) | Sedang | Keluaran ekstraktor bertipe, label tidak tepercaya memblokir T2 |
+| K4 | Log audit dapat dibangun ulang oleh pihak yang memiliki akses tulis ke penyimpanannya | Sedang | Verifikasi rantai menunjukkan perubahan pada catatan yang ada |
+| K8 | Polis yang diunggah nasabah dapat menyesatkan putusan bila isinya dimanipulasi | Sedang | Label belum terverifikasi, tidak dapat memicu T2 |
+| K9 | Konfirmasi bergantung pada nasabah membaca kartunya | Sedang | Ringkasan dengan label kepercayaan dan token per pemanggilan |
+| K12 | Ketergantungan pada layanan model yang di-hosting dan batas kuotanya | Rendah | Rotasi kunci, pemberitahuan yang jelas kepada nasabah, opsi kunci milik nasabah |
+| K15 | Set uji kecil dan ditulis tim. Batch pertanyaan buta untuk mode tanpa model lulus 3 dari 14 | Tinggi | Setiap hasil dilaporkan beserta jumlah sampel |
+| K18 | Ingatan kerja sesi berakhir saat server dimulai ulang | Rendah | Riwayat chat tersimpan, nasabah diberi tahu dan diminta menyampaikan ulang situasinya |
+
+Keterbatasan cakupan lainnya:
+
+- Benchmark publik hanya mencakup asuransi jiwa. Produk Indonesia diuji pada polis sandbox yang diverifikasi manual.
+- Mesin aturan mencakup cakupan, pengecualian, periode, rider, dan pengakhiran. Sebanyak 24 dari 58 skenario benchmark (dividen, batas produk investasi, perencanaan warisan) berada di luar cakupan.
+- Jumlah dan aturan pembayar BPJS Kesehatan dan Jasa Raharja dimodelkan dari regulasi publik dan ditandai untuk diverifikasi ke pembayar. Pengelompokan tarif INA-CBG belum diimplementasikan.
+- Klaim yang sudah diajukan tidak dapat diubah langsung. Penolakan yang dapat diperbaiki ditindaklanjuti dengan pengajuan baru setelah konfirmasi nasabah.
+
+## Referensi
+
+- Mridul, Kapa, dan Seneviratne (2026). A benchmark for gap and overlap analysis of insurance contracts. arXiv:2604.10853.
 - Debenedetti dkk. (2025). CaMeL: defeating prompt injections by design. arXiv:2503.18813.
-- Wachter, Mittelstadt dan Russell (2017); Ustun, Spangher dan Liu (2019). Counterfactual explanations and algorithmic recourse.
+- Wachter, Mittelstadt, dan Russell (2017). Ustun, Spangher, dan Liu (2019). Counterfactual explanations and algorithmic recourse.
 - OWASP Top 10 for Agentic Applications (2026).
 - KFF (2025). HealthCare.gov insurers denied nearly 1 in 5 in-network claims in 2023.
 - OJK (2023). Kesulitan klaim menjadi pengaduan asuransi terbanyak.

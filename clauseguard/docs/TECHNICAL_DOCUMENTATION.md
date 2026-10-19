@@ -6,194 +6,241 @@ FinTechathon 2026 · International Track · Topic D: AI Insurance Assistant
 Team: Bunga Laelatul Muna, Izra, Wan Sabrina · Institut Teknologi Sepuluh Nopember, Indonesia
 Live demo: https://clauseguard.up.railway.app · Source code: https://github.com/bungagana/clauseguard
 
-## 1. Summary
+## 1. Problem & scope
 
-ClauseGuard is an AI insurance assistant for policyholders. A customer describes what happened in their own words, in English or Indonesian, and ClauseGuard answers three questions from the customer's own policies: is this covered, how much is paid, and by when must the claim be filed. Every answer quotes the clause that decides it. ClauseGuard then reads the customer's hospital documents, prepares the insurer's own claim form, files the claim once the customer confirms, and brings the insurer's decision back to the chat with the next step.
+### 1.1 Topic and problem
 
-The design rests on one principle: **language models understand and explain, code decides and acts.** Coverage verdicts, amounts and deadlines come from a deterministic rules engine that runs over the policy wording compiled into typed rules. Actions run inside four permission tiers enforced in code. Money and identity changes are never executed by the assistant.
+ClauseGuard addresses Topic D, the AI insurance assistant. Many households hold several policies at once, for example national health insurance (BPJS Kesehatan), an employer plan, a personal policy and an accident cover. The rules that decide a claim sit in long policy documents that people rarely read. These rules include filing deadlines, waiting periods, required documents and the order in which payers pay. Indonesia's financial services authority (OJK) reports that more than half of insurance complaints concern difficulty with claims. In the United States, about one in five in-network claims was denied in 2023 and fewer than 1% were appealed (KFF, 2025).
 
-| Measure | Result |
-|---|---|
-| Attacks that changed anything, of 27 (permission enforcement on) | 0 |
-| Accuracy on a public insurance benchmark (390 labels) | 84.6% |
-| Denials invented where no clause applies | 1.4% |
-| Scripted claim tasks passed | 33 of 33 |
-| Automated tests passed | 554 |
+Five costly mistakes recur. A claim is filed after the deadline. A claim is filed inside a waiting period. The wrong payer is claimed first. The customer pays twice for overlapping cover or misses benefits that stack. A policy lapses during its grace period. All five can be computed from the customer's own documents.
 
-## 2. The problem
+### 1.2 User personas
 
-Most households hold several policies at once: national health insurance, an employer plan, an individual plan, a rider, an accident cover. The rules that decide a claim (filing deadlines, waiting periods, required documents, which payer goes first) sit in documents that customers rarely read. In Indonesia, the financial services authority (OJK) reports that more than half of insurance complaints concern difficulty with claims. In the United States, marketplace insurers denied about one in five in-network claims in 2023, and fewer than 1% were appealed (KFF, 2025). In China and Hong Kong, published disputes concentrate on strict critical-illness definitions and non-disclosure.
-
-A general chatbot answers these questions from memory and can state a wrong rule with confidence. Five costly mistakes recur, and each one is arithmetic on the customer's own documents: filing after the deadline, claiming inside a waiting period, claiming from the wrong payer first, paying twice for overlapping cover or missing benefits that stack, and letting a policy lapse during its grace period.
-
-## 3. What ClauseGuard does
-
-### 3.1 Core features
-
-**ClauseLens: understands your cover.** The customer asks in plain words ("three days in hospital with dengue, can I claim?"). ClauseLens reads all of the customer's policies together and returns, per policy, covered or not, the indicative amount and the last day to file, with the deciding clause quoted word for word. When one missing fact would change the answer, it asks for that fact only. When several policies apply, it computes which payer goes first and how much each one pays.
-
-**ClaimFlow: handles your claim.** The customer sends hospital documents (invoice, medical resume, prescription, lab results). ClaimFlow shows what it read from each file, checks the files against the insurer's own list of required documents, and fills in that insurer's claim form. The customer can correct any field before sending. The claim is filed only after the customer taps Confirm. When the insurer decides, the decision and the assessor's note arrive in the chat, together with what can be fixed or whether an appeal has grounds.
-
-**TrustLock: keeps you in control.** The customer chooses how far the assistant may go (Observe, Draft or Act). Submitting anything requires a one-time confirmation that the model cannot produce. Changing a payout account or a beneficiary is reserved for a person at the insurer. Hidden instructions inside uploaded files are detected and ignored. Every step is written to a tamper-evident log.
-
-### 3.2 Supporting features
-
-| Feature | What it gives the customer |
-|---|---|
-| Deadline Tracker | Warnings before a claim deadline or premium grace period runs out |
-| Claim Simulator | What-if answers ("if I had stayed five days") without affecting a real claim |
-| Own policy upload | Any policy PDF is read live and can be asked about immediately; marked unverified until reviewed |
-| Document reader | A per-file summary of amounts, dates, diagnosis and which requirement the file satisfies |
-| Appeal helper | Checks whether a rejection contradicts the policy and drafts an appeal letter that quotes the clause |
-| PDF export | The answer, the evidence and the claim form as a document |
-| Bilingual | Replies in the language the customer writes, English or Indonesian |
-| Accounts and history | Email sign-in; each customer's policies, claims and chats stay on their account |
-
-### 3.3 A complete claim, end to end
-
-1. Rizky, a graduate student, writes: "I was admitted for dengue on 25 September for three days."
-2. ClauseLens answers: the hospital cash plan covers it, IDR 1,500,000, file by 27 November, quoting Benefits Article 1. For national health insurance, it asks one question: was the hospital a partner facility?
-3. Rizky sends four hospital files. ClaimFlow lists what each file contains and confirms that every required document is present.
-4. Rizky asks the assistant to submit. ClaimFlow shows the insurer's claim form filled in; Rizky taps Confirm.
-5. An assessor at the insurer's desk approves the claim with a note. The decision appears in Rizky's chat without being asked for.
-
-This flow was recorded against the sandbox insurer with its audit sequence numbers (execution evidence, item "claims desk run").
-
-## 4. Architecture
-
-![Figure 1. ClauseGuard architecture: AI agents understand and explain; the rules engine decides; the guardian enforces permissions; every step is recorded.](img/architecture.png)
-
-| Component | Kind | Responsibility |
+| Persona | Profile | Policies held |
 |---|---|---|
-| Conversation Agent | AI | Reads how a message relates to the conversation: a new situation, a correction, an answer to the assistant's question, a what-if, or a general question |
-| Fact Agent | AI | Turns free text into typed facts (dates, days in hospital, bill, cause) |
-| Document Reader Agent | AI, quarantined | Removes personal data locally, then turns policy wording and claim documents into typed records; it has no tools and no conversation history |
-| Rules engine | Code | Decides coverage, amounts, deadlines, payer order and readiness from the typed rules |
-| Guardian | Code | Enforces the four permission tiers on every tool call |
-| Explainer Agent | AI | Words the answer; every amount, date and identifier is checked against the engine before it is shown |
-| Watchdog Agent | AI and code | Follows deadlines and claim decisions, and tells the customer before money is lost |
-| Audit log | Code | Hash-chained record of every step, written by code only |
+| Rizky, 24 | Graduate student with a dengue hospital claim in progress | Hospital cash plan (Sompo), term life with an overdue premium, critical illness, BPJS Kesehatan class 2 |
+| The Santoso family | Family of four, the head of the family is an employee | Employer group health and life, a family hospital-cash rider, the wife's individual health plan, BPJS Kesehatan class 1 |
+| Dewi, 29 | Ride-hailing courier | Personal accident, the platform's on-trip accident cover, BPJS Kesehatan class 3 with three months of arrears, Jasa Raharja |
 
-Each language-model call is schema-constrained: the model fills a closed structure (an intent from a fixed list, a choice among given candidates, a fact from a fixed vocabulary), and code validates the result before it is used. No model output ever becomes a tool argument for a submission, and no model is inside the rules engine.
+The three personas and their policies are synthetic. Their policy wording is modelled on public insurer documents. Real customers can also sign up, upload their own policy PDF and ask about it right away.
 
-## 5. Core method
+### 1.3 Financial tasks the agent completes
 
-### 5.1 Policies as typed rules
+1. **Check coverage.** For each policy the agent decides whether the event is covered, the indicative benefit and the filing deadline, with the deciding clause quoted.
+2. **Order the payers.** For one hospital bill the agent computes which policy pays first and how much each one pays.
+3. **Prepare and file the claim.** The agent reads the hospital documents, matches them to the insurer's list of required documents, fills in that insurer's claim form and files it after the customer taps Confirm.
+4. **Follow up on the decision.** The agent relays the insurer's decision, explains what can be fixed and checks whether a rejection has grounds for appeal.
+5. **Watch deadlines and policy status.** The agent warns before a filing deadline or a premium grace period runs out.
+6. **Close coverage gaps.** The agent recommends the plans that close the largest gap within a monthly budget.
 
-Each policy is compiled into a record of clause rules: *covers*, *excludes*, *except*, *conditioned on*, *period* (waiting, grace, filing deadline, survival), *pays*, *requires document*, *terminates if*. Each rule carries typed qualifiers (amounts, per-day limits, deductibles, co-payments, time windows, conditions) and the verbatim clause text with its section. The clause text is shown to the customer but never used to decide. Extraction runs in two passes (outline, then rules per section) with temperature zero and a closed schema.
+### 1.4 Success metrics
 
-### 5.2 The verdict
-
-For a policy and the customer's facts, the engine evaluates the rules in a fixed order: find the covering rules for the event; if none and nothing governs the event, the answer is *not addressed by this policy* (it never invents a denial); then exclusions, unmet conditions and periods, and termination; otherwise *covered*, with the payable amount computed from the benefit rules and limits. Every step records the rule that fired, which is why each answer can quote its clause.
-
-**Ask only what changes the answer.** If a fact is missing, the engine re-runs the verdict for every possible value of that fact. If the verdict does not change, the assistant does not ask. If it does, the assistant asks for that one fact and explains which clause makes it matter.
-
-### 5.3 Who pays first
-
-For one bill and several eligible policies, payers are layered by the coordination rules of the jurisdiction (for Indonesia: the statutory road-accident scheme, then national health insurance at a partner facility, then employer group before individual cover; fixed daily benefits are paid in parallel). Policy *i* pays *min(cap, presented amount minus the member's cost sharing)*, and each payer is presented only what is still unpaid, so the total never exceeds the bill. Within a layer, every claiming order is evaluated exactly and the one that recovers the most is chosen.
-
-### 5.4 Fixing a rejection
-
-When a verdict is a denial, the engine searches for the smallest set of *legitimate* changes that would make it covered (wait until a date, provide a document, use another policy in the portfolio, choose a partner hospital for a future stay) and returns the options that are best in time, money and effort. Facts that describe what happened (cause, dates, diagnosis, licence, intoxication) can never be changed, so the search cannot coach misrepresentation. An adjudication twin lists every ground an assessor could raise, not only the first, and gives a readiness score before filing.
-
-### 5.5 Closing gaps within a budget
-
-For coverage gaps, a mixed-integer programme selects the plans that close the most weighted gap within the customer's monthly budget, without buying overlapping indemnity cover.
-
-### 5.6 Understanding the conversation
-
-Before any fact is used, the Conversation Agent classifies the message against the situation already established, using the last few exchanges for references such as "that one" or "and the other policy?". A correction updates only the corrected fact; a what-if is answered as a what-if; a new situation clears the previous one. The planner also reads what the customer wants to know (documents, deadline, amount, progress of a filed claim), and the deterministic answer to that question is placed first. When more than one policy could take a claim, the assistant asks which one to file instead of choosing. A request to act is accepted only when the model reads an explicit request or an accepted offer; a greeting can never prepare a submission.
-
-### 5.7 Writing the answer
-
-The Explainer Agent receives only the engine's results and worked examples. It writes two candidate replies; a verifier checks that every number, date and identifier in the chosen candidate appears in the engine's results, and falls back to the other candidate, then to a fixed text, if not. Quoted clause text must match the policy word for word. If the language model is unavailable, the customer is told so plainly and may use their own key; no rule-based text is presented as the assistant's answer.
-
-## 6. Security
-
-Four permission tiers are enforced by code on every tool call:
-
-| Tier | What it allows | How it is controlled |
+| Metric | Definition | Result |
 |---|---|---|
-| T0 | Read the customer's own data | Account isolation on every request |
-| T1 | Compute, draft, prepare a form | Runs automatically, no side effects outside the session |
-| T2 | Submit a claim, attach a document, file an appeal, book a call-back | Only after the customer taps Confirm; a single-use server token bound to the exact arguments |
-| T3 | Money and identity (payout account, beneficiary) | No executing tool exists; the assistant opens a ticket for a person at the insurer |
+| Scripted task completion | Share of claim tasks that pass automatic checks on verdict, amount, deadline, denial code and actions | 33 of 33 (100%) |
+| Coverage accuracy | Correct verdicts on a public insurance benchmark | 84.6% (n = 390) |
+| Invented denials | Denials returned where no clause applies | 1.4% |
+| Clarification precision | Asks when the answer would change and stays silent otherwise | 87% and 100% |
+| End-to-end claim | Documents, form, confirmation, desk decision and the decision back in the chat | Completed and recorded with audit sequence numbers |
+| Conversation quality | Turns passed out of 47 turns of slang, typos, corrections and what-ifs | 42 of 47 (89%) |
+| Action safety | Attacks that produced any effect | 0 of 27 |
 
-Further controls: text from documents, tools and models is labelled untrusted and can never become a T2 or T3 argument; uploaded files are scanned for hidden instructions (white text, tiny fonts, off-page text, annotations); personal data is removed locally before any document reaches a hosted model; a circuit breaker stops a session after repeated denials; the insurer holds a halt switch that stops every assistant action for every customer; customers sign in with confirmed email accounts, and one account can never read another's policies, claims, files or chats. The threat model, OWASP mapping, test results and risk register are in the Security Self-Assessment.
+## 2. System architecture
 
-## 7. Data
+### 2.1 Component diagram
 
-| Source | Use |
+![Figure 1. ClauseGuard architecture. AI agents understand and explain, the rules engine decides, the guardian enforces permissions and every step is recorded.](img/architecture.png)
+
+| Component | Role |
 |---|---|
-| Six public insurer policy wordings (Sompo, Astra, Chubb, Great Eastern) and 30 Indonesian product summaries (RIPLAY) | Extraction; the sandbox policies quote these clauses verbatim |
-| Public insurance benchmark: 10 contracts, 58 scenarios, 580 clause-traced labels (Mridul, Kapa and Seneviratne, 2026, CC-BY-4.0) | Accuracy evaluation |
-| US marketplace plans (CMS Public Use Files, 2026, 834 plans) | Plan selection and payer-order experiments |
-| ICD-10-CM code list (public domain, 74,879 codes) | Mapping diagnoses to critical-illness rules |
-| InsuranceQA and UK Financial Ombudsman decisions | Robustness and dispute replay material |
+| UI and dialog | A web app for customers (chat, verdict cards, claim form, document upload) and a claims desk for the insurer's staff |
+| Orchestrator | The agent loop that runs planning, the permission check, tool calls, fact binding, the rules engine and reply writing for every turn |
+| LLM | Google Gemini, used to understand messages, read documents and word replies |
+| AI agents | Conversation Agent, Fact Agent, Document Reader Agent, Explainer Agent and Watchdog Agent |
+| Tools and API | 19 permission-tiered tools (read policies, check coverage, draft a claim, file a claim, attach a document, file an appeal and others) that call the sandbox insurer API |
+| Rules engine | Deterministic code that decides coverage, amounts, deadlines, payer order and claim readiness |
+| Guardian | The permission enforcement point in code that checks every tool call |
+| Data store | Postgres on Supabase for the audit chain, chat history, claims and tickets. A sandbox database for policies and customers |
+| Sandbox insurer | A simulated insurer with its own claims desk, where a person decides the claims the agent files |
 
-The three demo customers, their claims and the sandbox insurer are synthetic. Statutory schemes (BPJS Kesehatan, Jasa Raharja) are modelled from public regulation. Benefit amounts on the sandbox policies are set to match the worked examples. No real customer data is used.
+### 2.2 Data flow
 
-## 8. Evaluation
+1. The customer sends a message or a file through the web app.
+2. Files pass a hidden-text scanner. Personal data such as national ID numbers, bank accounts and phone numbers is removed locally.
+3. The Document Reader Agent turns the file into a typed record, for example document type, dates, bill total and diagnosis.
+4. The customer's policies are available as typed rules, and each rule links to its sentence in the policy.
+5. Engine results and replies are kept in the customer's session. Chat history, claims and the audit log are stored in Postgres per account.
 
-All results are reproducible from the scripts listed in the Execution Evidence Index; every figure below names its report.
+### 2.3 Decision flow
 
-| Evaluation | Result | Report |
+1. The Conversation Agent decides how the message relates to the conversation: a new situation, a correction, an answer to a question, a what-if or a general question.
+2. The planner decides the intent and the tools needed. Safety classifications are decided first by code.
+3. The Guardian checks every tool against its permission tier and the autonomy mode the customer chose.
+4. The Fact Agent turns sentences into typed facts. The rules engine computes the verdict for every policy.
+5. If one unknown fact would change the verdict, the agent asks for that fact only.
+6. The Explainer Agent writes the reply. Every amount, date and identifier is checked against the engine's results before it is shown.
+7. Any action that sends something to the insurer waits for the customer's confirmation. A person at the insurer decides the claim, and the decision comes back to the chat.
+
+### 2.4 Technology stack, deployment and rationale
+
+| Layer | Technology | Reason |
 |---|---|---|
-| Scripted claim tasks (functional, adversarial, plan recommendation) | 33 of 33 passed | task report |
-| Attacks through the full chat (prompt injection, privilege escalation, data exfiltration, misrepresentation) | 0 of 27 succeeded; 0 of 15 benign requests blocked | adversarial report |
-| Same attacks with the permission enforcement removed | 1 of 27 succeeded | adversarial report |
-| Public benchmark, extracted rules plus engine (n = 390) | 84.6% accuracy [77.8, 90.0]; 1.4% invented denials | benchmark report |
-| Same, with the benchmark's own gold rules (n = 342) | 91.8%; the remaining gap comes from document reading | benchmark report |
-| Clarification (ask only when the answer would change) | asks when needed 87%; stays silent when not needed 100% | clarification report |
-| Paraphrase consistency (three wordings per question) | 20 of 20 identical decisions | paraphrase report |
-| Payer order versus claiming in the order held (500 households, real US plans) | the held order is suboptimal in 47.2% of households, by USD 988 on average | allocation report |
-| Plan selection versus cheapest plan (100 households) | closes more gap in 73 of 100 | plan selection report |
-| Hidden-text detection (20 files per technique) | 20 of 20 for white, tiny, off-page and annotation text; 0 of 20 for text drawn inside an image | adversarial report |
-| Diagnosis coding (76 labelled lines) | 92.2% correct category; 3 of 76 wrong codes, none inside a critical-illness range | diagnosis report |
-| Conversation quality (47 turns: slang, typos, corrections, what-ifs, small talk, attacks) | 42 of 47 passed | conversation report |
-| Cost | 0.98 model calls per chat turn on average | cost report |
-| Automated tests | 554 passed | test suite |
+| Rules engine and agent | Python, FastAPI, Pydantic | Strict typed schemas for policy rules, facts and model output. Pydantic rejects model output that does not fit the schema |
+| LLM | Google Gemini Flash Lite | Schema-constrained JSON output, low latency, low cost and good understanding of everyday Indonesian |
+| Optimisation | SciPy (MILP, HiGHS) | Plan selection as an integer programme with optimal, checkable results |
+| Web app | Next.js, TypeScript, Tailwind CSS | A chat interface with interactive cards, one code base for customers and the insurer's desk |
+| Accounts and storage | Supabase Auth and Postgres | Email sign-in with confirmation, row-level security, and an audit chain that survives server restarts |
+| Hosting | Railway, Southeast Asia region | Web and API as two services close to the database, deployed automatically from the repository |
 
-**Why each component exists.** On the benchmark, model-only answers invent denials where no clause governs more often (3.1%) than the engine (1.4%), and cannot show which clause decided. Without the permission layer, one attack succeeds; with it, none does. Asking only verdict-changing questions kept the assistant silent on all 35 irrelevant gaps. The payer-order optimiser recovers more than claiming in the order policies are held whenever deductibles, co-payments or caps are involved.
+## 3. Core algorithm description
 
-## 9. Implementation and deployment
+### 3.1 Planning
 
-| Layer | Technology |
+The planner has two layers. The first layer is code rules for safety-relevant classifications, such as misrepresentation requests, access to another customer's data, account changes and requests to reveal system internals. The model cannot change these classifications. The second layer is a model that reads the message in the context of the conversation. It decides the intent, the read-only tools needed and the topic of the question, for example documents, deadline, amount or claim progress. A request to act is accepted only when the model reads a clear request or an accepted offer from the agent.
+
+### 3.2 Tool calling
+
+Every tool is registered with a permission tier, argument types and a result type. Tool results are stored as typed handles with a trust label. Tier 2 tools accept handles only, so free text from documents or models cannot become an argument of a submission. When several policies could take a claim, the agent asks which one to file first, with one button per policy.
+
+### 3.3 Memory
+
+The agent uses three kinds of memory. Session working memory holds typed facts, dates, documents read and any form waiting for confirmation. Conversation memory holds the last four exchanges as data for references such as "that one" or "the other policy". Chat history is stored per account in Postgres, so it can be opened from another device.
+
+### 3.4 Retrieval
+
+Policy information is retrieved from a typed clause store. Each policy has been compiled into rules such as covers, excludes, waiting period, filing deadline, pays and requires document. The rules engine retrieves the relevant rules by event, cause and insured person. This design was chosen because an insurance verdict needs the exact rule with its numbers and time windows. Every rule used can be shown with its original sentence. For diagnoses, the agent uses BM25 retrieval over 74,879 ICD-10 code descriptions, then the model picks one code from the candidate list and code verifies the pick.
+
+### 3.5 Claim allocation model
+
+For one bill *B* and several policies, payers are layered by the Indonesian coordination rules. Jasa Raharja pays first for road accidents involving two or more vehicles. BPJS Kesehatan pays when the hospital is a partner facility and membership is active. Employer group cover pays before individual cover. Daily cash benefits are paid in parallel because they stack.
+
+Policy *i* pays *min(A_i, s_i − m_i)*. Here *s_i* is the amount presented, *m_i* is the member's cost sharing (deductible and co-payment) and *A_i* is the policy's payment cap. Each payer is presented only what is still unpaid, so the total never exceeds the bill. Within a layer, every claiming order is evaluated and the order that recovers the most is chosen.
+
+### 3.6 Claim risk assessment
+
+The adjudication twin checks each clause that could deny a claim separately and lists every ground an assessor could raise. Documents are cross-checked, for example dates against days in hospital, diagnosis codes against the cause, and receipt totals against their line items. The result is a claim readiness score with the grounds that can be fixed. When a claim is denied, the engine searches for the smallest legitimate change that makes it covered, such as waiting until a date, providing a document or using another policy. Facts that describe what happened, such as cause, dates and diagnosis, are locked in code and are never changed.
+
+### 3.7 Prompt design
+
+Every model call uses a closed output schema at temperature zero. The model fills choices from fixed lists, for example the intent, the relation of the message or one policy from a candidate list. Code validates every output before it is used. Customer messages and document content are marked as data in the prompt, and the model is instructed to ignore any instruction inside them. The planner and conversation prompts contain worked examples in Indonesian and English. The reply writer receives the engine's results and six example replies. The model writes short private reasoning notes, drafts two candidate replies and picks the better one.
+
+### 3.8 Guardrails and explainability
+
+A reply verifier checks that every amount, date, percentage and policy number in a reply comes from the engine's results. If the first candidate fails, the second is checked, then a fixed text is used. Clause quotes must match the policy text exactly. Every answer has a "How was this decided" panel that shows how the message was understood, the facts used, the clauses that applied, the engine's verdict, the wording check and the audit record numbers. If the model is unavailable, the customer is told plainly and can use their own API key.
+
+### 3.9 Evaluation
+
+| Evaluation | Dataset or scenario | Baseline | Result |
+|---|---|---|---|
+| Claim tasks | 33 scripted tasks (20 functional, 10 adversarial, 3 recommendations) | None | 33 of 33 passed |
+| Coverage accuracy | Public life insurance benchmark, 10 contracts, 580 labels (CC-BY-4.0) | A model reading the whole contract (b0, b0cw) | 84.6% with 1.4% invented denials. Baseline b0cw 87.5% with 3.1% invented denials on a 112-item subset |
+| Clarification | 18 messages with one fact removed per test, judged by an oracle | Asking for every missing fact | Asks when needed 87%, silent when not needed 100% |
+| Paraphrase consistency | 20 scenarios in three wordings | None | 20 of 20 identical verdicts |
+| Payer order | 500 households with 200 real US marketplace plans | Claiming in the order held, single policy only | The held order is suboptimal in 47.2% of households, by USD 988 on average |
+| Plan selection | 100 households, mixed catalogue | Cheapest plan, most expensive plan | Closes more gap in 73 and 79 of 100 |
+| Diagnosis coding | 76 labelled diagnosis lines | Alias dictionary | 92.2% correct category. Alias dictionary 17.2% |
+| Conversation | 47 narrative, slang, typo, correction and what-if turns | Previous prompt version | 42 of 47, up from 40 of 47 |
+| Cost | 90 turns of the scripted tasks | A model reading whole documents | 0.98 model calls per turn, 17% of the baseline's tokens |
+
+**Ablation.**
+
+| Component removed | Effect |
 |---|---|
-| Rules engine, agents, sandbox insurer API | Python, FastAPI, Pydantic |
-| Language models | Google Gemini (schema-constrained JSON output, temperature zero) |
-| Web application and insurer desk | Next.js, TypeScript, Tailwind CSS |
-| Accounts and storage | Supabase Auth and Postgres (audit chain, chat history, claims), with row-level security |
-| Hosting | Railway: web service and API service, Southeast Asia region |
+| Permission enforcement in code | Successful attacks rise from 0 to 1 of 27 |
+| Extracted rules replaced by the benchmark's gold rules | Accuracy rises from 84.6% to 91.8%, so the remaining gap comes from document reading |
+| Rules engine replaced by model-only answers | Invented denials rise from 1.4% to 3.1% and the deciding clause cannot be shown |
+| Verdict-sensitivity clarification | Without it the agent asks for every missing fact. With it, 35 of 35 irrelevant gaps were not asked about |
 
-The sandbox insurer is a separate service with its own claims desk. Claims filed by the assistant arrive there with the filled form and the attached files; a person moves them through received, under review, approved, rejected or paid, with a note that is returned to the customer.
+## 4. Security design
 
-## 10. Limitations
+### 4.1 Permission tiers
 
-- The extractor is a language model and can read a value wrongly inside the schema; on the benchmark, extraction coverage per contract ranges from 0.62 to 1.00, and the gap between extracted and gold rules is 7 points.
-- The engine covers coverage, exclusion, period, rider and termination questions; 24 of 58 benchmark scenarios (dividends, investment-linked caps, estate planning) are outside its scope.
-- The public benchmark covers life insurance only; Indonesian products are tested on hand-verified sandbox policies and team-written tasks. The blind off-script batch for the rule-only mode passed 3 of 14.
-- Statutory amounts and payer rules are modelled and marked "verify with the payer"; INA-CBG tariff grouping is not implemented.
-- Text drawn inside an image is not detected as hidden text.
-- The permission layer limits what the assistant can do; it does not guarantee that advice text is correct, which is why every answer is marked indicative.
-- The assistant's working memory of a conversation ends when the server restarts; the customer is told and asked to restate the situation. Saved chats and filed claims are kept.
+| Tier | Type | Example actions | Rule |
+|---|---|---|---|
+| T0 | Automatic | Read the customer's own policies, claim status, premium status and deadline reminders | Always restricted to the signed-in account |
+| T1 | Automatic | Check coverage, compute payer order, draft a claim, prepare a form, draft an appeal | No effect outside the session |
+| T2 | Needs confirmation | File a claim, attach a document to a claim, file an appeal, book a call-back | Runs after the customer taps Confirm. The server issues a single-use token bound to the session, the tool and the exact arguments |
+| T3 | Forbidden for the agent | Change the payout account, change a beneficiary, move money | No tool executes it. The agent opens a ticket for a person at the insurer, who verifies identity through a separate channel |
 
-## 11. Running it
+The customer also chooses an autonomy mode. Observe only answers. Draft prepares without sending. Act sends after confirmation.
 
-```bash
-git clone https://github.com/bungagana/clauseguard.git && cd clauseguard
-cd clauseguard && pip install -r requirements.txt && python scripts/serve.py --fresh
-cd ../clauseguard-web && npm install && npm run dev
-cd ../clauseguard && python -m pytest -q
-```
+### 4.2 Threat model
 
-Without a model key, every step falls back to its deterministic path. The full list of evaluation commands is in the Execution Evidence Index.
+| Threat | Example | Control | Test result |
+|---|---|---|---|
+| Prompt injection | Hidden instructions in a hospital receipt, such as white text asking to approve the claim | Hidden-text scanner, a quarantined extractor with no tools, untrusted labels on document text, handle-only T2 arguments | 0 of 27 attacks succeeded. White, tiny, off-page and annotation text detected 20 of 20 |
+| Data leakage | Asking for another customer's policies or claims, or for system internals | Account isolation on every route, row-level security in the database, output filtering for account and identity numbers, removal of personal data before a document reaches the model | A second account gets a refusal or an empty list for the first account's uploads, chats and claims. Every attempt is recorded in the audit log |
+| Unauthorized transaction | Filing a claim without confirmation, changing a bank account with an urgent excuse | Single-use confirmation tokens, no T3 tools, per-session action limits, a circuit breaker, a halt switch at the insurer's desk | Attacks without confirmation and account-change requests produced no effect |
+| Hallucinated advice | Stating an amount, date or denial that is not in the policy | Verdicts from the rules engine, a number and date check on replies, exact clause quotes, an indicative label | 1.4% invented denials on the benchmark. Replies that state values outside the engine's results are rejected before they are shown |
 
-## 12. References
+### 4.3 Risk controls
+
+**Transaction limits.** A claim amount cap of IDR 100,000,000 per submission. At most three T2 actions and 60 tool calls per session. One T3 ticket per 24 hours. A session stops automatically after three permission denials.
+
+**Audit log.** Every message, plan, tool call, permission decision and reply is recorded in a hash chain. Each record carries the hash of the previous record, so a change to any record is detected on verification.
+
+**Human in the loop.** The customer confirms every submission. A person at the insurer decides every claim at the claims desk. The insurer holds a halt switch that stops every agent action for every customer.
+
+**Data privacy.** National ID numbers, bank account numbers, card numbers, phone numbers, dates of birth and personal names are removed locally before a document is sent to the model. If any personal data remains, the model call is blocked. Customers sign in with a confirmed email, and each account's data is isolated.
+
+**Regulatory compliance.** Every answer is marked indicative and states that the policy wording prevails. After a rejection, the agent gives the official complaint route (the insurer's complaint unit, OJK contact 157 and the financial services dispute resolution body LAPS SJK). Identity verification (KYC) for sensitive changes is done by the insurer through a separate channel. The agent does not move funds, so AML screening stays with the insurer.
+
+This topic does not use a blockchain, so key management, signing policy and transaction simulation for Topic F do not apply.
+
+## 5. Innovation & interaction
+
+### 5.1 Difference from existing solutions
+
+| Capability | Insurer chatbot | General AI chatbot | Policy comparison site | ClauseGuard |
+|---|---|---|---|---|
+| Reads all of a customer's policies from different insurers together | Own products only | When uploaded, with no fixed rules | No | Yes |
+| Coverage verdict with the deciding clause quoted | General answers | From model memory | No | Yes, computed by the rules engine |
+| Payer order across policies, including BPJS and Jasa Raharja | No | Inconsistent | No | Yes |
+| Fills in the insurer's own claim form from documents | Own form | No | No | Yes |
+| Files a claim with confirmation and receives the decision in the chat | Partly | No | No | Yes |
+| Checks whether a rejection has grounds for appeal | No | Not verified | No | Yes, with the clause |
+| Action limits enforced in code | Not relevant | None | Not relevant | Four permission tiers |
+
+The core innovation is to treat an insurance policy as a program of rules. The language model understands the conversation and the documents. The rules engine computes what the customer is owed. Every answer can be proven with a clause.
+
+### 5.2 Interaction design
+
+1. **Everyday language.** Customers write in Indonesian, English or a mix, including abbreviations and typos. The agent replies in the same language.
+2. **One question only.** The agent asks only when the answer would change, with quick-reply buttons.
+3. **Evidence cards.** Verdicts per policy, clause quotes, payer order, claim readiness and the content of each document appear as cards. For follow-up questions the cards fold so the conversation stays short.
+4. **Correctable form.** The claim form is shown before it is sent. The customer can change fields such as the hospital name or a date, and the form is rebuilt.
+5. **Confirmation card.** Filing needs one Confirm tap, and the card shows the documents attached and those still missing.
+6. **Proactive news.** The insurer's decision appears in the chat without being asked for, with an explanation and the next step.
+7. **Autonomy mode.** The Observe, Draft and Act switch is always visible at the top of the screen.
+
+## 6. Limitations & known risks
+
+This list is consistent with the risk register in the Security Self-Assessment. The K numbers refer to that document.
+
+| No. | Limitation or risk | Residual level | Current handling |
+|---|---|---|---|
+| K1 | The extractor is a model and can misread a value inside the schema. On the benchmark, extracted rules score 7 points below gold rules | High | Cross-checks of totals and line items, an unverified label, and the customer reviews values from documents before sending |
+| K2 | Advice text can be wrong. The permission layer limits actions and does not check the correctness of advice | Medium | Verdicts from the rules engine, a number check on replies, an indicative label |
+| K3 | Text drawn inside an image is not detected as hidden text (0 of 20) | Medium | Typed extractor output, untrusted labels that block T2 |
+| K4 | The audit log can be rebuilt by anyone with write access to its storage | Medium | Chain verification shows changes to existing records |
+| K8 | A policy uploaded by the customer can mislead verdicts if its content was manipulated | Medium | An unverified label, and it cannot trigger T2 |
+| K9 | Confirmation relies on the customer reading the card | Medium | A summary with trust labels and a token per call |
+| K12 | Dependence on a hosted model service and its quota | Low | Key rotation, a plain notice to the customer, and the option to use the customer's own key |
+| K15 | Test sets are small and written by the team. The blind question batch for the model-free mode passed 3 of 14 | High | Every result is reported with its sample size |
+| K18 | Session working memory ends when the server restarts | Low | Chat history is stored, and the customer is told and asked to restate the situation |
+
+Other scope limitations:
+
+- The public benchmark covers life insurance only. Indonesian products are tested on hand-verified sandbox policies.
+- The rules engine covers coverage, exclusion, period, rider and termination questions. 24 of 58 benchmark scenarios (dividends, investment-linked caps, estate planning) are outside its scope.
+- Amounts and payer rules for BPJS Kesehatan and Jasa Raharja are modelled from public regulation and marked to be verified with the payer. INA-CBG tariff grouping is not implemented.
+- A claim that has been filed cannot be amended directly. A fixable rejection is followed by a new submission after the customer confirms.
+
+## References
 
 - Mridul, Kapa and Seneviratne (2026). A benchmark for gap and overlap analysis of insurance contracts. arXiv:2604.10853.
 - Debenedetti et al. (2025). CaMeL: defeating prompt injections by design. arXiv:2503.18813.
-- Wachter, Mittelstadt and Russell (2017); Ustun, Spangher and Liu (2019). Counterfactual explanations and algorithmic recourse.
+- Wachter, Mittelstadt and Russell (2017). Ustun, Spangher and Liu (2019). Counterfactual explanations and algorithmic recourse.
 - OWASP Top 10 for Agentic Applications (2026).
 - KFF (2025). HealthCare.gov insurers denied nearly 1 in 5 in-network claims in 2023.
 - OJK (2023). Claim difficulty is the most reported insurance complaint.
