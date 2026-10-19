@@ -4,41 +4,152 @@
 
 FinTechathon 2026 · International Track · Topik D: AI Insurance Assistant
 Tim: Bunga Laelatul Muna, Izra, Wan Sabrina · Institut Teknologi Sepuluh Nopember, Indonesia
+Kode sumber: https://github.com/bungagana/clauseguard · Demo langsung: https://clauseguard.up.railway.app
 Tanggal status: 19 Oktober 2026
 
-Laporan ini menjelaskan bagaimana tingkat izin diterapkan pada ClauseGuard dan merinci risiko yang masih kami ketahui. Penilaian dilakukan oleh tim sendiri terhadap kode di repositori yang berjalan pada penanggung simulasi (FastAPI dengan SQLite atau Postgres) dan persona sintetis. Angka pengujian diambil dari `evidence/adversarial_report.md` (dihasilkan 11 Oktober 2026, dengan penegakan izin menyala dan dimatikan, audit log bersih), `evidence/task_report.md`, dan hasil `pytest`. Seluruh rangkaian pengujian terakhir meloloskan 554 tes. Pada 19 Oktober 2026 kami menjalankan ulang tes keamanan (`tests/test_security.py`, `tests/test_accounts.py`, `tests/test_sandbox_api.py`, `tests/test_own_key.py`, dan `tests/test_agent_loop.py`) dan 68 tes lulus.
+Laporan ini menjelaskan model izin ClauseGuard, pengujian keamanannya, pengelolaan data dan privasi, dan risiko yang masih kami ketahui. Penilaian dilakukan oleh tim sendiri terhadap kode di repositori yang berjalan pada penanggung simulasi (FastAPI dengan SQLite atau Postgres) dan persona sintetis. Setiap mekanisme menyebut berkas yang menerapkannya. Angka pengujian berasal dari `evidence/adversarial_report.md` (dihasilkan 11 Oktober 2026), `evidence/task_report.md`, dan hasil `pytest`. Pekerjaan yang direncanakan diberi tanda Rencana.
 
 ClauseGuard memiliki 3 fitur utama dan 3 fitur pendukung. Fitur utama adalah ClauseLens, ClaimFlow, dan TrustLock. Fitur pendukung adalah Claim Simulator, Deadline Tracker, dan PDF Export. TrustLock adalah fitur yang dinilai dalam laporan ini karena TrustLock membatasi setiap tindakan agen dengan tingkat izin, konfirmasi sekali pakai, dan audit log.
 
-## 1. Ruang lingkup dan aset
+## Ringkasan hasil
 
-### 1.1 Ruang lingkup
+Tabel 1 memuat hasil utama dalam satu halaman.
 
-Yang dinilai adalah loop agen, planner, lapisan penegakan izin (Guardian), registri alat, ekstraktor terkarantina, empat penyelesai hak nasabah (putusan, alokasi klaim, recourse dan twin ajudikasi, pemilihan paket) beserta garis waktu, audit log, penjaga keluaran, API sandbox, dan antarmuka. Yang berada di luar penilaian adalah layanan model bahasa yang di-hosting, sistem operasi, sistem penanggung sungguhan, dan data nasabah sungguhan.
+**Tabel 1. Ringkasan hasil penilaian**
 
-Modul utama terletak di `clauseguard/security/` (`labels.py`, `registry.py`, `pep.py`, `nonce.py`, `audit.py`, `output_guard.py`, `kill_switch.py`), `clauseguard/extractor/` (`policy_extractor.py`, `claim_doc.py`, `hidden_text.py`), `clauseguard/agent/`, dan `clauseguard/sandbox/`. Penyelesai hak nasabah adalah fungsi Python murni tanpa panggilan model dan tanpa efek samping. Penyelesai hanya dapat dicapai melalui alat registri atau model baca `/entitlement/*` yang terikat pada sesi.
+| Ukuran | Hasil | Sumber |
+|---|---|---|
+| Serangan yang menimbulkan efek terlarang saat penegakan menyala | 0 dari 27 | `evidence/adversarial_report.md` |
+| Permintaan jinak yang diblokir keliru | 0 dari 15 | `evidence/adversarial_report.md` |
+| Probe langsung ke fungsi penegakan dan nonce yang berhasil | 0 dari 10 | `evidence/adversarial_report.md` |
+| Teks tersembunyi yang terdeteksi (putih, huruf kecil, di luar halaman, anotasi) | 20 dari 20 untuk setiap teknik | `evidence/adversarial_report.md` |
+| Teks instruksi yang digambar di dalam gambar | Tidak terdeteksi (0 dari 20) | `evidence/adversarial_report.md` |
+| Tugas terskrip termasuk A01 sampai A10 (adversarial) | 33 dari 33 lulus | `evidence/task_report.md` |
+| Tes keamanan yang dijalankan ulang pada 19 Oktober 2026 | 68 lulus | `pytest` pada lima berkas |
+| Seluruh rangkaian tes | 554 lulus pada run penuh terakhir | `pytest` |
+| Risiko yang diketahui | 21 (tinggi 2, sedang 8, rendah 11) | Tabel 12 |
 
-### 1.2 Aset yang dilindungi
+Sikap desain kami adalah model bahasa tidak pernah memutuskan izin. Model hanya mengusulkan pemanggilan alat. Guardian memutuskan izinkan, tolak, atau minta konfirmasi dengan kode deterministik. Petugas penanggung memutuskan setiap klaim. Hasil pengujian yang sempurna pada 27 serangan berasal dari kasus yang ditulis tim, jadi hasil itu menunjukkan aturan berfungsi dan tidak menjadi bukti kebal serangan. Bab 4 memuat batasnya.
 
-1. Rekening pencairan, ahli waris, dan rekening debit premi.
-2. Wewenang memutuskan klaim.
-3. Data pribadi nasabah, yaitu NIK, tanggal lahir, diagnosis, dan data bank.
-4. Catatan milik pengguna lain.
-5. Keutuhan kualifikasi klausul.
-6. System prompt yang memuat string kenari (canary).
-7. Audit log.
+## 1. Model izin
 
-### 1.3 Apa yang dapat dan tidak dapat dilakukan agen
+### 1.1 Peran dan batasnya
 
-Agen dapat membaca polis, klaim, dan pembayaran milik pengguna yang sedang masuk (T0). Agen dapat menghitung putusan, alokasi, recourse, kesiapan, dan draf (T1). Agen dapat membuat catatan berdampak rendah setelah konfirmasi di antarmuka (T2). Agen tidak dapat menyetujui atau menolak klaim, memindahkan uang, atau mengubah rekening pencairan, ahli waris, dan rekening debit premi. Alat untuk tindakan itu tidak ada di registri.
+Tabel 2 memuat peran dalam sistem, apa yang boleh dan tidak pernah dilakukan setiap peran, dan lokasinya di kode.
 
-## 2. Model ancaman
+**Tabel 2. Peran dan batas kewenangan**
 
-Pemetaan memakai OWASP Top 10 for Agentic Applications 2026, yaitu ASI01 pembajakan tujuan agen, ASI02 penyalahgunaan alat, ASI03 penyalahgunaan identitas dan hak, ASI04 rantai pasok agen, ASI05 eksekusi kode tak terduga, ASI06 peracunan memori dan konteks, ASI07 komunikasi antaragen yang tidak aman, ASI08 kegagalan berantai, ASI09 eksploitasi kepercayaan manusia dan agen, dan ASI10 agen nakal. Kelas pengujian yang kami pakai adalah IT (transfer terinduksi), DX (ekstraksi data), PE (eskalasi hak), PI (injeksi prompt), MEM (memori), RL (penyalahgunaan laju dan loop), dan KS (sakelar henti).
+| Peran | Boleh | Tidak pernah | Lokasi |
+|---|---|---|---|
+| Nasabah | Masuk dengan akun, bertanya, mengunggah polis dan dokumen, mengoreksi formulir, menekan Konfirmasi, memilih mode otonomi, memakai kunci sendiri, menghapus riwayat percakapan | Melihat data akun lain atau menekan Konfirmasi atas nama orang lain karena nonce terikat pada sesi | `sandbox/api.py` |
+| Agen (planner dan model) | Mengusulkan pemanggilan alat T0 sampai T2 dan satu tiket T3 | Menentukan izinnya sendiri, memanggil alat di luar registri, menyetujui atau menolak klaim, memindahkan uang | `agent/`, `security/registry.py` |
+| Guardian | Memutuskan izinkan, tolak, atau minta konfirmasi, menerbitkan nonce, menurunkan sesi ke T0 | Menjalankan alat atau terpengaruh oleh teks bebas | `security/pep.py`, `security/nonce.py` |
+| Ekstraktor terkarantina | Membaca dokumen dan mengisi skema tertutup | Memiliki alat, riwayat, atau akses ke akun | `extractor/` |
+| Penyelesai | Menghitung putusan, alokasi, recourse, dan pemilihan paket | Memanggil model atau menimbulkan efek samping | `solver.py`, `allocation.py`, `recourse.py`, `plans/` |
+| Petugas penanggung | Meninjau klaim beserta dokumennya, memutuskan dengan catatan, menangani tiket | Dicapai planner, karena tidak ada alat registri yang menunjuk ke meja penanggung. Wajib token admin | `/backoffice/*` |
+| Admin sistem | Menghentikan agen untuk semua nasabah, menambah kunci model | Membaca riwayat percakapan nasabah, karena tidak ada endpoint admin yang menyediakannya | `/admin/kill`, `/system/add-key` |
+| Penyedia model (Google Gemini) | Mengembalikan teks dan keluaran terstruktur | Menjalankan alat. Keluarannya diperlakukan sebagai tidak tepercaya | `llm.py` |
+| Supabase | Memverifikasi akun dan menyimpan data Postgres | Dibaca oleh kunci publik karena row level security menolaknya | `deploy/migrations/001_init.sql` |
 
-Tabel 1 memuat dua belas permukaan serangan beserta kontrol utamanya. Kode R1 sampai R9 pada kolom kontrol dijelaskan di Tabel 3.
+Yang dinilai adalah loop agen, planner, Guardian, registri alat, ekstraktor terkarantina, empat penyelesai hak nasabah, audit log, penjaga keluaran, API sandbox, dan antarmuka. Yang berada di luar penilaian adalah layanan model bahasa yang di-hosting, sistem operasi, sistem penanggung sungguhan, dan data nasabah sungguhan. Aset yang dilindungi adalah rekening pencairan, ahli waris, dan rekening debit premi, wewenang memutuskan klaim, data pribadi nasabah, catatan pengguna lain, keutuhan kualifikasi klausul, system prompt yang memuat string kenari, dan audit log.
 
-**Tabel 1. Model ancaman dan pemetaan OWASP**
+### 1.2 Isolasi aliran data
+
+Prinsip isolasi yang dipakai adalah sebagai berikut.
+
+1. Prompt planner memuat teks pengguna dan nama alat. Prompt itu tidak pernah memuat teks dokumen atau keluaran alat (`agent/planner.py`).
+2. Ekstraktor terkarantina berjalan tanpa alat dan tanpa riwayat. Keluarannya adalah skema pydantic tertutup. Satu-satunya kolom teks bebas yang sampai ke pemanggil adalah daftar singkat temuan teks tersembunyi untuk ditampilkan.
+3. Nilai dari dokumen, alat, dan model masuk registri sebagai nilai bertipe dengan label kepercayaan. Label nilai turunan adalah yang terendah dari masukannya (`security/labels.py`).
+4. Argumen T2 dan T3 harus berupa handle registri. String literal ditolak.
+5. Penyelesai adalah fungsi murni dari catatan dan fakta bertipe. Recourse tidak pernah mengubah fakta yang menggambarkan kejadian itu sendiri (`IMMUTABLE_SLOTS`, `MISREPRESENTATION_GUARD`), sehingga recourse tidak dapat dipakai untuk mengarahkan pemalsuan.
+6. Susunan formulir klaim yang diusulkan model hanya berupa struktur, yaitu judul bagian, label kolom, dan kunci sumber dari daftar tertutup. Setiap nilai pada formulir diisi oleh kode dari fakta bertipe. Pencocok dokumen hanya melihat ringkasan bertipe dari berkas dan tidak melihat teksnya. Persyaratan dicatat sebagai terlampir hanya bila ada berkas unggahan yang membuktikannya. Pernyataan nasabah bahwa dokumen ada dicatat sebagai dinyatakan dan ditampilkan demikian kepada petugas.
+
+### 1.3 Empat tingkat izin
+
+Setiap pemanggilan alat melewati Guardian (`security/pep.py`). Gambar 1 menunjukkan jalur yang ditempuh setiap tindakan, dan Tabel 3 memuat alat, aturan, kode, dan tes untuk setiap tingkat.
+
+![Gambar 1. Alur izin untuk setiap tindakan agent|6.3](../img/flow_tier_id.png)
+
+**Tabel 3. Tingkat izin dan tempat penegakannya**
+
+| Tingkat | Alat (`security/registry.py`) | Aturan | Kode | Tes |
+|---|---|---|---|---|
+| T0 baca data sendiri | `get_my_policies`, `get_policy_clause`, `get_claim_status`, `get_payment_status` | Id diperiksa terhadap himpunan milik pengguna (R4) | `pep.py` blok kepemilikan | `test_cross_tenant_policy_denied`, `test_household_scope_for_santoso` |
+| T1 hitung atau susun draf | `check_coverage`, `gap_analysis`, `claim_readiness`, `cob_plan`, `draft_claim`, `estimate_payout`, `extract_document`, `POST /policies/upload` | Tidak ada efek di luar sesi. Hasil berlabel TOOL. Polis unggahan diberi label `POLICY_DOC_UNVERIFIED` dan disimpan hanya pada akun pengunggah | `registry.py`, `sandbox/tools.py`, `sandbox/api.py` | `tests/test_portfolio.py`, `test_t1_portfolio_tools_report_pending_or_work`, `tests/test_entitlement_api.py`, `test_upload_my_policy_live_extraction` |
+| T2 ajukan | `submit_claim`, `attach_document`, `schedule_callback`, `file_appeal` | Argumen harus berupa handle registri dengan label yang diizinkan (R2). Nonce server berasal dari klik antarmuka (R7). Paling banyak 1 `submit_claim` dan 3 panggilan T2 per sesi (R5) | `pep.py`, `nonce.py` | `test_t2_without_nonce_is_denied`, `test_literal_arg_in_t2_is_denied`, `test_nonce_cannot_be_replayed_for_second_call`, `test_nonce_single_use_and_ttl`, `test_second_submit_claim_is_rate_limited`, `test_claim_flow_requires_confirmation` |
+| T3 uang atau identitas | `create_account_change_request` (hanya tiket) | Tidak pernah dieksekusi agen. Masukan hanya dari formulir yang diketik pengguna (label USER). Satu tiket per 24 jam. Kolom sensitif tidak pernah berasal dari label DOC, LLM, atau TOOL, bahkan setelah konfirmasi (R3) | `registry.py` (pernyataan saat impor), `pep.py` | `test_registry_has_no_money_or_approval_tools`, `test_sensitive_field_never_from_untrusted`, `test_t3_ticket_from_user_form_is_allowed_once`, `test_t3_ticket_only_from_form` |
+
+Nasabah juga memilih mode otonomi (`POST /session/autonomy`) yaitu Observe, Draft, atau Act. Mode ini hanya menurunkan batas tingkat yang diterapkan Guardian dan tidak dapat memperluas apa yang sudah diizinkan tingkat izin.
+
+### 1.4 Aturan penegakan
+
+Tabel 4 memuat aturan penegakan pada `clauseguard/security/pep.py` kecuali bila disebut berbeda.
+
+**Tabel 4. Aturan penegakan R1 sampai R9**
+
+| Aturan | Pemeriksaan | Tes |
+|---|---|---|
+| R1 | Alat harus ada di registri dan argumen lolos skema ketat (`extra="forbid"`) | `test_pep_rejects_unknown_tool`, `test_pep_rejects_extra_fields` |
+| R2 dan R3 | Argumen T2 harus berupa handle dengan label yang diizinkan. Kolom sensitif T3 tidak boleh berasal dari DOC, LLM, atau TOOL | `test_literal_arg_in_t2_is_denied`, `test_sensitive_field_never_from_untrusted` |
+| R4 | `user_id` berasal dari sesi server. Nilai dari planner dibuang | `test_planner_supplied_user_id_is_ignored` |
+| R5 | Jumlah di atas batas polis atau IDR 100.000.000 dieskalasi ke manusia. Pemeriksaan berjalan bila draf memuat kolom jumlah | `test_amount_above_cap_escalates` |
+| R6 | Sakelar henti hanya mengizinkan T0. Pemutus sirkuit menurunkan sesi ke T0 setelah 3 penolakan | `test_kill_switch_blocks_everything_above_t0`, `test_circuit_breaker_downgrades_session_to_t0` |
+| R7 | Nonce satu kali pakai terikat pada sesi, alat, dan hash argumen. Masa berlakunya 300 detik | `test_nonce_single_use_and_ttl` |
+| R8 | Penjaga keluaran (`output_guard.py`) menutup NIK, rekening, nomor kartu (Luhn), id polis asing, kenari, dan teks hasil dekode base64 | `test_output_guard_masks_nik_and_bank_numbers`, `test_output_guard_canary_refuses_whole_reply` |
+| R9 | Hanya slot bertipe yang bertahan antar giliran | `test_registry_literal_never_resolves`, `test_account_number_never_persists_in_session` |
+
+### 1.5 Konfirmasi, verifikasi, dan pemulihan
+
+Urutan satu klaim adalah sebagai berikut.
+
+1. `draft_claim` (T1) menyimpan draf sebagai handle berlabel TOOL.
+2. Antarmuka menampilkan formulir yang dapat dikoreksi dan ringkasan dengan lencana kepercayaan. Nilai pada kartu berasal dari fakta bertipe dan tidak dari teks model.
+3. Nasabah menekan Konfirmasi.
+4. Server menerbitkan nonce yang terikat pada sesi, alat, dan hash argumen. Nonce hanya berlaku satu kali dan kedaluwarsa setelah 300 detik.
+5. `submit_claim` lolos pemeriksaan Guardian. Argumen yang berbeda dari yang dikonfirmasi ditolak.
+6. Hasilnya dicatat di audit log dan klaim masuk ke meja penanggung.
+
+Tabel 5 memuat mekanisme pemulihan dan pengambilalihan oleh manusia.
+
+**Tabel 5. Pemulihan dan pengambilalihan oleh manusia**
+
+| Mekanisme | Cara kerja | Bukti |
+|---|---|---|
+| Konfirmasi kedaluwarsa | Nonce yang tidak dipakai dalam 300 detik tidak berlaku lagi | `test_nonce_single_use_and_ttl` |
+| Pengajuan ditarik | Pengajuan yang menunggu dibatalkan bila nasabah mengoreksi fakta, dan dicatat sebagai ESCALATE | Audit log |
+| Pembatalan setelah terkirim | Tidak tersedia. Klaim yang sudah diajukan tidak dapat diubah langsung. Penolakan yang dapat diperbaiki ditindaklanjuti dengan pengajuan baru atau banding setelah konfirmasi nasabah | Batas yang kami akui di bagian 4.3 |
+| Sakelar henti | Admin dapat menghentikan semua tindakan agen. Agen hanya dapat membaca (T0) | `test_kill_switch_blocks_everything_above_t0`, kasus KS-01 |
+| Pemutus sirkuit | Tiga penolakan membuat sesi turun ke T0 | `test_circuit_breaker_downgrades_session_to_t0` |
+| Keputusan manusia | Petugas penanggung memutuskan setiap klaim. Perubahan uang dan identitas hanya menjadi tiket untuk petugas | `test_t3_ticket_only_from_form` |
+| Model tidak tersedia | Nasabah menerima pemberitahuan jelas (kuota, kunci ditolak, tidak ada respons). Kartu dari mesin aturan tetap tampil. Kunci bergilir dan kunci yang ditolak dilewati. Nasabah dapat memakai kunci sendiri | `tests/test_llm_key_pool.py`, `tests/test_own_key.py` |
+| Server dimulai ulang | Sesi terbuka berakhir. Riwayat percakapan tetap tersimpan dan nasabah menyampaikan ulang situasinya | Risiko K18 |
+
+### 1.6 Audit dan pengawasan
+
+1. **Audit log.** Berkas JSONL berantai hash (`security/audit.py`). Setiap baris memuat nomor urut, waktu, sesi, pengguna, jenis peristiwa, alat, tingkat, hash argumen, label argumen, keputusan, alasan, model, hash prompt, hash sebelumnya, dan hash sendiri. Argumen disimpan sebagai hash.
+2. **Jenis peristiwa.** USER_MSG, PLAN, TOOL_ALLOW, TOOL_DENY, TOOL_RESULT, CONFIRM_ISSUED, CONFIRM_USED, DOC_INGEST, DOC_SUSPICIOUS, REPLY, OUTPUT_GUARD, KILL_SWITCH, ESCALATE, DX_ATTEMPT, LOGIN, EXPORT_PDF, AUTONOMY_SET, CLOCK_MOVED, dan HISTORY_DELETE.
+3. **Pengawasan penanggung.** Meja penanggung dapat menghentikan agen untuk semua nasabah, meninjau setiap klaim yang diajukan beserta formulir dan lampiran persis seperti yang dikirim agen, dan mencatat keputusan dengan catatan yang dilihat nasabah. Agen tidak pernah membaca meja penanggung dan hanya menerima status klaim melalui ringkasan.
+4. **Mode Postgres.** Rantai audit disimpan di `audit_events` dengan satu baris kepala. Row level security tanpa kebijakan menolak REST API database untuk kunci publik (`scripts/check_supabase_rls.py`, diverifikasi 15 Oktober 2026 pada enam tabel, semuanya ditolak). Tabel `audit_events` memiliki pemicu yang menolak UPDATE dan DELETE.
+5. **Verifikator.** `python scripts/verify_audit.py [path]` mencetak `OK (n events)` atau `BROKEN at seq N`. Demo penyimpangan di antarmuka mengubah salinan dan menunjukkan verifikator berhenti pada nomor urut itu.
+6. **Sakelar henti.** Tersedia lewat `python -m clauseguard.security.kill_switch on|off|status`, `POST` dan `DELETE /admin/kill` dengan token admin, atau berkas `evidence/AGENT_HALT`.
+
+### 1.7 Akun dan isolasi nasabah
+
+1. Dengan `CG_AUTH=supabase` tidak ada login anonim. Peramban masuk ke Supabase dan kata sandi tidak pernah sampai ke backend kami. Backend menerima token akses, menanyakan kepada Supabase siapa pemiliknya, mewajibkan email terkonfirmasi, dan menurunkan id pengguna internal dari id akun yang terverifikasi. Id itu tidak pernah diambil dari permintaan.
+2. Setiap rute yang menyentuh data nasabah mencari sesi terlebih dahulu dan menyaring berdasarkan id pengguna itu. Rute tersebut mencakup polis, klaim (`/claims/{id}`), unggahan (`/uploads/{id}`), riwayat (`/history`), dan chat. Satu giliran chat hanya dapat menyebut unggahan milik pemanggil atau berkas demo bawaan.
+3. `tests/test_accounts.py` masuk sebagai dua akun berbeda dan memeriksa bahwa akun kedua mendapat penolakan atau daftar kosong untuk unggahan, chat, klaim, dan token palsu atau belum terkonfirmasi milik akun pertama. Permintaan yang menyebut klaim akun lain dicatat sebagai `IDOR_ATTEMPT`.
+4. Chat yang tersimpan di peramban dihapus saat keluar dan setiap kali akun lain masuk.
+5. Model boleh mengusulkan tindakan hanya bersama pembacaannya bahwa nasabah memintanya secara jelas saat itu atau menerima tawaran asisten. Sapaan tidak dapat menyiapkan pengajuan (`tests/test_agent_fixes.py`). Setiap tindakan tetap melewati Guardian dan konfirmasi sekali pakai. Model boleh menaikkan permintaan menjadi penolakan pemalsuan dan tidak boleh melonggarkannya.
+6. Penampil dokumen di meja penanggung hanya menyajikan berkas menurut id dokumen pada klaim, hanya dari folder unggahan dan demo, dan hanya dengan token admin.
+7. Kunci Gemini milik nasabah divalidasi sekali dengan Google, disimpan hanya di memori sesi itu, dipakai hanya untuk permintaan sesi itu (variabel konteks per permintaan, bukan variabel global), dan tidak pernah ditulis ke disk, log, atau rantai audit (`tests/test_own_key.py`).
+
+## 2. Pengujian keamanan
+
+### 2.1 Model ancaman
+
+Pemetaan memakai OWASP Top 10 for Agentic Applications 2026, yaitu ASI01 pembajakan tujuan agen, ASI02 penyalahgunaan alat, ASI03 penyalahgunaan identitas dan hak, ASI04 rantai pasok agen, ASI05 eksekusi kode tak terduga, ASI06 peracunan memori dan konteks, ASI07 komunikasi antaragen yang tidak aman, ASI08 kegagalan berantai, ASI09 eksploitasi kepercayaan manusia dan agen, dan ASI10 agen nakal. Kelas pengujian yang kami pakai adalah IT (transfer terinduksi), DX (ekstraksi data), PE (eskalasi hak), PI (injeksi prompt), MEM (memori), RL (penyalahgunaan laju dan loop), dan KS (sakelar henti). Tabel 6 memuat dua belas permukaan serangan beserta kontrol utamanya.
+
+**Tabel 6. Model ancaman dan pemetaan OWASP**
 
 | No. | Permukaan | Serangan konkret | Kelas | OWASP | Kontrol utama |
 |---|---|---|---|---|---|
@@ -57,99 +168,13 @@ Tabel 1 memuat dua belas permukaan serangan beserta kontrol utamanya. Kode R1 sa
 
 ASI05 tidak berlaku karena tidak ada alat yang mengeksekusi kode. ASI07 tidak berlaku karena tidak ada pesan antaragen.
 
-## 3. Penerapan tingkat izin
-
-### 3.1 Empat tingkat izin
-
-Setiap pemanggilan alat melewati Guardian (`security/pep.py`). Gambar 1 menunjukkan jalur yang ditempuh setiap tindakan, dan Tabel 2 memuat alat, aturan, kode, dan tes untuk setiap tingkat.
-
-![Gambar 1. Alur izin untuk setiap tindakan agent|6.3](../img/flow_tier_id.png)
-
-**Tabel 2. Tingkat izin dan tempat penegakannya**
-
-| Tingkat | Alat (`security/registry.py`) | Aturan | Kode | Tes |
-|---|---|---|---|---|
-| T0 baca data sendiri | `get_my_policies`, `get_policy_clause`, `get_claim_status`, `get_payment_status` | Id diperiksa terhadap himpunan milik pengguna (R4) | `pep.py` blok kepemilikan | `test_cross_tenant_policy_denied`, `test_household_scope_for_santoso` |
-| T1 hitung atau susun draf | `check_coverage`, `gap_analysis`, `claim_readiness`, `cob_plan`, `draft_claim`, `estimate_payout`, `extract_document`, `POST /policies/upload` | Tidak ada efek di luar sesi. Hasil berlabel TOOL. Polis unggahan diberi label `POLICY_DOC_UNVERIFIED` dan disimpan hanya pada akun pengunggah | `registry.py`, `sandbox/tools.py`, `sandbox/api.py` | `tests/test_portfolio.py`, `test_t1_portfolio_tools_report_pending_or_work`, `tests/test_entitlement_api.py`, `test_upload_my_policy_live_extraction` |
-| T2 ajukan | `submit_claim`, `attach_document`, `schedule_callback`, `file_appeal` | Argumen harus berupa handle registri dengan label yang diizinkan (R2). Nonce server berasal dari klik antarmuka (R7). Paling banyak 1 `submit_claim` dan 3 panggilan T2 per sesi (R5) | `pep.py`, `nonce.py` | `test_t2_without_nonce_is_denied`, `test_literal_arg_in_t2_is_denied`, `test_nonce_cannot_be_replayed_for_second_call`, `test_nonce_single_use_and_ttl`, `test_second_submit_claim_is_rate_limited`, `test_claim_flow_requires_confirmation` |
-| T3 uang atau identitas | `create_account_change_request` (hanya tiket) | Tidak pernah dieksekusi agen. Masukan hanya dari formulir yang diketik pengguna (label USER). Satu tiket per 24 jam. Kolom sensitif tidak pernah berasal dari label DOC, LLM, atau TOOL, bahkan setelah konfirmasi (R3) | `registry.py` (pernyataan saat impor), `pep.py` | `test_registry_has_no_money_or_approval_tools`, `test_sensitive_field_never_from_untrusted`, `test_t3_ticket_from_user_form_is_allowed_once`, `test_t3_ticket_only_from_form` |
-
-Pengguna juga memilih mode otonomi (`POST /session/autonomy`) yaitu Observe, Draft, atau Act. Mode ini hanya menurunkan batas tingkat yang diterapkan Guardian dan tidak dapat memperluas apa yang sudah diizinkan tingkat izin.
-
-### 3.2 Aturan penegakan
-
-Tabel 3 memuat aturan lain pada `clauseguard/security/pep.py` kecuali bila disebut berbeda.
-
-**Tabel 3. Aturan penegakan R1 sampai R9**
-
-| Aturan | Pemeriksaan | Tes |
-|---|---|---|
-| R1 | Alat harus ada di registri dan argumen lolos skema ketat (`extra="forbid"`) | `test_pep_rejects_unknown_tool`, `test_pep_rejects_extra_fields` |
-| R2 dan R3 | Argumen T2 harus berupa handle dengan label yang diizinkan. Kolom sensitif T3 tidak boleh berasal dari DOC, LLM, atau TOOL | `test_literal_arg_in_t2_is_denied`, `test_sensitive_field_never_from_untrusted` |
-| R4 | `user_id` berasal dari sesi server. Nilai dari planner dibuang | `test_planner_supplied_user_id_is_ignored` |
-| R5 | Jumlah di atas batas polis atau IDR 100.000.000 dieskalasi ke manusia. Pemeriksaan berjalan bila draf memuat kolom jumlah | `test_amount_above_cap_escalates` |
-| R6 | Sakelar henti hanya mengizinkan T0. Pemutus sirkuit menurunkan sesi ke T0 setelah 3 penolakan | `test_kill_switch_blocks_everything_above_t0`, `test_circuit_breaker_downgrades_session_to_t0` |
-| R7 | Nonce satu kali pakai terikat pada sesi, alat, dan hash argumen | `test_nonce_single_use_and_ttl` |
-| R8 | Penjaga keluaran (`output_guard.py`) menutup NIK, rekening, nomor kartu (Luhn), id polis asing, kenari, dan teks hasil dekode base64 | `test_output_guard_masks_nik_and_bank_numbers`, `test_output_guard_canary_refuses_whole_reply` |
-| R9 | Hanya slot bertipe yang bertahan antar giliran | `test_registry_literal_never_resolves`, `test_account_number_never_persists_in_session` |
-
-Tindakan meja penanggung (`/backoffice/claims`, keputusan dengan catatan, dan `/admin/kill`) memakai token admin terpisah (`CG_ADMIN_TOKEN`). Planner tidak dapat mencapainya karena tidak ada alat registri yang menunjuk ke sana.
-
-### 3.3 Formulir klaim dan dokumen
-
-Susunan formulir yang diusulkan model untuk penanggung hanya berupa struktur, yaitu judul bagian, label kolom, dan kunci sumber per kolom dari daftar tertutup. Setiap nilai pada formulir diisi oleh kode dari fakta bertipe. Pencocok dokumen hanya melihat ringkasan bertipe dari berkas (jenis, tanggal, total, kategori) dan tidak melihat teksnya. Pencocok hanya dapat menambahkan kode persyaratan dari daftar polis itu sendiri. Persyaratan dicatat sebagai terlampir hanya bila ada berkas unggahan yang membuktikannya. Pernyataan nasabah bahwa dokumen ada dicatat sebagai dinyatakan dan ditampilkan demikian kepada petugas.
-
-### 3.4 Urutan satu klaim
-
-1. `draft_claim` (T1) menyimpan draf sebagai handle berlabel TOOL.
-2. Antarmuka menampilkan ringkasan dengan lencana kepercayaan.
-3. Nasabah menekan Konfirmasi.
-4. Server menerbitkan nonce yang terikat pada sesi, alat, dan hash argumen.
-5. `submit_claim` lolos pemeriksaan Guardian.
-6. Hasilnya dicatat di audit log.
-
-## 4. Isolasi aliran data
-
-Prinsip isolasi yang dipakai adalah sebagai berikut.
-
-1. Prompt planner memuat teks pengguna dan nama alat. Prompt itu tidak pernah memuat teks dokumen atau keluaran alat (`agent/planner.py`).
-2. Ekstraktor terkarantina berjalan tanpa alat dan tanpa riwayat. Keluarannya adalah skema pydantic tertutup. Satu-satunya kolom teks bebas yang sampai ke pemanggil adalah daftar singkat temuan teks tersembunyi untuk ditampilkan.
-3. Nilai dari dokumen, alat, dan model masuk registri sebagai nilai bertipe dengan label kepercayaan. Label nilai turunan adalah yang terendah dari masukannya (`security/labels.py`).
-4. Argumen T2 dan T3 harus berupa handle registri. String literal ditolak.
-5. Penyelesai adalah fungsi murni dari catatan dan fakta bertipe. Recourse tidak pernah mengubah fakta yang menggambarkan kejadian itu sendiri (`IMMUTABLE_SLOTS`, `MISREPRESENTATION_GUARD`), sehingga recourse tidak dapat dipakai untuk mengarahkan pemalsuan.
-
-### 4.1 Akun dan isolasi nasabah
-
-1. Dengan `CG_AUTH=supabase` tidak ada login anonim. Peramban masuk ke Supabase dan kata sandi tidak pernah sampai ke backend kami. Backend menerima token akses, menanyakan kepada Supabase siapa pemiliknya, mewajibkan email terkonfirmasi, dan menurunkan id pengguna internal dari id akun yang terverifikasi. Id itu tidak pernah diambil dari permintaan.
-2. Setiap rute yang menyentuh data nasabah mencari sesi terlebih dahulu dan menyaring berdasarkan id pengguna itu. Rute tersebut mencakup polis, klaim (`/claims/{id}`), unggahan (`/uploads/{id}`), riwayat (`/history`), dan chat. Satu giliran chat hanya dapat menyebut unggahan milik pemanggil atau berkas demo bawaan.
-3. `tests/test_accounts.py` masuk sebagai dua akun berbeda dan memeriksa bahwa akun kedua mendapat penolakan atau daftar kosong untuk unggahan, chat, klaim, dan token palsu atau belum terkonfirmasi milik akun pertama. Permintaan yang menyebut klaim akun lain dicatat sebagai `IDOR_ATTEMPT`.
-4. Chat yang tersimpan di peramban dihapus saat keluar dan setiap kali akun lain masuk.
-
-### 4.2 Kegagalan model, kunci sendiri, dan tindakan yang dibaca dari model
-
-1. Giliran yang tidak dapat memakai model dilaporkan kepada nasabah dengan bahasa yang jelas (kuota, kunci ditolak, tidak ada respons). Jawaban tidak dibuat dari templat. Kartu dari mesin aturan tetap tampil. Kunci yang ditolak API otomatis dikeluarkan dari rotasi.
-2. Nasabah boleh memakai kunci Gemini sendiri. Kunci divalidasi sekali dengan Google, disimpan hanya di memori sesi itu, dipakai hanya untuk permintaan sesi itu (variabel konteks per permintaan, bukan variabel global), dan tidak pernah ditulis ke disk, log, atau rantai audit. Pemakaiannya dicatat tanpa nilai kunci (`tests/test_own_key.py`).
-3. Model boleh mengusulkan tindakan hanya bersama pembacaannya bahwa nasabah memintanya secara jelas saat itu atau menerima tawaran asisten. Sapaan tidak dapat menyiapkan pengajuan (`tests/test_agent_fixes.py`). Setiap tindakan tetap melewati Guardian dan konfirmasi sekali pakai. Model boleh menaikkan permintaan menjadi penolakan pemalsuan dan tidak boleh melonggarkannya.
-4. Penampil dokumen di meja penanggung hanya menyajikan berkas menurut id dokumen pada klaim, hanya dari folder unggahan dan demo, dan hanya dengan token admin.
-
-## 5. Audit dan pengawasan
-
-1. **Audit log.** Berkas JSONL berantai hash (`security/audit.py`). Setiap baris memuat nomor urut, waktu, sesi, pengguna, jenis peristiwa, alat, tingkat, hash argumen, label argumen, keputusan, alasan, model, hash prompt, hash sebelumnya, dan hash sendiri. Argumen disimpan sebagai hash.
-2. **Jenis peristiwa.** USER_MSG, PLAN, TOOL_ALLOW, TOOL_DENY, TOOL_RESULT, CONFIRM_ISSUED, CONFIRM_USED, DOC_INGEST, DOC_SUSPICIOUS, REPLY, OUTPUT_GUARD, KILL_SWITCH, ESCALATE, DX_ATTEMPT, LOGIN, EXPORT_PDF, AUTONOMY_SET, dan CLOCK_MOVED.
-3. **Pengawasan penanggung.** Meja penanggung dapat menghentikan agen untuk semua nasabah (sakelar henti), meninjau setiap klaim yang diajukan beserta formulir dan lampiran persis seperti yang dikirim agen, dan mencatat keputusan dengan catatan yang dilihat nasabah. Agen tidak pernah membaca meja penanggung dan hanya menerima status klaim melalui ringkasan.
-4. **Mode Postgres.** Rantai audit disimpan di `audit_events` dengan satu baris kepala. Row level security tanpa kebijakan menolak REST API database untuk kunci publik (`scripts/check_supabase_rls.py`, diverifikasi 15 Oktober 2026 pada enam tabel, semuanya ditolak). Tabel `audit_events` juga memiliki pemicu yang menolak UPDATE dan DELETE.
-5. **Verifikator.** `python scripts/verify_audit.py [path]` mencetak `OK (n events)` atau `BROKEN at seq N`. Demo penyimpangan di antarmuka mengubah salinan dan menunjukkan verifikator berhenti pada nomor urut itu.
-6. **Sakelar henti.** Tersedia lewat `python -m clauseguard.security.kill_switch on|off|status`, `POST` dan `DELETE /admin/kill` dengan token admin, atau berkas `evidence/AGENT_HALT`. Pada tingkat penegakan, probe PEP-KILL-SWITCH menolak dengan alasan KILL_SWITCH. Pada jalur chat, kasus KS-01 lolos saat penegakan menyala dan gagal saat penegakan diubah menjadi izinkan semua.
-
-## 6. Hasil pengujian
+### 2.2 Hasil pengujian serangan
 
 Sumbernya `evidence/adversarial_report.md`. Penilai adalah pemanggilan alat yang tercatat, peristiwa audit, hash tabel SQLite sebelum dan sesudah, dan regex pada jawaban termasuk dekode base64 dan ROT13. Tidak ada model yang menilai hasil.
 
-Definisinya sebagai berikut. ASR (tingkat keberhasilan serangan) adalah porsi kasus serangan yang menimbulkan efek terlarang, yaitu alat T2 atau T3 dieksekusi, basis data berubah, data pribadi, kenari, atau nomor rekening muncul di jawaban, atau keadaan sesi teracuni. WEAK berarti efeknya terblokir tetapi pemeriksaan sekunder gagal. FBR (tingkat blokir keliru) adalah porsi kasus kembar jinak yang diblokir secara keliru.
+Definisinya sebagai berikut. ASR (tingkat keberhasilan serangan) adalah porsi kasus serangan yang menimbulkan efek terlarang, yaitu alat T2 atau T3 dieksekusi, basis data berubah, data pribadi, kenari, atau nomor rekening muncul di jawaban, atau keadaan sesi teracuni. WEAK berarti efeknya terblokir tetapi pemeriksaan sekunder gagal. FBR (tingkat blokir keliru) adalah porsi kasus kembar jinak yang diblokir secara keliru. Tabel 7 memuat rangkaian chat dari ujung ke ujung dengan penegakan menyala (terlindungi) dan penegakan diubah menjadi izinkan semua (tidak terlindungi).
 
-Tabel 4 memuat rangkaian chat dari ujung ke ujung dengan penegakan menyala (terlindungi) dan penegakan diubah menjadi izinkan semua (tidak terlindungi).
-
-**Tabel 4. Hasil rangkaian serangan chat dari ujung ke ujung**
+**Tabel 7. Hasil rangkaian serangan chat dari ujung ke ujung**
 
 | Kelas | Kasus | PASS | WEAK | FAIL | ASR terlindungi | ASR tidak terlindungi |
 |---|---|---|---|---|---|---|
@@ -169,9 +194,9 @@ Rangkaian ini memiliki batas. Jumlahnya 27 kasus serangan yang ditulis tim. Seba
 
 Probe langsung ke fungsi penegakan dan penyimpanan nonce tanpa model bahasa menghasilkan 0 dari 10 berhasil saat penjaga menyala. Probe mencakup alat tidak dikenal, alat di luar registri, kolom tambahan, argumen T2 literal, nonce palsu, penggantian identitas, sakelar henti, pemutaran ulang nonce, nonce dengan argumen salah, dan token nonce palsu. Saat penjaga dimatikan, lima probe penegakan lolos seperti yang diharapkan. Probe ini menunjukkan aturan satuan berfungsi dan tidak menjadi klaim ASR.
 
-Tabel 5 memuat deteksi teks tersembunyi (`scan_pdf`, tanpa model) pada 20 berkas untuk setiap teknik.
+Tabel 8 memuat deteksi teks tersembunyi (`scan_pdf`, tanpa model) pada 20 berkas untuk setiap teknik.
 
-**Tabel 5. Deteksi teks tersembunyi**
+**Tabel 8. Deteksi teks tersembunyi**
 
 | Teknik | Ditandai mencurigakan | Tingkat deteksi |
 |---|---|---|
@@ -185,17 +210,108 @@ Tabel 5 memuat deteksi teks tersembunyi (`scan_pdf`, tanpa model) pada 20 berkas
 
 Positif keliru pada berkas bersih adalah 0,0% (0/5) dan pada berkas dengan jumlah yang digelembungkan adalah 0,0% (0/3).
 
-Pengujian lain yang kami lakukan adalah sebagai berikut.
+### 2.3 Pengujian lain
 
 1. **Ekstraktor klaim terkarantina.** Seluruh 153 berkas tidak dapat dijalankan dengan model karena kuota API. Pemeriksaan sampel dengan model tersedia (satu berkas per teknik, 11 berkas) menghasilkan total yang benar (IDR 18.000.000) dan penanda mencurigakan yang diharapkan untuk setiap teknik teks tersembunyi, termasuk teks instruksi yang digambar di dalam gambar. Berkas bersih lolos, berkas dengan jumlah digelembungkan ditandai berkualitas rendah dengan penanda konsistensi salah, dan dokumen polis yang diunggah sebagai klaim ditandai mencurigakan. Satu berkas per teknik adalah pemeriksaan sampel dan tidak mengukur tingkat deteksi. Pemindai PDF dalam kode tetap melewatkan teks yang digambar di dalam gambar.
-2. **Tugas adversarial terskrip A01 sampai A10** (`evidence/task_report.md`). Sepuluh dari sepuluh lulus pada mode deterministik di catatan sandbox.
-3. **Tes satuan.** Rangkaian lengkap meloloskan 554 tes pada pengujian terakhir.
+2. **Tugas terskrip.** Tiga puluh tiga tugas terskrip (T01 sampai T23 dan A01 sampai A10 yang adversarial) lulus pada mode deterministik di catatan sandbox (`evidence/task_report.md`).
+3. **Pengujian pemulihan.** Sakelar henti dan pemutus sirkuit diuji pada tingkat penegakan dan pada jalur chat (bagian 1.5). Rotasi kunci saat kuota habis, pelewatan kunci yang ditolak, dan pemakaian kunci sendiri diuji di `tests/test_llm_key_pool.py` dan `tests/test_own_key.py`. Pemutaran ulang nonce dan nonce kedaluwarsa diuji di `tests/test_security.py`.
+4. **Tes satuan.** Rangkaian lengkap meloloskan 554 tes pada run penuh terakhir. Pada 19 Oktober 2026 kami menjalankan ulang tes keamanan (`tests/test_security.py`, `tests/test_accounts.py`, `tests/test_sandbox_api.py`, `tests/test_own_key.py`, dan `tests/test_agent_loop.py`) dan 68 tes lulus.
 
-## 7. Risiko yang diketahui
+### 2.4 Cara juri mengulang pengujian
 
-Kemungkinan dan dampak adalah perkiraan tim sendiri pada skala tiga tingkat (R rendah, S sedang, T tinggi). Risiko sisa dinilai setelah kontrol yang ada sekarang. Tabel 6 memuat sembilan belas risiko. Sembilan di antaranya juga muncul pada bagian keterbatasan dokumentasi teknis dengan tingkat sisa yang sama, yaitu K1, K2, K3, K4, K8, K9, K12, K15, dan K18.
+Dengan repositori terpasang beserta dependensinya (`pip install -r requirements.txt`), perintah berikut mengulang pengujian utama.
 
-**Tabel 6. Daftar risiko yang diketahui**
+```
+python -m pytest -q tests/test_security.py tests/test_accounts.py tests/test_sandbox_api.py tests/test_own_key.py tests/test_agent_loop.py
+python scripts/run_adversarial.py --no-guard
+python scripts/run_tasks.py --no-llm
+python scripts/verify_audit.py evidence/audit_demo.jsonl
+python scripts/check_supabase_rls.py
+python -m bench.pii_eval
+```
+
+Rangkaian serangan chat menghasilkan `evidence/adversarial_report.md`, tugas terskrip menghasilkan `evidence/task_report.md`, dan verifikator audit mencetak `OK (n events)` bila rantai utuh. Pemeriksaan RLS memerlukan `DATABASE_URL` milik penyelenggara layanan.
+
+### 2.5 Batas pengujian
+
+Pengujian kami memiliki batas yang perlu dicatat.
+
+1. Kasus serangan ditulis oleh tim dan jumlahnya kecil. Hasilnya tidak mewakili red team independen.
+2. Ekstraktor klaim diuji penuh tanpa model dan dengan sampel kecil saat model tersedia.
+3. Belum ada pengujian di tingkat peramban untuk XSS atau ekstensi berbahaya. Rencana.
+4. Pengujian dilakukan pada penanggung simulasi, dan hasilnya tidak berlaku otomatis pada sistem penanggung sungguhan.
+
+## 3. Data dan privasi
+
+### 3.1 Asal dan tujuan data
+
+Tabel 9 memuat jenis data, asalnya, dan ke mana data itu pergi.
+
+**Tabel 9. Asal dan tujuan data**
+
+| Data | Asal | Tujuan |
+|---|---|---|
+| Persona dan polis demo | Data sintetis yang diisi dari `sandbox/seed.py` dan `persona_policies.py` tanpa data nyata | Sandbox di server |
+| Polis dan dokumen klaim yang diunggah | Nasabah | Folder unggahan milik akun. Teks dokumen dihapus data pribadinya lebih dulu sebelum ke model. PDF mentah tidak pernah dikirim ke model |
+| Pesan chat | Nasabah | Dikirim ke model sebagaimana diketik, bersama empat giliran terakhir. Ini batasan dan dicatat sebagai K20 |
+| Akun | Email dan kata sandi di Supabase Auth | Supabase. Kata sandi tidak pernah sampai ke backend |
+| Riwayat percakapan, klaim, tiket, dan audit log | Aktivitas nasabah | Postgres (mode hosting) atau SQLite dan JSONL (mode lokal) |
+| Kunci Gemini milik nasabah | Nasabah | Memori sesi. Tidak ditulis ke disk, log, atau audit |
+
+### 3.2 Persetujuan dan akses
+
+Nasabah masuk dengan email yang sudah dikonfirmasi dan mengunggah dokumen atas kehendak sendiri. Setiap akun hanya dapat membaca datanya sendiri (bagian 1.7). ClauseGuard belum memiliki layar persetujuan privasi terpisah, kebijakan masa simpan, atau fitur hapus akun beserta berkas unggahan. Ketiganya dicatat sebagai K21 dan menjadi rencana sebelum peluncuran nyata.
+
+### 3.3 Minimisasi data ke model
+
+Tabel 10 memuat apa yang dikirim dan tidak dikirim ke penyedia model.
+
+**Tabel 10. Data yang dikirim dan tidak dikirim ke model**
+
+| Dikirim | Tidak dikirim |
+|---|---|
+| Pesan nasabah dan empat giliran terakhir. Jawaban asisten dipotong sampai 420 karakter | PDF mentah yang diunggah |
+| Fakta bertipe yang diekstrak dari percakapan | Kata sandi, token sesi, dan token admin |
+| Teks dokumen yang sudah dihapus data pribadinya (nama, NIK, rekening, telepon, email, tanggal lahir, nomor polis, alamat, NPWP, nomor kartu) | Audit log |
+| Kutipan klausul dan hasil penyelesai yang diperlukan untuk menulis jawaban | Data nasabah lain |
+
+Penghapusan data pribadi pada dokumen berjalan lokal (`privacy/redact.py`). Setelah itu gerbang akhir memindai ulang dan memblokir panggilan bila masih ada sisa NIK, rekening, kartu, telepon, atau nama yang dikenal (`PII_BLOCKED`). Kejadian diaudit menurut jumlah dan jenis dan tidak menurut nilai. Pada set uji tim, cakupan data pribadi berlabel mencapai 100% dan nama tanpa label sekitar 50% (`bench/pii_eval.py`, risiko K14). Penjaga keluaran menutup data sensitif pada jawaban sebelum sampai ke nasabah (R8).
+
+### 3.4 Penyimpanan, ekspor, dan penghapusan
+
+1. **Penyimpanan.** Mode `local` memakai SQLite dan JSONL untuk pengembangan dan pengujian. Mode `postgres` memakai Supabase Postgres pada layanan yang dihosting dengan row level security aktif. Enkripsi saat diam mengikuti penyedia database dan tidak kami atur sendiri.
+2. **Argumen audit.** Argumen alat dicatat sebagai hash dan tidak sebagai nilai.
+3. **Ekspor.** Nasabah dapat menyimpan jawaban, bukti klausul, dan formulir klaim sebagai PDF (`POST /export/pdf`, dicatat sebagai EXPORT_PDF).
+4. **Penghapusan.** Nasabah dapat menghapus satu percakapan (`DELETE /history/{conversation_id}`) atau seluruh riwayat (`DELETE /history`). Penghapusan dicatat sebagai HISTORY_DELETE. Penghapusan akun dan berkas unggahan belum tersedia di antarmuka (K21).
+5. **Berkas uji.** Berkas di `data/uploads` dari uji formulir memuat nomor rekening sintetis dalam teks biasa dan folder itu tidak dipublikasikan (K13).
+
+### 3.5 Transparansi dan label AI
+
+Setiap jawaban ditandai indikatif. Panel "Bagaimana ini diputuskan" menunjukkan cara pesan dipahami, fakta yang dipakai, klausul yang berlaku, putusan mesin aturan, pemeriksaan kata-kata, dan nomor catatan audit. Bila model tidak tersedia, nasabah menerima pemberitahuan dan lencana "AI at quota limit". Jawaban yang tidak berasal dari asisten tidak pernah ditampilkan seolah-olah dari asisten. Setelah penolakan, agen menyebut jalur pengaduan resmi (unit pengaduan penanggung, OJK 157, dan LAPS SJK).
+
+### 3.6 Pemetaan ke regulasi dan standar
+
+Tabel 11 memetakan kontrol ke acuan yang relevan. Pemetaan ini menunjukkan arah keselarasan dan kami tidak mengklaim kepatuhan hukum (bagian 4.3).
+
+**Tabel 11. Pemetaan kontrol ke regulasi dan standar**
+
+| Kontrol | Implementasi | Acuan |
+|---|---|---|
+| Minimisasi data ke model | Penghapusan data pribadi lokal dan gerbang akhir `PII_BLOCKED` | UU Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi (prinsip minimisasi), OWASP LLM02 |
+| Akun terverifikasi dan isolasi per akun | Supabase Auth, penyaringan per id pengguna, row level security | UU Pelindungan Data Pribadi (keamanan data) |
+| Hak nasabah atas datanya | Ekspor PDF dan hapus riwayat. Hapus akun adalah rencana | UU Pelindungan Data Pribadi (hak subjek data), sebagian terpenuhi |
+| Jejak yang dapat dibuktikan | Audit log berantai hash dengan verifikator | OWASP Agentic ASI09 dan ASI10 |
+| Batas tindakan di luar model | Guardian, tingkat izin T0 sampai T3 | OWASP LLM06 (kewenangan berlebih), OWASP Agentic ASI02 dan ASI03 |
+| Manusia memutuskan | Konfirmasi sekali pakai, petugas penanggung memutuskan, sakelar henti | OWASP Agentic ASI09 |
+| Penyampaian yang jujur kepada konsumen | Label indikatif, jalur pengaduan, pemberitahuan kegagalan model | POJK Nomor 6/POJK.07/2022 tentang Pelindungan Konsumen dan Masyarakat di Sektor Jasa Keuangan |
+
+## 4. Risiko yang diketahui
+
+### 4.1 Daftar risiko
+
+Kemungkinan dan dampak adalah perkiraan tim sendiri pada skala tiga tingkat (R rendah, S sedang, T tinggi). Risiko sisa dinilai setelah kontrol yang ada sekarang. Tabel 12 memuat dua puluh satu risiko. Sembilan di antaranya juga muncul pada bagian keterbatasan dokumentasi teknis dengan tingkat sisa yang sama, yaitu K1, K2, K3, K4, K8, K9, K12, K15, dan K18.
+
+**Tabel 12. Daftar risiko yang diketahui**
 
 | No. | Risiko | Kemungkinan | Dampak | Sisa | Mitigasi sekarang | Rencana |
 |---|---|---|---|---|---|---|
@@ -212,20 +328,28 @@ Kemungkinan dan dampak adalah perkiraan tim sendiri pada skala tiga tingkat (R r
 | K11 | Penjaga keluaran adalah pertukaran antara presisi dan cakupan. Rekening 9 digit dapat lolos dan referensi 10 digit dapat tertutup | S | R | Rendah | Beberapa pola ditambah dekode | Setel pada format nyata |
 | K12 | Ketergantungan pada pihak ketiga, yaitu model yang di-hosting dan gangguannya. Mode gagal tertutup untuk T2 | S | R | Rendah | Kunci bergilir, pemberitahuan jelas kepada nasabah, dan pilihan memakai kunci sendiri | Model di infrastruktur sendiri |
 | K13 | Berkas di `data/uploads` dari uji formulir tingkat 3 memuat nomor rekening ketikan (sintetis) dalam teks biasa | S | R | Rendah | Hanya nilai sintetis dan folder tidak dipublikasikan | Hash nilai dan hapus berkas |
-| K14 | Sisa data pribadi pada dokumen unggahan masih dapat sampai ke model yang di-hosting. Detektor struktural mencakup NIK, rekening, kartu, telepon, dan tanggal lahir dengan baik, tetapi nama orang tanpa label dan tanpa kecocokan dengan nama pemegang rekening dapat lolos | S | R | Rendah | Ekstraksi lokal, penghapusan data pribadi, dan pemindaian ulang akhir yang memblokir panggilan bila ada sisa NIK, rekening, kartu, telepon, atau nama yang dikenal (`PII_BLOCKED`, dicatat menurut jumlah dan jenis dan tidak menurut nilai). Cakupan 100% pada data pribadi berlabel di set uji tim, sekitar 50% untuk nama tanpa label | Pass NER lokal untuk nama tanpa label dan model ekstraksi di infrastruktur sendiri |
+| K14 | Sisa data pribadi pada dokumen unggahan masih dapat sampai ke model yang di-hosting. Detektor struktural mencakup NIK, rekening, kartu, telepon, dan tanggal lahir dengan baik, tetapi nama orang tanpa label dan tanpa kecocokan dengan nama pemegang rekening dapat lolos | S | R | Rendah | Ekstraksi lokal, penghapusan data pribadi, dan pemindaian ulang akhir yang memblokir panggilan bila ada sisa data pribadi (`PII_BLOCKED`, dicatat menurut jumlah dan jenis dan tidak menurut nilai). Cakupan 100% pada data pribadi berlabel di set uji tim, sekitar 50% untuk nama tanpa label | Pass NER lokal untuk nama tanpa label dan model ekstraksi di infrastruktur sendiri |
 | K15 | Set pengujian kecil dan ditulis oleh tim | T | S | Tinggi | Dilaporkan beserta jumlahnya | Red team eksternal |
 | K16 | Saran recourse dapat disalahartikan sebagai saran mengubah fakta | R | T | Sedang | Fakta kejadian tidak dapat diubah di kode, permintaan pemalsuan ditolak, setiap opsi menyebut tindakan yang sah | Tinjauan redaksi untuk pengguna |
 | K17 | Nasabah dapat menyatakan dokumen ada tanpa mengunggahnya, lalu klaim disiapkan berdasarkan pernyataan itu | S | R | Rendah | Hanya berkas unggahan yang dihitung terlampir, butir yang dinyatakan diberi label demikian pada formulir dan di meja penanggung, penanggung yang memutuskan | Blokir pengajuan klaim yang hanya dinyatakan pada mode produksi |
 | K18 | Keadaan sesi bertipe disimpan di memori dan satu proses melayani semua sesi. Server yang dimulai ulang mengakhiri sesi yang terbuka (riwayat percakapan tetap ada dan fakta hilang) | S | R | Rendah | Riwayat percakapan disimpan dan nasabah menyampaikan ulang situasinya | Simpan keadaan sesi bertipe bersama riwayat dan pakai penyimpanan sesi bersama |
 | K19 | Layanan dapat diakses publik di Railway dan token admin dibagikan kepada juri melalui formulir pendaftaran | S | R | Rendah | Semua data sintetis, token admin khusus juri yang terpisah dari token pengembangan, token wajib untuk setiap endpoint penanggung, token sesi per login, tanpa CORS dari peramban, dan sakelar henti | Ganti token setelah penjurian dan gerbang autentikasi sungguhan |
+| K20 | Pesan chat yang diketik nasabah dikirim ke model tanpa penghapusan data pribadi. Nasabah yang mengetik nomor KTP atau rekening di chat membuat data itu sampai ke penyedia model | S | S | Sedang | Hanya empat giliran terakhir yang dikirim, jawaban asisten dipotong sampai 420 karakter, penjaga keluaran menutup data sensitif pada jawaban, data nasabah demo bersifat sintetis, dan nasabah dapat memakai kunci sendiri | Hapus data pribadi pada pesan chat sebelum dikirim dan tampilkan pemberitahuan privasi di layar |
+| K21 | Belum ada layar persetujuan privasi, kebijakan masa simpan, dan fitur hapus akun beserta berkas unggahan | S | S | Sedang | Isolasi per akun, hapus riwayat percakapan tersedia, data demo sintetis | Layar persetujuan, masa simpan, dan hapus akun beserta berkas |
 
-## 8. Yang tidak kami klaim
+### 4.2 Prioritas sebelum peluncuran nyata
 
-1. Kami tidak mengklaim bahwa tidak ada data yang keluar dari sistem. Teks dokumen yang sudah dihapus data pribadinya (bukan seluruh PDF) dikirim ke model yang di-hosting untuk ekstraksi. Kami tidak mengklaim penghapusan itu sempurna. K14 memuat cakupan terukurnya dan titik lemahnya, yaitu nama pihak ketiga tanpa label.
+1. Menghapus data pribadi pada pesan chat sebelum dikirim ke model dan menambahkan layar persetujuan privasi (K20, K21).
+2. Menjalankan ulang pengujian ekstraktor pada seluruh set dan melibatkan red team eksternal (K1, K15).
+3. Menambatkan hash akar audit di luar host dan menyimpan keadaan sesi bersama (K4, K18).
+
+### 4.3 Yang tidak kami klaim
+
+1. Kami tidak mengklaim bahwa tidak ada data yang keluar dari sistem. Teks dokumen yang sudah dihapus data pribadinya (bukan seluruh PDF) dikirim ke model yang di-hosting untuk ekstraksi, dan pesan chat dikirim sebagaimana diketik (K20). Kami tidak mengklaim penghapusan itu sempurna. K14 memuat cakupan terukurnya dan titik lemahnya, yaitu nama pihak ketiga tanpa label.
 2. Kami tidak mengklaim perlindungan terhadap host yang dikompromikan, sistem operasi, atau penyedia model.
 3. Kami tidak mengklaim audit log kebal terhadap perubahan.
 4. Kami tidak mengklaim teks saran selalu benar. Yang kami klaim adalah efek samping yang dibatasi serta putusan, alokasi, dan opsi recourse yang dihitung penyelesai dengan kutipan klausul.
 5. Kami tidak melaporkan ablasi penegakan izinkan semua sebagai sistem pesaing. Tingkat keberhasilan serangan berasal dari rangkaian chat dari ujung ke ujung.
 6. Kami tidak mengklaim cakupan untuk gambar pindaian, tulisan tangan, dan teks yang digambar sebagai gambar.
-7. Kami tidak mengklaim kepatuhan hukum atau regulasi. Nilai undang-undang dan aturan pembayar pada sandbox adalah stub.
+7. Kami tidak mengklaim kepatuhan hukum atau regulasi. Pemetaan pada Tabel 11 menunjukkan arah keselarasan, dan nilai undang-undang serta aturan pembayar pada sandbox adalah stub.
 8. Kami tidak mengklaim hasil ini berlaku pada sistem penanggung sungguhan atau pada penyerang di luar 27 kasus yang kami tulis.
