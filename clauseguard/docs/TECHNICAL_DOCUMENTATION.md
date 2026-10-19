@@ -465,7 +465,7 @@ Speed with the model depends on the Gemini service and its quota. This measureme
 
 ## References
 
-1. Mridul, Kapa and Seneviratne (2026). A benchmark for gap and overlap analysis of insurance contracts. arXiv:2604.10853.
+1. Mridul, Kapa and Seneviratne (2026). A benchmark for gap and overlap analysis as a test of KG task readiness. arXiv:2604.10853.
 2. Debenedetti et al. (2025). CaMeL: defeating prompt injections by design. arXiv:2503.18813.
 3. Wachter, Mittelstadt and Russell (2017). Counterfactual explanations without opening the black box.
 4. OWASP Top 10 for Agentic Applications (2026).
