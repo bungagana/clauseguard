@@ -6,7 +6,7 @@ answer backed by the exact clause. Built for students and everyday policyholders
 insurance professionals.
 
 This is the frontend only. It talks to the existing ClauseGuard Python backend
-(`clauseguard/sandbox/api.py` in the sibling `clauseguard` repository) over HTTP and does not
+(`clauseguard/sandbox/api.py` in the `clauseguard/` folder of this repository) over HTTP and does not
 duplicate any of its logic: every verdict, deadline, payable amount and clause quote shown
 here comes straight from that API.
 
@@ -39,7 +39,7 @@ copy .env.example .env.local   # Windows
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
-To actually have a backend to point at, from the sibling `clauseguard` repository:
+To actually have a backend to point at, from the `clauseguard/` folder of this repository:
 
 ```bash
 cd ../clauseguard

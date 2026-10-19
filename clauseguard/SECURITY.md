@@ -1,6 +1,6 @@
 # ClauseGuard security model
 
-Status: 2026-10-11. Full self-assessment with test mapping and the honest risk list: `docs/SECURITY_SELF_ASSESSMENT.md`. Test results were regenerated on 2026-10-11 17:56.
+Status: 2026-10-11. Full self-assessment with test mapping and the honest risk list: the [Security Self-Assessment](../documentation-submission/%5BRevised%5D%20ClauseGuard_Security_Self_Assessment.pdf). Test results were regenerated on 2026-10-11 17:56.
 
 ## 1. Scope and assets
 
@@ -127,7 +127,7 @@ Re-run: `python scripts/run_adversarial.py --no-guard` (add `--no-llm` to skip t
 
 ## 8. Residual-risk rating
 
-Likelihood (L/M/H) x impact (L/M/H), team estimates after current controls. Full table with mitigations: `docs/SECURITY_SELF_ASSESSMENT.md` section 7.
+Likelihood (L/M/H) x impact (L/M/H), team estimates after current controls. Full table with mitigations: the [Security Self-Assessment](../documentation-submission/%5BRevised%5D%20ClauseGuard_Security_Self_Assessment.pdf), chapter 4.
 
 | Risk | L | I | Residual |
 |---|---|---|---|

@@ -1,7 +1,7 @@
 # ClauseGuard architecture
 
 A module map and the interfaces between modules. For the method and the evaluation see
-`docs/TECHNICAL_DOCUMENTATION.md`; for the security model see `SECURITY.md`.
+the [Technical Documentation](../documentation-submission/%5BRevised%5D%20ClauseGuard_Technical_Documentation.pdf); for the security model see `SECURITY.md`.
 
 ## Design rules
 
@@ -126,4 +126,4 @@ models `/entitlement/allocation`, `/entitlement/timeline`, `/entitlement/twin`,
 
 `scripts/extract_all.py` -> `sandbox.seed` -> `scripts/run_tasks.py` -> `scripts/run_adversarial.py`
 -> `bench.run_bench` and `bench.report` -> the agent-level evaluations in `bench/` (paraphrase,
-clarify, cost, recourse, plan selection, allocation). Exact commands: `docs/EXECUTION_EVIDENCE.md`.
+clarify, cost, recourse, plan selection, allocation). Exact commands: the [Execution Evidence](../documentation-submission/%5BRevised%5D%20ClauseGuard_Execution_Evidence.pdf).

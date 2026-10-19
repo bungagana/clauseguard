@@ -17,7 +17,7 @@ Consumers in the United States, the United Kingdom, Singapore, China and Indones
 
 An entitlement timeline (`clauseguard/timeline.py`) lists every dated event with the money that turns on it. The language model never decides: it extracts documents into closed schemas, binds user text to typed facts, and words questions and explanations from solver output. Every reply cites the clauses that fired. Actions run only through permission tiers enforced in code: read (T0), compute (T1), submit after a UI confirmation with a server nonce (T2), and money or identity changes, for which no executing tool exists (T3, ticket only).
 
-Documentation: `docs/TECHNICAL_DOCUMENTATION.md` (method, formulations, data, evaluation, limitations), `ARCHITECTURE.md` (module map and interfaces), `SECURITY.md` and `docs/SECURITY_SELF_ASSESSMENT.md` (threat model, tiers, test results, risks), `docs/EXECUTION_EVIDENCE.md` (index of evidence files and reproduction commands), `ui/DEMO.md` (demo click path).
+Documentation: [Technical Documentation](../documentation-submission/%5BRevised%5D%20ClauseGuard_Technical_Documentation.pdf) (method, formulations, data, evaluation, limitations), `ARCHITECTURE.md` (module map and interfaces), `SECURITY.md` and the [Security Self-Assessment](../documentation-submission/%5BRevised%5D%20ClauseGuard_Security_Self_Assessment.pdf) (threat model, tiers, test results, risks), the [Execution Evidence](../documentation-submission/%5BRevised%5D%20ClauseGuard_Execution_Evidence.pdf) (operation record and reproduction commands), `ui/DEMO.md` (demo click path).
 
 ## Run
 

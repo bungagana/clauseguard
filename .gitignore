@@ -1,12 +1,19 @@
-# Whitelist: only the three project folders and the root files below are tracked.
-# Everything else in this directory (research notes, manuscripts, registration forms) stays local.
+# Whitelist: only the backend, the frontend, the submission documents and the root files below are tracked.
+# Everything else in this directory (research notes, drafts, registration forms, videos) stays local.
 /*
 !/.gitignore
 !/.github/
 !/README.md
 !/clauseguard/
 !/clauseguard-web/
-!/SUBMISSION/
+!/documentation-submission/
+
+# Document sources and tools that are not part of the code
+/clauseguard/docs/
+/clauseguard/scripts/build_docs.py
+/clauseguard/scripts/make_submission_zip.py
+/clauseguard/scripts/translate_docs.py
+/clauseguard/scripts/translate_fix.py
 
 # Defensive, in case a nested ignore file is ever removed
 .env
@@ -20,9 +27,6 @@ __pycache__/
 .ruff_cache/
 *.sqlite
 *.sqlite-*
-
-# built at submission time by clauseguard/scripts/make_submission_zip.py
-SUBMISSION/*.zip
 
 # local audit fallback chain written while Postgres is unreachable
 *.pgfallback
