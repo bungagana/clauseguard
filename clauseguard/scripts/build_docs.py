@@ -124,7 +124,7 @@ def _col_widths(rows: list[list[str]]) -> list[float]:
     for j in range(n):
         lens = [len(_plain(r[j])) for r in rows]
         weights.append(min(max(0.5 * (sum(lens) / len(lens)) + 0.5 * min(max(lens), 90), 6.0), 70.0))
-        longest_word = max((len(w) for r in rows for w in _plain(r[j]).split()), default=1)
+        longest_word = max((len(w) for r in rows for w in re.split(r"[\s_]+", _plain(r[j]))), default=1)
         floors.append(max(0.4, 0.22 + 0.068 * min(longest_word, 18)))
     total = sum(weights)
     widths = [max(USABLE_W * w / total, f) for w, f in zip(weights, floors)]
@@ -133,6 +133,11 @@ def _col_widths(rows: list[list[str]]) -> list[float]:
         room = [max(w - f, 0.0) for w, f in zip(widths, floors)]
         widths = [w - excess * r / sum(room) if sum(room) else w for w, r in zip(widths, room)]
     return widths
+
+
+def _wrappable(text: str) -> str:
+    """Let long upper-case identifiers wrap at underscores. Commands and file names stay untouched so they paste cleanly."""
+    return re.sub(r"[A-Z][A-Za-z0-9_:]{15,}", lambda m: m.group(0).replace("_", "_​"), text)
 
 
 def _table(doc, rows: list[list[str]]) -> None:
@@ -157,7 +162,7 @@ def _table(doc, rows: list[list[str]]) -> None:
             p = c.paragraphs[0]
             _spacing(p, 0, 0, 1.05, keep_next=(i == 0 or len(rows) <= 9) and i < len(rows) - 1)
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER if short[j] else WD_ALIGN_PARAGRAPH.LEFT
-            _runs(p, text.strip(), size=9, bold=True if i == 0 else None)
+            _runs(p, _wrappable(text.strip()), size=9, bold=True if i == 0 else None)
             if i == 0:
                 _shade(c, "D9D9D9")
     for j, col in enumerate(t.columns):
