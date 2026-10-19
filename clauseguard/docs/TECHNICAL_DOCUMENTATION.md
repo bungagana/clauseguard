@@ -330,7 +330,7 @@ Every evaluation can be rerun from the scripts listed in the Execution Evidence 
 | Consistency | 20 scenarios in three wordings | None | 20 of 20 identical verdicts |
 | Payer order | 500 households, 200 US marketplace plans | Claiming in the order the policies are held | The held order is suboptimal in 47.2% of households, by USD 988 on average |
 | Plan selection | 100 households | Cheapest plan | Closes more gap in 73 of 100 |
-| Diagnosis codes | 76 diagnosis lines | Alias dictionary | 92.2% correct. Alias dictionary 17.2% |
+| Diagnosis codes | Development set of 76 lines, 64 with a gold code. The held-out set was not measured | Alias dictionary | 59 of 64 correct (92.2%). Alias dictionary 11 of 64 (17.2%) |
 | Conversation | 47 narrative turns | Previous prompt version | 42 of 47, up from 40 of 47 |
 | Cost | 90 turns | A model reading whole documents | 0.98 model calls per turn, 17% of the baseline's tokens |
 
@@ -495,7 +495,7 @@ Table 22 summarises the main results. Details and the way to rerun each test are
 |---|---|---|
 | Claim task completion | 33 of 33 tasks passed | Automatic checks on verdict, amount, deadline, denial code and actions |
 | Coverage accuracy | 84.6% on 390 labels of a public benchmark | Invented denials 1.4% |
-| Diagnosis code accuracy | 92.2% on 76 diagnosis lines | The alias dictionary alone reaches 17.2% |
+| Diagnosis code accuracy | 92.2% (59 of 64 coded lines of the 76-line development set) | The alias dictionary alone reaches 17.2%. The held-out set was not measured |
 | Action safety | 0 of 27 attacks succeeded | Includes injection through documents |
 | Conversation quality | 42 of 47 turns passed | Everyday language, typos, corrections and what-ifs |
 | Model cost | 0.98 calls per turn | About 17% of the tokens of the baseline that reads whole documents |

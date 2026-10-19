@@ -278,7 +278,7 @@ Table 13 lists the supporting files in `evidence/` with the command that produce
 | `plan_selection_report.md` | Plan selection under budget on 834 CMS plans and a mixed catalogue, 100 households | `python -m bench.plan_selection_eval --households 100 --seed 7` | 73 of 100 and 79 of 100 on the mixed catalogue |
 | `allocation_report.md` | Claim allocation against greedy and single-policy baselines | `python -m bench.allocation_eval` | Present |
 | `bench_report.md` | Public benchmark: accuracy, macro-F1, invented denials, evidence hit | `python -m bench.report` | Full pipeline 84.6% on 390 labels |
-| `icd_report.md` | Diagnosis code evaluation on the development and held-out sets | `python -m bench.icd_eval` | 92.2% on the diagnosis lines |
+| `icd_report.md` | Diagnosis code evaluation on the development and held-out sets | `python -m bench.icd_eval` | 92.2% (59 of 64 coded lines of the development set). Held-out set not measured |
 | `extraction_quality.md` | Extracted values against the benchmark's gold annotations | `python scripts/extraction_quality.py` | Present |
 | `claims_desk_run.md` | One scripted claim from upload to the desk decision with audit sequence numbers | `python scripts/claims_desk_evidence.py` | Generated 14 October 2026 |
 | `conversation_eval_v3.json` | 47 conversation turns with slang, corrections and what-ifs | `python scripts/conversation_eval.py` | 42 of 47 |

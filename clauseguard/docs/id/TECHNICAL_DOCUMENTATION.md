@@ -330,7 +330,7 @@ Seluruh evaluasi dapat dijalankan ulang dari skrip yang tercantum di Indeks Bukt
 | Konsistensi | 20 skenario dalam tiga redaksi | Tidak ada | 20 dari 20 putusan sama |
 | Urutan pembayar | 500 rumah tangga, 200 produk marketplace AS | Klaim sesuai urutan kepemilikan polis | Urutan kepemilikan tidak optimal pada 47,2% rumah tangga, selisih rata-rata USD 988 |
 | Pemilihan produk | 100 rumah tangga | Produk termurah | Menutup celah lebih besar pada 73 dari 100 |
-| Kode diagnosis | 76 baris diagnosis | Kamus alias | 92,2% benar. Kamus alias 17,2% |
+| Kode diagnosis | Set pengembangan 76 baris, 64 di antaranya memiliki kode acuan. Set held-out belum terukur | Kamus alias | 59 dari 64 benar (92,2%). Kamus alias 11 dari 64 (17,2%) |
 | Percakapan | 47 giliran naratif | Prompt versi sebelumnya | 42 dari 47, naik dari 40 dari 47 |
 | Biaya | 90 giliran | Model membaca seluruh dokumen | 0,98 pemanggilan model per giliran, 17% token pembanding |
 
@@ -495,7 +495,7 @@ Tabel 22 merangkum hasil utama. Rincian dan cara mengulang pengujian ada di bagi
 |---|---|---|
 | Penyelesaian tugas klaim | 33 dari 33 tugas lulus | Pemeriksaan otomatis atas putusan, jumlah, tenggat, kode penolakan, dan tindakan |
 | Akurasi putusan cakupan | 84,6% pada 390 label benchmark publik | Penolakan yang dikarang 1,4% |
-| Akurasi kode diagnosis | 92,2% pada 76 baris diagnosis | Kamus alias saja mencapai 17,2% |
+| Akurasi kode diagnosis | 92,2% (59 dari 64 baris berkode pada set pengembangan 76 baris) | Kamus alias saja mencapai 17,2%. Set held-out belum terukur |
 | Keamanan tindakan | 0 dari 27 serangan berhasil | Termasuk injeksi lewat dokumen |
 | Kualitas percakapan | 42 dari 47 giliran lulus | Bahasa sehari-hari, salah ketik, koreksi, dan pengandaian |
 | Biaya model | 0,98 panggilan per giliran | Sekitar 17% token dibanding pembanding yang membaca seluruh dokumen |
