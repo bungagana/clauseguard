@@ -102,11 +102,12 @@ def render(src: Path, dst: Path) -> None:
             from docx.shared import Inches
             path = (src.parent / img.group(2)).resolve()
             if path.exists():
-                doc.add_picture(str(path), width=Inches(6.3))
+                cap_text, _, w = img.group(1).partition("|")
+                doc.add_picture(str(path), width=Inches(float(w) if w.strip() else 6.3))
                 doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
                 cap = doc.add_paragraph()
                 cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
-                r = cap.add_run(img.group(1))
+                r = cap.add_run(cap_text)
                 r.italic = True
                 r.font.size = Pt(9)
             i += 1
