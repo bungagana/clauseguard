@@ -164,6 +164,8 @@ function putBody(c: StoredConversation): api.HistoryPutBody {
 }
 
 async function withSession<T>(auth: HistoryAuth, personaKey: string, run: (token: string) => Promise<T>): Promise<Outcome<T>> {
+  // a conversation saved without a persona belongs to the signed-in account: use its only session
+  if (!personaKey) personaKey = auth.tokenPersonas()[0] ?? personaKey;
   let token = auth.tokenFor(personaKey);
   if (!token) return { kind: "unavailable" };
   for (let attempt = 0; attempt < 2; attempt += 1) {

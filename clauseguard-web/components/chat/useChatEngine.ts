@@ -348,7 +348,7 @@ export function useChatEngine(mode: AppMode, accountPersona?: string) {
       const target = convCacheRef.current[id] ?? (await fetchConversation(historyAuth, summary));
       if (!target) return;
       convCacheRef.current[id] = target;
-      const key = target.personaKey;
+      const key = target.personaKey || personaKey;
       activeByPersonaRef.current[key] = target.id;
       createdAtRef.current = target.createdAt;
       setConversationId(target.id);

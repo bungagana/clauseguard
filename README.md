@@ -8,8 +8,8 @@ FinTechathon 2026 · International Track · Topic D: AI Insurance Assistant
 Team: Bunga Laelatul Muna, Izra, Wan Sabrina · Institut Teknologi Sepuluh Nopember, Indonesia
 
 <p align="center">
-  <a href="documentation-submission/ClauseGuard-Demo-Video-Real.mp4">
-    <img src="documentation-submission/video-poster.png" width="760" alt="ClauseGuard demo video, 2 minutes 33 seconds. Click to play.">
+  <a href="documentation-submission/clauseguard.mp4">
+    <img src="documentation-submission/video-poster.png" width="760" alt="ClauseGuard demo video. Click to play.">
   </a>
 </p>
 
@@ -150,7 +150,7 @@ Further evaluations (benchmark accuracy, plan selection, allocation, latency) ar
 | Technical Documentation (architecture, algorithms, security design, API, sandbox, database, demo account information) | [PDF](documentation-submission/%5BRevised%5D%20ClauseGuard_Technical_Documentation.pdf) |
 | Security Self-Assessment (permission tiers, threat model, tests, data and privacy, known risks) | [PDF](documentation-submission/%5BRevised%5D%20ClauseGuard_Security_Self_Assessment.pdf) |
 | Execution Evidence (operation record with screenshots and audit log, scripted test results) | [PDF](documentation-submission/%5BRevised%5D%20ClauseGuard_Execution_Evidence.pdf) |
-| Demo video (2 minutes 33 seconds) | [MP4](documentation-submission/ClauseGuard-Demo-Video-Real.mp4) |
+| Demo video | [MP4](documentation-submission/clauseguard.mp4) |
 
 ## Notes
 
