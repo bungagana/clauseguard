@@ -235,8 +235,9 @@ Table 11 shows how judges can try the sandbox.
 |---|---|
 | Customer app | https://clauseguard.up.railway.app |
 | Demo accounts | rizky, santoso and dewi at the demo.clauseguard.id domain. Each account holds its persona's policies and claims |
-| Demo account passwords and admin token | Provided in the registration form. The values are not printed in this document because the document is also kept in the repository |
-| Insurer desk | The `/insurer` address of the same app. Staff enter the admin token |
+| Demo account passwords | Provided in the registration form |
+| Insurer desk | The `/insurer` address of the same app. Staff enter the admin token below |
+| Admin token | `{{ADMIN_TOKEN}}` |
 
 Steps to try the sandbox:
 

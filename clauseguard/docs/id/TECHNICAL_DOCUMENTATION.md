@@ -235,8 +235,9 @@ Tabel 11 menunjukkan cara juri mencoba sandbox.
 |---|---|
 | Aplikasi nasabah | https://clauseguard.up.railway.app |
 | Akun demo | rizky, santoso, dan dewi di domain demo.clauseguard.id. Setiap akun memuat polis dan klaim persona masing-masing |
-| Kata sandi akun demo dan token admin | Diberikan melalui formulir pendaftaran. Nilainya tidak dicetak di dokumen ini karena dokumen ini ikut disimpan di repositori |
-| Meja penanggung | Alamat `/insurer` pada aplikasi yang sama. Petugas memasukkan token admin |
+| Kata sandi akun demo | Diberikan melalui formulir pendaftaran |
+| Meja penanggung | Alamat `/insurer` pada aplikasi yang sama. Petugas memasukkan token admin berikut |
+| Token admin | `{{ADMIN_TOKEN}}` |
 
 Langkah mencoba sandbox:
 

@@ -10,6 +10,7 @@ Supports headings, paragraphs, bullet and numbered lists, pipe tables, fenced co
 """
 from __future__ import annotations
 
+import os
 import re
 from pathlib import Path
 
@@ -63,7 +64,11 @@ def render(src: Path, dst: Path) -> None:
     st = doc.styles["Normal"]
     st.font.name = "Calibri"
     st.font.size = Pt(10.5)
-    lines = src.read_text(encoding="utf-8").splitlines()
+    text = src.read_text(encoding="utf-8")
+    # The admin token for judges never lives in the repository: set JUDGE_ADMIN_TOKEN when building the file to send.
+    token = os.environ.get("JUDGE_ADMIN_TOKEN", "").strip()
+    text = text.replace("{{ADMIN_TOKEN}}", token or "(given in the registration form)")
+    lines = text.splitlines()
     i, in_code, code, table = 0, False, [], []
 
     def flush_table() -> None:
