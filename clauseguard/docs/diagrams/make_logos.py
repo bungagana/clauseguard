@@ -18,7 +18,7 @@ CSS = """
 body{font-family:'Segoe UI',Inter,Arial,sans-serif;background:#fff;color:#141A29}
 .wrap{padding:28px 32px;width:1180px}
 h1{font-size:20px;font-weight:700;margin-bottom:18px}
-.grid{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:18px}
+.grid{display:grid;grid-template-columns:1.3fr 1.3fr 1fr;gap:18px}
 .grp{border:2px solid #E1E4EA;border-radius:14px;padding:14px 16px}
 .grp h2{font-size:13px;font-weight:700;color:#1C58E3;letter-spacing:.3px;margin-bottom:12px;text-transform:uppercase}
 .items{display:flex;flex-wrap:wrap;gap:10px}
@@ -33,7 +33,7 @@ T = {
         "title": "Produk dan layanan yang menjadi pembanding",
         "groups": [
             ("Asisten virtual asuransi Indonesia", [("Garxia", "Astra"), ("Vania", "Aswata"), ("Hummi", "Cakrawala Proteksi"), ("Asisten Tripa", "Tripa"), ("WE+", "WINA")]),
-            ("Asuransi digital dengan klaim berbasis AI", [("Lemonade", "Maya dan AI Jim", "lemonade.png")]),
+            ("Asuransi digital dengan klaim berbasis AI", [("Travelers", "AI Claim Assistant", "travelers.png"), ("Allianz", "Insurance Copilot", "allianz.png"), ("Lemonade", "Maya dan AI Jim", "lemonade.png")]),
             ("Marketplace dan perbandingan produk", [("Lifepal", "", "lifepal.png"), ("Qoala", "", "qoala.png"), ("PasarPolis", "")]),
         ],
         "note": "Logo adalah milik pemiliknya masing-masing dan hanya dipakai untuk menandai produk yang dibandingkan.",
@@ -42,7 +42,7 @@ T = {
         "title": "Products and services used for comparison",
         "groups": [
             ("Indonesian insurer virtual assistants", [("Garxia", "Astra"), ("Vania", "Aswata"), ("Hummi", "Cakrawala Proteksi"), ("Tripa assistant", "Tripa"), ("WE+", "WINA")]),
-            ("Digital insurer with AI claims", [("Lemonade", "Maya dan AI Jim", "lemonade.png")]),
+            ("Digital insurer with AI claims", [("Travelers", "AI Claim Assistant", "travelers.png"), ("Allianz", "Insurance Copilot", "allianz.png"), ("Lemonade", "Maya and AI Jim", "lemonade.png")]),
             ("Marketplaces and product comparison", [("Lifepal", "", "lifepal.png"), ("Qoala", "", "qoala.png"), ("PasarPolis", "")]),
         ],
         "note": "Logos belong to their owners and are used only to identify the products compared.",

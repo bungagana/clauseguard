@@ -92,6 +92,24 @@ The comparison uses public information we found, with the year of each source. W
 | Decision returned to the conversation | Not found | According to its CEO, claims finished without human involvement reach the 40s in percent (2023) | Not found | Yes, the officer's decision appears in the chat with an explanation and the next step |
 | Limits on agent actions | Not found | Not found | Not relevant | Four permission tiers enforced in code |
 
+Table 6 compares ClauseGuard with three publicly documented AI insurance products. A cell that says "Not stated" means the sources we checked do not mention it.
+
+**Table 6. Comparison with publicly documented AI insurance products**
+
+| Capability | ClauseGuard | Travelers AI Claim Assistant (2026) | Allianz Insurance Copilot (2024 and 2025) | Lemonade AI Jim (2023) |
+|---|---|---|---|---|
+| Primary user | Policyholders and the insurer claims desk (sandbox) | Policyholders filing auto property damage claims | Claims handlers | Policyholders |
+| Role of AI | Language understanding and drafting. Decisions are made by the rules engine | Voice assistant that answers policy questions, collects claim details and submits claims | Summarises claim and contract data, compares claims with policy terms and flags critical factors that could be missed | Takes the first notice of loss and finishes some claims without a human (according to the CEO) |
+| Interprets policy wording into executable rules | Yes | Not stated | Partial, compares claims with policy terms | Not stated |
+| Cites the governing clause for each answer | Yes | Not stated | Not stated | Not stated |
+| Coordinates payment across multiple policies | Yes | Not stated | Not stated | Not stated |
+| Pre-submission readiness check | Yes, against policy rules | Not stated | Not stated. Flags factors for the claims handler | Not stated |
+| Decides and pays claims without a human | No, the insurer officer decides | Not stated | A tool that supports claims handlers | Yes for some claims (according to the CEO) |
+| Policyholder confirms before submission | Yes, one tap on the Confirm card | Not stated | Not applicable because the tool is for handlers | Not stated |
+| Permission tiers and audit log for agent actions | Yes | Not stated | Not stated | Not stated |
+| Reported outcome | 84.6% coverage decision accuracy on 390 labels of a public benchmark (small test set) | 85 to 90% of customers complete filing through the AI (company reported) | No figures found | 96% of first notices taken by AI Jim and claims finished without a human in the 40s in percent (according to the CEO) |
+| Scope | Life, health, accident, critical illness and public coordination programs (case study) | Auto property damage | Motor claims in Austria. Property is planned | Not stated |
+
 The comparison shows the gap ClauseGuard fills. Existing products serve one insurer or help customers buy a new policy. In the sources we checked, none reads every policy a household holds, decides the payer order and handles the claim with action limits enforced in code.
 
 ## 2. System architecture
@@ -102,7 +120,7 @@ Figure 2 shows the components of ClauseGuard. AI agents understand and explain. 
 
 ![Figure 2. ClauseGuard component architecture](img/architecture.png)
 
-**Table 6. Role of each component**
+**Table 7. Role of each component**
 
 | Component | Role |
 |---|---|
@@ -132,7 +150,7 @@ Figure 4 shows the steps that run every time the customer sends a message. Safet
 
 Each technology was chosen because it supports structured, safe and checkable output.
 
-**Table 7. Technology stack and rationale**
+**Table 8. Technology stack and rationale**
 
 | Layer | Technology | Reason |
 |---|---|---|
@@ -145,9 +163,9 @@ Each technology was chosen because it supports structured, safe and checkable ou
 
 ### 2.5 API
 
-The ClauseGuard sandbox exposes 52 JSON endpoints built with FastAPI. The customer's browser calls them through the `/api/cg` path of the web app, which forwards requests to the API. Customer endpoints need the `X-Session-Token` header obtained from `POST /login`. Insurer desk endpoints need the `X-Admin-Token` header. Errors return an HTTP status code and a `detail` body. Table 8 summarises the endpoints by group.
+The ClauseGuard sandbox exposes 52 JSON endpoints built with FastAPI. The customer's browser calls them through the `/api/cg` path of the web app, which forwards requests to the API. Customer endpoints need the `X-Session-Token` header obtained from `POST /login`. Insurer desk endpoints need the `X-Admin-Token` header. Errors return an HTTP status code and a `detail` body. Table 9 summarises the endpoints by group.
 
-**Table 8. API endpoint groups**
+**Table 9. API endpoint groups**
 
 | Group | Endpoints | Access |
 |---|---|---|
@@ -163,9 +181,9 @@ Every endpoint that touches customer data resolves the session first and filters
 
 ### 2.6 Third-party services
 
-ClauseGuard uses several third-party services and data sources. Table 9 lists what each is used for and what data is sent to it.
+ClauseGuard uses several third-party services and data sources. Table 10 lists what each is used for and what data is sent to it.
 
-**Table 9. Third-party services and data sources**
+**Table 10. Third-party services and data sources**
 
 | Service | Used for | Data sent | Notes |
 |---|---|---|---|
@@ -182,9 +200,9 @@ The open-source libraries include FastAPI, Pydantic, SciPy, PyMuPDF, ReportLab, 
 
 ### 2.7 Database
 
-The backend chooses its storage through the `CG_STORAGE` variable. Mode `local` uses SQLite and JSONL files for development and tests. Mode `postgres` uses Supabase Postgres and runs on the hosted service. Table 10 lists what each part holds.
+The backend chooses its storage through the `CG_STORAGE` variable. Mode `local` uses SQLite and JSONL files for development and tests. Mode `postgres` uses Supabase Postgres and runs on the hosted service. Table 11 lists what each part holds.
 
-**Table 10. Database tables by function**
+**Table 11. Database tables by function**
 
 | Part | Tables | Function |
 |---|---|---|
@@ -227,9 +245,9 @@ NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<Supabase publishable key>
 ```
 
-Table 11 shows how judges can try the sandbox.
+Table 12 shows how judges can try the sandbox.
 
-**Table 11. Judge access**
+**Table 12. Judge access**
 
 | Need | How |
 |---|---|
@@ -251,7 +269,7 @@ Steps to try the sandbox:
 
 ClauseGuard uses seven AI agents. Each agent does one narrow task and fills a closed output schema. Code validates every output before it is used. Message and document content is always treated as data, so instructions hidden inside it are ignored.
 
-**Table 12. AI agents and prompt design**
+**Table 13. AI agents and prompt design**
 
 | Agent | Task | Input | Prompt core | Output | Safeguard |
 |---|---|---|---|---|---|
@@ -304,7 +322,7 @@ Every answer can be traced. The "How was this decided" panel shows how the messa
 
 Every evaluation can be rerun from the scripts listed in the Execution Evidence Index.
 
-**Table 13. Evaluation results**
+**Table 14. Evaluation results**
 
 | Evaluation | Scenario | Baseline | Result |
 |---|---|---|---|
@@ -318,7 +336,7 @@ Every evaluation can be rerun from the scripts listed in the Execution Evidence 
 | Conversation | 47 narrative turns | Previous prompt version | 42 of 47, up from 40 of 47 |
 | Cost | 90 turns | A model reading whole documents | 0.98 model calls per turn, 17% of the baseline's tokens |
 
-**Table 14. Ablation**
+**Table 15. Ablation**
 
 | Component removed | Effect |
 |---|---|
@@ -335,7 +353,7 @@ TrustLock places every agent action in one of four permission tiers. Figure 5 sh
 
 ![Figure 5. Permission flow for every agent action](img/flow_tier_en.png)
 
-**Table 15. Permission tiers**
+**Table 16. Permission tiers**
 
 | Tier | Type | Example actions |
 |---|---|---|
@@ -348,7 +366,7 @@ The customer also chooses an autonomy mode. Observe only answers. Draft prepares
 
 ### 4.2 Threat model
 
-**Table 16. Threats, controls and test results**
+**Table 17. Threats, controls and test results**
 
 | Threat | Example | Control | Test result |
 |---|---|---|---|
@@ -373,6 +391,31 @@ Topic D does not use a blockchain, so key management, signing policy and transac
 
 Section 1.4 already compares ClauseGuard with the available products. The difference lies in the core method. ClauseGuard treats an insurance policy as a program of rules. The language model understands the conversation and the documents. The rules engine computes what the customer is owed. Every answer can be proven with a clause.
 
+Table 18 compares the architecture of research published between 2022 and 2026. Two more general works are included because ClauseGuard builds on them. They are CaMeL (2025), which is designed for agents in general and not for insurance, and counterfactual explanations by Wachter and colleagues (2017).
+
+**Table 18. Methodological comparison with prior work**
+
+| Work | Task and data | Architecture | Decision authority and grounding | Reported evaluation |
+|---|---|---|---|---|
+| Na et al. (2022) | Single-turn Korean cancer insurance QA. 2,295 filtered pairs, 892 manual pairs and 817 FAQ pairs | Intent detection and slot filling (KoELECTRA) with FAQ retrieval using Sentence-BERT | Answers only, grounded in FAQ entries | Intent micro-F1 0.71 and slot micro-F1 0.95 |
+| InsQABench (2025) | Chinese insurance QA over structured databases and documents | SQL-ReAct for structured data and RAG-ReAct for documents | Answers only, grounded in retrieved text | Benchmark. The text we read has no numeric scores |
+| INSEva (2025) | 38,704 Chinese examples from authoritative materials | Benchmark for eight LLMs with LLM-judged faithfulness and completeness | Not a system | Best average score 82.74. Logical reasoning is weakest with a best score of 73.66 |
+| Beauchemin and Khoury (2026) | Quebec insurance, 807 multiple-choice questions from certification handbooks (a private benchmark), 51 LLMs | Closed-book LLMs compared with RAG | Answers only, grounded in retrieved chunks | Highest score 78.68% by o3. RAG lifted models with weak knowledge by more than 35 points, and one model fell from 74.65% to 14.06% |
+| Pokharel et al. (2026) | CPT code coverage in plan documents. About 1.84 million labeled pairs and 814 evaluation codes | Coverage-aware retriever, an LLM that writes attributes and rules, and the PyKnow rule engine | Supports human reviewers with auditable rationales | Accuracy 0.87 and F1 0.93, against 0.82 and 0.89 for GPT-4.1 on full documents. Cost about USD 22 against USD 38,720 for about 11,000 codes |
+| Mridul et al. (2026) | Life insurance, ten contracts, 58 scenarios | Ontology (TBox) and knowledge base (ABox) queried with SPARQL, with a text-only LLM baseline | Scenario outcomes with clause-level evidence | Better consistency and diagnosis than the baseline. The abstract has no numeric metrics |
+| Debenedetti et al. (2025) | General agent tasks outside insurance (AgentDojo benchmark) | Separation of control flow from data flow, capabilities attached to data and policy checks at each tool call | Not applicable | 77% of tasks solved with provable security, against 84% for the undefended system |
+| ClauseGuard (this work) | Policy-to-rule compilation, synthetic personas and a sandbox insurer | Seven narrow LLM agents for language only, a deterministic rules engine, the Guardian tier gate and typed handles | The insurer officer decides and the rules engine computes coverage and payment | 84.6% on 390 labels, 0 of 27 attacks succeeded, sample sizes disclosed |
+
+To our reading of the sources in Table 18, the following points have not been found combined in one system.
+
+1. **Decisions by code and language by model.** Coverage, amounts, deadlines and payment order are computed by a deterministic rules engine. In the works in Table 18, the model answers directly or writes the rules. The closest work, by Pokharel and colleagues, supports human reviewers and covers CPT codes. Payment order across policies is not addressed.
+2. **Payment order across several policies.** None of the works in Table 18 models coordination of benefits across several policies for one event (section 3.5).
+3. **Typed handles keep untrusted text from actions.** Tier T2 tools accept only typed handles (section 4.1). This applies the control-flow and data-flow separation of CaMeL to claim submission.
+4. **Readiness with the smallest legitimate fix.** The system checks a claim against the clauses that could deny it, then searches for the smallest legitimate change that makes the claim payable (section 3.6).
+5. **Clause-cited answers with a tamper-evident audit trail.** Each answer links to the clause that produced it and each step is recorded in a hash chain (sections 3.7 and 4.3).
+
+The limits of this comparison need to be noted. The works in Table 18 differ in task, data and metric, so their numbers cannot be compared directly with each other or with ClauseGuard. The ClauseGuard evaluation uses a small test set and is reported with its sample sizes (risk K15).
+
 ### 5.2 Interaction design
 
 1. **Everyday language.** Customers can write in Indonesian, English or a mix, including abbreviations and typos.
@@ -385,9 +428,9 @@ Section 1.4 already compares ClauseGuard with the available products. The differ
 
 ### 5.3 Interface design and visual hierarchy
 
-The interface uses one blue palette with three status colours, and every colour has a light and a dark version. Table 17 lists the colours.
+The interface uses one blue palette with three status colours, and every colour has a light and a dark version. Table 19 lists the colours.
 
-**Table 17. Colour palette**
+**Table 19. Colour palette**
 
 | Role | Light mode | Dark mode | Use |
 |---|---|---|---|
@@ -403,9 +446,9 @@ The interface uses one blue palette with three status colours, and every colour 
 | Danger | #D62940 | #E75569 | Negative status, for example rejected |
 | Navy | #0E182F | #080812 | Brand icon background |
 
-Body text uses Inter. Headings use Sora at weights 600 to 800. Cards have 1 rem rounded corners and a light shadow. Table 18 shows the order of importance of the elements on the chat screen from top to bottom.
+Body text uses Inter. Headings use Sora at weights 600 to 800. Cards have 1 rem rounded corners and a light shadow. Table 20 shows the order of importance of the elements on the chat screen from top to bottom.
 
-**Table 18. Interface hierarchy**
+**Table 20. Interface hierarchy**
 
 | Level | Part | Content | Reason |
 |---|---|---|---|
@@ -423,7 +466,7 @@ The message box sits at the bottom with a single paperclip icon for attaching fi
 
 The list below is consistent with the risk register in the Security Self-Assessment. The K numbers refer to that document.
 
-**Table 19. Limitations and known risks**
+**Table 21. Limitations and known risks**
 
 | No. | Risk | Residual level | Handling |
 |---|---|---|---|
@@ -446,9 +489,9 @@ Other scope limitations:
 
 ## 7. Summary of results
 
-Table 20 summarises the main results. Details and the way to rerun each test are in section 3.8 and in the Execution Evidence Index.
+Table 22 summarises the main results. Details and the way to rerun each test are in section 3.8 and in the Execution Evidence Index.
 
-**Table 20. Summary of results**
+**Table 22. Summary of results**
 
 | Aspect | Result | Note |
 |---|---|---|
@@ -477,3 +520,10 @@ Speed with the model depends on the Gemini service and its quota. This measureme
 10. Detik Oto (2018). A short message is enough, vehicle insurance can pay out right away. oto.detik.com/berita/d-4209016.
 11. PYMNTS (2023). Lemonade CEO says insurance platform built for AI since day one. pymnts.com.
 12. CB Insights. Company profiles of PasarPolis, Qoala and Lifepal. cbinsights.com.
+13. Business Wire (2026). Travelers launches industry leading agentic AI Claim Assistant developed with OpenAI. businesswire.com.
+14. Allianz (2025). Smarter claims management, smoother settlements. allianz.com.
+15. Na, Kim and Cho (2022). Insurance question answering via single-turn dialogue modeling. ACL Anthology 2022.cai-1.5.
+16. InsQABench (2025). arXiv:2501.10943.
+17. INSEva (2025). A comprehensive Chinese benchmark for large language models in insurance. arXiv:2509.04455.
+18. Beauchemin and Khoury (2026). Benchmarking large language models for Quebec insurance. arXiv:2603.07825.
+19. Pokharel, Hassanzadeh and Agrawal (2026). From policy to logic for efficient and interpretable coverage assessment. arXiv:2601.01266.

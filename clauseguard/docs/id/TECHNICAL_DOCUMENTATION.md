@@ -92,6 +92,24 @@ Perbandingan memakai informasi publik yang kami temukan beserta tahun sumbernya.
 | Keputusan kembali ke percakapan | Tidak ditemukan | Menurut CEO, klaim yang selesai tanpa campur tangan manusia mencapai 40-an persen (2023) | Tidak ditemukan | Ya, keputusan petugas muncul di chat dengan penjelasan dan langkah berikutnya |
 | Batas tindakan agen | Tidak ditemukan | Tidak ditemukan | Tidak relevan | Empat tingkat izin yang ditegakkan kode |
 
+Tabel 6 membandingkan ClauseGuard dengan tiga produk AI asuransi yang terdokumentasi publik. Sel "Tidak dinyatakan" berarti sumber yang kami periksa tidak menyebutkannya.
+
+**Tabel 6. Perbandingan dengan produk AI asuransi yang terdokumentasi publik**
+
+| Kemampuan | ClauseGuard | Travelers AI Claim Assistant (2026) | Allianz Insurance Copilot (2024 dan 2025) | Lemonade AI Jim (2023) |
+|---|---|---|---|---|
+| Pengguna utama | Nasabah dan petugas klaim penanggung (sandbox) | Nasabah yang mengajukan klaim kerusakan properti mobil | Penangan klaim | Nasabah |
+| Peran AI | Memahami bahasa dan menyusun draf. Keputusan dibuat mesin aturan | Asisten suara yang menjawab pertanyaan polis, mengumpulkan rincian klaim, dan mengajukan klaim | Merangkum data klaim dan kontrak, membandingkan klaim dengan ketentuan polis, dan menandai faktor kritis yang bisa terlewat | Menerima laporan klaim awal dan menyelesaikan sebagian klaim tanpa manusia (menurut CEO) |
+| Menerjemahkan redaksi polis menjadi aturan yang dapat dijalankan | Ya | Tidak dinyatakan | Sebagian, membandingkan klaim dengan ketentuan polis | Tidak dinyatakan |
+| Mengutip klausul penentu pada setiap jawaban | Ya | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan |
+| Mengoordinasikan pembayaran antar beberapa polis | Ya | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan |
+| Pemeriksaan kesiapan sebelum pengajuan | Ya, terhadap aturan polis | Tidak dinyatakan | Tidak dinyatakan. Menandai faktor bagi penangan klaim | Tidak dinyatakan |
+| Memutuskan dan membayar klaim tanpa manusia | Tidak, petugas penanggung memutuskan | Tidak dinyatakan | Alat bantu bagi penangan klaim | Ya untuk sebagian klaim (menurut CEO) |
+| Nasabah mengonfirmasi sebelum pengajuan | Ya, satu ketukan pada kartu Konfirmasi | Tidak dinyatakan | Tidak berlaku karena alat untuk penangan | Tidak dinyatakan |
+| Tingkat izin dan audit log untuk tindakan agen | Ya | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan |
+| Hasil yang dilaporkan | 84,6% akurasi putusan cakupan pada 390 label benchmark publik (set uji kecil) | 85 sampai 90% nasabah menyelesaikan pengajuan lewat AI (laporan perusahaan) | Tidak ada angka yang kami temukan | 96% laporan klaim awal diterima AI Jim dan 40-an persen klaim selesai tanpa manusia (menurut CEO) |
+| Cakupan | Jiwa, kesehatan, kecelakaan, penyakit kritis, dan program koordinasi publik (studi kasus) | Kerusakan properti mobil | Klaim motor di Austria. Properti direncanakan | Tidak dinyatakan |
+
 Perbandingan ini memperlihatkan celah yang diisi ClauseGuard. Produk yang ada melayani satu penanggung atau membantu nasabah membeli polis baru. Dalam sumber yang kami periksa, belum ada yang membaca semua polis milik satu rumah tangga, menentukan urutan pembayar, dan mengurus klaim dengan batas tindakan yang ditegakkan kode.
 
 ## 2. System architecture
@@ -102,7 +120,7 @@ Gambar 2 menunjukkan komponen ClauseGuard. Agen AI bertugas memahami dan menjela
 
 ![Gambar 2. Arsitektur komponen ClauseGuard](../img/architecture.png)
 
-**Tabel 6. Peran setiap komponen**
+**Tabel 7. Peran setiap komponen**
 
 | Komponen | Peran |
 |---|---|
@@ -132,7 +150,7 @@ Gambar 4 menunjukkan langkah yang terjadi setiap kali nasabah mengirim pesan. At
 
 Setiap teknologi dipilih karena mendukung keluaran yang terstruktur, aman, dan dapat diperiksa.
 
-**Tabel 7. Stack teknologi dan alasan pemilihan**
+**Tabel 8. Stack teknologi dan alasan pemilihan**
 
 | Lapisan | Teknologi | Alasan |
 |---|---|---|
@@ -145,9 +163,9 @@ Setiap teknologi dipilih karena mendukung keluaran yang terstruktur, aman, dan d
 
 ### 2.5 API
 
-Sandbox ClauseGuard menyediakan 52 endpoint JSON yang dibangun dengan FastAPI. Peramban nasabah memanggilnya melalui jalur `/api/cg` pada aplikasi web, yang meneruskan permintaan ke API. Endpoint nasabah memerlukan header `X-Session-Token` yang diperoleh dari `POST /login`. Endpoint meja penanggung memerlukan header `X-Admin-Token`. Kesalahan dikembalikan dengan kode status HTTP dan isi `detail`. Tabel 8 merangkum endpoint menurut kelompoknya.
+Sandbox ClauseGuard menyediakan 52 endpoint JSON yang dibangun dengan FastAPI. Peramban nasabah memanggilnya melalui jalur `/api/cg` pada aplikasi web, yang meneruskan permintaan ke API. Endpoint nasabah memerlukan header `X-Session-Token` yang diperoleh dari `POST /login`. Endpoint meja penanggung memerlukan header `X-Admin-Token`. Kesalahan dikembalikan dengan kode status HTTP dan isi `detail`. Tabel 9 merangkum endpoint menurut kelompoknya.
 
-**Tabel 8. Kelompok endpoint API**
+**Tabel 9. Kelompok endpoint API**
 
 | Kelompok | Endpoint | Akses |
 |---|---|---|
@@ -163,9 +181,9 @@ Semua endpoint yang menyentuh data nasabah mencari sesi terlebih dahulu dan meny
 
 ### 2.6 Layanan pihak ketiga
 
-ClauseGuard memakai beberapa layanan dan sumber data dari pihak ketiga. Tabel 9 memuat tujuan pemakaian dan data yang dikirim ke setiap layanan.
+ClauseGuard memakai beberapa layanan dan sumber data dari pihak ketiga. Tabel 10 memuat tujuan pemakaian dan data yang dikirim ke setiap layanan.
 
-**Tabel 9. Layanan dan sumber data pihak ketiga**
+**Tabel 10. Layanan dan sumber data pihak ketiga**
 
 | Layanan | Dipakai untuk | Data yang dikirim | Catatan |
 |---|---|---|---|
@@ -182,9 +200,9 @@ Pustaka sumber terbuka yang dipakai antara lain FastAPI, Pydantic, SciPy, PyMuPD
 
 ### 2.7 Database
 
-Backend memilih penyimpanan melalui variabel `CG_STORAGE`. Mode `local` memakai SQLite dan berkas JSONL untuk pengembangan dan pengujian. Mode `postgres` memakai Supabase Postgres dan dipakai pada layanan yang dihosting. Tabel 10 memuat isi setiap bagian.
+Backend memilih penyimpanan melalui variabel `CG_STORAGE`. Mode `local` memakai SQLite dan berkas JSONL untuk pengembangan dan pengujian. Mode `postgres` memakai Supabase Postgres dan dipakai pada layanan yang dihosting. Tabel 11 memuat isi setiap bagian.
 
-**Tabel 10. Daftar tabel database menurut fungsinya**
+**Tabel 11. Daftar tabel database menurut fungsinya**
 
 | Bagian | Tabel | Fungsi |
 |---|---|---|
@@ -227,9 +245,9 @@ NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<kunci publishable Supabase>
 ```
 
-Tabel 11 menunjukkan cara juri mencoba sandbox.
+Tabel 12 menunjukkan cara juri mencoba sandbox.
 
-**Tabel 11. Akses juri**
+**Tabel 12. Akses juri**
 
 | Kebutuhan | Cara |
 |---|---|
@@ -251,7 +269,7 @@ Langkah mencoba sandbox:
 
 ClauseGuard memakai tujuh agen AI. Setiap agen mengerjakan satu tugas sempit dan mengisi skema keluaran tertutup. Kode memvalidasi setiap keluaran sebelum dipakai. Isi pesan dan dokumen selalu diperlakukan sebagai data, sehingga perintah yang terselip di dalamnya diabaikan.
 
-**Tabel 12. Agen AI dan desain prompt**
+**Tabel 13. Agen AI dan desain prompt**
 
 | Agen | Tugas | Masukan | Inti prompt | Keluaran | Pengaman |
 |---|---|---|---|---|---|
@@ -304,7 +322,7 @@ Setiap jawaban dapat ditelusuri. Panel "How was this decided" menampilkan cara p
 
 Seluruh evaluasi dapat dijalankan ulang dari skrip yang tercantum di Indeks Bukti Eksekusi.
 
-**Tabel 13. Hasil evaluasi**
+**Tabel 14. Hasil evaluasi**
 
 | Evaluasi | Skenario | Pembanding | Hasil |
 |---|---|---|---|
@@ -318,7 +336,7 @@ Seluruh evaluasi dapat dijalankan ulang dari skrip yang tercantum di Indeks Bukt
 | Percakapan | 47 giliran naratif | Prompt versi sebelumnya | 42 dari 47, naik dari 40 dari 47 |
 | Biaya | 90 giliran | Model membaca seluruh dokumen | 0,98 pemanggilan model per giliran, 17% token pembanding |
 
-**Tabel 14. Ablation**
+**Tabel 15. Ablation**
 
 | Komponen yang dilepas | Akibat |
 |---|---|
@@ -335,7 +353,7 @@ TrustLock membagi setiap tindakan agent ke dalam empat tingkat izin. Gambar 5 me
 
 ![Gambar 5. Alur izin untuk setiap tindakan agent](../img/flow_tier_id.png)
 
-**Tabel 15. Tingkat izin**
+**Tabel 16. Tingkat izin**
 
 | Tingkat | Jenis | Contoh tindakan |
 |---|---|---|
@@ -348,7 +366,7 @@ Nasabah juga memilih mode otonomi. Mode Observe hanya menjawab. Mode Draft menyi
 
 ### 4.2 Threat model
 
-**Tabel 16. Ancaman, kontrol, dan hasil uji**
+**Tabel 17. Ancaman, kontrol, dan hasil uji**
 
 | Ancaman | Contoh | Kontrol | Hasil uji |
 |---|---|---|---|
@@ -373,6 +391,31 @@ Topik D tidak menggunakan blockchain, sehingga key management, signing policy, d
 
 Bagian 1.4 sudah membandingkan ClauseGuard dengan produk yang tersedia. Perbedaannya terletak pada cara kerja inti. ClauseGuard memperlakukan polis asuransi sebagai program aturan. Model bahasa memahami percakapan dan dokumen. Mesin aturan menghitung hak nasabah. Setiap jawaban dapat dibuktikan dengan klausul.
 
+Tabel 18 membandingkan arsitektur karya penelitian yang terbit antara 2022 dan 2026. Dua karya yang lebih umum disertakan karena ClauseGuard bertumpu padanya, yaitu CaMeL (2025) yang dirancang untuk agen secara umum di luar bidang asuransi, serta penjelasan kontrafaktual oleh Wachter dan kawan-kawan (2017).
+
+**Tabel 18. Perbandingan metodologi dengan penelitian sebelumnya**
+
+| Karya | Tugas dan data | Arsitektur | Wewenang keputusan dan landasan jawaban | Evaluasi yang dilaporkan |
+|---|---|---|---|---|
+| Na dkk. (2022) | Tanya jawab asuransi kanker Korea satu giliran. 2.295 pasang hasil saringan, 892 pasang buatan manual, dan 817 pasang FAQ | Deteksi maksud dan pengisian slot (KoELECTRA) dengan pencarian FAQ memakai Sentence-BERT | Hanya menjawab, berlandaskan entri FAQ | F1 mikro maksud 0,71 dan F1 mikro slot 0,95 |
+| InsQABench (2025) | Tanya jawab asuransi Tiongkok atas basis data terstruktur dan dokumen | SQL-ReAct untuk data terstruktur dan RAG-ReAct untuk dokumen | Hanya menjawab, berlandaskan teks hasil pencarian | Benchmark. Teks yang kami baca tidak memuat skor numerik |
+| INSEva (2025) | 38.704 contoh Tiongkok dari bahan resmi | Benchmark untuk delapan LLM dengan penilaian kesetiaan dan kelengkapan oleh LLM | Tidak berupa sistem | Skor rata-rata terbaik 82,74. Penalaran logis paling lemah dengan skor terbaik 73,66 |
+| Beauchemin dan Khoury (2026) | Asuransi Quebec, 807 soal pilihan ganda dari buku sertifikasi (benchmark privat), 51 LLM | LLM tanpa referensi dibandingkan dengan RAG | Hanya menjawab, berlandaskan potongan teks hasil pencarian | Skor tertinggi 78,68% oleh o3. RAG menaikkan model berpengetahuan lemah lebih dari 35 poin, dan satu model turun dari 74,65% menjadi 14,06% |
+| Pokharel dkk. (2026) | Cakupan kode CPT pada dokumen rencana asuransi. Sekitar 1,84 juta pasang berlabel dan 814 kode evaluasi | Pencari yang sadar cakupan, LLM yang menyusun atribut dan aturan, serta mesin aturan PyKnow | Mendukung peninjau manusia dengan alasan yang dapat diaudit | Akurasi 0,87 dan F1 0,93, dibanding 0,82 dan 0,89 untuk GPT-4.1 pada dokumen penuh. Biaya sekitar USD 22 dibanding USD 38.720 untuk sekitar 11.000 kode |
+| Mridul dkk. (2026) | Asuransi jiwa, sepuluh kontrak, 58 skenario | Ontologi (TBox) dan basis pengetahuan (ABox) yang dikueri dengan SPARQL, dengan pembanding LLM teks saja | Hasil skenario dengan bukti tingkat klausul | Konsistensi dan diagnosis lebih baik daripada pembanding. Abstrak tidak memuat metrik numerik |
+| Debenedetti dkk. (2025) | Tugas agen umum di luar bidang asuransi (benchmark AgentDojo) | Pemisahan alur kendali dari alur data, kapabilitas melekat pada data, dan pemeriksaan kebijakan pada setiap panggilan alat | Tidak berlaku | 77% tugas selesai dengan keamanan terbukti, dibanding 84% pada sistem tanpa pertahanan |
+| ClauseGuard (karya ini) | Kompilasi polis menjadi aturan, persona sintetis, dan penanggung sandbox | Tujuh agen LLM sempit hanya untuk bahasa, mesin aturan deterministik, gerbang Guardian, dan handle bertipe | Petugas penanggung memutuskan dan mesin aturan menghitung cakupan serta pembayaran | 84,6% pada 390 label, 0 dari 27 serangan berhasil, ukuran sampel diungkapkan |
+
+Menurut pembacaan kami atas sumber pada Tabel 18, hal berikut belum ditemukan digabung dalam satu sistem.
+
+1. **Keputusan oleh kode dan bahasa oleh model.** Cakupan, jumlah, tenggat, dan urutan pembayaran dihitung mesin aturan deterministik. Pada karya di Tabel 18, model menjawab langsung atau menyusun aturan. Karya terdekat, yaitu Pokharel dan kawan-kawan, mendukung peninjau manusia dan mencakup kode CPT. Urutan pembayaran antar polis tidak dibahas.
+2. **Urutan pembayaran antar beberapa polis.** Tidak satu pun karya pada Tabel 18 memodelkan koordinasi manfaat antar beberapa polis untuk satu kejadian (bagian 3.5).
+3. **Handle bertipe menahan teks yang tidak tepercaya.** Alat tingkat T2 hanya menerima handle bertipe (bagian 4.1). Ini menerapkan pemisahan alur kendali dan alur data milik CaMeL pada pengajuan klaim.
+4. **Kesiapan klaim dengan perbaikan sah terkecil.** Sistem memeriksa klaim terhadap klausul yang dapat menolaknya lalu mencari perubahan sah terkecil yang membuat klaim dapat dibayar (bagian 3.6).
+5. **Jawaban dengan kutipan klausul dan jejak audit yang tahan ubah.** Setiap jawaban terhubung ke klausul yang menghasilkannya dan setiap langkah dicatat dalam rantai hash (bagian 3.7 dan 4.3).
+
+Batas perbandingan ini perlu dicatat. Karya pada Tabel 18 berbeda dalam tugas, data, dan metrik, sehingga angkanya tidak dapat dibandingkan langsung satu sama lain maupun dengan ClauseGuard. Evaluasi ClauseGuard memakai set uji kecil dan dilaporkan beserta ukuran sampelnya (risiko K15).
+
 ### 5.2 Desain interaksi
 
 1. **Bahasa sehari-hari.** Nasabah dapat menulis dalam bahasa Indonesia, Inggris, atau campuran, termasuk singkatan dan salah ketik.
@@ -385,9 +428,9 @@ Bagian 1.4 sudah membandingkan ClauseGuard dengan produk yang tersedia. Perbedaa
 
 ### 5.3 Desain antarmuka dan hierarki visual
 
-Antarmuka memakai satu palet biru dengan tiga warna status, dan setiap warna memiliki versi terang dan gelap. Tabel 17 memuat warnanya.
+Antarmuka memakai satu palet biru dengan tiga warna status, dan setiap warna memiliki versi terang dan gelap. Tabel 19 memuat warnanya.
 
-**Tabel 17. Palet warna**
+**Tabel 19. Palet warna**
 
 | Peran | Mode terang | Mode gelap | Pemakaian |
 |---|---|---|---|
@@ -403,9 +446,9 @@ Antarmuka memakai satu palet biru dengan tiga warna status, dan setiap warna mem
 | Bahaya | #D62940 | #E75569 | Status negatif, misalnya ditolak |
 | Navy | #0E182F | #080812 | Latar ikon merek |
 
-Huruf isi memakai Inter. Judul memakai Sora dengan bobot 600 sampai 800. Sudut kartu membulat sebesar 1 rem dengan bayangan tipis. Tabel 18 menunjukkan urutan kepentingan elemen pada layar chat dari atas ke bawah.
+Huruf isi memakai Inter. Judul memakai Sora dengan bobot 600 sampai 800. Sudut kartu membulat sebesar 1 rem dengan bayangan tipis. Tabel 20 menunjukkan urutan kepentingan elemen pada layar chat dari atas ke bawah.
 
-**Tabel 18. Hierarki antarmuka**
+**Tabel 20. Hierarki antarmuka**
 
 | Tingkat | Bagian | Isi | Alasan |
 |---|---|---|---|
@@ -423,7 +466,7 @@ Kolom pesan berada di bagian bawah dengan satu ikon klip untuk melampirkan berka
 
 Daftar berikut konsisten dengan daftar risiko pada dokumen Penilaian Keamanan Mandiri. Nomor K merujuk ke dokumen tersebut.
 
-**Tabel 19. Keterbatasan dan risiko yang diketahui**
+**Tabel 21. Keterbatasan dan risiko yang diketahui**
 
 | No. | Risiko | Tingkat sisa | Penanganan |
 |---|---|---|---|
@@ -446,9 +489,9 @@ Keterbatasan cakupan lainnya:
 
 ## 7. Ringkasan hasil
 
-Tabel 20 merangkum hasil utama. Rincian dan cara mengulang pengujian ada di bagian 3.8 dan dokumen Execution Evidence Index.
+Tabel 22 merangkum hasil utama. Rincian dan cara mengulang pengujian ada di bagian 3.8 dan dokumen Execution Evidence Index.
 
-**Tabel 20. Ringkasan hasil**
+**Tabel 22. Ringkasan hasil**
 
 | Aspek | Hasil | Catatan |
 |---|---|---|
@@ -477,3 +520,10 @@ Kecepatan dengan model bergantung pada layanan Gemini dan kuotanya. Pengukuran i
 10. Detik Oto (2018). Cukup kirim pesan singkat, asuransi kendaraan bisa langsung cair. oto.detik.com/berita/d-4209016.
 11. PYMNTS (2023). Lemonade CEO says insurance platform built for AI since day one. pymnts.com.
 12. CB Insights. Profil PasarPolis, Qoala, dan Lifepal. cbinsights.com.
+13. Business Wire (2026). Travelers launches industry leading agentic AI Claim Assistant developed with OpenAI. businesswire.com.
+14. Allianz (2025). Smarter claims management, smoother settlements. allianz.com.
+15. Na, Kim, dan Cho (2022). Insurance question answering via single-turn dialogue modeling. ACL Anthology 2022.cai-1.5.
+16. InsQABench (2025). arXiv:2501.10943.
+17. INSEva (2025). A comprehensive Chinese benchmark for large language models in insurance. arXiv:2509.04455.
+18. Beauchemin dan Khoury (2026). Benchmarking large language models for Quebec insurance. arXiv:2603.07825.
+19. Pokharel, Hassanzadeh, dan Agrawal (2026). From policy to logic for efficient and interpretable coverage assessment. arXiv:2601.01266.
