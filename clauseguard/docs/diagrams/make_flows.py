@@ -33,6 +33,15 @@ h1{font-size:22px;font-weight:700;margin-bottom:22px}
 .legend{display:flex;gap:16px;margin-top:22px;font-size:12px;color:#222}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 .branch{display:flex;gap:28px;align-items:flex-start}
+.h .box{min-width:210px;max-width:210px}
+.left{height:2px;width:34px;background:#000;position:relative;align-self:center}
+.left:after{content:'';position:absolute;left:-2px;top:-5px;border:6px solid transparent;border-right:8px solid #000}
+.tail{width:210px;margin-left:auto;display:flex;justify-content:center}
+.tail .down{margin:0}
+.lbl2{font-size:11.5px;color:#000;font-weight:600;padding:4px 0;width:210px;text-align:center}
+.gap{width:60px}
+.tailT{width:210px;display:flex;justify-content:center}
+.full{width:1000px;display:flex;align-items:flex-start}
 """
 
 T = {
@@ -121,17 +130,39 @@ def legend(t):
     return '<div class="legend">' + "".join(f'<div><i style="border:{st[k]};background:#fff"></i>{n}</div>' for k, _, n in t["legend"] if k == "ai") + "</div>"
 
 
+def chain(boxes, rev=False):
+    """One row of boxes; rev=True draws a right-to-left row with left-pointing arrows (a snake)."""
+    items = list(boxes)[::-1] if rev else list(boxes)
+    arrow = '<div class="left"></div>' if rev else '<div class="right"></div>'
+    parts = []
+    for i, b in enumerate(items):
+        if i:
+            parts.append(arrow)
+        parts.append(box(*b))
+    return '<div class="row">' + "".join(parts) + "</div>"
+
+
 def claim_html(t):
-    items = "".join((('<div class="down"></div>' if i else "") + box(*b)) for i, b in enumerate(t["claim"]))
-    return f'<div class="wrap"><h1>{t["claim_title"]}</h1><div class="col">{items}</div>{legend(t)}</div>'
+    c = t["claim"]
+    tail = '<div class="tail"><div class="down"></div></div>'
+    body = chain(c[:4]) + tail + chain(c[4:], rev=True)
+    return f'<div class="wrap h"><h1>{t["claim_title"]}</h1><div class="col">{body}</div>{legend(t)}</div>'
 
 
 def turn_html(t):
-    items = "".join((('<div class="down"></div>' if i else "") + box(*b)) for i, b in enumerate(t["turn"]))
-    dec = f'<div class="down"></div><div class="box dec"><b>{t["turn_dec"]}</b></div>'
-    yes = f'<div class="col"><div class="lbl">{t["yes"]}</div>{box(*t["turn_yes"])}</div>'
-    no = f'<div class="col"><div class="lbl">{t["no"]}</div>{box(*t["turn_no"])}<div class="down"></div>{box(*t["turn_end"])}</div>'
-    return f'<div class="wrap"><h1>{t["turn_title"]}</h1><div class="col">{items}{dec}<div class="down"></div><div class="branch">{yes}{no}</div></div>{legend(t)}</div>'
+    c = t["turn"]
+    step = 244  # one box (210px) plus one arrow (34px); every row sits on this grid
+    dec = f'<div class="box dec"><b>{t["turn_dec"]}</b></div>'
+    down = lambda col: f'<div class="full" style="padding-left:{col * step}px"><div class="tailT"><div class="down"></div></div></div>'
+    row1 = f'<div class="full">{chain(c[:4])}</div>'
+    row2 = f'<div class="full" style="padding-left:{step}px">{chain(c[4:], rev=True)}</div>'
+    yes = f'<div class="col" style="width:210px"><div class="lbl2">{t["yes"]}</div>{box(*t["turn_yes"])}</div>'
+    no = (f'<div class="col" style="margin-left:34px"><div class="lbl2">{t["no"]}</div>'
+          f'<div class="row">{box(*t["turn_no"])}<div class="right"></div>{box(*t["turn_end"])}</div></div>')
+    row3 = f'<div class="full" style="padding-left:{step}px;align-items:flex-start">{yes}{no}</div>'
+    dec_row = f'<div class="full" style="padding-left:{step}px">{dec}</div>'
+    return (f'<div class="wrap h"><h1>{t["turn_title"]}</h1><div class="col">{row1}'
+            f'{down(3)}{row2}{down(1)}{dec_row}{down(1)}{row3}</div>{legend(t)}</div>')
 
 
 def tier_html(t):

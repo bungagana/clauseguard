@@ -98,13 +98,13 @@ Gambar 1 menunjukkan komponen ClauseGuard. Agen AI bertugas memahami dan menjela
 
 Gambar 2 menunjukkan alur satu klaim dari pertanyaan pertama sampai keputusan penanggung. Warna kotak menunjukkan siapa yang bekerja di setiap langkah.
 
-![Gambar 2. Alur klaim dari pertanyaan sampai keputusan|3.6](../img/flow_claim_id.png)
+![Gambar 2. Alur klaim dari pertanyaan sampai keputusan|6.3](../img/flow_claim_id.png)
 
 ### 2.3 Alur keputusan dalam satu giliran
 
 Gambar 3 menunjukkan langkah yang terjadi setiap kali nasabah mengirim pesan. Aturan keamanan diputuskan oleh kode sebelum model membaca maksud pesan. Putusan selalu dihitung oleh mesin aturan.
 
-![Gambar 3. Alur keputusan dalam satu giliran percakapan|3.8](../img/flow_turn_id.png)
+![Gambar 3. Alur keputusan dalam satu giliran percakapan|6.3](../img/flow_turn_id.png)
 
 ### 2.4 Stack teknologi dan deployment
 

@@ -98,13 +98,13 @@ Figure 1 shows the components of ClauseGuard. AI agents understand and explain. 
 
 Figure 2 shows one claim from the first question to the insurer's decision. The box colours show who acts at each step.
 
-![Figure 2. Claim flow from question to decision|3.6](img/flow_claim_en.png)
+![Figure 2. Claim flow from question to decision|6.3](img/flow_claim_en.png)
 
 ### 2.3 Decision flow in one turn
 
 Figure 3 shows the steps that run every time the customer sends a message. Safety rules are decided by code before the model reads the intent. The verdict is always computed by the rules engine.
 
-![Figure 3. Decision flow in one conversation turn|3.8](img/flow_turn_en.png)
+![Figure 3. Decision flow in one conversation turn|6.3](img/flow_turn_en.png)
 
 ### 2.4 Technology stack and deployment
 
