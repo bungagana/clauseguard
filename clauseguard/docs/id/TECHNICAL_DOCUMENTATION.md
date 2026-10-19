@@ -92,23 +92,23 @@ Perbandingan memakai informasi publik yang kami temukan beserta tahun sumbernya.
 | Keputusan kembali ke percakapan | Tidak ditemukan | Menurut CEO, klaim yang selesai tanpa campur tangan manusia mencapai 40-an persen (2023) | Tidak ditemukan | Ya, keputusan petugas muncul di chat dengan penjelasan dan langkah berikutnya |
 | Batas tindakan agen | Tidak ditemukan | Tidak ditemukan | Tidak relevan | Empat tingkat izin yang ditegakkan kode |
 
-Tabel 6 membandingkan ClauseGuard dengan tiga produk AI asuransi yang terdokumentasi publik. Sel "Tidak dinyatakan" berarti sumber yang kami periksa tidak menyebutkannya.
+Tabel 6 membandingkan ClauseGuard dengan empat produk AI asuransi yang terdokumentasi publik. Sel "Tidak dinyatakan" berarti sumber yang kami periksa tidak menyebutkannya.
 
 **Tabel 6. Perbandingan dengan produk AI asuransi yang terdokumentasi publik**
 
-| Kemampuan | ClauseGuard | Travelers AI Claim Assistant (2026) | Allianz Insurance Copilot (2024 dan 2025) | Lemonade AI Jim (2023) |
-|---|---|---|---|---|
-| Pengguna utama | Nasabah dan petugas klaim penanggung (sandbox) | Nasabah yang mengajukan klaim kerusakan properti mobil | Penangan klaim | Nasabah |
-| Peran AI | Memahami bahasa dan menyusun draf. Keputusan dibuat mesin aturan | Asisten suara yang menjawab pertanyaan polis, mengumpulkan rincian klaim, dan mengajukan klaim | Merangkum data klaim dan kontrak, membandingkan klaim dengan ketentuan polis, dan menandai faktor kritis yang bisa terlewat | Menerima laporan klaim awal dan menyelesaikan sebagian klaim tanpa manusia (menurut CEO) |
-| Menerjemahkan redaksi polis menjadi aturan yang dapat dijalankan | Ya | Tidak dinyatakan | Sebagian, membandingkan klaim dengan ketentuan polis | Tidak dinyatakan |
-| Mengutip klausul penentu pada setiap jawaban | Ya | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan |
-| Mengoordinasikan pembayaran antar beberapa polis | Ya | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan |
-| Pemeriksaan kesiapan sebelum pengajuan | Ya, terhadap aturan polis | Tidak dinyatakan | Tidak dinyatakan. Menandai faktor bagi penangan klaim | Tidak dinyatakan |
-| Memutuskan dan membayar klaim tanpa manusia | Tidak, petugas penanggung memutuskan | Tidak dinyatakan | Alat bantu bagi penangan klaim | Ya untuk sebagian klaim (menurut CEO) |
-| Nasabah mengonfirmasi sebelum pengajuan | Ya, satu ketukan pada kartu Konfirmasi | Tidak dinyatakan | Tidak berlaku karena alat untuk penangan | Tidak dinyatakan |
-| Tingkat izin dan audit log untuk tindakan agen | Ya | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan |
-| Hasil yang dilaporkan | 84,6% akurasi putusan cakupan pada 390 label benchmark publik (set uji kecil) | 85 sampai 90% nasabah menyelesaikan pengajuan lewat AI (laporan perusahaan) | Tidak ada angka yang kami temukan | 96% laporan klaim awal diterima AI Jim dan 40-an persen klaim selesai tanpa manusia (menurut CEO) |
-| Cakupan | Jiwa, kesehatan, kecelakaan, penyakit kritis, dan program koordinasi publik (studi kasus) | Kerusakan properti mobil | Klaim motor di Austria. Properti direncanakan | Tidak dinyatakan |
+| Kemampuan | ClauseGuard | Travelers AI Claim Assistant (2026) | Allianz Insurance Copilot (2024 dan 2025) | Lemonade AI Jim (2023) | Qoala klaim video ponsel (2020) |
+|---|---|---|---|---|---|
+| Pengguna utama | Nasabah dan petugas klaim penanggung (sandbox) | Nasabah yang mengajukan klaim kerusakan properti mobil | Penangan klaim | Nasabah | Nasabah |
+| Peran AI | Memahami bahasa dan menyusun draf. Keputusan dibuat mesin aturan | Asisten suara yang menjawab pertanyaan polis, mengumpulkan rincian klaim, dan mengajukan klaim | Merangkum data klaim dan kontrak, membandingkan klaim dengan ketentuan polis, dan menandai faktor kritis yang bisa terlewat | Chatbot yang menilai klaim, memeriksa ketentuan polis, menjalankan pemeriksaan antipenipuan, dan memicu pembayaran | Menilai kerusakan ponsel dari video yang dikirim nasabah |
+| Menerjemahkan redaksi polis menjadi aturan yang dapat dijalankan | Ya | Tidak dinyatakan | Sebagian, membandingkan klaim dengan ketentuan polis | Sebagian, memeriksa ketentuan polis | Tidak dinyatakan |
+| Mengutip klausul penentu pada setiap jawaban | Ya | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan |
+| Mengoordinasikan pembayaran antar beberapa polis | Ya | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan |
+| Pemeriksaan kesiapan sebelum pengajuan | Ya, terhadap aturan polis | Tidak dinyatakan | Tidak dinyatakan. Menandai faktor bagi penangan klaim | Tidak dinyatakan | Tidak dinyatakan |
+| Memutuskan dan membayar klaim tanpa manusia | Tidak, petugas penanggung memutuskan | Tidak dinyatakan | Tidak dinyatakan. Alat bantu bagi penangan klaim | Ya untuk klaim yang disetujui chatbot (dilaporkan perusahaan) | Sebagian, hasil kelayakan keluar dalam hitungan menit |
+| Nasabah mengonfirmasi sebelum pengajuan | Ya, satu ketukan pada kartu Konfirmasi | Tidak dinyatakan | Tidak berlaku karena alat untuk penangan | Tidak dinyatakan | Tidak dinyatakan |
+| Tingkat izin dan audit log untuk tindakan agen | Ya | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan | Tidak dinyatakan |
+| Hasil yang dilaporkan | 84,6% akurasi putusan cakupan pada 390 label benchmark publik (set uji kecil) | 85 sampai 90% nasabah menyelesaikan pengajuan lewat AI (laporan perusahaan) | Tidak ada angka yang kami temukan | Hampir separuh klaim ditangani dengan AI (laporan perusahaan). Satu klaim di Inggris diselesaikan dalam dua detik (2023) | Tidak dinyatakan |
+| Cakupan | Jiwa, kesehatan, kecelakaan, penyakit kritis, dan program koordinasi publik (studi kasus) | Kerusakan properti mobil | Klaim motor di Austria. Properti direncanakan | Tidak dinyatakan | Kerusakan ponsel |
 
 Perbandingan ini memperlihatkan celah yang diisi ClauseGuard. Produk yang ada melayani satu penanggung atau membantu nasabah membeli polis baru. Dalam sumber yang kami periksa, belum ada yang membaca semua polis milik satu rumah tangga, menentukan urutan pembayar, dan mengurus klaim dengan batas tindakan yang ditegakkan kode.
 
@@ -397,11 +397,11 @@ Tabel 18 membandingkan arsitektur karya penelitian yang terbit antara 2022 dan 2
 
 | Karya | Tugas dan data | Arsitektur | Wewenang keputusan dan landasan jawaban | Evaluasi yang dilaporkan |
 |---|---|---|---|---|
-| Na dkk. (2022) | Tanya jawab asuransi kanker Korea satu giliran. 2.295 pasang hasil saringan, 892 pasang buatan manual, dan 817 pasang FAQ | Deteksi maksud dan pengisian slot (KoELECTRA) dengan pencarian FAQ memakai Sentence-BERT | Hanya menjawab, berlandaskan entri FAQ | F1 mikro maksud 0,71 dan F1 mikro slot 0,95 |
+| Na dkk. (2022) | Tanya jawab asuransi kanker Korea satu giliran. 2.295 pasang hasil saringan, 892 pasang buatan manual, dan 817 pasang FAQ | Deteksi maksud dan pengisian slot (KoELECTRA) dengan pencarian FAQ memakai Sentence-BERT | Hanya menjawab, berlandaskan entri FAQ | F1 mikro maksud 0,71, F1 mikro slot 0,95, dan akurasi FAQ 70% |
 | InsQABench (2025) | Tanya jawab asuransi Tiongkok atas basis data terstruktur dan dokumen | SQL-ReAct untuk data terstruktur dan RAG-ReAct untuk dokumen | Hanya menjawab, berlandaskan teks hasil pencarian | Benchmark. Teks yang kami baca tidak memuat skor numerik |
 | INSEva (2025) | 38.704 contoh Tiongkok dari bahan resmi | Benchmark untuk delapan LLM dengan penilaian kesetiaan dan kelengkapan oleh LLM | Tidak berupa sistem | Skor rata-rata terbaik 82,74. Penalaran logis paling lemah dengan skor terbaik 73,66 |
-| Beauchemin dan Khoury (2026) | Asuransi Quebec, 807 soal pilihan ganda dari buku sertifikasi (benchmark privat), 51 LLM | LLM tanpa referensi dibandingkan dengan RAG | Hanya menjawab, berlandaskan potongan teks hasil pencarian | Skor tertinggi 78,68% oleh o3. RAG menaikkan model berpengetahuan lemah lebih dari 35 poin, dan satu model turun dari 74,65% menjadi 14,06% |
-| Pokharel dkk. (2026) | Cakupan kode CPT pada dokumen rencana asuransi. Sekitar 1,84 juta pasang berlabel dan 814 kode evaluasi | Pencari yang sadar cakupan, LLM yang menyusun atribut dan aturan, serta mesin aturan PyKnow | Mendukung peninjau manusia dengan alasan yang dapat diaudit | Akurasi 0,87 dan F1 0,93, dibanding 0,82 dan 0,89 untuk GPT-4.1 pada dokumen penuh. Biaya sekitar USD 22 dibanding USD 38.720 untuk sekitar 11.000 kode |
+| Beauchemin dan Khoury (2026) | Asuransi Quebec, 807 soal pilihan ganda dari buku sertifikasi (benchmark privat), 51 LLM | LLM tanpa referensi dibandingkan dengan RAG (lima potongan teratas dan kompresi konteks) | Hanya menjawab, berlandaskan potongan teks hasil pencarian | Skor tertinggi 78,68% dengan RAG oleh o3. RAG menaikkan model berpengetahuan lemah lebih dari 35 poin, dan satu model turun dari 74,65% menjadi 14,06% |
+| Pokharel dkk. (2026) | Cakupan kode CPT pada dokumen rencana asuransi. Sekitar 1,84 juta pasang berlabel dan 814 kode evaluasi | Pencari Longformer yang di-fine-tune, LLM yang menyusun atribut Boolean dan aturan, serta mesin aturan PyKnow | Mendukung peninjau manusia dengan alasan yang dapat diaudit | Akurasi 0,87 dan F1 0,93, dibanding 0,82 dan 0,89 untuk GPT-4.1 pada dokumen penuh. Biaya sekitar USD 22 dibanding USD 38.720 untuk sekitar 11.000 kode |
 | Mridul dkk. (2026) | Asuransi jiwa, sepuluh kontrak, 58 skenario | Ontologi (TBox) dan basis pengetahuan (ABox) yang dikueri dengan SPARQL, dengan pembanding LLM teks saja | Hasil skenario dengan bukti tingkat klausul | Konsistensi dan diagnosis lebih baik daripada pembanding. Abstrak tidak memuat metrik numerik |
 | Debenedetti dkk. (2025) | Tugas agen umum di luar bidang asuransi (benchmark AgentDojo) | Pemisahan alur kendali dari alur data, kapabilitas melekat pada data, dan pemeriksaan kebijakan pada setiap panggilan alat | Tidak berlaku | 77% tugas selesai dengan keamanan terbukti, dibanding 84% pada sistem tanpa pertahanan |
 | ClauseGuard (karya ini) | Kompilasi polis menjadi aturan, persona sintetis, dan penanggung sandbox | Tujuh agen LLM sempit hanya untuk bahasa, mesin aturan deterministik, gerbang Guardian, dan handle bertipe | Petugas penanggung memutuskan dan mesin aturan menghitung cakupan serta pembayaran | 84,6% pada 390 label, 0 dari 27 serangan berhasil, ukuran sampel diungkapkan |
@@ -527,3 +527,5 @@ Kecepatan dengan model bergantung pada layanan Gemini dan kuotanya. Pengukuran i
 17. INSEva (2025). A comprehensive Chinese benchmark for large language models in insurance. arXiv:2509.04455.
 18. Beauchemin dan Khoury (2026). Benchmarking large language models for Quebec insurance. arXiv:2603.07825.
 19. Pokharel, Hassanzadeh, dan Agrawal (2026). From policy to logic for efficient and interpretable coverage assessment. arXiv:2601.01266.
+20. Indotelko (2020). Qoala dan Kata.AI siap dukung Strategi Nasional Kecerdasan Artifisial. indotelko.com/read/1597203181/qoala-kataai.
+21. AIMagazine (2023). Lemonade sets world record with 2-second AI insurance claim. aimagazine.com.

@@ -92,23 +92,23 @@ The comparison uses public information we found, with the year of each source. W
 | Decision returned to the conversation | Not found | According to its CEO, claims finished without human involvement reach the 40s in percent (2023) | Not found | Yes, the officer's decision appears in the chat with an explanation and the next step |
 | Limits on agent actions | Not found | Not found | Not relevant | Four permission tiers enforced in code |
 
-Table 6 compares ClauseGuard with three publicly documented AI insurance products. A cell that says "Not stated" means the sources we checked do not mention it.
+Table 6 compares ClauseGuard with four publicly documented AI insurance products. A cell that says "Not stated" means the sources we checked do not mention it.
 
 **Table 6. Comparison with publicly documented AI insurance products**
 
-| Capability | ClauseGuard | Travelers AI Claim Assistant (2026) | Allianz Insurance Copilot (2024 and 2025) | Lemonade AI Jim (2023) |
-|---|---|---|---|---|
-| Primary user | Policyholders and the insurer claims desk (sandbox) | Policyholders filing auto property damage claims | Claims handlers | Policyholders |
-| Role of AI | Language understanding and drafting. Decisions are made by the rules engine | Voice assistant that answers policy questions, collects claim details and submits claims | Summarises claim and contract data, compares claims with policy terms and flags critical factors that could be missed | Takes the first notice of loss and finishes some claims without a human (according to the CEO) |
-| Interprets policy wording into executable rules | Yes | Not stated | Partial, compares claims with policy terms | Not stated |
-| Cites the governing clause for each answer | Yes | Not stated | Not stated | Not stated |
-| Coordinates payment across multiple policies | Yes | Not stated | Not stated | Not stated |
-| Pre-submission readiness check | Yes, against policy rules | Not stated | Not stated. Flags factors for the claims handler | Not stated |
-| Decides and pays claims without a human | No, the insurer officer decides | Not stated | A tool that supports claims handlers | Yes for some claims (according to the CEO) |
-| Policyholder confirms before submission | Yes, one tap on the Confirm card | Not stated | Not applicable because the tool is for handlers | Not stated |
-| Permission tiers and audit log for agent actions | Yes | Not stated | Not stated | Not stated |
-| Reported outcome | 84.6% coverage decision accuracy on 390 labels of a public benchmark (small test set) | 85 to 90% of customers complete filing through the AI (company reported) | No figures found | 96% of first notices taken by AI Jim and claims finished without a human in the 40s in percent (according to the CEO) |
-| Scope | Life, health, accident, critical illness and public coordination programs (case study) | Auto property damage | Motor claims in Austria. Property is planned | Not stated |
+| Capability | ClauseGuard | Travelers AI Claim Assistant (2026) | Allianz Insurance Copilot (2024 and 2025) | Lemonade AI Jim (2023) | Qoala smartphone video claims (2020) |
+|---|---|---|---|---|---|
+| Primary user | Policyholders and the insurer claims desk (sandbox) | Policyholders filing auto property damage claims | Claims handlers | Policyholders | Policyholders |
+| Role of AI | Language understanding and drafting. Decisions are made by the rules engine | Voice assistant that answers policy questions, collects claim details and submits claims | Summarises claim and contract data, compares claims with policy terms and flags critical factors that could be missed | Chatbot that assesses the claim, checks policy conditions, runs anti-fraud checks and triggers payment | Assesses smartphone damage from a video the customer submits |
+| Interprets policy wording into executable rules | Yes | Not stated | Partial, compares claims with policy terms | Partial, checks policy conditions | Not stated |
+| Cites the governing clause for each answer | Yes | Not stated | Not stated | Not stated | Not stated |
+| Coordinates payment across multiple policies | Yes | Not stated | Not stated | Not stated | Not stated |
+| Pre-submission readiness check | Yes, against policy rules | Not stated | Not stated. Flags factors for the claims handler | Not stated | Not stated |
+| Decides and pays claims without a human | No, the insurer officer decides | Not stated | Not stated. A tool that supports claims handlers | Yes for claims the chatbot approves (company reported) | Partial, an eligibility result within minutes |
+| Policyholder confirms before submission | Yes, one tap on the Confirm card | Not stated | Not applicable because the tool is for handlers | Not stated | Not stated |
+| Permission tiers and audit log for agent actions | Yes | Not stated | Not stated | Not stated | Not stated |
+| Reported outcome | 84.6% coverage decision accuracy on 390 labels of a public benchmark (small test set) | 85 to 90% of customers complete filing through the AI (company reported) | No figures found | Almost half of claims handled with AI (company reported). One UK claim settled in two seconds (2023) | Not stated |
+| Scope | Life, health, accident, critical illness and public coordination programs (case study) | Auto property damage | Motor claims in Austria. Property is planned | Not stated | Smartphone damage |
 
 The comparison shows the gap ClauseGuard fills. Existing products serve one insurer or help customers buy a new policy. In the sources we checked, none reads every policy a household holds, decides the payer order and handles the claim with action limits enforced in code.
 
@@ -397,11 +397,11 @@ Table 18 compares the architecture of research published between 2022 and 2026. 
 
 | Work | Task and data | Architecture | Decision authority and grounding | Reported evaluation |
 |---|---|---|---|---|
-| Na et al. (2022) | Single-turn Korean cancer insurance QA. 2,295 filtered pairs, 892 manual pairs and 817 FAQ pairs | Intent detection and slot filling (KoELECTRA) with FAQ retrieval using Sentence-BERT | Answers only, grounded in FAQ entries | Intent micro-F1 0.71 and slot micro-F1 0.95 |
+| Na et al. (2022) | Single-turn Korean cancer insurance QA. 2,295 filtered pairs, 892 manual pairs and 817 FAQ pairs | Intent detection and slot filling (KoELECTRA) with FAQ retrieval using Sentence-BERT | Answers only, grounded in FAQ entries | Intent micro-F1 0.71, slot micro-F1 0.95 and FAQ accuracy 70% |
 | InsQABench (2025) | Chinese insurance QA over structured databases and documents | SQL-ReAct for structured data and RAG-ReAct for documents | Answers only, grounded in retrieved text | Benchmark. The text we read has no numeric scores |
 | INSEva (2025) | 38,704 Chinese examples from authoritative materials | Benchmark for eight LLMs with LLM-judged faithfulness and completeness | Not a system | Best average score 82.74. Logical reasoning is weakest with a best score of 73.66 |
-| Beauchemin and Khoury (2026) | Quebec insurance, 807 multiple-choice questions from certification handbooks (a private benchmark), 51 LLMs | Closed-book LLMs compared with RAG | Answers only, grounded in retrieved chunks | Highest score 78.68% by o3. RAG lifted models with weak knowledge by more than 35 points, and one model fell from 74.65% to 14.06% |
-| Pokharel et al. (2026) | CPT code coverage in plan documents. About 1.84 million labeled pairs and 814 evaluation codes | Coverage-aware retriever, an LLM that writes attributes and rules, and the PyKnow rule engine | Supports human reviewers with auditable rationales | Accuracy 0.87 and F1 0.93, against 0.82 and 0.89 for GPT-4.1 on full documents. Cost about USD 22 against USD 38,720 for about 11,000 codes |
+| Beauchemin and Khoury (2026) | Quebec insurance, 807 multiple-choice questions from certification handbooks (a private benchmark), 51 LLMs | Closed-book LLMs compared with RAG (top-5 chunks and context compression) | Answers only, grounded in retrieved chunks | Highest score 78.68% with RAG by o3. RAG lifted models with weak knowledge by more than 35 points, and one model fell from 74.65% to 14.06% |
+| Pokharel et al. (2026) | CPT code coverage in plan documents. About 1.84 million labeled pairs and 814 evaluation codes | Fine-tuned Longformer retriever, an LLM that writes Boolean attributes and rules, and the PyKnow rule engine | Supports human reviewers with auditable rationales | Accuracy 0.87 and F1 0.93, against 0.82 and 0.89 for GPT-4.1 on full documents. Cost about USD 22 against USD 38,720 for about 11,000 codes |
 | Mridul et al. (2026) | Life insurance, ten contracts, 58 scenarios | Ontology (TBox) and knowledge base (ABox) queried with SPARQL, with a text-only LLM baseline | Scenario outcomes with clause-level evidence | Better consistency and diagnosis than the baseline. The abstract has no numeric metrics |
 | Debenedetti et al. (2025) | General agent tasks outside insurance (AgentDojo benchmark) | Separation of control flow from data flow, capabilities attached to data and policy checks at each tool call | Not applicable | 77% of tasks solved with provable security, against 84% for the undefended system |
 | ClauseGuard (this work) | Policy-to-rule compilation, synthetic personas and a sandbox insurer | Seven narrow LLM agents for language only, a deterministic rules engine, the Guardian tier gate and typed handles | The insurer officer decides and the rules engine computes coverage and payment | 84.6% on 390 labels, 0 of 27 attacks succeeded, sample sizes disclosed |
@@ -527,3 +527,5 @@ Speed with the model depends on the Gemini service and its quota. This measureme
 17. INSEva (2025). A comprehensive Chinese benchmark for large language models in insurance. arXiv:2509.04455.
 18. Beauchemin and Khoury (2026). Benchmarking large language models for Quebec insurance. arXiv:2603.07825.
 19. Pokharel, Hassanzadeh and Agrawal (2026). From policy to logic for efficient and interpretable coverage assessment. arXiv:2601.01266.
+20. Indotelko (2020). Qoala and Kata.AI ready to support the National Artificial Intelligence Strategy. indotelko.com/read/1597203181/qoala-kataai.
+21. AIMagazine (2023). Lemonade sets world record with 2-second AI insurance claim. aimagazine.com.
