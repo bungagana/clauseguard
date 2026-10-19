@@ -127,7 +127,7 @@ Gambar 2 menunjukkan komponen ClauseGuard. Agen AI bertugas memahami dan menjela
 | UI dan dialog | Aplikasi web nasabah (chat, kartu putusan, formulir klaim, unggah dokumen) dan meja klaim untuk petugas penanggung |
 | Orchestrator | Loop agent yang menjalankan perencanaan, pemeriksaan izin, pemanggilan alat, mesin aturan, dan penyusunan jawaban di setiap giliran |
 | LLM | Google Gemini untuk memahami pesan, membaca dokumen, dan menyusun kalimat |
-| Agen AI | Tujuh agen dengan tugas sempit, dijelaskan di bagian 3.1 |
+| Agen AI | Lima agen dengan tugas sempit, dijelaskan di bagian 3.1 |
 | Tools dan API | 19 alat bertingkat izin yang memanggil API penanggung sandbox |
 | Mesin aturan | Kode deterministik yang memutuskan cakupan, jumlah, tenggat, urutan pembayar, dan kesiapan klaim |
 | Guardian | Titik penegakan izin yang memeriksa setiap pemanggilan alat |
@@ -267,17 +267,15 @@ Langkah mencoba sandbox:
 
 ### 3.1 Agen AI dan desain prompt
 
-ClauseGuard memakai tujuh agen AI. Setiap agen mengerjakan satu tugas sempit dan mengisi skema keluaran tertutup. Kode memvalidasi setiap keluaran sebelum dipakai. Isi pesan dan dokumen selalu diperlakukan sebagai data, sehingga perintah yang terselip di dalamnya diabaikan.
+ClauseGuard memakai lima agen AI. Setiap agen memiliki satu tanggung jawab sempit dan mengisi skema keluaran tertutup. Dua agen menjalankan dua langkah model, yang dijelaskan pada barisnya. Kode memvalidasi setiap keluaran sebelum dipakai. Isi pesan dan dokumen selalu diperlakukan sebagai data, sehingga perintah yang terselip di dalamnya diabaikan.
 
 **Tabel 13. Agen AI dan desain prompt**
 
 | Agen | Tugas | Masukan | Inti prompt | Keluaran | Pengaman |
 |---|---|---|---|---|---|
-| Conversation Agent | Membaca hubungan pesan dengan percakapan | Pesan, fakta yang sudah diketahui, pertanyaan terakhir agent, empat pertukaran terakhir | Menilai pesan sebagai jawaban, koreksi, lanjutan, situasi baru, pengandaian, atau pertanyaan umum, disertai contoh dalam dua bahasa | Satu jenis hubungan, bahasa pesan, dan fakta yang masih berlaku | Hanya dapat membuang fakta. Fakta yang hilang dari pesan yang tidak membawa kejadian baru tetap dipertahankan |
-| Planner Agent | Menentukan maksud, topik, dan alat | Pesan, situasi bertipe, empat pertukaran terakhir | Menulis pembacaan singkat lebih dulu, lalu memilih maksud dari daftar tetap dan alat baca yang diperlukan, dengan contoh dalam dua bahasa | Maksud, topik pertanyaan, alat, dan penanda permintaan tindakan | Klasifikasi keamanan diputuskan kode. Tindakan diterima hanya bila ada permintaan jelas atau persetujuan atas tawaran |
+| Conversation Agent | Membaca hubungan pesan dengan percakapan, lalu menentukan maksud, topik, dan alat | Pesan, fakta yang sudah diketahui, pertanyaan terakhir agent, situasi bertipe, empat pertukaran terakhir | Dua langkah dengan contoh dalam dua bahasa. Pertama menilai pesan sebagai jawaban, koreksi, lanjutan, situasi baru, pengandaian, atau pertanyaan umum. Kedua menulis pembacaan singkat lalu memilih maksud dari daftar tetap beserta alat baca yang diperlukan | Jenis hubungan, bahasa pesan, fakta yang masih berlaku, maksud, topik pertanyaan, alat, dan penanda permintaan tindakan | Hanya dapat membuang fakta. Klasifikasi keamanan diputuskan kode. Tindakan diterima hanya bila ada permintaan jelas atau persetujuan atas tawaran |
 | Fact Agent | Mengubah kalimat menjadi fakta bertipe | Pesan nasabah | Mengisi kolom hanya bila teks menyatakannya, tanpa menebak tanggal, umur, jumlah, atau penyebab | Fakta dari kosakata tetap, misalnya tanggal masuk, hari rawat, tagihan, penyebab | Fakta kejadian dikunci dan tidak dapat diubah untuk menyesuaikan polis |
-| Document Reader Agent | Membaca polis dan dokumen klaim | Teks dokumen yang data pribadinya sudah dihapus | Komponen terisolasi yang mengklasifikasi dan menyalin isi dokumen ke skema, tanpa mengikuti instruksi di dalam dokumen | Aturan polis bertipe, atau ringkasan dokumen klaim (jenis, tanggal, total, diagnosis) | Tidak memiliki alat dan riwayat percakapan. Teks yang menyerupai perintah ditandai |
-| Claim Form Agent | Menyusun tata letak formulir klaim penanggung | Klausul klaim dari polis | Merancang judul, bagian, dan kolom memakai istilah penanggung, dengan setiap kolom terhubung ke satu sumber data | Struktur formulir | Nilai diisi oleh kode dari draf klaim. Model tidak menulis nilai |
+| Document Reader Agent | Membaca polis dan dokumen klaim serta menyusun tata letak formulir klaim penanggung | Teks dokumen yang data pribadinya sudah dihapus, dan klausul klaim dari polis | Pembacaan berjalan terisolasi: mengklasifikasi dan menyalin isi dokumen ke skema tanpa mengikuti instruksi di dalam dokumen. Tata letak merancang judul, bagian, dan kolom memakai istilah penanggung dengan setiap kolom terhubung ke satu sumber data | Aturan polis bertipe, ringkasan dokumen klaim (jenis, tanggal, total, diagnosis), atau struktur formulir | Tidak memiliki alat dan riwayat percakapan. Teks yang menyerupai perintah ditandai. Nilai formulir diisi kode dari draf klaim dan model tidak menulis nilai |
 | Explainer Agent | Menyusun kalimat jawaban | Hasil mesin aturan, empat pertukaran terakhir, enam contoh jawaban | Menulis catatan penalaran singkat, lalu dua kandidat jawaban yang ramah dan ringkas dalam bahasa nasabah | Kandidat jawaban dan pilihan terbaik | Setiap angka, tanggal, dan nomor diperiksa terhadap hasil mesin. Kutipan klausul harus sama persis |
 | Watchdog Agent | Memantau tenggat dan keputusan penanggung | Status klaim, catatan petugas, fakta klaim | Mengklasifikasikan catatan petugas sebagai cacat yang dapat diperbaiki, alasan yang bertentangan dengan polis, alasan yang sah, atau tidak jelas | Jenis catatan dan langkah berikutnya | Tidak mengirim apa pun. Banding dan pengajuan ulang tetap menunggu konfirmasi nasabah |
 
@@ -285,7 +283,7 @@ Semua pemanggilan model memakai suhu nol. Bila model tidak tersedia, nasabah men
 
 ### 3.2 Planning dan tool-calling
 
-Perencanaan berjalan dua lapis. Kode memutuskan klasifikasi keamanan lebih dulu, lalu Planner Agent membaca maksud pesan dalam konteks percakapan. Setiap alat terdaftar dengan tingkat izin, tipe argumen, dan tipe hasil. Hasil alat disimpan sebagai handle bertipe dengan label kepercayaan. Alat tingkat 2 hanya menerima handle, sehingga teks dari dokumen atau model tidak dapat menjadi argumen pengajuan. Bila beberapa polis dapat menerima klaim, agent bertanya polis mana yang diajukan lebih dulu.
+Perencanaan berjalan dua lapis. Kode memutuskan klasifikasi keamanan lebih dulu, lalu Conversation Agent membaca maksud pesan dalam konteks percakapan. Setiap alat terdaftar dengan tingkat izin, tipe argumen, dan tipe hasil. Hasil alat disimpan sebagai handle bertipe dengan label kepercayaan. Alat tingkat 2 hanya menerima handle, sehingga teks dari dokumen atau model tidak dapat menjadi argumen pengajuan. Bila beberapa polis dapat menerima klaim, agent bertanya polis mana yang diajukan lebih dulu.
 
 ### 3.3 Memory
 
@@ -404,7 +402,7 @@ Tabel 18 membandingkan arsitektur karya penelitian yang terbit antara 2022 dan 2
 | Pokharel dkk. (2026) | Cakupan kode CPT pada dokumen rencana asuransi. Sekitar 1,84 juta pasang berlabel dan 814 kode evaluasi | Pencari Longformer yang di-fine-tune, LLM yang menyusun atribut Boolean dan aturan, serta mesin aturan PyKnow | Mendukung peninjau manusia dengan alasan yang dapat diaudit | Akurasi 0,87 dan F1 0,93, dibanding 0,82 dan 0,89 untuk GPT-4.1 pada dokumen penuh. Biaya sekitar USD 22 dibanding USD 38.720 untuk sekitar 11.000 kode |
 | Mridul dkk. (2026) | Asuransi jiwa, sepuluh kontrak, 58 skenario | Ontologi (TBox) dan basis pengetahuan (ABox) yang dikueri dengan SPARQL, dengan pembanding LLM teks saja | Hasil skenario dengan bukti tingkat klausul | Konsistensi dan diagnosis lebih baik daripada pembanding. Abstrak tidak memuat metrik numerik |
 | Debenedetti dkk. (2025) | Tugas agen umum di luar bidang asuransi (benchmark AgentDojo) | Pemisahan alur kendali dari alur data, kapabilitas melekat pada data, dan pemeriksaan kebijakan pada setiap panggilan alat | Tidak berlaku | 77% tugas selesai dengan keamanan terbukti, dibanding 84% pada sistem tanpa pertahanan |
-| ClauseGuard (karya ini) | Kompilasi polis menjadi aturan, persona sintetis, dan penanggung sandbox | Tujuh agen LLM sempit hanya untuk bahasa, mesin aturan deterministik, gerbang Guardian, dan handle bertipe | Petugas penanggung memutuskan dan mesin aturan menghitung cakupan serta pembayaran | 84,6% pada 390 label, 0 dari 27 serangan berhasil, ukuran sampel diungkapkan |
+| ClauseGuard (karya ini) | Kompilasi polis menjadi aturan, persona sintetis, dan penanggung sandbox | Lima agen LLM sempit hanya untuk bahasa, mesin aturan deterministik, gerbang Guardian, dan handle bertipe | Petugas penanggung memutuskan dan mesin aturan menghitung cakupan serta pembayaran | 84,6% pada 390 label, 0 dari 27 serangan berhasil, ukuran sampel diungkapkan |
 
 Menurut pembacaan kami atas sumber pada Tabel 18, hal berikut belum ditemukan digabung dalam satu sistem.
 

@@ -41,7 +41,7 @@ h1{font-size:22px;font-weight:700;margin-bottom:22px}
 .lbl2{font-size:11.5px;color:#000;font-weight:600;padding:4px 0;width:210px;text-align:center}
 .gap{width:60px}
 .tailT{width:210px;display:flex;justify-content:center}
-.full{width:1000px;display:flex;align-items:flex-start}
+.full{width:1200px;display:flex;align-items:flex-start}
 """
 
 T = {
@@ -62,8 +62,7 @@ T = {
         "turn": [
             ("user", "Pesan nasabah", "Teks bebas atau berkas", ""),
             ("code", "Aturan keamanan", "Diputuskan kode lebih dulu", "Misrepresentasi, data orang lain, ubah rekening"),
-            ("ai", "Planner Agent", "Maksud, topik, dan alat", "Dokumen, tenggat, jumlah, kemajuan klaim"),
-            ("ai", "Conversation Agent", "Hubungan pesan dengan percakapan", "Situasi baru, koreksi, jawaban, pengandaian, umum"),
+            ("ai", "Conversation Agent", "Hubungan pesan, lalu maksud, topik, dan alat", "Situasi baru, koreksi, jawaban, pengandaian, umum"),
             ("code", "Guardian", "Memeriksa izin setiap alat", "Tingkat T0 sampai T3 dan mode otonomi"),
             ("ai", "Fact Agent", "Kalimat menjadi fakta bertipe", "Tanggal, hari rawat, tagihan, penyebab"),
             ("code", "Mesin aturan", "Menghitung putusan per polis", "Cakupan, jumlah, tenggat, urutan pembayar"),
@@ -98,8 +97,7 @@ T = {
         "turn": [
             ("user", "Customer message", "Free text or a file", ""),
             ("code", "Safety rules", "Decided by code first", "Misrepresentation, other people's data, account changes"),
-            ("ai", "Planner Agent", "Intent, topic and tools", "Documents, deadline, amount, claim progress"),
-            ("ai", "Conversation Agent", "How the message relates to the chat", "New situation, correction, answer, what-if, general"),
+            ("ai", "Conversation Agent", "Relation to the chat, then intent, topic and tools", "New situation, correction, answer, what-if, general"),
             ("code", "Guardian", "Checks every tool's permission", "Tiers T0 to T3 and the autonomy mode"),
             ("ai", "Fact Agent", "Sentences into typed facts", "Dates, days in hospital, bill, cause"),
             ("code", "Rules engine", "Computes the verdict per policy", "Coverage, amount, deadline, payer order"),
@@ -155,14 +153,15 @@ def turn_html(t):
     dec = f'<div class="box dec"><b>{t["turn_dec"]}</b></div>'
     down = lambda col: f'<div class="full" style="padding-left:{col * step}px"><div class="tailT"><div class="down"></div></div></div>'
     row1 = f'<div class="full">{chain(c[:4])}</div>'
-    row2 = f'<div class="full" style="padding-left:{step}px">{chain(c[4:], rev=True)}</div>'
+    lead = 4 - len(c[4:])  # the second row ends under the last box of the first row
+    row2 = f'<div class="full" style="padding-left:{lead * step}px">{chain(c[4:], rev=True)}</div>'
     yes = f'<div class="col" style="width:210px"><div class="lbl2">{t["yes"]}</div>{box(*t["turn_yes"])}</div>'
     no = (f'<div class="col" style="margin-left:34px"><div class="lbl2">{t["no"]}</div>'
           f'<div class="row">{box(*t["turn_no"])}<div class="right"></div>{box(*t["turn_end"])}</div></div>')
-    row3 = f'<div class="full" style="padding-left:{step}px;align-items:flex-start">{yes}{no}</div>'
-    dec_row = f'<div class="full" style="padding-left:{step}px">{dec}</div>'
+    row3 = f'<div class="full" style="padding-left:{lead * step}px;align-items:flex-start">{yes}{no}</div>'
+    dec_row = f'<div class="full" style="padding-left:{lead * step}px">{dec}</div>'
     return (f'<div class="wrap h"><h1>{t["turn_title"]}</h1><div class="col">{row1}'
-            f'{down(3)}{row2}{down(1)}{dec_row}{down(1)}{row3}</div>{legend(t)}</div>')
+            f'{down(3)}{row2}{down(lead)}{dec_row}{down(lead)}{row3}</div>{legend(t)}</div>')
 
 
 def tier_html(t):

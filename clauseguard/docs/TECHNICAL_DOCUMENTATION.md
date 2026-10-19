@@ -127,7 +127,7 @@ Figure 2 shows the components of ClauseGuard. AI agents understand and explain. 
 | UI and dialog | The customer web app (chat, verdict cards, claim form, document upload) and the claims desk for insurer staff |
 | Orchestrator | The agent loop that runs planning, the permission check, tool calls, the rules engine and reply writing in every turn |
 | LLM | Google Gemini to understand messages, read documents and word replies |
-| AI agents | Seven agents with narrow tasks, described in section 3.1 |
+| AI agents | Five agents with narrow tasks, described in section 3.1 |
 | Tools and API | 19 permission-tiered tools that call the sandbox insurer API |
 | Rules engine | Deterministic code that decides coverage, amounts, deadlines, payer order and claim readiness |
 | Guardian | The permission enforcement point that checks every tool call |
@@ -267,17 +267,15 @@ Steps to try the sandbox:
 
 ### 3.1 AI agents and prompt design
 
-ClauseGuard uses seven AI agents. Each agent does one narrow task and fills a closed output schema. Code validates every output before it is used. Message and document content is always treated as data, so instructions hidden inside it are ignored.
+ClauseGuard uses five AI agents. Each agent has one narrow responsibility and fills a closed output schema. Two agents carry out two model steps, which their rows describe. Code validates every output before it is used. Message and document content is always treated as data, so instructions hidden inside it are ignored.
 
 **Table 13. AI agents and prompt design**
 
 | Agent | Task | Input | Prompt core | Output | Safeguard |
 |---|---|---|---|---|---|
-| Conversation Agent | Reads how a message relates to the conversation | Message, known facts, the agent's last question, the last four exchanges | Classify the message as an answer, correction, continuation, new situation, what-if or general question, with examples in two languages | One relation type, the message language and the facts that still apply | It can only drop facts. Facts are kept when the message brings no new event |
-| Planner Agent | Decides intent, topic and tools | Message, typed situation, the last four exchanges | Write a short reading first, then pick an intent from a fixed list and the read-only tools needed, with examples in two languages | Intent, question topic, tools and an action-request flag | Safety classifications are decided by code. An action is accepted only on a clear request or an accepted offer |
+| Conversation Agent | Reads how a message relates to the conversation, then decides intent, topic and tools | Message, known facts, the agent's last question, typed situation, the last four exchanges | Two steps with examples in two languages. First classify the message as an answer, correction, continuation, new situation, what-if or general question. Then write a short reading and pick an intent from a fixed list with the read-only tools needed | Relation type, message language, facts that still apply, intent, question topic, tools and an action-request flag | It can only drop facts. Safety classifications are decided by code. An action is accepted only on a clear request or an accepted offer |
 | Fact Agent | Turns sentences into typed facts | Customer message | Fill a field only when the text states it, never guessing dates, ages, amounts or causes | Facts from a fixed vocabulary, such as admission date, days in hospital, bill, cause | Event facts are locked and cannot be changed to fit a policy |
-| Document Reader Agent | Reads policies and claim documents | Document text with personal data already removed | A quarantined component that classifies and transcribes the document into the schema without following any instruction inside it | Typed policy rules, or a claim document summary (type, dates, total, diagnosis) | No tools and no chat history. Instruction-like text is flagged |
-| Claim Form Agent | Lays out the insurer's claim form | The policy's claim clauses | Design a title, sections and fields in the insurer's own terms, each field bound to one data source | Form structure | Values are filled by code from the claim draft. The model never writes values |
+| Document Reader Agent | Reads policies and claim documents and lays out the insurer's claim form | Document text with personal data already removed, and the policy's claim clauses | Reading runs in quarantine: classify and transcribe the document into the schema without following any instruction inside it. Layout designs a title, sections and fields in the insurer's own terms, each field bound to one data source | Typed policy rules, a claim document summary (type, dates, total, diagnosis) or the form structure | No tools and no chat history. Instruction-like text is flagged. Form values are filled by code from the claim draft and the model never writes values |
 | Explainer Agent | Words the reply | Engine results, the last four exchanges, six example replies | Write short reasoning notes, then two friendly and concise candidate replies in the customer's language | Candidate replies and the best pick | Every amount, date and identifier is checked against the engine. Clause quotes must match exactly |
 | Watchdog Agent | Follows deadlines and insurer decisions | Claim status, the assessor's note, claim facts | Classify the assessor's note as a fixable defect, a reason that contradicts the policy, a valid reason or unclear | Note type and next step | It sends nothing. Appeals and resubmissions still wait for the customer's confirmation |
 
@@ -285,7 +283,7 @@ Every model call runs at temperature zero. If the model is unavailable, the cust
 
 ### 3.2 Planning and tool calling
 
-Planning runs in two layers. Code decides safety classifications first, then the Planner Agent reads the intent of the message in the context of the conversation. Every tool is registered with a permission tier, argument types and a result type. Tool results are stored as typed handles with a trust label. Tier 2 tools accept handles only, so text from documents or models cannot become an argument of a submission. When several policies could take a claim, the agent asks which one to file first.
+Planning runs in two layers. Code decides safety classifications first, then the Conversation Agent reads the intent of the message in the context of the conversation. Every tool is registered with a permission tier, argument types and a result type. Tool results are stored as typed handles with a trust label. Tier 2 tools accept handles only, so text from documents or models cannot become an argument of a submission. When several policies could take a claim, the agent asks which one to file first.
 
 ### 3.3 Memory
 
@@ -404,7 +402,7 @@ Table 18 compares the architecture of research published between 2022 and 2026. 
 | Pokharel et al. (2026) | CPT code coverage in plan documents. About 1.84 million labeled pairs and 814 evaluation codes | Fine-tuned Longformer retriever, an LLM that writes Boolean attributes and rules, and the PyKnow rule engine | Supports human reviewers with auditable rationales | Accuracy 0.87 and F1 0.93, against 0.82 and 0.89 for GPT-4.1 on full documents. Cost about USD 22 against USD 38,720 for about 11,000 codes |
 | Mridul et al. (2026) | Life insurance, ten contracts, 58 scenarios | Ontology (TBox) and knowledge base (ABox) queried with SPARQL, with a text-only LLM baseline | Scenario outcomes with clause-level evidence | Better consistency and diagnosis than the baseline. The abstract has no numeric metrics |
 | Debenedetti et al. (2025) | General agent tasks outside insurance (AgentDojo benchmark) | Separation of control flow from data flow, capabilities attached to data and policy checks at each tool call | Not applicable | 77% of tasks solved with provable security, against 84% for the undefended system |
-| ClauseGuard (this work) | Policy-to-rule compilation, synthetic personas and a sandbox insurer | Seven narrow LLM agents for language only, a deterministic rules engine, the Guardian tier gate and typed handles | The insurer officer decides and the rules engine computes coverage and payment | 84.6% on 390 labels, 0 of 27 attacks succeeded, sample sizes disclosed |
+| ClauseGuard (this work) | Policy-to-rule compilation, synthetic personas and a sandbox insurer | Five narrow LLM agents for language only, a deterministic rules engine, the Guardian tier gate and typed handles | The insurer officer decides and the rules engine computes coverage and payment | 84.6% on 390 labels, 0 of 27 attacks succeeded, sample sizes disclosed |
 
 To our reading of the sources in Table 18, the following points have not been found combined in one system.
 
