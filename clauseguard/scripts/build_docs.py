@@ -97,6 +97,20 @@ def render(src: Path, dst: Path) -> None:
             i += 1
             continue
         flush_table()
+        img = re.match(r"^!\[(.*?)\]\((.+?)\)\s*$", ln)
+        if img:
+            from docx.shared import Inches
+            path = (src.parent / img.group(2)).resolve()
+            if path.exists():
+                doc.add_picture(str(path), width=Inches(6.3))
+                doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
+                cap = doc.add_paragraph()
+                cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                r = cap.add_run(img.group(1))
+                r.italic = True
+                r.font.size = Pt(9)
+            i += 1
+            continue
         m = re.match(r"^(#{1,4})\s+(.*)", ln)
         if m:
             level = len(m.group(1))
