@@ -13,41 +13,38 @@ WEB = HERE.parents[2] / "clauseguard-web"
 
 CSS = """
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Inter,Arial,sans-serif;background:#fff;color:#141B2E}
+body{font-family:'Segoe UI',Inter,Arial,sans-serif;background:#fff;color:#000}
 .wrap{padding:36px 40px;display:inline-block}
 h1{font-size:22px;font-weight:700;margin-bottom:22px}
 .col{display:flex;flex-direction:column;align-items:center;gap:0}
 .row{display:flex;align-items:stretch;gap:0}
 .box{border-radius:14px;padding:12px 16px;border:2px solid;min-width:250px;max-width:300px;text-align:center}
 .box b{display:block;font-size:15px;margin-bottom:4px}
-.box span{font-size:12.5px;color:#4A5370;line-height:1.35}
+.box span{font-size:12.5px;color:#222;line-height:1.35}
 .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-bottom:6px}
-.user{border-color:#1C58E3;background:#EEF3FD}.user .tag{background:#1C58E3;color:#fff}
-.ai{border-color:#7A5AF8;background:#F3F0FE}.ai .tag{background:#7A5AF8;color:#fff}
-.code{border-color:#248968;background:#EAF6F1}.code .tag{background:#248968;color:#fff}
-.human{border-color:#E9890C;background:#FDF3E3}.human .tag{background:#E9890C;color:#fff}
-.stop{border-color:#D6293F;background:#FCEBED}.stop .tag{background:#D6293F;color:#fff}
-.dec{border-color:#141B2E;background:#fff;border-style:dashed}
-.down{width:2px;height:26px;background:#9AA3B8;position:relative;margin:0 auto}
-.down:after{content:'';position:absolute;bottom:-1px;left:-5px;border:6px solid transparent;border-top:8px solid #9AA3B8}
-.right{height:2px;width:34px;background:#9AA3B8;position:relative;align-self:center}
-.right:after{content:'';position:absolute;right:-2px;top:-5px;border:6px solid transparent;border-left:8px solid #9AA3B8}
-.lbl{font-size:11.5px;color:#4A5370;font-weight:600;padding:4px 0}
-.legend{display:flex;gap:16px;margin-top:22px;font-size:12px;color:#4A5370}
+.box{background:#fff;border-color:#000}.tag{border:1.5px solid #000;color:#000;background:#fff}
+.human,.user{border-style:solid}.ai{border-style:double;border-width:4px}.code{border-width:2px}.stop{border-width:3px}
+.dec{border-color:#000;background:#fff;border-style:dashed}
+.down{width:2px;height:26px;background:#000;position:relative;margin:0 auto}
+.down:after{content:'';position:absolute;bottom:-1px;left:-5px;border:6px solid transparent;border-top:8px solid #000}
+.right{height:2px;width:34px;background:#000;position:relative;align-self:center}
+.right:after{content:'';position:absolute;right:-2px;top:-5px;border:6px solid transparent;border-left:8px solid #000}
+.lbl{font-size:11.5px;color:#222;font-weight:600;padding:4px 0}
+.legend{display:flex;gap:16px;margin-top:22px;font-size:12px;color:#222}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 .branch{display:flex;gap:28px;align-items:flex-start}
 """
 
 T = {
     "id": {
-        "legend": [("user", "#1C58E3", "Nasabah"), ("ai", "#7A5AF8", "Agen AI"), ("code", "#248968", "Kode deterministik"), ("human", "#E9890C", "Petugas penanggung")],
+        "legend": [("user", "#1C58E3", "Nasabah"), ("ai", "#7A5AF8", "Agen AI (garis ganda)"), ("code", "#248968", "Kode deterministik"), ("human", "#E9890C", "Petugas penanggung")],
         "claim_title": "Alur klaim dari pertanyaan sampai keputusan",
         "claim": [
             ("user", "Nasabah", "Bercerita dengan bahasa sehari-hari", "\"Dirawat 3 hari karena DBD, bisa klaim?\""),
             ("code", "ClauseLens", "Memeriksa semua polis", "Ditanggung atau tidak, jumlah, tenggat, kutipan klausul"),
             ("user", "Nasabah", "Mengirim dokumen rumah sakit", "Kuitansi, resume medis, resep, hasil lab"),
             ("ai", "ClaimFlow", "Membaca dan mencocokkan dokumen", "Isi setiap berkas dan dokumen wajib yang terpenuhi"),
-            ("code", "ClaimFlow", "Mengisi formulir klaim penanggung", "Tata letak dari redaksi polis, nilai dari dokumen"),
+            ("ai", "ClaimFlow", "Mengisi formulir klaim penanggung", "Tata letak dari redaksi polis, nilai dari dokumen"),
             ("user", "Nasabah", "Memeriksa dan menekan Konfirmasi", "Kolom dapat dikoreksi sebelum dikirim"),
             ("human", "Meja penanggung", "Petugas memutuskan klaim", "Disetujui, ditolak, atau dibayar, dengan catatan"),
             ("ai", "Watchdog", "Menyampaikan keputusan ke chat", "Arti keputusan dan langkah berikutnya"),
@@ -55,9 +52,9 @@ T = {
         "turn_title": "Alur keputusan dalam satu giliran percakapan",
         "turn": [
             ("user", "Pesan nasabah", "Teks bebas atau berkas", ""),
-            ("ai", "Conversation Agent", "Hubungan pesan dengan percakapan", "Situasi baru, koreksi, jawaban, pengandaian, umum"),
             ("code", "Aturan keamanan", "Diputuskan kode lebih dulu", "Misrepresentasi, data orang lain, ubah rekening"),
             ("ai", "Planner Agent", "Maksud, topik, dan alat", "Dokumen, tenggat, jumlah, kemajuan klaim"),
+            ("ai", "Conversation Agent", "Hubungan pesan dengan percakapan", "Situasi baru, koreksi, jawaban, pengandaian, umum"),
             ("code", "Guardian", "Memeriksa izin setiap alat", "Tingkat T0 sampai T3 dan mode otonomi"),
             ("ai", "Fact Agent", "Kalimat menjadi fakta bertipe", "Tanggal, hari rawat, tagihan, penyebab"),
             ("code", "Mesin aturan", "Menghitung putusan per polis", "Cakupan, jumlah, tenggat, urutan pembayar"),
@@ -76,14 +73,14 @@ T = {
         ],
     },
     "en": {
-        "legend": [("user", "#1C58E3", "Customer"), ("ai", "#7A5AF8", "AI agent"), ("code", "#248968", "Deterministic code"), ("human", "#E9890C", "Insurer staff")],
+        "legend": [("user", "#1C58E3", "Customer"), ("ai", "#7A5AF8", "AI agent (double border)"), ("code", "#248968", "Deterministic code"), ("human", "#E9890C", "Insurer staff")],
         "claim_title": "Claim flow from question to decision",
         "claim": [
             ("user", "Customer", "Describes it in everyday words", "\"Three days in hospital with dengue, can I claim?\""),
             ("code", "ClauseLens", "Checks every policy", "Covered or not, amount, deadline, clause quoted"),
             ("user", "Customer", "Sends hospital documents", "Receipt, medical resume, prescription, lab results"),
             ("ai", "ClaimFlow", "Reads and matches the documents", "What each file says and which requirements it meets"),
-            ("code", "ClaimFlow", "Fills in the insurer's claim form", "Layout from the policy wording, values from the files"),
+            ("ai", "ClaimFlow", "Fills in the insurer's claim form", "Layout from the policy wording, values from the files"),
             ("user", "Customer", "Reviews and taps Confirm", "Any field can be corrected before sending"),
             ("human", "Insurer desk", "A person decides the claim", "Approved, rejected or paid, with a note"),
             ("ai", "Watchdog", "Brings the decision to the chat", "What it means and the next step"),
@@ -91,9 +88,9 @@ T = {
         "turn_title": "Decision flow in one conversation turn",
         "turn": [
             ("user", "Customer message", "Free text or a file", ""),
-            ("ai", "Conversation Agent", "How the message relates to the chat", "New situation, correction, answer, what-if, general"),
             ("code", "Safety rules", "Decided by code first", "Misrepresentation, other people's data, account changes"),
             ("ai", "Planner Agent", "Intent, topic and tools", "Documents, deadline, amount, claim progress"),
+            ("ai", "Conversation Agent", "How the message relates to the chat", "New situation, correction, answer, what-if, general"),
             ("code", "Guardian", "Checks every tool's permission", "Tiers T0 to T3 and the autonomy mode"),
             ("ai", "Fact Agent", "Sentences into typed facts", "Dates, days in hospital, bill, cause"),
             ("code", "Rules engine", "Computes the verdict per policy", "Coverage, amount, deadline, payer order"),
@@ -120,7 +117,8 @@ def box(kind, tag, title, sub):
 
 
 def legend(t):
-    return '<div class="legend">' + "".join(f'<div><i style="background:{c}"></i>{n}</div>' for _, c, n in t["legend"]) + "</div>"
+    st={"user":"2px solid #000","ai":"4px double #000","code":"2px solid #000","human":"2px solid #000"}
+    return '<div class="legend">' + "".join(f'<div><i style="border:{st[k]};background:#fff"></i>{n}</div>' for k, _, n in t["legend"] if k == "ai") + "</div>"
 
 
 def claim_html(t):
