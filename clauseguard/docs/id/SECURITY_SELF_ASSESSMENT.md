@@ -27,7 +27,7 @@ Tabel 1 memuat hasil utama dalam satu halaman.
 | Tugas terskrip termasuk A01 sampai A10 (adversarial) | 33 dari 33 lulus | `evidence/task_report.md` |
 | Tes keamanan yang dijalankan ulang pada 19 Oktober 2026 | 68 lulus | `pytest` pada lima berkas |
 | Seluruh rangkaian tes | 554 lulus pada run penuh terakhir | `pytest` |
-| Risiko yang diketahui | 21 (tinggi 2, sedang 8, rendah 11) | Tabel 12 |
+| Risiko yang diketahui | 21 (tinggi 2, sedang 9, rendah 10) | Tabel 12 |
 
 Sikap desain kami adalah model bahasa tidak pernah memutuskan izin. Model hanya mengusulkan pemanggilan alat. Guardian memutuskan izinkan, tolak, atau minta konfirmasi dengan kode deterministik. Petugas penanggung memutuskan setiap klaim. Hasil pengujian yang sempurna pada 27 serangan berasal dari kasus yang ditulis tim, jadi hasil itu menunjukkan aturan berfungsi dan tidak menjadi bukti kebal serangan. Bab 4 memuat batasnya.
 
@@ -333,7 +333,7 @@ Kemungkinan dan dampak adalah perkiraan tim sendiri pada skala tiga tingkat (R r
 | K16 | Saran recourse dapat disalahartikan sebagai saran mengubah fakta | R | T | Sedang | Fakta kejadian tidak dapat diubah di kode, permintaan pemalsuan ditolak, setiap opsi menyebut tindakan yang sah | Tinjauan redaksi untuk pengguna |
 | K17 | Nasabah dapat menyatakan dokumen ada tanpa mengunggahnya, lalu klaim disiapkan berdasarkan pernyataan itu | S | R | Rendah | Hanya berkas unggahan yang dihitung terlampir, butir yang dinyatakan diberi label demikian pada formulir dan di meja penanggung, penanggung yang memutuskan | Blokir pengajuan klaim yang hanya dinyatakan pada mode produksi |
 | K18 | Keadaan sesi bertipe disimpan di memori dan satu proses melayani semua sesi. Server yang dimulai ulang mengakhiri sesi yang terbuka (riwayat percakapan tetap ada dan fakta hilang) | S | R | Rendah | Riwayat percakapan disimpan dan nasabah menyampaikan ulang situasinya | Simpan keadaan sesi bertipe bersama riwayat dan pakai penyimpanan sesi bersama |
-| K19 | Layanan dapat diakses publik di Railway dan token admin dibagikan kepada juri melalui formulir pendaftaran | S | R | Rendah | Semua data sintetis, token admin khusus juri yang terpisah dari token pengembangan, token wajib untuk setiap endpoint penanggung, token sesi per login, tanpa CORS dari peramban, dan sakelar henti | Ganti token setelah penjurian dan gerbang autentikasi sungguhan |
+| K19 | Layanan dapat diakses publik di Railway dan juri memakai token admin yang sama dengan yang mengoperasikan sistem, sehingga siapa pun yang memegang token dapat menghentikan agen, memutuskan klaim, dan mengelola kunci model | S | S | Sedang | Semua data sintetis, token wajib untuk setiap endpoint penanggung, token sesi per login, tanpa CORS dari peramban, dan sakelar henti | Ganti token setelah penjurian dan terbitkan kredensial juri dengan cakupan terbatas |
 | K20 | Pesan chat yang diketik nasabah dikirim ke model tanpa penghapusan data pribadi. Nasabah yang mengetik nomor KTP atau rekening di chat membuat data itu sampai ke penyedia model | S | S | Sedang | Hanya empat giliran terakhir yang dikirim, jawaban asisten dipotong sampai 420 karakter, penjaga keluaran menutup data sensitif pada jawaban, data nasabah demo bersifat sintetis, dan nasabah dapat memakai kunci sendiri | Hapus data pribadi pada pesan chat sebelum dikirim dan tampilkan pemberitahuan privasi di layar |
 | K21 | Belum ada layar persetujuan privasi, kebijakan masa simpan, dan fitur hapus akun beserta berkas unggahan | S | S | Sedang | Isolasi per akun, hapus riwayat percakapan tersedia, data demo sintetis | Layar persetujuan, masa simpan, dan hapus akun beserta berkas |
 
@@ -341,7 +341,7 @@ Kemungkinan dan dampak adalah perkiraan tim sendiri pada skala tiga tingkat (R r
 
 1. Menghapus data pribadi pada pesan chat sebelum dikirim ke model dan menambahkan layar persetujuan privasi (K20, K21).
 2. Menjalankan ulang pengujian ekstraktor pada seluruh set dan melibatkan red team eksternal (K1, K15).
-3. Menambatkan hash akar audit di luar host dan menyimpan keadaan sesi bersama (K4, K18).
+3. Menambatkan hash akar audit di luar host, menyimpan keadaan sesi bersama, dan mengganti token admin yang dibagikan (K4, K18, K19).
 
 ### 4.3 Yang tidak kami klaim
 

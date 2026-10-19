@@ -27,7 +27,7 @@ ClauseGuard has 3 core features and 3 supporting features. The core features are
 | Scripted tasks including 10 adversarial tasks | 33 of 33 passed |
 | Security tests rerun on 19 October 2026 | 68 passed |
 | Full test suite at the last complete run | 554 passed |
-| Known risks (residual level) | 21 (2 high, 8 medium, 11 low) |
+| Known risks (residual level) | 21 (2 high, 9 medium, 10 low) |
 
 ## 1. Permission Model
 
@@ -299,7 +299,7 @@ Likelihood and impact are our own estimates on a three-level scale (L low, M med
 | K16 | Recourse suggestions could be misread as advice to alter facts | L | H | Medium | Event facts are immutable in code, misrepresentation requests are refused and every option names a legitimate action. Planned: wording review |
 | K17 | A policyholder can state that a document exists without uploading it | M | L | Low | Only uploaded files count as attached, declared items are labelled and the insurer decides. Planned: block declared-only submissions in production |
 | K18 | Typed session state lives in memory in one process and a restart ends open sessions | M | L | Low | Chat history persists and the policyholder restates the situation. Planned: persist session state and use a shared session store |
-| K19 | The service is publicly hosted on Railway and the admin token is shared with judges through the registration form | M | L | Low | Synthetic data only, a judge-specific admin token separate from the development token, token required on every desk endpoint, per-login session tokens, no CORS from browsers and a kill switch. Planned: rotate the token after judging |
+| K19 | The service is publicly hosted on Railway and judges use the same admin token that operates the system, so anyone holding the token can halt the agent, decide claims and manage model keys | M | M | Medium | Synthetic data only, token required on every desk endpoint, per-login session tokens, no CORS from browsers and a kill switch. Planned: rotate the token after judging and issue scoped judge credentials |
 | K20 | Chat messages typed by the policyholder reach the model without redaction, so an identity or account number typed in chat is exposed | M | M | Medium | Only the last four turns are sent, assistant replies are cut to 420 characters, the output guard masks replies and demo data is synthetic. Planned: redact chat messages before sending and show a privacy notice |
 | K21 | There is no privacy consent screen, retention policy or account deletion with uploaded files | M | M | Medium | Per-account isolation, history deletion and synthetic demo data. Planned: a consent screen, a retention period and account deletion |
 
@@ -307,7 +307,7 @@ Likelihood and impact are our own estimates on a three-level scale (L low, M med
 
 1. Redact personal data in chat messages before they reach the model and add a privacy consent screen (K20, K21).
 2. Rerun the extractor tests on the full set and commission an external red team (K1, K15).
-3. Anchor the audit root hash outside the host and move session state to a shared store (K4, K18).
+3. Anchor the audit root hash outside the host, move session state to a shared store and rotate the shared admin token (K4, K18, K19).
 
 ### 4.3 Claims we do not make
 
