@@ -17,9 +17,11 @@ Team: Bunga Laelatul Muna, Izra, Wan Sabrina · Institut Teknologi Sepuluh Nopem
 
 **https://clauseguard.up.railway.app/**
 
+Source code: **https://github.com/bungagana/clauseguard**
+
 The prototype runs on a sandbox insurer with synthetic personas and synthetic policies.
 
-**User information is in the Technical Documentation** ([PDF](documentation-submission/%5BRevised%5D%20ClauseGuard_Technical_Documentation.pdf), Table 11, Judge access). It lists the demo accounts and explains how to sign in and how to reach the insurer desk. The demo passwords and the insurer desk token are given in the registration form submitted to the organizer.
+**User information is in the Technical Documentation** ([PDF](documentation-submission/ClauseGuard_Technical_Documentation.pdf), Table 11, Judge access). It lists the demo accounts and explains how to sign in and how to reach the insurer desk. The demo passwords and the insurer desk token are given in the registration form submitted to the organizer.
 
 ## What it does
 
@@ -147,10 +149,11 @@ Further evaluations (benchmark accuracy, plan selection, allocation, latency) ar
 
 | Document | File |
 |---|---|
-| Technical Documentation (architecture, algorithms, security design, API, sandbox, database, demo account information) | [PDF](documentation-submission/%5BRevised%5D%20ClauseGuard_Technical_Documentation.pdf) |
-| Security Self-Assessment (permission tiers, threat model, tests, data and privacy, known risks) | [PDF](documentation-submission/%5BRevised%5D%20ClauseGuard_Security_Self_Assessment.pdf) |
-| Execution Evidence (operation record with screenshots and audit log, scripted test results) | [PDF](documentation-submission/%5BRevised%5D%20ClauseGuard_Execution_Evidence.pdf) |
+| Technical Documentation (architecture, algorithms, security design, API, sandbox, database, demo account information) | [PDF](documentation-submission/ClauseGuard_Technical_Documentation.pdf) |
+| Security Self-Assessment (permission tiers, threat model, tests, data and privacy, known risks) | [PDF](documentation-submission/ClauseGuard_Security_Self_Assessment.pdf) |
+| Execution Evidence (operation record with screenshots and audit log, scripted test results) | [PDF](documentation-submission/ClauseGuard_Execution_Evidence.pdf) |
 | Demo video | [MP4](documentation-submission/clauseguard.mp4) |
+| Pitch Deck | [PDF](documentation-submission/ClauseGuard%20-%20Pitch%20Deck.pdf) |
 
 ## Notes
 
