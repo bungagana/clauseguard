@@ -145,6 +145,18 @@ npm run build
 
 Further evaluations (benchmark accuracy, plan selection, allocation, latency) are listed with their commands in the Execution Evidence document, and their generated reports are in [`clauseguard/evidence/`](clauseguard/evidence/). The same backend and frontend checks run on every push through [GitHub Actions](.github/workflows/ci.yml).
 
+
+
+## Table 1. Demo Credentials
+
+| Account                      | Password        |
+|------------------------------|-----------------|
+| rizky@demo.clauseguard.id    | `!password21!!`  |
+| santoso@demo.clauseguard.id  | `!password21!!`  |
+| dewi@demo.clauseguard.id     | `!password21!!`  |
+
+
+
 ## Documentation
 
 | Document | File |
